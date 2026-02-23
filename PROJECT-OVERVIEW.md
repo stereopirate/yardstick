@@ -1,12 +1,14 @@
-# Easy Green – Lawn Care Tracker: Project Overview
+# Yardstick – Lawn Care Tracker: Project Overview
 
 Use this document as context for all work on this project. It describes what the app is, how it is built, and the rules to follow when making changes.
+
+> **Branding note:** The app's name is **Yardstick**. The `manifest.json` and some older marketing files still reference "Easy Green" — this is a legacy working name and should be treated as outdated. Use **Yardstick** in all new copy, UI text, and code.
 
 ---
 
 ## 1. What This App Is
 
-**Easy Green** (internal name: Yardstick) is a free, privacy-first lawn care companion web app. Users can:
+**Yardstick** is a free, privacy-first lawn care companion web app. Users can:
 
 - Log lawn care activities (mowing, fertilizing, watering, seeding, aeration, trimming, maintenance)
 - Track equipment and get maintenance reminders
@@ -46,11 +48,11 @@ Use this document as context for all work on this project. It describes what the
 
 ```
 Lawn-care-tracker/
-├── index.html               # Entire React app (all core components inline)
+├── index.html               # Entire React app (all core components inline, ~3,200+ lines)
 ├── constants.js             # Product DB, treatment types, activity types
 ├── grass-programs.js        # Month-by-month care programs per grass/zone
 ├── service-worker.js        # PWA offline caching
-├── manifest.json            # PWA metadata
+├── manifest.json            # PWA metadata (still shows "Easy Green" — needs update to Yardstick)
 ├── components/
 │   ├── Dashboard.js         # Home screen — weather, stats, recent activity
 │   ├── HistoryView.js       # Full activity log, color-coded timeline
@@ -188,7 +190,7 @@ Soil temperature is estimated as `airTemp - 7°F` (not from an API).
 | View key | Screen name | Description |
 |---|---|---|
 | `null` | Dashboard | Home — weather, stats, recent activity |
-| `'add'` | Add Activity | 7-step form for logging any activity type |
+| `'add'` | Add Activity | Form for logging any of 7 activity types |
 | `'history'` | History | Full chronological activity log |
 | `'garage'` | My Garage | Equipment list + maintenance alerts |
 | `'schedules'` | My Yard | Lawn profile + recurring schedule tracker |
@@ -223,17 +225,22 @@ Each monthly entry includes: soil temp thresholds, fertilizer recommendations, t
 
 ## 10. PWA & Offline
 
-- `manifest.json` app name: "Easy Green – Your Lawn Care Made Simple"
 - Theme color: `#367C2B`
 - Service worker caches React, Babel, Tailwind (CDN), and core app files
 - Cache strategy: network-first for dynamic content, cache-first for static assets
 - Full offline functionality after first load
+- `manifest.json` still shows "Easy Green" as the app name — this should be updated to "Yardstick" when rebranding is confirmed
 
 ---
 
 ## 11. Development Rules
 
 Follow these rules whenever making changes to this project:
+
+### Branding
+- The app name is **Yardstick**. Do not use "Easy Green" or "Lawn Care Tracker" in new code, UI text, or copy.
+- Brand color: `#367C2B` (deep green). Tailwind classes use `green-*` variants.
+- Voice: confident, grounded, practical — "like a trusted neighbor who happens to have a horticulture degree."
 
 ### Architecture
 - **Do not introduce a build step or bundler** (no Webpack, Vite, etc.) unless explicitly requested. The app deliberately runs without one.
@@ -263,10 +270,72 @@ Follow these rules whenever making changes to this project:
 
 ---
 
-## 12. Glossary
+## 12. Working Efficiently with Claude
+
+### Which file to reference for each task
+
+| Task type | Start here |
+|---|---|
+| UI bug or layout issue | `index.html` (find the affected component by view name or state key) |
+| Add or edit a product | `constants.js` |
+| Add or edit a grass care program | `grass-programs.js` |
+| Dashboard, weather, or stats | `components/Dashboard.js` |
+| Activity log or history | `components/HistoryView.js` |
+| Equipment or maintenance | `components/MyGarage.js` |
+| Schedules or lawn profile | `components/SchedulesView.js` |
+| Product guide or comparison | `components/ProductGuide.js` |
+| Offline / PWA behavior | `service-worker.js` |
+| App metadata or install name | `manifest.json` |
+
+### How to write efficient prompts
+
+**Be specific about the view or component:**
+> "In the My Garage view (`MyGarage.js`), the maintenance alert doesn't show when hours exceed the threshold."
+
+**Reference data models when relevant:**
+> "When logging a Fertilizer activity, I want to add a `targetArea` field to the `data` object."
+
+**State what should NOT change:**
+> "Update the product card layout in `ProductGuide.js` but keep the comparison tool behavior the same."
+
+**For `index.html` edits, name the section:**
+> "Find the `AddActivityForm` component in `index.html` and add a cost field to the Aeration form."
+
+### What to include when reporting a bug
+
+1. Which screen/view it occurs on
+2. What action triggers it
+3. What you expected vs. what happened
+4. Whether it affects data (activities, equipment, profile) or just display
+
+### Common task patterns
+
+**Add a new activity type:**
+1. Add it to the `ACTIVITY_TYPES` constant in `constants.js`
+2. Add a form section in the `AddActivityForm` component in `index.html`
+3. Add a display case in `components/ActivityDetails.js`
+4. Add a color and icon to `components/HistoryView.js`
+
+**Add a new product to the database:**
+- Edit `constants.js` — find the relevant array (`MOWERS`, `SPREADERS`, `TRIMMERS`, `FERTILIZERS`, `SEEDS`, or `TREATMENT_PRODUCTS`)
+
+**Add a new grass care recommendation:**
+- Edit `grass-programs.js` — find the correct grass type + zone combo and add or update the monthly entry
+
+**Add a new screen/view:**
+1. Add a new `view` string key to the `setView()` call pattern
+2. Create the component in `/components/`
+3. Add a `<script src="components/NewView.js" type="text/babel">` tag to `index.html`
+4. Add routing in the main render return of `LawnCareTracker`
+
+---
+
+## 13. Glossary
 
 | Term | Meaning |
 |---|---|
+| Yardstick | The app's brand name |
+| Easy Green | Legacy working name — do not use in new work |
 | Activity | A single logged lawn care event |
 | USDA zone | Hardiness zone (4a–9b) used to determine regional care timing |
 | Lawn profile | User's grass type, zone, yard size, and location |
@@ -274,5 +343,5 @@ Follow these rules whenever making changes to this project:
 | My Garage | The equipment inventory section |
 | My Yard | The schedules/profile section |
 | useDataStore | Custom hook abstracting localStorage ↔ Firestore sync |
-| Easy Green | The public-facing app name |
-| Yardstick | The internal/development project name |
+| LawnCareTracker | Root React component name (in `index.html`) |
+| view | State string that controls which screen is rendered (`null` = Dashboard) |
