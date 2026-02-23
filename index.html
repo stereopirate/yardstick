@@ -2270,7 +2270,6 @@ window.ResearchSourcesPage = () => (
         const [title,       setTitle]       = useState('');
         const [description, setDescription] = useState('');
         const [steps,       setSteps]       = useState('');
-        const [priority,    setPriority]    = useState('medium');
         const [email,       setEmail]       = useState(currentUser?.email || '');
         const [submitting,  setSubmitting]  = useState(false);
         const [submitted,   setSubmitted]   = useState(false);
@@ -2293,7 +2292,6 @@ window.ResearchSourcesPage = () => (
                 title:             title.trim(),
                 description:       description.trim(),
                 stepsToReproduce:  steps.trim()  || null,
-                priority:          (type === 'bug' || type === 'feature') ? priority : null,
                 contactEmail:      email.trim()  || null,
                 userId:            currentUser?.uid          || null,
                 userDisplayName:   currentUser?.displayName  || null,
@@ -2426,29 +2424,6 @@ window.ResearchSourcesPage = () => (
                         </div>
                     )}
 
-                    {/* ── Priority (bugs + features) ── */}
-                    {(type === 'bug' || type === 'feature') && (
-                        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-                            <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Priority</div>
-                            <div className="flex gap-2">
-                                {[
-                                    { key: 'low',    label: '🔵 Low',    active: 'border-blue-400 bg-blue-50 text-blue-600'   },
-                                    { key: 'medium', label: '🟡 Medium', active: 'border-yellow-400 bg-yellow-50 text-yellow-700' },
-                                    { key: 'high',   label: '🔴 High',   active: 'border-red-500 bg-red-50 text-red-600'      },
-                                ].map(p => (
-                                    <button
-                                        key={p.key} type="button"
-                                        onClick={() => setPriority(p.key)}
-                                        className={`flex-1 py-2 rounded-lg border-2 text-sm font-semibold transition btn-press ${
-                                            priority === p.key ? p.active : 'border-gray-200 text-gray-500 hover:border-gray-300'
-                                        }`}
-                                    >
-                                        {p.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
 
                     {/* ── Contact email ── */}
                     <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
