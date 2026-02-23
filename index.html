@@ -76,6 +76,31 @@
 </head>
 <body class="bg-white" style="background-color: #ffffff !important;">
     <style>
+        /* ── Phase 1: Brand CSS Custom Properties ── */
+        :root {
+            --ys-green-900: #1C3318;
+            --ys-green-800: #234D20;
+            --ys-green-700: #2D6627;
+            --ys-green-600: #367C2B;
+            --ys-green-500: #4A9E3C;
+            --ys-green-400: #6BBF5A;
+            --ys-green-200: #C4E8BC;
+            --ys-green-100: #EBF5E6;
+            --ys-green-50:  #F4FAF2;
+            --ys-gold-500:  #C8960C;
+            --ys-gold-400:  #D4A833;
+            --ys-gold-300:  #E2C46A;
+            --ys-gold-100:  #FDF3D8;
+            --ys-soil-800:  #3B2A1A;
+            --ys-soil-600:  #6B4C2A;
+            --ys-soil-400:  #9C7248;
+            --ys-soil-200:  #D4B896;
+            --ys-font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
+            --ys-font-display: 'DM Serif Display', Georgia, serif;
+        }
+        body, button, input, select, textarea {
+            font-family: var(--ys-font-body);
+        }
         body::before,
         body > *:not(#root):not(script) { display: none !important; }
         #root { min-height: 100vh; }
