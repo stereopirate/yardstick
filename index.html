@@ -2831,26 +2831,33 @@ window.ResearchSourcesPage = () => (
                                     due.setDate(due.getDate() + s.frequencyDays);
                                     return Math.ceil((due - today) / (1000 * 60 * 60 * 24));
                                 };
-                                const overdue  = schedules.filter(s => getDaysUntil(s) < 0);
-                                const dueToday = schedules.filter(s => getDaysUntil(s) === 0);
-                                const urgentCount = overdue.length + dueToday.length;
+                                const overdue     = schedules.filter(s => getDaysUntil(s) < 0);
+                                const dueTodayArr = schedules.filter(s => getDaysUntil(s) === 0);
+                                const urgentCount = overdue.length + dueTodayArr.length;
                                 const mostUrgent  = [...schedules].sort((a, b) => getDaysUntil(a) - getDaysUntil(b))[0];
                                 const d = getDaysUntil(mostUrgent);
                                 const isUrgent = d <= 0;
+                                // Precompute strings — no nested template literals in JSX
+                                const mainText = urgentCount > 0
+                                    ? (urgentCount + ' task' + (urgentCount > 1 ? 's' : '') + ' due')
+                                    : ('Next: ' + mostUrgent.name);
+                                const parts = [];
+                                if (overdue.length > 0)     parts.push(overdue.length + ' overdue');
+                                if (dueTodayArr.length > 0) parts.push(dueTodayArr.length + ' today');
+                                const subText = urgentCount > 0 ? parts.join(', ') : ('in ' + d + ' day' + (d !== 1 ? 's' : ''));
+                                const cardCls = 'w-full rounded-2xl shadow-sm border p-4 card-hover btn-press text-left flex items-center gap-3 ' + (isUrgent ? 'bg-orange-50 border-orange-200' : 'bg-white border-gray-100');
+                                const iconCls = 'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-xl ' + (isUrgent ? 'bg-orange-100' : 'bg-blue-50');
+                                const headCls = 'text-sm font-bold ' + (isUrgent ? 'text-orange-800' : 'text-gray-800');
+                                const subCls  = 'text-xs ' + (isUrgent ? 'text-orange-600' : 'text-gray-400');
+                                const chevCls = 'text-xs font-bold ' + (isUrgent ? 'text-orange-600' : 'text-[#367C2B]');
                                 return (
-                                    <button onClick={() => setView('schedules')} className={`w-full rounded-2xl shadow-sm border p-4 card-hover btn-press text-left flex items-center gap-3 ${isUrgent ? 'bg-orange-50 border-orange-200' : 'bg-white border-gray-100'}`}>
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-xl ${isUrgent ? 'bg-orange-100' : 'bg-blue-50'}`}>🗓️</div>
+                                    <button onClick={() => setView('schedules')} className={cardCls}>
+                                        <div className={iconCls}>&#128467;</div>
                                         <div className="flex-1 min-w-0">
-                                            <div className={`text-sm font-bold ${isUrgent ? 'text-orange-800' : 'text-gray-800'}`}>
-                                                {urgentCount > 0 ? `${urgentCount} task${urgentCount > 1 ? 's' : ''} due` : `Next: ${mostUrgent.name}`}
-                                            </div>
-                                            <div className={`text-xs ${isUrgent ? 'text-orange-600' : 'text-gray-400'}`}>
-                                                {urgentCount > 0
-                                                    ? `${overdue.length > 0 ? `${overdue.length} overdue` : ''}${overdue.length > 0 && dueToday.length > 0 ? ', ' : ''}${dueToday.length > 0 ? `${dueToday.length} today` : ''}`
-                                                    : `in ${d} day${d !== 1 ? 's' : ''}`}
-                                            </div>
+                                            <div className={headCls}>{mainText}</div>
+                                            <div className={subCls}>{subText}</div>
                                         </div>
-                                        <div className={`text-xs font-bold ${isUrgent ? 'text-orange-600' : 'text-[#367C2B]'}`}>View →</div>
+                                        <div className={chevCls}>View &#8594;</div>
                                     </button>
                                 );
                             })()}
