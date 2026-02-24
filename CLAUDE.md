@@ -119,6 +119,71 @@ The popup uses `position: fixed` centered on screen (not a portal) to ensure rel
 - **Inline styles** used for dynamic values or precise overrides
 - **Custom CSS** at top of `index.html` `<style>` block for animations and cite-btn/cite-popup styles
 
+### Typography
+
+| Role | Font | Weight | CSS Variable |
+|---|---|---|---|
+| Hero & all headings (h1, h2, h3) | **Fraunces** | 600–700 | `--ys-font-display` |
+| Body, buttons, nav, labels | **Quicksand** | 500–700 | `--ys-font-body` |
+
+Loaded via Google Fonts:
+```html
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+```
+
+CSS variable declarations (in `:root`):
+```css
+--ys-font-body:    'Quicksand', system-ui, -apple-system, sans-serif;
+--ys-font-display: 'Fraunces', Georgia, serif;
+```
+
+The global rule `h1, h2, h3 { font-family: var(--ys-font-display); }` applies the display font to all heading elements automatically. Apply `style={{fontFamily:'var(--ys-font-display)'}}` to any element that should use Fraunces but isn't a semantic heading (e.g., the header wordmark span).
+
+**Character:** Fraunces is warm, editorial, and softly organic — giving the brand authority without stiffness. Quicksand is rounded and highly legible at small sizes, ideal for mobile labels, buttons, and nav tabs.
+
+### Brand CSS Variables (`:root`)
+
+```css
+/* Green scale */
+--ys-green-900: #1C3318
+--ys-green-800: #234D20   ← header background
+--ys-green-700: #2D6627   ← coach card gradient start
+--ys-green-600: #367C2B   ← primary CTAs, active states
+--ys-green-500: #4A9E3C
+--ys-green-400: #6BBF5A
+--ys-green-200: #C4E8BC
+--ys-green-100: #EBF5E6   ← icon backgrounds, badge fills
+--ys-green-50:  #F4FAF2   ← nav tab hover
+
+/* Gold accent */
+--ys-gold-500: #C8960C
+--ys-gold-400: #D4A833
+--ys-gold-300: #E2C46A
+--ys-gold-100: #FDF3D8
+
+/* Soil / warm neutral */
+--ys-soil-800: #3B2A1A
+--ys-soil-600: #6B4C2A
+--ys-soil-400: #9C7248
+--ys-soil-200: #D4B896
+```
+
+### Phase 2 Utility CSS Classes
+
+Defined in the `<style>` block in `index.html`:
+
+| Class | Purpose |
+|---|---|
+| `.ys-coach-card` | Dark-green gradient hero card (home screen greeting) |
+| `.ys-badge-white` | Semi-transparent white pill badge (used inside coach card) |
+| `.ys-badge-green` | Light green pill badge (used on white backgrounds) |
+| `.ys-btn-primary` | Green CTA button using `--ys-green-600` |
+| `.ys-card` | White rounded card with subtle shadow |
+| `.ys-bottom-nav` | Fixed mobile bottom navigation bar |
+| `.ys-nav-tab` | Individual bottom nav tab |
+| `.ys-nav-active` | Active state for bottom nav tab |
+| `.ys-nav-log-btn` | Prominent green Log CTA in bottom nav |
+
 ### Color Palette
 
 | Use | Value |

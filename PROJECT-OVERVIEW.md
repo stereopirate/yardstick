@@ -239,8 +239,20 @@ Follow these rules whenever making changes to this project:
 
 ### Branding
 - The app name is **Yardstick**. Do not use "Easy Green" or "Lawn Care Tracker" in new code, UI text, or copy.
-- Brand color: `#367C2B` (deep green). Tailwind classes use `green-*` variants.
+- Brand color: `#367C2B` (deep green). Tailwind classes use `green-*` variants. Full green scale is exposed as `--ys-green-*` CSS custom properties (50–900).
 - Voice: confident, grounded, practical — "like a trusted neighbor who happens to have a horticulture degree."
+
+**Typography system (Phase 2):**
+
+| Role | Font | Weights | Variable |
+|---|---|---|---|
+| Hero & headings (h1/h2/h3) | **Fraunces** | 400, 500, 600, 700 | `--ys-font-display` |
+| Body, buttons, nav | **Quicksand** | 400, 500, 600, 700 | `--ys-font-body` |
+
+- All `h1`, `h2`, `h3` elements automatically receive `font-family: var(--ys-font-display)` via a global CSS rule.
+- All other text (body, buttons, inputs, labels) inherits `var(--ys-font-body)` via the `body, button, input, select, textarea` rule.
+- To apply the display font to a non-heading element (e.g., a branded `<span>`), use `style={{fontFamily:'var(--ys-font-display)'}}`.
+- **Do not hardcode font-family strings** — always use the CSS variables so a future font swap only requires changing two lines in `:root`.
 
 ### Architecture
 - **Do not introduce a build step or bundler** (no Webpack, Vite, etc.) unless explicitly requested. The app deliberately runs without one.
