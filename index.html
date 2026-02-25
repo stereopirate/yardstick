@@ -78,54 +78,6 @@
     // Signal React app that Firebase init is complete
     window.dispatchEvent(new Event('firebase-ready'));
 </script>
-<script type="module">
-  import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
-
-  // This function must be called by a button click to work on iOS
-  window.enableNotifications = async () => {
-    const fb = window.__FIREBASE__;
-    if (!fb || !fb.configured) {
-        alert("Please configure Firebase first!");
-        return;
-    }
-
-    try {
-      // 1. Request Permission
-      const permission = await Notification.requestPermission();
-      
-      if (permission === 'granted') {
-        const messaging = getMessaging();
-        
-        // 2. Register the Service Worker explicitly for iOS
-        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-        
-        // 3. Get the Token
-        const token = await getToken(messaging, {
-          serviceWorkerRegistration: registration,
-          vapidKey: 'YOUR_PUBLIC_VAPID_KEY_HERE' // Get this from Firebase Console
-        });
-
-        if (token) {
-          console.log("Token generated:", token);
-          alert("Notifications Enabled! Token: " + token.substring(0, 5) + "...");
-          
-          // Save to Firestore if user is logged in
-          if (fb.auth.currentUser) {
-            const { doc, setDoc } = fb;
-            await setDoc(doc(fb.db, 'users', fb.auth.currentUser.uid), {
-              fcmToken: token
-            }, { merge: true });
-          }
-        }
-      } else {
-        alert("Permission denied. Check iOS Settings > Notifications > Yardstick.");
-      }
-    } catch (error) {
-      console.error("Setup failed:", error);
-      alert("Error: " + error.message);
-    }
-  };
-</script>
 
 </head>
 <body class="bg-white" style="background-color: #ffffff !important;">
@@ -2329,60 +2281,94 @@ window.ResearchSourcesPage = () => (
 
     // ─── Settings ────────────────────────────────────────────────────────────────
 
-   const Settings = ({ activities, equipment, lawnProfile, store, currentUser, onSignOut, onSignIn, firebaseConfigured }) => {
-    
-    // --- NEW NOTIFICATION LOGIC FOR IPHONE ---
-    const handleEnableNotifications = async () => {
-    // 1. Basic check for iOS/Safari support
-    if (!('Notification' in window)) {
-        alert("Please open Yardstick from your Home Screen to enable notifications.");
-        return;
-    }
-
-    try {
-        // 2. Request Permission (Must be first for iOS)
-        const permission = await Notification.requestPermission();
-        
-        if (permission === 'granted') {
-            const fb = window.__FIREBASE__;
-            if (!fb || !fb.configured) {
-                alert("Firebase is not connected. Please check your configuration.");
-                return;
+    const Settings = ({ activities, equipment, lawnProfile, store, currentUser, onSignOut, onSignIn, firebaseConfigured }) => {
+        const exportData = () => {
+            const data = { activities, equipment, profile: lawnProfile };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `yardstick-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+        };
+        const resetData = () => {
+            if (confirm('⚠️ Delete ALL data? This cannot be undone!')) {
+                localStorage.removeItem('lawnCareActivities');
+                localStorage.removeItem('lawnCareEquipment');
+                localStorage.removeItem('lawnProfile');
+                alert('✅ Data cleared');
+                window.location.reload();
             }
+        };
+        return (
+            <div>
+                <h2 className="text-2xl font-bold mb-6">⚙️ Settings</h2>
 
-            // 3. Modern dynamic imports (replacing 'require')
-            const { getMessaging, getToken } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js');
-            const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
-            
-            const messaging = getMessaging();
-            
-            // 4. Register Service Worker
-            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-            
-            // 5. Get the Token
-            const token = await getToken(messaging, {
-                serviceWorkerRegistration: registration,
-                vapidKey: 'YOUR_PUBLIC_VAPID_KEY_HERE' // Replace with your actual VAPID key
-            });
+                {/* Account section */}
+                <div className="bg-white rounded-xl p-4 shadow mb-4">
+                    <h3 className="text-lg font-bold mb-4">👤 Account</h3>
+                    {store.isCloud && currentUser ? (
+                        <div>
+                            <div className="flex items-center gap-3 mb-4 p-3 bg-[#e8f5e9] rounded-xl">
+                                <div className="text-3xl">☁️</div>
+                                <div>
+                                    <div className="font-bold text-[#367C2B]">Cloud Sync Active</div>
+                                    <div className="text-xs text-gray-600">{currentUser.displayName || currentUser.email}</div>
+                                    <div className="text-xs text-gray-500 mt-0.5">Your data is saved securely to the cloud</div>
+                                </div>
+                            </div>
+                            <button onClick={onSignOut} className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg font-semibold">Sign Out</button>
+                        </div>
+                    ) : (
+                        <div>
+                            <div className="flex items-center gap-3 mb-4 p-3 bg-amber-50 rounded-xl">
+                                <div className="text-3xl">💾</div>
+                                <div>
+                                    <div className="font-bold text-amber-700">Local Storage Only</div>
+                                    <div className="text-xs text-gray-600">Data is saved to this browser only</div>
+                                    <div className="text-xs text-gray-500 mt-0.5">Sign in to sync across devices and protect your data</div>
+                                </div>
+                            </div>
+                            {firebaseConfigured ? (
+                                <button onClick={onSignIn} className="w-full py-3 px-4 bg-[#367C2B] text-white rounded-lg font-semibold">
+                                    Sign In / Create Account →
+                                </button>
+                            ) : (
+                                <div className="p-3 bg-gray-50 rounded-lg text-xs text-gray-500 text-center">
+                                    Firebase not yet configured — cloud sync coming soon
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
 
-            if (token && currentUser) {
-                // 6. Save to Firestore using the standard Firebase methods
-                await setDoc(doc(fb.db, 'users', currentUser.uid), {
-                    fcmToken: token,
-                    notificationsEnabled: true,
-                    lastTokenUpdate: new Date()
-                }, { merge: true });
-                
-                alert("✅ Notifications enabled successfully!");
-            }
-        } else {
-            alert("Permission denied. You can change this in iOS Settings > Notifications > Yardstick.");
-        }
-    } catch (error) {
-        console.error("Notification Setup Error:", error);
-        alert("Setup failed: " + error.message);
-    }
-};
+                <div className="bg-white rounded-xl p-4 shadow mb-4">
+                    <h3 className="text-lg font-bold mb-4">💾 Data Management</h3>
+                    <button onClick={exportData} className="w-full py-3 px-4 bg-[#367C2B] text-white rounded-lg font-semibold mb-3">📥 Export Data Backup</button>
+                    <button onClick={resetData} className="w-full py-3 px-4 bg-red-100 text-red-700 rounded-lg font-semibold">🗑️ Reset All Data</button>
+                </div>
+
+                <div className="bg-white rounded-xl p-4 shadow">
+                    <h3 className="text-lg font-bold mb-2">ℹ️ About</h3>
+                    <p className="text-sm text-gray-600 font-semibold">Yardstick v9.0</p>
+                    <p className="text-xs text-gray-500 mt-1">Research-backed lawn care for DIY homeowners</p>
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                        <div className="border-l-3 border-[#367C2B] pl-3" style={{borderLeft: '3px solid #367C2B'}}>
+                            <div className="text-sm font-bold text-[#367C2B]">v9.0 <span className="text-xs font-normal text-gray-400">Feb 2026</span></div>
+                            <ul className="text-xs text-gray-600 mt-1 space-y-0.5">
+                                <li>+ Optional Firebase account — guest users keep localStorage</li>
+                                <li>+ Cloud sync: activities, equipment, and profile sync across devices</li>
+                                <li>+ Google Sign-In + email/password authentication</li>
+                                <li>+ Sync status banner shows cloud/local mode at a glance</li>
+                                <li>+ Account management in Settings</li>
+                                <li>+ App rebranded to Yardstick</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
 
 
     // ─── ContactPage Component ────────────────────────────────────────────────
