@@ -2321,7 +2321,10 @@ window.ResearchSourcesPage = () => (
 
         return (
             <div className="space-y-4 animate-fade-in">
-                <h2 className="text-2xl font-bold text-gray-800" style={{fontFamily:'var(--ys-font-display)'}}>My Account</h2>
+                <div>
+                    {resolvedName && <div className="text-sm text-gray-400 mb-0.5">Welcome back, {resolvedName}</div>}
+                    <h2 className="text-2xl font-bold text-gray-800" style={{fontFamily:'var(--ys-font-display)'}}>My Account</h2>
+                </div>
 
                 {/* ── 1. Account Status ───────────────────────────────────────── */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -2410,28 +2413,47 @@ window.ResearchSourcesPage = () => (
                 </div>
 
                 {/* ── 3. Yard Snapshot ────────────────────────────────────────── */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-                    <div className="flex items-center justify-between mb-3">
-                        <div className="font-bold text-gray-800 text-sm">Your Yard</div>
-                        <button onClick={() => onNavigate('profile')} className="text-xs font-bold px-3 py-1.5 rounded-lg btn-press" style={{color:'var(--ys-green-600)', background:'var(--ys-green-100)'}}>
-                            {hasProfile ? 'Edit' : 'Set Up'}
-                        </button>
-                    </div>
+                <div className="rounded-2xl overflow-hidden shadow-sm" style={{border:'1px solid var(--ys-green-200)'}}>
                     {hasProfile ? (
-                        <div>
-                            <div className="flex flex-wrap gap-2 mb-3">
-                                {grassLabel && <span className="px-2.5 py-1 rounded-full text-xs font-semibold text-white" style={{background:'var(--ys-green-600)'}}>{grassLabel}</span>}
-                                {zoneLabel && <span className="px-2.5 py-1 rounded-full text-xs font-semibold" style={{background:'var(--ys-green-100)', color:'var(--ys-green-700)'}}>{zoneLabel}</span>}
-                                {sizeLabel && <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">{sizeLabel}</span>}
+                        <div style={{background:'linear-gradient(135deg, #f0faf0 0%, #e8f5e9 100%)'}}>
+                            <div className="flex items-start justify-between px-4 pt-4 pb-2">
+                                <div>
+                                    <div className="font-bold text-gray-800 text-sm">Your Yard</div>
+                                    <div className="text-xs mt-0.5" style={{color:'var(--ys-green-600)'}}>Grass type &amp; care zone</div>
+                                </div>
+                                <button onClick={() => onNavigate('profile')} className="text-xs font-bold px-3 py-1.5 rounded-lg btn-press flex-shrink-0" style={{color:'var(--ys-green-700)', background:'rgba(255,255,255,0.75)'}}>
+                                    Edit
+                                </button>
                             </div>
-                            <div className="text-xs text-gray-400">{activityCount} {activityCount === 1 ? 'activity' : 'activities'} logged</div>
+                            <div className="px-4 pb-4">
+                                <div className="text-xl font-bold mb-2.5" style={{fontFamily:'var(--ys-font-display)', color:'var(--ys-green-800)'}}>{grassLabel}</div>
+                                <div className="flex flex-wrap gap-2 mb-3">
+                                    {zoneLabel && <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-white" style={{color:'var(--ys-green-700)', border:'1px solid var(--ys-green-200)'}}>{zoneLabel}</span>}
+                                    {sizeLabel && <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-white text-gray-600 border border-gray-200">{sizeLabel}</span>}
+                                </div>
+                                <div className="flex items-center gap-1.5 text-xs font-semibold" style={{color:'var(--ys-green-600)'}}>
+                                    <span>📋</span>
+                                    <span>{activityCount} {activityCount === 1 ? 'activity' : 'activities'} logged</span>
+                                </div>
+                            </div>
                         </div>
                     ) : (
-                        <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
-                            <span className="text-xl">🌱</span>
-                            <div className="flex-1">
-                                <div className="text-sm text-gray-500">No yard profile yet</div>
-                                <div className="text-xs text-gray-400 mt-0.5">Set your grass type and zone for personalized recommendations</div>
+                        <div className="bg-white p-4">
+                            <div className="flex items-center justify-between mb-3">
+                                <div>
+                                    <div className="font-bold text-gray-800 text-sm">Your Yard</div>
+                                    <div className="text-xs text-gray-400 mt-0.5">Grass type &amp; care zone</div>
+                                </div>
+                                <button onClick={() => onNavigate('profile')} className="text-xs font-bold px-3 py-1.5 rounded-lg btn-press" style={{color:'var(--ys-green-600)', background:'var(--ys-green-100)'}}>
+                                    Set Up
+                                </button>
+                            </div>
+                            <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
+                                <span className="text-xl">🌱</span>
+                                <div className="flex-1">
+                                    <div className="text-sm font-semibold text-gray-600">Add your grass type &amp; zone</div>
+                                    <div className="text-xs text-gray-400 mt-0.5">Unlock your personalized full-year care program</div>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -2447,19 +2469,23 @@ window.ResearchSourcesPage = () => (
                     </div>
                     {equipmentCount > 0 ? (
                         <div>
-                            {equipment.slice(0, 3).map((item, i) => (
-                                <div key={i} className="flex items-center gap-2 py-1.5 border-b border-gray-50 last:border-0">
-                                    <span className="text-base w-6 text-center">🏠</span>
-                                    <span className="text-sm text-gray-700 font-medium truncate">{item.name || item.model || 'Equipment'}</span>
-                                </div>
-                            ))}
+                            {equipment.slice(0, 3).map((item, i) => {
+                                const cat = (item.category || item.type || '').toLowerCase();
+                                const icon = cat.includes('mow') ? '🌿' : cat.includes('trim') ? '✂️' : cat.includes('spread') ? '🌱' : cat.includes('water') ? '💧' : '🔧';
+                                return (
+                                    <div key={i} className="flex items-center gap-2 py-1.5 border-b border-gray-50 last:border-0">
+                                        <span className="text-base w-6 text-center">{icon}</span>
+                                        <span className="text-sm text-gray-700 font-medium truncate">{item.name || item.model || 'Equipment'}</span>
+                                    </div>
+                                );
+                            })}
                             {equipmentCount > 3 && <div className="text-xs text-gray-400 mt-2">+{equipmentCount - 3} more in your garage</div>}
                         </div>
                     ) : (
                         <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
-                            <span className="text-xl">🏠</span>
+                            <span className="text-xl">🔧</span>
                             <div>
-                                <div className="text-sm text-gray-500">No equipment added</div>
+                                <div className="text-sm font-semibold text-gray-600">No equipment added yet</div>
                                 <div className="text-xs text-gray-400 mt-0.5">Track your mowers, spreaders, and trimmers</div>
                             </div>
                         </div>
@@ -2537,21 +2563,8 @@ window.ResearchSourcesPage = () => (
                 {/* ── 7. About ────────────────────────────────────────────────── */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
                     <h3 className="text-sm font-bold text-gray-700 mb-2">About</h3>
-                    <p className="text-sm text-gray-600 font-semibold">Yardstick v9.0</p>
+                    <p className="text-sm text-gray-600 font-semibold">Yardstick v9</p>
                     <p className="text-xs text-gray-500 mt-1">Research-backed lawn care for DIY homeowners</p>
-                    <div className="mt-4 pt-4 border-t border-gray-100">
-                        <div className="pl-3" style={{borderLeft: '3px solid var(--ys-green-600)'}}>
-                            <div className="text-sm font-bold" style={{color:'var(--ys-green-600)'}}>v9.0 <span className="text-xs font-normal text-gray-400">Feb 2026</span></div>
-                            <ul className="text-xs text-gray-500 mt-1 space-y-0.5">
-                                <li>+ Optional Firebase account — guest users keep localStorage</li>
-                                <li>+ Cloud sync: activities, equipment, and profile sync across devices</li>
-                                <li>+ Google Sign-In + email/password authentication</li>
-                                <li>+ Sync status banner shows cloud/local mode at a glance</li>
-                                <li>+ My Account page with yard &amp; equipment overview</li>
-                                <li>+ App rebranded to Yardstick</li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
             </div>
         );
