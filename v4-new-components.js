@@ -377,7 +377,7 @@ profile: JSON.parse(localStorage.getItem(‘lawnProfile’) || ‘null’)
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `lawn-coach-backup-${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `yardstick-backup-${new Date().toISOString().split('T')[0]}.json`;
     link.click();
 };
 
@@ -429,7 +429,7 @@ return (
         <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100">
             <h3 className="text-lg font-bold text-gray-900 mb-4">ℹ️ About</h3>
             <div className="text-sm text-gray-600 space-y-2">
-                <p><strong>Lawn Coach</strong> - DIY Lawn Care Tracking</p>
+                <p><strong>Yardstick</strong> - Research-Backed Lawn Care</p>
                 <p>Version 4.0 Beta</p>
                 <p className="text-xs text-gray-500 mt-4">All data is stored locally in your browser. No account required.</p>
             </div>
