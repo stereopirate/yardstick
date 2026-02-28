@@ -1863,7 +1863,6 @@ window.ResearchSourcesPage = () => (
     // ─── LawnProfile ─────────────────────────────────────────────────────────────
     const LawnProfile = ({ profileFormData, profileEditing, lawnProfile, weather, zipLookupLoading, zipLookupError, onZipLookup, onSave, onEditToggle, onNavigate }) => {
         const [localForm, setLocalForm] = useState({...profileFormData});
-        const [showFullProgram, setShowFullProgram] = useState(true);
         useEffect(() => {
             setLocalForm(prev => ({...prev, zone: profileFormData.zone, lat: profileFormData.lat, lon: profileFormData.lon, zipCode: profileFormData.zipCode}));
         }, [profileFormData.zone]);
@@ -2003,45 +2002,13 @@ window.ResearchSourcesPage = () => (
                     </div>
                 )}
                 {grassInfo && weather && <WaterDeficitCard grassInfo={grassInfo} weather={weather} />}
-                {(() => {
-                    if (!localForm.specificGrass || !localForm.zone) return null;
-                    const programKey = GRASS_KEY_MAP[localForm.specificGrass] + '_zone' + getParentZone(localForm.zone);
-                    const program = typeof grassPrograms !== 'undefined' ? grassPrograms[programKey] : null;
-                    if (!program || !program.schedule) return null;
-                    const currentMonth = MONTH_NAMES[new Date().getMonth()];
-                    const isCurrentMonth = (monthStr) => {
-                        if (monthStr === currentMonth) return true;
-                        if (monthStr && monthStr.includes('-')) {
-                            const parts = monthStr.split('-');
-                            const startIdx = MONTH_NAMES.indexOf(parts[0].trim()), endIdx = MONTH_NAMES.indexOf(parts[1].trim()), curIdx = MONTH_NAMES.indexOf(currentMonth);
-                            if (startIdx >= 0 && endIdx >= 0 && curIdx >= startIdx && curIdx <= endIdx) return true;
-                        }
-                        return false;
-                    };
-                    return (
-                        <div className="bg-white rounded-xl shadow-lg p-4">
-                            <div className="flex items-center justify-between mb-3">
-                                <h3 className="text-sm font-bold text-[#367C2B] uppercase">Full Year Program <CitationBadge sources={program.sources} label="Annual program" /></h3>
-                                <button onClick={() => setShowFullProgram(!showFullProgram)} className="text-xs font-semibold text-[#367C2B] border border-[#367C2B] rounded-lg px-3 py-1 hover:bg-[#367C2B]/10">{showFullProgram ? 'Collapse' : 'View All Months'}</button>
-                            </div>
-                            <div className="text-xs text-gray-500 mb-3">{program.description}</div>
-                            {program.warning && <div className="mb-3 p-2 bg-yellow-50 border border-yellow-300 rounded-lg text-xs text-yellow-800">{program.warning}</div>}
-                            {showFullProgram && (
-                                <div className="space-y-3">
-                                    {program.schedule.map((entry, i) => (
-                                        <div key={i} className={`p-3 rounded-lg border-2 ${isCurrentMonth(entry.month) ? 'border-[#367C2B] bg-[#e8f5e9]' : 'border-gray-100 bg-gray-50'}`}>
-                                            <div className="flex items-center justify-between mb-2">
-                                                <div className="text-sm font-bold text-gray-800">{isCurrentMonth(entry.month) && <span className="text-[#367C2B] mr-1">▶</span>}{entry.month}</div>
-                                                {entry.importance && <span className="text-xs font-bold text-white bg-orange-500 px-2 py-0.5 rounded-full">{entry.importance}</span>}
-                                            </div>
-                                            <ul className="space-y-1">{entry.tasks.map((task, j) => <li key={j} className="text-xs text-gray-700 flex items-start gap-1"><span className="text-[#367C2B] mt-0.5">·</span><span>{task}</span></li>)}</ul>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    );
-                })()}
+                <div className="bg-white rounded-xl shadow-lg p-4">
+                    <h3 className="text-sm font-bold text-[#367C2B] uppercase mb-2">Lawn Care Program</h3>
+                    <p className="text-sm text-gray-600 mb-3">View your full personalized year-round care schedule with monthly tasks, treatments, and timing.</p>
+                    <button onClick={() => onNavigate('gameplan')} className="w-full py-3 px-4 bg-[#367C2B] text-white rounded-xl font-bold text-sm hover:bg-[#2d6323] btn-press">
+                        📅 Go to Lawn Care Program →
+                    </button>
+                </div>
                 {grassInfo && grassInfo.keyTips && (
                     <div className="bg-white rounded-xl shadow-lg p-4">
                         <h3 className="text-sm font-bold text-[#367C2B] uppercase mb-3">Key Tips <CitationBadge sources={grassInfo.sources} label="Care tips" /></h3>
@@ -2082,7 +2049,7 @@ window.ResearchSourcesPage = () => (
         if (!lawnProfile || !lawnProfile.specificGrass || !lawnProfile.zone) {
             return (
                 <div className="space-y-4 animate-fade-in">
-                    <h2 className="text-2xl font-bold">📅 Care Calendar</h2>
+                    <h2 className="text-2xl font-bold">📅 Lawn Care Program</h2>
                     <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-center">
                         <div className="text-3xl mb-2">🌱</div>
                         <div className="font-bold text-gray-800 mb-1">Set Up Your Lawn Profile First</div>
@@ -2153,7 +2120,7 @@ window.ResearchSourcesPage = () => (
         if (!program) {
             return (
                 <div className="space-y-4 animate-fade-in">
-                    <h2 className="text-2xl font-bold">📅 Care Calendar</h2>
+                    <h2 className="text-2xl font-bold">📅 Lawn Care Program</h2>
                     <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
                         No gameplan is available for {grassInfo?.name || lawnProfile.specificGrass} in Zone {lawnProfile.zone} — this combination may not be recommended for your area.
                     </div>
@@ -2213,7 +2180,7 @@ window.ResearchSourcesPage = () => (
         return (
             <div className="space-y-4 animate-fade-in pb-4">
                 <div>
-                    <h2 className="text-2xl font-bold">📅 Care Calendar</h2>
+                    <h2 className="text-2xl font-bold">📅 Lawn Care Program</h2>
                     <div className="text-sm text-gray-500 mt-0.5">
                         {grassInfo?.name || lawnProfile.specificGrass} · Zone {lawnProfile.zone}
                         {lawnProfile.lawnSize && ` · ${Number(lawnProfile.lawnSize).toLocaleString()} sq ft`}
@@ -2935,7 +2902,7 @@ window.ResearchSourcesPage = () => (
                                 {[
                                     { key: 'profile', icon: '🌱', label: 'My Yard' },
                                     { key: 'garage', icon: '🏠', label: 'My Garage' },
-                                    { key: 'gameplan', icon: '📅', label: 'Care Calendar' },
+                                    { key: 'gameplan', icon: '📅', label: 'Lawn Care Program' },
                                     { key: 'schedules', icon: '🗓️', label: 'My Tasks' },
                                 ].map(item => (
                                     <button key={item.key} onClick={() => { setView(item.key); setSelectedActivityType(null); }} className="w-full text-left px-4 py-3 rounded-lg nav-item hover:bg-[#367C2B]/10 flex items-center gap-3">
