@@ -1,4 +1,4 @@
-// Lawn Care Tracker - Grass Programs Database
+// Yardstick - Grass Programs Database
 // Research-backed programs from university extension services
 
 const grassPrograms = {

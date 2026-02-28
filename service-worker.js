@@ -1,4 +1,4 @@
-const CACHE_NAME = ‘easy-green-v1’;
+const CACHE_NAME = ‘yardstick-v1’;
 const urlsToCache = [
 ‘/’,
 ‘/index.html’,
