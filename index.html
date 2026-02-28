@@ -2287,13 +2287,20 @@ window.ResearchSourcesPage = () => (
             if (!proEmail.trim()) return;
             setProSubmitting(true); setProError(null);
             const payload = { email: proEmail.trim(), userId: currentUser?.uid || null, userName: resolvedName || null, submittedAt: new Date().toISOString() };
+            const saveToLocal = () => {
+                const existing = JSON.parse(localStorage.getItem('yardstick_pro_interest') || '[]');
+                existing.push(payload);
+                localStorage.setItem('yardstick_pro_interest', JSON.stringify(existing));
+            };
             try {
                 if (firebaseConfigured && fb.configured) {
-                    await fb.addDoc(fb.collection(fb.db, 'proInterest'), { ...payload, submittedAt: fb.serverTimestamp() });
+                    try {
+                        await fb.addDoc(fb.collection(fb.db, 'proInterest'), { ...payload, submittedAt: fb.serverTimestamp() });
+                    } catch (fbErr) {
+                        saveToLocal(); // Firebase failed — keep the signup locally
+                    }
                 } else {
-                    const existing = JSON.parse(localStorage.getItem('yardstick_pro_interest') || '[]');
-                    existing.push(payload);
-                    localStorage.setItem('yardstick_pro_interest', JSON.stringify(existing));
+                    saveToLocal();
                 }
                 localStorage.setItem('yardstick_pro_interest_submitted', 'true');
                 setProSubmitted(true);
