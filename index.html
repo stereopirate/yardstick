@@ -2494,16 +2494,17 @@ window.ResearchSourcesPage = () => (
                                 <span className="text-white text-lg">⭐</span>
                             </div>
                             <div>
-                                <div className="font-bold text-gray-900 leading-tight" style={{fontFamily:'var(--ys-font-display)'}}>Yardstick Pro</div>
-                                <div className="text-xs font-semibold mt-0.5" style={{color:'var(--ys-gold-500)'}}>Coming Soon · Join the waitlist</div>
+                                <div className="font-bold text-gray-900 leading-tight" style={{fontFamily:'var(--ys-font-display)'}}>Easy Green Pro</div>
+                                <div className="text-xs font-semibold mt-0.5" style={{color:'var(--ys-gold-500)'}}>Early Access · Join the waitlist</div>
                             </div>
                         </div>
                         <div className="space-y-1.5 mb-4">
                             {[
-                                'Smart seasonal scheduling with AI recommendations',
-                                'Advanced analytics and lawn health trends',
-                                'Multi-property management',
-                                'Priority support and early access to new features',
+                                'Full Year Lawn Care Program — personalized monthly schedules by grass type & zone',
+                                'Stats Dashboard — advanced analytics and activity trends',
+                                'My Tasks — recurring reminders with due-date tracking',
+                                'Product Guide — curated mower, spreader & fertilizer database',
+                                'Priority access to upcoming AI recommendations',
                             ].map(f => (
                                 <div key={f} className="flex items-start gap-2 text-xs text-gray-700">
                                     <span className="mt-0.5 flex-shrink-0" style={{color:'var(--ys-gold-500)'}}>✦</span>
@@ -3159,7 +3160,7 @@ window.ResearchSourcesPage = () => (
                                 <div className="px-3 pt-3 pb-1 text-xs font-bold text-gray-400 uppercase tracking-widest">Activity</div>
                                 {[
                                     { key: 'history', icon: '📋', label: 'History' },
-                                    { key: 'dashboard', icon: '📊', label: 'Stats' },
+                                    { key: 'dashboard', icon: '📊', label: 'Stats', pro: true },
                                 ].map(item => (
                                     <button key={item.key}
                                         onClick={() => { setView(item.key); setSelectedActivityType(null); setMobileMenuOpen(false); }}
@@ -3167,7 +3168,8 @@ window.ResearchSourcesPage = () => (
                                     >
                                         <span className="text-xl w-7 text-center">{item.icon}</span>
                                         <span className="text-base font-semibold text-gray-800">{item.label}</span>
-                                        {view === item.key && <span className="ml-auto w-1.5 h-5 rounded-full bg-[#367C2B]" />}
+                                        {item.pro && <span className="ml-auto text-xs font-bold px-1.5 py-0.5 rounded-full flex-shrink-0" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>PRO</span>}
+                                        {view === item.key && <span className={`w-1.5 h-5 rounded-full bg-[#367C2B] flex-shrink-0 ${!item.pro ? 'ml-auto' : ''}`} />}
                                     </button>
                                 ))}
                                 <div className="border-t border-gray-100 my-1" />
@@ -3176,8 +3178,8 @@ window.ResearchSourcesPage = () => (
                                 {[
                                     { key: 'profile',   icon: '🌱', label: 'My Yard' },
                                     { key: 'garage',    icon: '🏠', label: 'My Garage' },
-                                    { key: 'gameplan',  icon: '📅', label: 'Lawn Care Program' },
-                                    { key: 'schedules', icon: '🗓️', label: 'My Tasks' },
+                                    { key: 'gameplan',  icon: '📅', label: 'Lawn Care Program', pro: true },
+                                    { key: 'schedules', icon: '🗓️', label: 'My Tasks', pro: true },
                                 ].map(item => (
                                     <button key={item.key}
                                         onClick={() => { setView(item.key); setSelectedActivityType(null); setMobileMenuOpen(false); }}
@@ -3185,14 +3187,15 @@ window.ResearchSourcesPage = () => (
                                     >
                                         <span className="text-xl w-7 text-center">{item.icon}</span>
                                         <span className="text-base font-semibold text-gray-800">{item.label}</span>
-                                        {view === item.key && <span className="ml-auto w-1.5 h-5 rounded-full bg-[#367C2B]" />}
+                                        {item.pro && <span className="ml-auto text-xs font-bold px-1.5 py-0.5 rounded-full flex-shrink-0" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>PRO</span>}
+                                        {view === item.key && <span className={`w-1.5 h-5 rounded-full bg-[#367C2B] flex-shrink-0 ${!item.pro ? 'ml-auto' : ''}`} />}
                                     </button>
                                 ))}
                                 <div className="border-t border-gray-100 my-1" />
                                 {/* Resources group */}
                                 <div className="px-3 pt-2 pb-1 text-xs font-bold text-gray-400 uppercase tracking-widest">Resources</div>
                                 {[
-                                    { key: 'products', icon: '📖', label: 'Product Guide' },
+                                    { key: 'products', icon: '📖', label: 'Product Guide', pro: true },
                                     { key: 'sources',  icon: '📚', label: 'Research Sources' },
                                     { key: 'contact',  icon: '💬', label: 'Help & Feedback' },
                                     { key: 'account', icon: '👤', label: 'My Account' },
@@ -3203,7 +3206,8 @@ window.ResearchSourcesPage = () => (
                                     >
                                         <span className="text-xl w-7 text-center">{item.icon}</span>
                                         <span className="text-base font-semibold text-gray-800">{item.label}</span>
-                                        {view === item.key && <span className="ml-auto w-1.5 h-5 rounded-full bg-[#367C2B]" />}
+                                        {item.pro && <span className="ml-auto text-xs font-bold px-1.5 py-0.5 rounded-full flex-shrink-0" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>PRO</span>}
+                                        {view === item.key && <span className={`w-1.5 h-5 rounded-full bg-[#367C2B] flex-shrink-0 ${!item.pro ? 'ml-auto' : ''}`} />}
                                     </button>
                                 ))}
                                 {/* Auth row */}
@@ -3281,14 +3285,15 @@ window.ResearchSourcesPage = () => (
                         <div className="ys-sidebar-section-label mt-2">Activity</div>
                         {[
                             { key: 'history',   emoji: '📋', label: 'History' },
-                            { key: 'dashboard', emoji: '📊', label: 'Stats' },
+                            { key: 'dashboard', emoji: '📊', label: 'Stats', pro: true },
                         ].map(item => (
                             <button key={item.key}
                                 onClick={() => { setView(item.key); setSelectedActivityType(null); }}
                                 className={`ys-sidebar-item ${view === item.key ? 'ys-sidebar-active' : ''}`}
                             >
                                 <span className="text-sm w-4 text-center flex-shrink-0">{item.emoji}</span>
-                                {item.label}
+                                <span className="flex-1 truncate">{item.label}</span>
+                                {item.pro && <span className="text-xs font-bold px-1 py-0.5 rounded-full flex-shrink-0" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>PRO</span>}
                             </button>
                         ))}
                         {/* Your Lawn group */}
@@ -3296,21 +3301,22 @@ window.ResearchSourcesPage = () => (
                         {[
                             { key: 'profile',   emoji: '🌱', label: 'My Yard' },
                             { key: 'garage',    emoji: '🏠', label: 'My Garage' },
-                            { key: 'gameplan',  emoji: '📅', label: 'Lawn Program' },
-                            { key: 'schedules', emoji: '🗓️', label: 'My Tasks' },
+                            { key: 'gameplan',  emoji: '📅', label: 'Lawn Program', pro: true },
+                            { key: 'schedules', emoji: '🗓️', label: 'My Tasks', pro: true },
                         ].map(item => (
                             <button key={item.key}
                                 onClick={() => { setView(item.key); setSelectedActivityType(null); }}
                                 className={`ys-sidebar-item ${view === item.key ? 'ys-sidebar-active' : ''}`}
                             >
                                 <span className="text-sm w-4 text-center flex-shrink-0">{item.emoji}</span>
-                                {item.label}
+                                <span className="flex-1 truncate">{item.label}</span>
+                                {item.pro && <span className="text-xs font-bold px-1 py-0.5 rounded-full flex-shrink-0" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>PRO</span>}
                             </button>
                         ))}
                         {/* Resources group */}
                         <div className="ys-sidebar-section-label mt-2">Resources</div>
                         {[
-                            { key: 'products', emoji: '📖', label: 'Product Guide' },
+                            { key: 'products', emoji: '📖', label: 'Product Guide', pro: true },
                             { key: 'sources',  emoji: '📚', label: 'Research Sources' },
                             { key: 'contact',  emoji: '💬', label: 'Help & Feedback' },
                             { key: 'account', emoji: '👤', label: 'My Account' },
@@ -3320,7 +3326,8 @@ window.ResearchSourcesPage = () => (
                                 className={`ys-sidebar-item ${view === item.key ? 'ys-sidebar-active' : ''}`}
                             >
                                 <span className="text-sm w-4 text-center flex-shrink-0">{item.emoji}</span>
-                                {item.label}
+                                <span className="flex-1 truncate">{item.label}</span>
+                                {item.pro && <span className="text-xs font-bold px-1 py-0.5 rounded-full flex-shrink-0" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>PRO</span>}
                             </button>
                         ))}
                         {/* Auth row pinned at bottom */}
