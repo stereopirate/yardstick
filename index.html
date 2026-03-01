@@ -1363,6 +1363,86 @@ window.ResearchSourcesPage = () => (
         return dirs[Math.round(deg / 45) % 8];
     };
 
+    // ─── Weather Advisory Engine ──────────────────────────────────────────────────
+    const generateAdvisories = (w) => {
+        if (!w) return [];
+        const candidates = [];
+        const rain24 = w.rainNext24h || 0;
+        const rain48 = w.rainNext48h || 0;
+        const rain72 = w.rainNext72h || 0;
+        const weeklyTarget = (w.et0Past7 && w.et0Past7 > 0) ? w.et0Past7 : 1.25;
+        const waterDeficit = weeklyTarget - (w.rainfall || 0) - rain48;
+        const frost = w.frostRiskDays;
+
+        // Priority 0: imminent frost
+        if (frost !== null && frost <= 3) {
+            const when = frost === 0 ? 'next 24h' : `${frost} day${frost !== 1 ? 's' : ''}`;
+            candidates.push({ priority: 0, status: 'hold', icon: '🌡️', title: `Frost in ${when}`, detail: 'Hold all seeding, overseeding, and chemical applications until after frost.' });
+        }
+        // Priority 1: heavy rain — hold fertilizing & sprays
+        if (rain24 > 0.75) {
+            candidates.push({ priority: 1, status: 'hold', icon: '🌧️', title: `Heavy rain today (${rain24}")`, detail: 'Hold granular fertilizer and spray treatments — product will wash off or leach.' });
+        }
+        // Priority 2: irrigation deficit + no incoming rain
+        if (waterDeficit > weeklyTarget * 0.5 && rain72 < 0.1) {
+            candidates.push({ priority: 2, status: 'hold', icon: '💧', title: 'Lawn water deficit', detail: `Deficit ~${Math.round(waterDeficit * 100) / 100}" vs ET0 target — irrigate deeply soon.` });
+        }
+        // Priority 3a: light rain today — good for granular, bad for spray
+        if (rain24 > 0.1 && rain24 <= 0.75) {
+            candidates.push({ priority: 3, status: 'caution', icon: '🌦️', title: `Light rain today (${rain24}")`, detail: 'Good window for granular fertilizer activation. Hold spray herbicides/fungicides.' });
+        }
+        // Priority 3b: heat stress
+        if (w.highTemp > 90) {
+            candidates.push({ priority: 3, status: 'caution', icon: '🌡️', title: `Heat advisory (${w.highTemp}°F high)`, detail: 'Mow early morning, raise blade height. Skip fertilizing until temps drop below 85°F.' });
+        }
+        // Priority 4: rain covered weekly ET0 need
+        if (waterDeficit <= 0 && (w.rainfall || 0) > 0) {
+            candidates.push({ priority: 4, status: 'go', icon: '✅', title: 'Irrigation need covered', detail: `${w.rainfall}" rain this week satisfies ET0 target — skip watering.` });
+        }
+        // Priority 5: clear, calm conditions — good for treatments
+        if (rain24 < 0.1 && rain48 < 0.1 && w.windSpeed < 10 && (frost === null || frost > 7) && w.highTemp <= 90) {
+            candidates.push({ priority: 5, status: 'go', icon: '✅', title: 'Good conditions today', detail: 'Calm, dry forecast — ideal window for mowing, trimming, and spray treatments.' });
+        }
+
+        candidates.sort((a, b) => a.priority - b.priority);
+        return candidates.slice(0, 2);
+    };
+
+    const TodayAdvisoryCard = ({ weather }) => {
+        const advisories = generateAdvisories(weather);
+        if (!advisories.length) return null;
+        const statusStyle = {
+            hold:    { bg: '#FEF2F2', badge: '#EF4444', badgeText: '#fff', label: 'HOLD' },
+            caution: { bg: '#FFFBEB', badge: '#F59E0B', badgeText: '#fff', label: 'NOTE' },
+            go:      { bg: '#F0FDF4', badge: '#22C55E', badgeText: '#fff', label: 'GOOD' },
+        };
+        return (
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-100">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Today's Advisory</span>
+                    <span className="text-xs text-gray-400">{weather.location}</span>
+                </div>
+                {advisories.map((adv, i) => {
+                    const s = statusStyle[adv.status];
+                    return (
+                        <div key={i} style={{backgroundColor: s.bg}} className={`px-4 py-3 ${i < advisories.length - 1 ? 'border-b border-white/60' : ''}`}>
+                            <div className="flex items-start gap-2.5">
+                                <span className="text-lg flex-shrink-0 mt-0.5">{adv.icon}</span>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                                        <span className="text-xs font-bold px-1.5 py-0.5 rounded-full" style={{backgroundColor: s.badge, color: s.badgeText}}>{s.label}</span>
+                                        <span className="text-sm font-bold text-gray-800">{adv.title}</span>
+                                    </div>
+                                    <p className="text-xs text-gray-600 leading-snug">{adv.detail}</p>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    };
+
     const getTaskWeatherStatus = (taskText, w) => {
         if (!w) return null;
         const t = taskText.toLowerCase();
@@ -1391,10 +1471,12 @@ window.ResearchSourcesPage = () => (
             return { status: 'go', reason: `Soil avg ${avgSoil}°F is in the pre-emergent window`, window: null };
         }
         if (isFertilizer) {
-            if (rainNext48 > 0.3) return { status: 'hold', reason: `Rain (${rainNext48}") in next 48h — fertilizer leaches before absorption`, window: rainNext72 <= 0.1 ? 'Apply in ~72h' : 'Apply in next dry window' };
             if (avgSoil < 50) return { status: 'hold', reason: `Soil avg ${avgSoil}°F — grass not actively growing, can't uptake nutrients`, window: 'Wait for soil temps above 50°F' };
+            if (rainNext24 > 0.75) return { status: 'hold', reason: `Heavy rain (${rainNext24}") in next 24h — fertilizer leaches before roots absorb`, window: rainNext72 <= 0.25 ? 'Apply in ~72h' : 'Wait for next dry window' };
             if (w.highTemp > 90) return { status: 'caution', reason: `High of ${w.highTemp}°F — fertilizer can burn heat-stressed turf`, window: null };
-            return { status: 'go', reason: 'Dry window ahead and soil temps support active growth', window: null };
+            if (rainNext48 > 0.5) return { status: 'caution', reason: `Moderate rain (${rainNext48}") in 48h — watch for runoff on slopes`, window: null };
+            if (rainNext48 < 0.1 && rainNext72 < 0.1) return { status: 'caution', reason: `No rain in forecast — water in within 24h after granular application to activate`, window: 'Apply early morning, then irrigate lightly' };
+            return { status: 'go', reason: `Light rain (${rainNext48}") in forecast — ideal to activate granular fertilizer without leaching`, window: null };
         }
         if (isTreatment) {
             if (rainNext24 > 0.1) return { status: 'hold', reason: `Rain expected in next 24h — product washes off`, window: 'Apply after rain clears' };
@@ -1406,9 +1488,13 @@ window.ResearchSourcesPage = () => (
             return { status: 'go', reason: 'Good conditions for mowing', window: null };
         }
         if (isWatering) {
-            const deficit = 1.25 - (w.rainfall || 0) - rainNext48;
-            if (deficit <= 0) return { status: 'hold', reason: `Rain covers weekly need — skip irrigation`, window: null };
-            return { status: 'go', reason: `Deficit ~${Math.round(Math.max(0,deficit)*100)/100}" — supplemental irrigation recommended`, window: null };
+            const weeklyTarget = (w.et0Past7 && w.et0Past7 > 0) ? w.et0Past7 : 1.25;
+            const deficit = weeklyTarget - (w.rainfall || 0) - rainNext48;
+            const deficitRounded = Math.round(Math.max(0, deficit) * 100) / 100;
+            const targetLabel = (w.et0Past7 && w.et0Past7 > 0) ? `ET0 need (${weeklyTarget}")` : `est. weekly need (${weeklyTarget}")`;
+            if (deficit <= 0) return { status: 'hold', reason: `Rain covers ${targetLabel} — skip irrigation this cycle`, window: null };
+            if (deficitRounded < 0.25) return { status: 'caution', reason: `Small deficit (~${deficitRounded}") vs ${targetLabel} — monitor before irrigating`, window: null };
+            return { status: 'go', reason: `Deficit ~${deficitRounded}" vs ${targetLabel} — supplemental irrigation recommended`, window: null };
         }
         return null;
     };
@@ -1553,6 +1639,9 @@ window.ResearchSourcesPage = () => (
             if (nums && nums.length === 1) weeklyNeed = parseFloat(nums[0]);
             else if (nums && nums.length >= 2) weeklyNeed = (parseFloat(nums[0]) + parseFloat(nums[1])) / 2;
         }
+        // Use ET0 evapotranspiration when available — more accurate than grass-type average
+        const usingET0 = weather.et0Past7 && weather.et0Past7 > 0;
+        if (usingET0) weeklyNeed = weather.et0Past7;
         const pastRain = weather.rainfall || 0;
         const forecastRain = weather.rainNext48h || 0;
         const deficit = Math.max(0, Math.round((weeklyNeed - pastRain - forecastRain) * 100) / 100);
@@ -1566,7 +1655,7 @@ window.ResearchSourcesPage = () => (
             <div className="bg-blue-50 rounded-xl p-4">
                 <div className="text-xs font-bold text-blue-700 uppercase mb-3">💧 Weekly Water Budget</div>
                 <div className="grid grid-cols-3 gap-2 text-center mb-3">
-                    <div className="bg-white rounded-lg p-2 shadow-sm"><div className="text-xs text-gray-500 mb-0.5">Weekly need</div><div className="text-sm font-bold text-gray-800">{weeklyNeed}"</div></div>
+                    <div className="bg-white rounded-lg p-2 shadow-sm"><div className="text-xs text-gray-500 mb-0.5">{usingET0 ? 'ET0 need' : 'Weekly need'}</div><div className="text-sm font-bold text-gray-800">{weeklyNeed}"</div></div>
                     <div className="bg-white rounded-lg p-2 shadow-sm"><div className="text-xs text-gray-500 mb-0.5">Past 7d rain</div><div className="text-sm font-bold text-gray-800">{pastRain}"</div></div>
                     <div className="bg-white rounded-lg p-2 shadow-sm"><div className="text-xs text-gray-500 mb-0.5">Forecast 48h</div><div className="text-sm font-bold text-gray-800">{forecastRain}"</div></div>
                 </div>
@@ -3551,6 +3640,8 @@ window.ResearchSourcesPage = () => (
                                     </button>
                                 );
                             })()}
+                            {/* Today's Advisory card */}
+                            {weather && <TodayAdvisoryCard weather={weather} />}
                             {/* Weather card */}
                             <WeatherSnapshot weather={weather} weatherLoading={weatherLoading} lawnProfile={lawnProfile} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} />
                             {/* Frost countdown banner */}
@@ -3679,22 +3770,31 @@ window.ResearchSourcesPage = () => (
                                 <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Quick Log</div>
                                 <div className="grid grid-cols-4 gap-2">
                                     {[
-                                        { type: 'mowing',    emoji: '🌿', label: 'Mow',       color: '#367C2B', bg: 'var(--ys-green-100)' },
-                                        { type: 'watering',  emoji: '💧', label: 'Water',     color: '#3B82F6', bg: '#EFF6FF' },
-                                        { type: 'fertilizer',emoji: '🌾', label: 'Fertilize', color: '#F97316', bg: '#FFF7ED' },
-                                        { type: 'trimming',  emoji: '✂️', label: 'Trim',      color: '#10B981', bg: '#ECFDF5' },
-                                    ].map(({ type, emoji, label, color, bg }) => (
-                                        <button
-                                            key={type}
-                                            onClick={() => { setSelectedActivityType(type); setView('add'); }}
-                                            className="ys-card py-3 px-1 flex flex-col items-center gap-1.5 card-hover btn-press"
-                                        >
-                                            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{background: bg}}>
-                                                {emoji}
-                                            </div>
-                                            <div className="text-xs font-bold" style={{color}}>{label}</div>
-                                        </button>
-                                    ))}
+                                        { type: 'mowing',    emoji: '🌿', label: 'Mow',       color: '#367C2B', bg: 'var(--ys-green-100)', weatherKey: 'mow today' },
+                                        { type: 'watering',  emoji: '💧', label: 'Water',     color: '#3B82F6', bg: '#EFF6FF',             weatherKey: 'water lawn' },
+                                        { type: 'fertilizer',emoji: '🌾', label: 'Fertilize', color: '#F97316', bg: '#FFF7ED',             weatherKey: 'fertilize lawn' },
+                                        { type: 'trimming',  emoji: '✂️', label: 'Trim',      color: '#10B981', bg: '#ECFDF5',             weatherKey: null },
+                                    ].map(({ type, emoji, label, color, bg, weatherKey }) => {
+                                        const ws = (weather && weatherKey) ? getTaskWeatherStatus(weatherKey, weather) : null;
+                                        const dotColor = !ws ? null : ws.status === 'go' ? '#22c55e' : ws.status === 'caution' ? '#f59e0b' : '#ef4444';
+                                        return (
+                                            <button
+                                                key={type}
+                                                onClick={() => { setSelectedActivityType(type); setView('add'); }}
+                                                className="ys-card py-3 px-1 flex flex-col items-center gap-1 card-hover btn-press"
+                                                title={ws ? ws.reason : undefined}
+                                            >
+                                                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{background: bg}}>
+                                                    {emoji}
+                                                </div>
+                                                <div className="text-xs font-bold" style={{color}}>{label}</div>
+                                                {dotColor
+                                                    ? <div className="w-2 h-2 rounded-full flex-shrink-0" style={{backgroundColor: dotColor}}></div>
+                                                    : <div className="w-2 h-2 flex-shrink-0"></div>
+                                                }
+                                            </button>
+                                        );
+                                    })}
                                 </div>
                             </div>
                             {/* Monthly summary strip */}
