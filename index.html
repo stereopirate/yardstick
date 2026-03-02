@@ -3901,15 +3901,6 @@ window.ResearchSourcesPage = () => (
                     />
                 )}
 
-                {/* Sync status banner — shown below header */}
-                <SyncBanner
-                    isCloud={store.isCloud}
-                    currentUser={currentUser}
-                    userName={userName}
-                    onSignIn={() => setShowAuthModal(true)}
-                    onSignOut={handleSignOut}
-                    firebaseConfigured={fb.configured}
-                />
 
                 {syncError && (
                     <div className="flex items-center gap-2 px-4 py-2 bg-red-50 border-b border-red-200 text-sm text-red-700">
@@ -4015,8 +4006,8 @@ window.ResearchSourcesPage = () => (
                     {!view && (
                         <div className="space-y-3">
                             {/* Coach Card */}
-                            <div className="ys-coach-card px-5 py-4">
-                                <div className="flex items-start justify-between" style={{position:'relative', zIndex:1}}>
+                            <div className="ys-coach-card px-4 py-3">
+                                <div className="flex items-center justify-between" style={{position:'relative', zIndex:1}}>
                                     <div className="flex-1 min-w-0 pr-3">
                                         <div className="text-xs font-semibold uppercase tracking-widest" style={{color:'rgba(255,255,255,0.6)'}}>
                                             {(() => {
@@ -4026,10 +4017,10 @@ window.ResearchSourcesPage = () => (
                                                 return greetName ? `${tod}, ${greetName}` : tod;
                                             })()}
                                         </div>
-                                        <div className="text-2xl font-bold text-white leading-tight mt-0.5" style={{fontFamily:'var(--ys-font-display)'}}>Your Lawn Dashboard</div>
-                                        {weather && <div className="text-xs mt-1.5" style={{color:'rgba(255,255,255,0.55)'}}>{weather.location}</div>}
+                                        <div className="text-xl font-bold text-white leading-tight mt-0.5" style={{fontFamily:'var(--ys-font-display)'}}>Your Lawn Dashboard</div>
+                                        {weather && <div className="text-xs mt-1" style={{color:'rgba(255,255,255,0.55)'}}>{weather.location}</div>}
                                     </div>
-                                    <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+                                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
                                         {(() => {
                                             const thisMonth = new Date().getMonth();
                                             const thisYear = new Date().getFullYear();
@@ -4040,7 +4031,6 @@ window.ResearchSourcesPage = () => (
                                                 </div>
                                             );
                                         })()}
-                                        {/* Consistency streak badge */}
                                         {(() => {
                                             if (activities.length === 0) return null;
                                             const now = new Date();
@@ -4051,130 +4041,15 @@ window.ResearchSourcesPage = () => (
                                                 if (--month < 0) { month = 11; year--; }
                                             }
                                             if (streak < 2) return null;
-                                            return (
-                                                <div className="ys-badge-white">🔥 {streak}-month streak</div>
-                                            );
-                                        })()}
-                                        {/* Critical windows badge */}
-                                        {(() => {
-                                            if (!lawnProfile || !lawnProfile.specificGrass || !lawnProfile.zone) return null;
-                                            const program = typeof grassPrograms !== 'undefined' ? grassPrograms[GRASS_KEY_MAP[lawnProfile.specificGrass] + '_zone' + getParentZone(lawnProfile.zone)] : null;
-                                            if (!program) return null;
-                                            const year = new Date().getFullYear(), curMon = new Date().getMonth();
-                                            let hit = 0, total = 0;
-                                            (program.schedule || []).filter(e => e.importance).forEach(entry => {
-                                                const startIdx = MONTH_NAMES.indexOf((entry.month || '').split('-')[0].trim());
-                                                if (startIdx < 0 || startIdx > curMon) return;
-                                                total++;
-                                                const endIdx = Math.min(entry.month.includes('-') ? MONTH_NAMES.indexOf(entry.month.split('-')[1].trim()) : startIdx, curMon);
-                                                for (let m = startIdx; m <= endIdx; m++) {
-                                                    if (activities.some(a => { const d = new Date(a.date); return d.getFullYear() === year && d.getMonth() === m; })) { hit++; break; }
-                                                }
-                                            });
-                                            if (total === 0) return null;
-                                            return (
-                                                <div className="ys-badge-white">⭐ {hit}/{total} key windows</div>
-                                            );
-                                        })()}
-                                        {activities.length > 0 && (() => {
-                                            const last = [...activities].sort((a,b) => new Date(b.date) - new Date(a.date))[0];
-                                            const days = Math.floor((new Date() - new Date(last.date)) / (1000*60*60*24));
-                                            return <div className="text-xs" style={{color:'rgba(255,255,255,0.5)'}}>{days === 0 ? 'Last log: Today' : days === 1 ? 'Last log: Yesterday' : `Last log: ${days}d ago`}</div>;
+                                            return <div className="ys-badge-white">🔥 {streak}-month streak</div>;
                                         })()}
                                     </div>
                                 </div>
                             </div>
-                            {/* Guest cloud-save nudge */}
-                            {!currentUser && (
-                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-4 py-3 flex items-center gap-3">
-                                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{background:'var(--ys-green-100)'}}>
-                                        <span className="text-lg">☁️</span>
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="text-sm font-semibold text-gray-800">Keep your lawn history safe</div>
-                                        <div className="text-xs text-gray-400 mt-0.5">Free account — sync across all your devices</div>
-                                    </div>
-                                    <button onClick={() => setShowAuthModal(true)} className="text-xs font-bold flex-shrink-0 px-3 py-1.5 rounded-xl text-white btn-press" style={{background:'var(--ys-green-600)'}}>
-                                        Sign Up
-                                    </button>
-                                </div>
-                            )}
-                            {/* This Week's Priority */}
-                            {(() => {
-                                if (!lawnProfile || !lawnProfile.specificGrass || !lawnProfile.zone) return null;
-                                const programKey = GRASS_KEY_MAP[lawnProfile.specificGrass] + '_zone' + getParentZone(lawnProfile.zone);
-                                const program = typeof grassPrograms !== 'undefined' ? grassPrograms[programKey] : null;
-                                if (!program) return null;
-                                const curIdx = new Date().getMonth();
-                                const curMonth = MONTH_NAMES[curIdx];
-                                const isMatch = (mStr) => {
-                                    if (mStr === curMonth) return true;
-                                    if (mStr && mStr.includes('-')) {
-                                        const parts = mStr.split('-');
-                                        const s = MONTH_NAMES.indexOf(parts[0].trim()), e = MONTH_NAMES.indexOf(parts[1].trim());
-                                        return s >= 0 && e >= 0 && curIdx >= s && curIdx <= e;
-                                    }
-                                    return false;
-                                };
-                                const isGameplanTask = (t) => !/\bmow(ing)?\b|mow (weekly|at|every)|watering|irrigat|water (as needed|deeply|1|0\.|per week)/.test(t.toLowerCase());
-                                const currentEntry = program.schedule.find(e => isMatch(e.month));
-                                const gameplanTasks = currentEntry ? (currentEntry.tasks || []).filter(isGameplanTask) : [];
-                                const nextEntry = program.schedule.find(e => {
-                                    const s = MONTH_NAMES.indexOf((e.month || '').split('-')[0].trim());
-                                    return s === (curIdx + 1) % 12 || s === (curIdx + 2) % 12;
-                                });
-                                const upNext = nextEntry ? nextEntry.month : null;
-                                const taskIcons = { 'pre-emergent': '🛡️', 'fertili': '🌾', 'aerat': '🔧', 'overseed': '🌱', 'seed': '🌱', 'soil test': '🧪', 'lime': '🧪', 'dethatch': '✂️', 'scalp': '✂️', 'weed': '🌿', 'herbicide': '🌿', 'fungicide': '💊', 'chinch': '💊' };
-                                const getIcon = (task) => { const lower = task.toLowerCase(); for (const [k, v] of Object.entries(taskIcons)) { if (lower.includes(k)) return v; } return '📋'; };
-                                const scoredTasks = gameplanTasks.map(task => {
-                                    const ws = getTaskWeatherStatus(task, weather);
-                                    const order = !ws ? 1 : ws.status === 'go' ? 0 : ws.status === 'caution' ? 1 : 2;
-                                    return { task, ws, order };
-                                }).sort((a, b) => a.order - b.order);
-                                const weekLabel = (() => {
-                                    const d = new Date().getDate();
-                                    return d <= 7 ? 'Early' : d <= 14 ? 'Mid' : d <= 21 ? 'Mid–Late' : 'Late';
-                                })();
-                                return (
-                                    <button onClick={() => setView('gameplan')} className="w-full bg-white rounded-2xl shadow-sm border border-[#367C2B]/20 p-4 card-hover btn-press text-left">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-8 h-8 rounded-lg bg-[#e8f5e9] flex items-center justify-center text-lg flex-shrink-0">📅</div>
-                                                <div>
-                                                    <div className="text-sm font-bold text-gray-800">This Week's Priority</div>
-                                                    <div className="text-xs text-gray-400">{weekLabel} {curMonth}{currentEntry?.importance ? ` · ${currentEntry.importance}` : ''}</div>
-                                                </div>
-                                            </div>
-                                            <span className="text-xs font-bold text-[#367C2B]">Full plan →</span>
-                                        </div>
-                                        {scoredTasks.length > 0 ? (
-                                            <div className="space-y-1.5 mt-2">
-                                                {scoredTasks.slice(0, 3).map(({ task, ws }, i) => {
-                                                    const dot = !ws ? null : ws.status === 'go' ? '🟢' : ws.status === 'caution' ? '🟡' : '🔴';
-                                                    return (
-                                                        <div key={i} className="flex items-start gap-2 text-xs text-gray-600">
-                                                            <span className="flex-shrink-0 mt-0.5">{getIcon(task)}</span>
-                                                            <span className="flex-1 leading-snug">{task}</span>
-                                                            {dot && <span className="flex-shrink-0">{dot}</span>}
-                                                        </div>
-                                                    );
-                                                })}
-                                                {scoredTasks.length > 3 && <div className="text-xs text-[#367C2B] font-semibold">+{scoredTasks.length - 3} more this month</div>}
-                                                {weather && <div className="text-xs text-gray-400 mt-1.5 pt-1.5 border-t border-gray-100">🟢 do now · 🟡 proceed carefully · 🔴 hold</div>}
-                                                {upNext && !weather && <div className="text-xs text-gray-400 mt-1 pt-1 border-t border-gray-100">Up next: {upNext}</div>}
-                                            </div>
-                                        ) : (
-                                            <div className="text-xs text-gray-500 mt-1">
-                                                {upNext ? `Quiet period — next tasks in ${upNext}` : 'No scheduled treatments this month'}
-                                            </div>
-                                        )}
-                                    </button>
-                                );
-                            })()}
-                            {/* Today's Advisory card */}
-                            {weather && <TodayAdvisoryCard weather={weather} />}
                             {/* Weather card */}
                             <WeatherSnapshot weather={weather} weatherLoading={weatherLoading} lawnProfile={lawnProfile} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} />
+                            {/* Today's Advisory card */}
+                            {weather && <TodayAdvisoryCard weather={weather} />}
                             {/* Frost countdown banner */}
                             {(() => {
                                 if (!lawnProfile || !lawnProfile.zone) return null;
@@ -4257,6 +4132,78 @@ window.ResearchSourcesPage = () => (
                                     </button>
                                 );
                             })()}
+                            {/* This Week's Priority */}
+                            {(() => {
+                                if (!lawnProfile || !lawnProfile.specificGrass || !lawnProfile.zone) return null;
+                                const programKey = GRASS_KEY_MAP[lawnProfile.specificGrass] + '_zone' + getParentZone(lawnProfile.zone);
+                                const program = typeof grassPrograms !== 'undefined' ? grassPrograms[programKey] : null;
+                                if (!program) return null;
+                                const curIdx = new Date().getMonth();
+                                const curMonth = MONTH_NAMES[curIdx];
+                                const isMatch = (mStr) => {
+                                    if (mStr === curMonth) return true;
+                                    if (mStr && mStr.includes('-')) {
+                                        const parts = mStr.split('-');
+                                        const s = MONTH_NAMES.indexOf(parts[0].trim()), e = MONTH_NAMES.indexOf(parts[1].trim());
+                                        return s >= 0 && e >= 0 && curIdx >= s && curIdx <= e;
+                                    }
+                                    return false;
+                                };
+                                const isGameplanTask = (t) => !/\bmow(ing)?\b|mow (weekly|at|every)|watering|irrigat|water (as needed|deeply|1|0\.|per week)/.test(t.toLowerCase());
+                                const currentEntry = program.schedule.find(e => isMatch(e.month));
+                                const gameplanTasks = currentEntry ? (currentEntry.tasks || []).filter(isGameplanTask) : [];
+                                const nextEntry = program.schedule.find(e => {
+                                    const s = MONTH_NAMES.indexOf((e.month || '').split('-')[0].trim());
+                                    return s === (curIdx + 1) % 12 || s === (curIdx + 2) % 12;
+                                });
+                                const upNext = nextEntry ? nextEntry.month : null;
+                                const taskIcons = { 'pre-emergent': '🛡️', 'fertili': '🌾', 'aerat': '🔧', 'overseed': '🌱', 'seed': '🌱', 'soil test': '🧪', 'lime': '🧪', 'dethatch': '✂️', 'scalp': '✂️', 'weed': '🌿', 'herbicide': '🌿', 'fungicide': '💊', 'chinch': '💊' };
+                                const getIcon = (task) => { const lower = task.toLowerCase(); for (const [k, v] of Object.entries(taskIcons)) { if (lower.includes(k)) return v; } return '📋'; };
+                                const scoredTasks = gameplanTasks.map(task => {
+                                    const ws = getTaskWeatherStatus(task, weather);
+                                    const order = !ws ? 1 : ws.status === 'go' ? 0 : ws.status === 'caution' ? 1 : 2;
+                                    return { task, ws, order };
+                                }).sort((a, b) => a.order - b.order);
+                                const weekLabel = (() => {
+                                    const d = new Date().getDate();
+                                    return d <= 7 ? 'Early' : d <= 14 ? 'Mid' : d <= 21 ? 'Mid–Late' : 'Late';
+                                })();
+                                return (
+                                    <button onClick={() => setView('gameplan')} className="w-full bg-white rounded-2xl shadow-sm border border-[#367C2B]/20 p-4 card-hover btn-press text-left">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-8 h-8 rounded-lg bg-[#e8f5e9] flex items-center justify-center text-lg flex-shrink-0">📅</div>
+                                                <div>
+                                                    <div className="text-sm font-bold text-gray-800">This Week's Priority</div>
+                                                    <div className="text-xs text-gray-400">{weekLabel} {curMonth}{currentEntry?.importance ? ` · ${currentEntry.importance}` : ''}</div>
+                                                </div>
+                                            </div>
+                                            <span className="text-xs font-bold text-[#367C2B]">Full plan →</span>
+                                        </div>
+                                        {scoredTasks.length > 0 ? (
+                                            <div className="space-y-1.5 mt-2">
+                                                {scoredTasks.slice(0, 3).map(({ task, ws }, i) => {
+                                                    const dot = !ws ? null : ws.status === 'go' ? '🟢' : ws.status === 'caution' ? '🟡' : '🔴';
+                                                    return (
+                                                        <div key={i} className="flex items-start gap-2 text-xs text-gray-600">
+                                                            <span className="flex-shrink-0 mt-0.5">{getIcon(task)}</span>
+                                                            <span className="flex-1 leading-snug">{task}</span>
+                                                            {dot && <span className="flex-shrink-0">{dot}</span>}
+                                                        </div>
+                                                    );
+                                                })}
+                                                {scoredTasks.length > 3 && <div className="text-xs text-[#367C2B] font-semibold">+{scoredTasks.length - 3} more this month</div>}
+                                                {weather && <div className="text-xs text-gray-400 mt-1.5 pt-1.5 border-t border-gray-100">🟢 do now · 🟡 proceed carefully · 🔴 hold</div>}
+                                                {upNext && !weather && <div className="text-xs text-gray-400 mt-1 pt-1 border-t border-gray-100">Up next: {upNext}</div>}
+                                            </div>
+                                        ) : (
+                                            <div className="text-xs text-gray-500 mt-1">
+                                                {upNext ? `Quiet period — next tasks in ${upNext}` : 'No scheduled treatments this month'}
+                                            </div>
+                                        )}
+                                    </button>
+                                );
+                            })()}
                             {/* Primary CTA */}
                             <button onClick={() => { setView('add'); setSelectedActivityType(null); }} className="w-full text-white rounded-2xl py-4 flex items-center justify-center gap-3 btn-press transition" style={{background:'var(--ys-green-600)', boxShadow:'0 4px 20px rgba(54,124,43,0.32)'}}>
                                 <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{background:'rgba(255,255,255,0.2)'}}>
@@ -4296,38 +4243,6 @@ window.ResearchSourcesPage = () => (
                                     </div>
                                 );
                             })()}
-                            {/* Quick Log shortcuts */}
-                            <div>
-                                <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Quick Log</div>
-                                <div className="grid grid-cols-4 gap-2">
-                                    {[
-                                        { type: 'mowing',    emoji: '🌿', label: 'Mow',       color: '#367C2B', bg: 'var(--ys-green-100)', weatherKey: 'mow today' },
-                                        { type: 'watering',  emoji: '💧', label: 'Water',     color: '#3B82F6', bg: '#EFF6FF',             weatherKey: 'water lawn' },
-                                        { type: 'fertilizer',emoji: '🌾', label: 'Fertilize', color: '#F97316', bg: '#FFF7ED',             weatherKey: 'fertilize lawn' },
-                                        { type: 'trimming',  emoji: '✂️', label: 'Trim',      color: '#10B981', bg: '#ECFDF5',             weatherKey: null },
-                                    ].map(({ type, emoji, label, color, bg, weatherKey }) => {
-                                        const ws = (weather && weatherKey) ? getTaskWeatherStatus(weatherKey, weather) : null;
-                                        const dotColor = !ws ? null : ws.status === 'go' ? '#22c55e' : ws.status === 'caution' ? '#f59e0b' : '#ef4444';
-                                        return (
-                                            <button
-                                                key={type}
-                                                onClick={() => { setSelectedActivityType(type); setView('add'); }}
-                                                className="ys-card py-3 px-1 flex flex-col items-center gap-1 card-hover btn-press"
-                                                title={ws ? ws.reason : undefined}
-                                            >
-                                                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{background: bg}}>
-                                                    {emoji}
-                                                </div>
-                                                <div className="text-xs font-bold" style={{color}}>{label}</div>
-                                                {dotColor
-                                                    ? <div className="w-2 h-2 rounded-full flex-shrink-0" style={{backgroundColor: dotColor}}></div>
-                                                    : <div className="w-2 h-2 flex-shrink-0"></div>
-                                                }
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </div>
                             {/* Monthly summary strip */}
                             {(() => {
                                 const thisMonth = new Date().getMonth();
@@ -4355,6 +4270,32 @@ window.ResearchSourcesPage = () => (
                                     </div>
                                 );
                             })()}
+                            {/* Pro version promo */}
+                            <div className="rounded-2xl overflow-hidden" style={{background:'linear-gradient(135deg, var(--ys-green-800) 0%, var(--ys-green-900) 100%)', boxShadow:'0 4px 20px rgba(28,51,24,0.2)'}}>
+                                <div className="px-5 py-4">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-xs font-bold px-2 py-0.5 rounded-full text-white" style={{background:'var(--ys-gold-500)'}}>PRO</span>
+                                        <span className="text-xs font-semibold" style={{color:'rgba(255,255,255,0.55)'}}>Easy Green Pro</span>
+                                    </div>
+                                    <div className="text-lg font-bold text-white mb-3" style={{fontFamily:'var(--ys-font-display)'}}>Take your lawn to the next level</div>
+                                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-4">
+                                        {[
+                                            { icon: '📊', label: 'Advanced Stats' },
+                                            { icon: '📅', label: 'Full Year Program' },
+                                            { icon: '🗓️', label: 'Smart Scheduler' },
+                                            { icon: '📖', label: 'Product Guide' },
+                                        ].map(f => (
+                                            <div key={f.label} className="flex items-center gap-2">
+                                                <span className="text-sm flex-shrink-0">{f.icon}</span>
+                                                <span className="text-xs font-semibold" style={{color:'rgba(255,255,255,0.8)'}}>{f.label}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <button onClick={() => setView('account')} className="w-full py-2.5 rounded-xl font-bold text-sm btn-press" style={{background:'var(--ys-gold-500)', color:'#fff', fontFamily:'var(--ys-font-body)'}}>
+                                        Join the Pro Waitlist →
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     )}
                     {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} />}</div>}
