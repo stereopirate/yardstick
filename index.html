@@ -2156,31 +2156,38 @@ window.ResearchSourcesPage = () => (
     };
 
     // ─── ActivitySelector ────────────────────────────────────────────────────────
-    const ActivitySelector = ({ onSelectType, onCancel }) => (
-        <div className="animate-fade-in">
-            <h2 className="text-xl font-bold mb-4">Select Activity Type</h2>
-            <div className="grid grid-cols-2 gap-3">
-                {Object.entries(ACTIVITY_TYPES).map(([key, type]) => {
-                    const colors = ACTIVITY_COLORS[key] || ACTIVITY_COLORS.mowing;
-                    return (
-                        <button key={key} onClick={() => onSelectType(key)}
-                            className={`${colors.bg} border-2 p-4 rounded-xl shadow-md card-hover btn-press`}
-                            style={{borderColor: colors.hex + '4D'}}
-                            onMouseEnter={(e) => e.currentTarget.style.borderColor = colors.hex}
-                            onMouseLeave={(e) => e.currentTarget.style.borderColor = colors.hex + '4D'}>
-                            <div className="text-4xl mb-2">{type.icon}</div>
-                            <div className={`text-sm font-bold ${colors.text}`}>{type.name}</div>
-                        </button>
-                    );
-                })}
+    const ActivitySelector = ({ onSelectType, onCancel, currentUser }) => {
+        const fb = window.__FIREBASE__ || {};
+        const canPhoto = fb.configured && !!currentUser;
+        return (
+            <div className="animate-fade-in">
+                <h2 className="text-xl font-bold mb-4">Select Activity Type</h2>
+                <div className="grid grid-cols-2 gap-3">
+                    {Object.entries(ACTIVITY_TYPES)
+                        .filter(([key]) => key !== 'photo' || canPhoto)
+                        .map(([key, type]) => {
+                            const colors = ACTIVITY_COLORS[key] || ACTIVITY_COLORS.mowing;
+                            return (
+                                <button key={key} onClick={() => onSelectType(key)}
+                                    className={`${colors.bg} border-2 p-4 rounded-xl shadow-md card-hover btn-press`}
+                                    style={{borderColor: colors.hex + '4D'}}
+                                    onMouseEnter={(e) => e.currentTarget.style.borderColor = colors.hex}
+                                    onMouseLeave={(e) => e.currentTarget.style.borderColor = colors.hex + '4D'}>
+                                    <div className="text-4xl mb-2">{type.icon}</div>
+                                    <div className={`text-sm font-bold ${colors.text}`}>{type.name}</div>
+                                </button>
+                            );
+                        })}
+                </div>
+                <button onClick={onCancel} className="mt-4 px-4 py-2 bg-gray-200 rounded-lg btn-press">Cancel</button>
             </div>
-            <button onClick={onCancel} className="mt-4 px-4 py-2 bg-gray-200 rounded-lg btn-press">Cancel</button>
-        </div>
-    );
+        );
+    };
 
     // ─── ActivityForm ────────────────────────────────────────────────────────────
     const ActivityForm = ({ selectedActivityType, onSubmit, onCancel, currentUser }) => {
         const activityType = ACTIVITY_TYPES[selectedActivityType];
+        const isPhotoLog = selectedActivityType === 'photo';
         const [localFormData, setLocalFormData] = useState({ date: new Date().toISOString().split('T')[0], notes: '', data: {} });
         const [photoPreview, setPhotoPreview] = useState(null);
         const [shareToGallery, setShareToGallery] = useState(false);
@@ -2201,12 +2208,62 @@ window.ResearchSourcesPage = () => (
             setPhotoPreview(null);
             setShareToGallery(false);
         };
+
+        const renderPhotoSection = (required) => (
+            <div className="mb-4">
+                <label className="block text-sm font-semibold mb-2">
+                    📷 Photo {required
+                        ? <span className="text-red-600 ml-1">*</span>
+                        : <span className="text-xs font-normal text-gray-400">(Optional)</span>
+                    }
+                </label>
+                {!canUploadPhoto ? (
+                    <div className="flex items-center gap-2 p-3 bg-gray-50 border border-dashed border-gray-200 rounded-xl">
+                        <span className="text-gray-400 text-sm">Sign in to attach photos to activities</span>
+                    </div>
+                ) : !localFormData.photoFile ? (
+                    <label className="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-200 rounded-xl cursor-pointer transition-colors hover:border-[#367C2B] bg-gray-50"
+                        style={{minHeight: required ? '140px' : '96px'}}>
+                        <span className="text-3xl mb-1">📸</span>
+                        <span className="text-sm text-gray-500 font-medium">Tap to add photo</span>
+                        <span className="text-xs text-gray-400 mt-0.5">Camera or library</span>
+                        <input type="file" accept="image/*" className="sr-only" onChange={handlePhotoChange} />
+                    </label>
+                ) : (
+                    <div>
+                        <div className="relative rounded-xl overflow-hidden mb-2" style={{maxHeight: required ? '280px' : '220px'}}>
+                            <img src={photoPreview} alt="Preview" className="w-full object-cover rounded-xl" style={{maxHeight: required ? '280px' : '220px'}} />
+                            <button type="button" onClick={clearPhoto}
+                                className="absolute top-2 right-2 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-md"
+                                style={{background:'rgba(0,0,0,0.55)', color:'white', border:'none', cursor:'pointer'}}>
+                                ✕
+                            </button>
+                        </div>
+                        <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                            <input type="checkbox" checked={shareToGallery}
+                                onChange={e => setShareToGallery(e.target.checked)}
+                                className="w-4 h-4 rounded accent-[#367C2B]" />
+                            <span className="text-sm text-gray-700">Share this photo in the community gallery</span>
+                        </label>
+                    </div>
+                )}
+            </div>
+        );
+
         return (
             <div>
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
                     <span className="text-4xl">{activityType.icon}</span>{activityType.name}
                 </h2>
-                <form onSubmit={(e) => { e.preventDefault(); onSubmit({ ...localFormData, shareToGallery }); }} className="bg-white rounded-lg shadow-lg p-6">
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    if (isPhotoLog && !localFormData.photoFile) {
+                        alert('Please add a photo before saving.');
+                        return;
+                    }
+                    onSubmit({ ...localFormData, shareToGallery });
+                }} className="bg-white rounded-lg shadow-lg p-6">
+                    {isPhotoLog && renderPhotoSection(true)}
                     <div className="mb-4">
                         <label className="block text-sm font-semibold mb-2">Date</label>
                         <input type="date" required value={localFormData.date}
@@ -2288,40 +2345,7 @@ window.ResearchSourcesPage = () => (
                         <textarea value={localFormData.notes} onChange={(e) => setLocalFormData({...localFormData, notes: e.target.value})} rows="3" className="w-full px-4 py-2 border rounded-lg" />
                     </div>
                     {/* ── Photo Upload ── */}
-                    <div className="mb-4">
-                        <label className="block text-sm font-semibold mb-2">
-                            📷 Photo <span className="text-xs font-normal text-gray-400">(Optional)</span>
-                        </label>
-                        {!canUploadPhoto ? (
-                            <div className="flex items-center gap-2 p-3 bg-gray-50 border border-dashed border-gray-200 rounded-xl">
-                                <span className="text-gray-400 text-sm">Sign in to attach photos to activities</span>
-                            </div>
-                        ) : !localFormData.photoFile ? (
-                            <label className="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-200 rounded-xl cursor-pointer transition-colors hover:border-[#367C2B] bg-gray-50" style={{minHeight:'96px'}}>
-                                <span className="text-2xl mb-1">📸</span>
-                                <span className="text-sm text-gray-500 font-medium">Tap to add photo</span>
-                                <span className="text-xs text-gray-400 mt-0.5">Camera or library</span>
-                                <input type="file" accept="image/*" className="sr-only" onChange={handlePhotoChange} />
-                            </label>
-                        ) : (
-                            <div>
-                                <div className="relative rounded-xl overflow-hidden mb-2" style={{maxHeight:'220px'}}>
-                                    <img src={photoPreview} alt="Preview" className="w-full object-cover rounded-xl" style={{maxHeight:'220px'}} />
-                                    <button type="button" onClick={clearPhoto}
-                                        className="absolute top-2 right-2 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-md"
-                                        style={{background:'rgba(0,0,0,0.55)', color:'white', border:'none', cursor:'pointer'}}>
-                                        ✕
-                                    </button>
-                                </div>
-                                <label className="flex items-center gap-2.5 cursor-pointer select-none">
-                                    <input type="checkbox" checked={shareToGallery}
-                                        onChange={e => setShareToGallery(e.target.checked)}
-                                        className="w-4 h-4 rounded accent-[#367C2B]" />
-                                    <span className="text-sm text-gray-700">Share this photo in the community gallery</span>
-                                </label>
-                            </div>
-                        )}
-                    </div>
+                    {!isPhotoLog && renderPhotoSection(false)}
                     {/* PREMIUM_FEATURE: cost tracking — available to all users now; gated to premium subscribers in a future release */}
                     <div className="mb-4">
                         <label className="block text-sm font-semibold mb-2">Cost <span className="text-xs font-normal text-gray-400">(Optional — track product &amp; service spend)</span></label>
@@ -4317,7 +4341,7 @@ window.ResearchSourcesPage = () => (
                             })()}
                         </div>
                     )}
-                    {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} />}</div>}
+                    {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} />}</div>}
                     {view === 'history' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><HistoryView activities={activities} onDelete={deleteActivity} /></div>}
                     {view === 'gallery' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><GalleryView currentUser={currentUser} onSignIn={() => setShowAuthModal(true)} /></div>}
                     {view === 'garage' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><MyGarage equipment={equipment} activities={activities} onAdd={addEquipment} onDelete={deleteEquipment} onUpdate={updateEquipment} onNavigate={setView} /></div>}

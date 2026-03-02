@@ -225,6 +225,12 @@ var ACTIVITY_TYPES = {
         fields: [
             { name: 'task', label: 'Task Description', type: 'text', placeholder: 'What did you do?' }
         ]
+    },
+    photo: {
+        name: 'Photo Log', icon: '📷', color: 'bg-indigo-50',
+        fields: [
+            { name: 'subject', label: 'What are you capturing?', type: 'select', options: ['Lawn progress', 'New growth', 'Problem area', 'Before treatment', 'After treatment', 'Seasonal change', 'Achievement', 'Other'] }
+        ]
     }
 };
 
@@ -236,7 +242,8 @@ var ACTIVITY_COLORS = {
     seeding:     { bg: 'bg-amber-50',     border: 'border-[#92400E]', text: 'text-[#92400E]', hex: '#92400E' },
     aeration:    { bg: 'bg-purple-50',    border: 'border-purple-500', text: 'text-purple-600', hex: '#8B5CF6' },
     treatment:   { bg: 'bg-teal-50',      border: 'border-teal-500',   text: 'text-teal-700',   hex: '#0D9488' },
-    maintenance: { bg: 'bg-gray-50',      border: 'border-[#6B7280]', text: 'text-[#6B7280]', hex: '#6B7280' }
+    maintenance: { bg: 'bg-gray-50',      border: 'border-[#6B7280]', text: 'text-[#6B7280]', hex: '#6B7280' },
+    photo:       { bg: 'bg-indigo-50',    border: 'border-indigo-400', text: 'text-indigo-600', hex: '#6366F1' }
 };
 
 var RESEARCH_SOURCES = [
