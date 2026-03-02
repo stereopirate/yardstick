@@ -2287,5 +2287,249 @@ const grassPrograms = {
             { institution: "Kansas State Extension", title: "Buffalograss Lawn Care for the Plains", url: "https://www.bookstore.ksre.ksu.edu/" },
             { institution: "University of Nebraska Extension", title: "Buffalograss for Low-Maintenance Lawns", url: "https://extension.unl.edu/" }
         ]
+    },
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // SUN & SHADE MIX — Cool Season Blend (KBG + Perennial Rye + Fine Fescue)
+    // Follow KBG care rates; fine fescue tolerates shade areas
+    // ─────────────────────────────────────────────────────────────────────────
+    sunShadeMix_zone4: {
+        grassType: "Sun & Shade Mix",
+        zone: 4,
+        description: "Sun & shade blend for Zone 4 — cool northern climate where all three component grasses thrive",
+        schedule: [
+            { month: "March", tasks: ["Clean up winter debris when soil dries", "Begin mowing when grass reaches 4 inches (3-3.5 inch height)", "Sharpen mower blade"] },
+            { month: "April", soilTemp: "50-55°F", tasks: ["Apply pre-emergent before soil hits 55°F", "First fertilization: 0.75 lb N per 1,000 sq ft", "Mow weekly at 3-3.5 inches", "Water 1-1.25 inches per week if dry"] },
+            { month: "May", tasks: ["Second fertilization: 0.75 lb N per 1,000 sq ft", "Continue mowing at 3-3.5 inches", "Spot spray broadleaf weeds if needed"] },
+            { month: "June-August", tasks: ["Raise mowing height to 3.5-4 inches for summer", "Minimal fertilization during heat — skip if stressed", "Water 1-1.25 inches per week; shade areas need less", "Accept KBG-component summer thinning — it recovers in fall"] },
+            { month: "September", importance: "MOST IMPORTANT MONTH", tasks: ["Heavy fertilization: 1 lb N per 1,000 sq ft", "Core aerate if needed", "Overseed thin areas with matching sun/shade blend: 4-6 lbs per 1,000 sq ft", "Lower mowing back to 3-3.5 inches"] },
+            { month: "October", tasks: ["Second fall fertilization: 0.75 lb N per 1,000 sq ft", "Apply lime if soil pH below 6.0", "Continue mowing until growth stops"] },
+            { month: "November", tasks: ["Final fertilization: 0.75 lb N per 1,000 sq ft (early Nov)", "Final mowing at 2.5-3 inches", "Clean up leaves"] },
+            { month: "December-February", tasks: ["No maintenance needed", "Stay off frozen grass", "Plan spring program"] }
+        ],
+        sources: [
+            { institution: "Penn State Extension", title: "Cool-Season Lawn Maintenance", url: "https://extension.psu.edu/lawn-care" },
+            { institution: "University of Minnesota Extension", title: "KBG and Fine Fescue Blends", url: "https://extension.umn.edu/lawn-care/kentucky-bluegrass" }
+        ]
+    },
+
+    sunShadeMix_zone5: {
+        grassType: "Sun & Shade Mix",
+        zone: 5,
+        description: "Sun & shade blend for Zone 5 — excellent performance with consistent fall care",
+        schedule: [
+            { month: "March-April", soilTemp: "50-55°F", tasks: ["Clean up winter debris", "Apply pre-emergent when soil hits 50-55°F", "First fertilization: 0.75 lb N per 1,000 sq ft", "Begin mowing at 3-3.5 inches"] },
+            { month: "May", tasks: ["Second fertilization: 0.75 lb N per 1,000 sq ft", "Mow weekly", "Spot spray broadleaf weeds if needed"] },
+            { month: "June-August", tasks: ["Raise mowing to 3.5-4 inches for summer heat", "Water 1-1.25 inches per week (shade areas need less)", "Hold fertilization during heat; 0.5 lb N max if lawn looks healthy", "Accept some summer thinning in sunny areas — normal for KBG component"] },
+            { month: "September", importance: "MOST IMPORTANT MONTH", tasks: ["Heavy fertilization: 1 lb N per 1,000 sq ft", "Core aerate", "Overseed with matching sun/shade blend: 4-6 lbs per 1,000 sq ft", "Lower mowing back to 3-3.5 inches"] },
+            { month: "October-November", tasks: ["Two fall fertilizations: 0.75 lb N each", "Apply lime if pH below 6.0", "Continue mowing until growth stops", "Final mow at 2.5-3 inches"] }
+        ],
+        sources: [
+            { institution: "Penn State Extension", title: "Cool-Season Lawn Maintenance", url: "https://extension.psu.edu/lawn-care" },
+            { institution: "Rutgers Cooperative Extension", title: "Fine Fescue and Ryegrass Blends", url: "https://njaes.rutgers.edu/fs1316/" }
+        ]
+    },
+
+    sunShadeMix_zone6: {
+        grassType: "Sun & Shade Mix",
+        zone: 6,
+        description: "Sun & shade blend for Zone 6 — reliable but requires consistent fall overseeding to maintain density",
+        schedule: [
+            { month: "March-April", soilTemp: "55°F", tasks: ["Apply pre-emergent when soil reaches 55°F", "First fertilization: 0.75 lb N per 1,000 sq ft", "Begin mowing at 3-3.5 inches"] },
+            { month: "May", tasks: ["Second fertilization: 0.75 lb N per 1,000 sq ft", "Mow weekly at 3-3.5 inches"] },
+            { month: "June-August", tasks: ["Raise mowing to 3.5-4 inches for heat", "Water 1-1.25 inches per week", "Reduce or skip fertilization (0.5 lb N max)", "Watch for brown patch in humid weeks", "Accept thinning in full-sun areas — overseed in fall"] },
+            { month: "September", importance: "PRIMARY FEEDING SEASON", tasks: ["Heavy fertilization: 1 lb N per 1,000 sq ft", "Core aerate", "Overseed thin and full-sun areas with matching blend: 5-7 lbs per 1,000 sq ft", "Lower mowing back to 3-3.5 inches"] },
+            { month: "October-November", tasks: ["Fall fertilization: 0.75 lb N per 1,000 sq ft", "Continue mowing until growth stops", "Final mow at 2.5-3 inches"] }
+        ],
+        sources: [
+            { institution: "Penn State Extension", title: "Cool-Season Lawn Maintenance", url: "https://extension.psu.edu/lawn-care" },
+            { institution: "NC State Extension", title: "Carolina Lawns: Cool-Season Grasses", url: "https://content.ces.ncsu.edu/carolina-lawns" }
+        ]
+    },
+
+    sunShadeMix_zone7: {
+        grassType: "Sun & Shade Mix",
+        zone: 7,
+        description: "Sun & shade blend for Zone 7 — best suited for shaded areas; full-sun spots will struggle in summer",
+        schedule: [
+            { month: "February-March", soilTemp: "55°F", tasks: ["Apply pre-emergent early (soil warms faster here)", "First fertilization: 0.75 lb N per 1,000 sq ft", "Begin mowing at 3-3.5 inches"] },
+            { month: "April-May", tasks: ["Second fertilization: 0.75 lb N per 1,000 sq ft", "Mow weekly", "Water as needed — 1-1.25 inches per week"] },
+            { month: "June-August", tasks: ["Raise mowing to 4 inches for heat stress management", "Water deeply 1.25 inches per week — increase if very hot", "NO fertilization in peak summer heat", "Expect significant thinning in full-sun areas — plan fall overseeding", "Shaded areas will look better than sun-exposed areas"] },
+            { month: "September", importance: "CRITICAL — RECOVER SUMMER DAMAGE", tasks: ["Heavy fertilization: 1 lb N per 1,000 sq ft (early Sept)", "Core aerate all thinned areas", "Overseed aggressively with matching blend: 6-8 lbs per 1,000 sq ft", "Lower mowing to 3-3.5 inches"] },
+            { month: "October-November", tasks: ["Fall fertilization: 0.75 lb N per 1,000 sq ft", "Mow until growth stops", "Final mow at 3 inches"] }
+        ],
+        sources: [
+            { institution: "NC State Extension", title: "Carolina Lawns: Transition Zone Care", url: "https://content.ces.ncsu.edu/carolina-lawns" },
+            { institution: "Virginia Cooperative Extension", title: "Lawn Care in the Transition Zone", url: "https://www.pubs.ext.vt.edu/" }
+        ]
+    },
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // DENSE SHADE MIX — Cool Season Blend (Fine Fescue dominant)
+    // Very low input — fine fescue thrives on minimal care
+    // ─────────────────────────────────────────────────────────────────────────
+    denseShade_zone4: {
+        grassType: "Dense Shade Mix",
+        zone: 4,
+        description: "Dense shade blend for Zone 4 — low-input fine fescue program for shaded northern lawns",
+        schedule: [
+            { month: "March", tasks: ["Gently rake out any matted debris — avoid aggressive raking", "Begin light mowing when grass reaches 4 inches (3-3.5 inch height)"] },
+            { month: "April", tasks: ["Light fertilization: 0.5 lb N per 1,000 sq ft (slow-release preferred)", "Mow at 3-3.5 inches — do not mow shorter", "Water only if very dry (shade reduces evaporation)"] },
+            { month: "May", tasks: ["Mow weekly as needed", "Spot spray weeds carefully — fine fescue is sensitive to some herbicides", "No additional fertilization needed"] },
+            { month: "June-August", tasks: ["Raise mowing to 3.5-4 inches in summer", "NO fertilization — over-feeding fine fescue causes surge growth and disease", "Water only if extended dry spell (1-2 weeks without rain)", "Lawn may semi-dormant and look tired — this is normal"] },
+            { month: "September", tasks: ["Light overseeding with matching dense shade blend if areas are thin: 3-5 lbs per 1,000 sq ft", "Optional very light fertilization: 0.5 lb N per 1,000 sq ft", "Core aerate only if severely compacted — fine fescue is slow to recover"] },
+            { month: "October", tasks: ["Second light fertilization: 0.5 lb N per 1,000 sq ft", "Continue mowing until growth stops"] },
+            { month: "November", tasks: ["Final mow at 3 inches", "Leaf cleanup — leaves smother fine fescue if left over winter"] },
+            { month: "December-February", tasks: ["No maintenance needed", "Stay off frozen grass"] }
+        ],
+        sources: [
+            { institution: "University of Minnesota Extension", title: "Fine Fescue for Low-Maintenance and Shade", url: "https://extension.umn.edu/lawn-care/fine-fescue" },
+            { institution: "Penn State Extension", title: "Shade-Tolerant Grass Types", url: "https://extension.psu.edu/lawn-care" }
+        ]
+    },
+
+    denseShade_zone5: {
+        grassType: "Dense Shade Mix",
+        zone: 5,
+        description: "Dense shade blend for Zone 5 — minimal care program for shaded lawns under trees or structures",
+        schedule: [
+            { month: "March-April", tasks: ["Gentle cleanup — avoid aggressive raking", "Light fertilization: 0.5 lb N per 1,000 sq ft", "Begin mowing at 3-3.5 inches when grass reaches 4 inches"] },
+            { month: "May-June", tasks: ["Mow as needed (shade slows growth)", "No additional fertilizer", "Water only if 2+ weeks without rain"] },
+            { month: "July-August", tasks: ["Raise mowing to 3.5-4 inches", "NO fertilization", "Allow semi-dormancy if hot and dry — fine fescue recovers in fall", "Keep leaves and debris cleared for air circulation"] },
+            { month: "September", tasks: ["Overseed thin areas with matching shade blend: 3-5 lbs per 1,000 sq ft", "Light fertilization: 0.5 lb N per 1,000 sq ft", "Aerate only if severely compacted"] },
+            { month: "October-November", tasks: ["Second light fertilization: 0.5 lb N per 1,000 sq ft", "Mow until growth stops", "Final mow at 3 inches; clear fallen leaves promptly"] }
+        ],
+        sources: [
+            { institution: "University of Minnesota Extension", title: "Fine Fescue for Low-Maintenance and Shade", url: "https://extension.umn.edu/lawn-care/fine-fescue" },
+            { institution: "Rutgers Cooperative Extension", title: "Fine Fescue Turf Management", url: "https://njaes.rutgers.edu/" }
+        ]
+    },
+
+    denseShade_zone6: {
+        grassType: "Dense Shade Mix",
+        zone: 6,
+        description: "Dense shade blend for Zone 6 — strictly a shaded-area solution; will thin quickly in any sun exposure",
+        schedule: [
+            { month: "March-April", tasks: ["Light cleanup; begin mowing at 3-3.5 inches", "Light fertilization: 0.5 lb N per 1,000 sq ft"] },
+            { month: "May", tasks: ["Mow as needed in shade — growth is slower than sun areas", "No additional fertilizer"] },
+            { month: "June-August", tasks: ["Raise mowing to 3.5-4 inches", "NO fertilization — risk of disease surge in summer heat", "Water minimally — shade retains moisture; water only after 10+ dry days", "Watch for dollar spot and red thread; improve air circulation if possible"] },
+            { month: "September", importance: "PRIMARY RECOVERY MONTH", tasks: ["Overseed thin areas with matching shade blend: 3-5 lbs per 1,000 sq ft", "Light fertilization: 0.5 lb N per 1,000 sq ft", "Aerate only if truly compacted"] },
+            { month: "October-November", tasks: ["Light fertilization: 0.5 lb N per 1,000 sq ft", "Mow until growth stops; clear fallen leaves — critical in shaded areas", "Final mow at 3 inches"] }
+        ],
+        sources: [
+            { institution: "Penn State Extension", title: "Shade-Tolerant Grass Types", url: "https://extension.psu.edu/lawn-care" },
+            { institution: "Rutgers Cooperative Extension", title: "Fine Fescue Turf Management", url: "https://njaes.rutgers.edu/" }
+        ]
+    },
+
+    denseShade_zone7: {
+        grassType: "Dense Shade Mix",
+        zone: 7,
+        description: "Dense shade blend for Zone 7 — only viable in true deep shade; expect significant summer stress",
+        schedule: [
+            { month: "February-March", tasks: ["Light cleanup", "Light fertilization: 0.5 lb N per 1,000 sq ft", "Begin mowing at 3-3.5 inches"] },
+            { month: "April-May", tasks: ["Mow lightly as needed", "No additional fertilization"] },
+            { month: "June-August", tasks: ["Raise mowing to 4 inches", "NO fertilization — fine fescue under Zone 7 heat is already stressed", "Water only if 10+ days without rain", "Significant thinning and semi-dormancy is normal and expected", "Do not over-irrigate — this promotes fungal disease in shade"] },
+            { month: "September", importance: "CRITICAL RECOVERY WINDOW", tasks: ["Overseed with matching dense shade blend: 4-6 lbs per 1,000 sq ft", "Light fertilization: 0.5 lb N per 1,000 sq ft only", "Lower mowing back to 3-3.5 inches"] },
+            { month: "October-November", tasks: ["One additional light fertilization: 0.5 lb N per 1,000 sq ft", "Mow until growth stops", "Clear leaves promptly to prevent smothering"] }
+        ],
+        sources: [
+            { institution: "NC State Extension", title: "Shade-Tolerant Grasses for the Transition Zone", url: "https://content.ces.ncsu.edu/carolina-lawns" },
+            { institution: "Virginia Cooperative Extension", title: "Lawn Care in the Transition Zone", url: "https://www.pubs.ext.vt.edu/" }
+        ]
+    },
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // TALL FESCUE BLEND — Cool Season Blend (90%+ Tall Fescue + small % KBG)
+    // Care is essentially identical to pure tall fescue; KBG adds self-repair
+    // ─────────────────────────────────────────────────────────────────────────
+    tallFescueBlend_zone4: {
+        grassType: "Tall Fescue Blend",
+        zone: 4,
+        description: "Tall fescue blend for Zone 4 — marginal zone; treat like tall fescue with extra cold-hardiness awareness",
+        schedule: [
+            { month: "March", tasks: ["Clean up winter debris when soil dries", "Begin mowing when grass reaches 4 inches (3-3.5 inch height)", "Sharpen mower blade"] },
+            { month: "April", soilTemp: "50-55°F", tasks: ["Apply pre-emergent before soil hits 55°F", "First fertilization: 1 lb N per 1,000 sq ft", "Mow weekly at 3-3.5 inches", "Water 1-1.5 inches per week if dry"] },
+            { month: "May", tasks: ["Second fertilization: 1 lb N per 1,000 sq ft", "Continue mowing at 3-3.5 inches", "Spot spray broadleaf weeds if needed"] },
+            { month: "June", tasks: ["Raise mowing height to 3.5-4 inches for summer", "Light fertilization: 0.5 lb N per 1,000 sq ft (optional)", "Water deeply: 1-1.5 inches per week"] },
+            { month: "July-August", tasks: ["NO fertilization", "Maintain 3.5-4 inch mowing height", "Water 1-1.5 inches per week", "Accept some summer thinning — KBG component will help fill in fall"] },
+            { month: "September", importance: "MOST IMPORTANT MONTH", tasks: ["Heavy fertilization: 1-1.5 lb N per 1,000 sq ft", "Core aerate", "Overseed with matching tall fescue blend seed: 5-7 lbs per 1,000 sq ft", "Lower mowing back to 3-3.5 inches"] },
+            { month: "October", tasks: ["Second fall fertilization: 1 lb N per 1,000 sq ft", "Apply lime if pH below 6.0", "Continue mowing"] },
+            { month: "November", tasks: ["Final fertilization: 1 lb N per 1,000 sq ft (early Nov)", "Final mowing at 2.5-3 inches", "Clean up leaves"] },
+            { month: "December-February", tasks: ["No maintenance needed", "Stay off frozen grass"] }
+        ],
+        sources: [
+            { institution: "Penn State Extension", title: "Tall Fescue Lawn Maintenance Calendar", url: "https://extension.psu.edu/lawn-care" },
+            { institution: "Purdue Extension", title: "Cool-Season Lawn Care", url: "https://www.purdue.edu/hla/sites/turf/tall-fescue/" }
+        ]
+    },
+
+    tallFescueBlend_zone5: {
+        grassType: "Tall Fescue Blend",
+        zone: 5,
+        description: "Tall fescue blend for Zone 5 — excellent performance; same program as pure tall fescue",
+        schedule: [
+            { month: "March-April", soilTemp: "50-55°F", tasks: ["Clean up winter debris", "Apply pre-emergent when soil hits 50-55°F", "First fertilization: 1 lb N per 1,000 sq ft", "Begin mowing at 3-3.5 inches"] },
+            { month: "May", tasks: ["Second fertilization: 1 lb N per 1,000 sq ft", "Mow weekly at 3-3.5 inches"] },
+            { month: "June-August", tasks: ["Raise mowing to 3.5-4 inches for heat", "Light summer fertilization: 0.5 lb N max (optional)", "Water deeply 1-1.5 inches per week"] },
+            { month: "September", importance: "MOST IMPORTANT MONTH", tasks: ["Heavy fertilization: 1-1.5 lb N per 1,000 sq ft", "Core aerate", "Overseed with matching tall fescue blend seed: 5-7 lbs per 1,000 sq ft", "Lower mowing to 3-3.5 inches"] },
+            { month: "October-November", tasks: ["Fall fertilization: 1 lb N per 1,000 sq ft each month", "Apply lime if needed", "Continue mowing until growth stops", "Final mow at 2.5-3 inches"] }
+        ],
+        sources: [
+            { institution: "Penn State Extension", title: "Lawn Maintenance Calendar", url: "https://extension.psu.edu/lawn-care" },
+            { institution: "Purdue Extension", title: "Cool-Season Lawn Care", url: "https://www.purdue.edu/hla/sites/turf/tall-fescue/" }
+        ]
+    },
+
+    tallFescueBlend_zone6: {
+        grassType: "Tall Fescue Blend",
+        zone: 6,
+        description: "Tall fescue blend for Zone 6 — the ideal zone; consistent fall program keeps this lawn dense year-round",
+        schedule: [
+            { month: "March-April", soilTemp: "55°F", tasks: ["Apply pre-emergent when soil reaches 55°F", "First fertilization: 1 lb N per 1,000 sq ft", "Begin regular mowing at 3-3.5 inches"] },
+            { month: "May", tasks: ["Second fertilization: 1 lb N per 1,000 sq ft", "Mow weekly", "Water as needed"] },
+            { month: "June-August", tasks: ["Raise mowing to 3.5-4 inches for heat", "Reduce fertilization (0.5 lb N max in summer)", "Water 1-1.5 inches per week", "Watch for brown patch disease in humid weeks"] },
+            { month: "September", importance: "PRIMARY FEEDING SEASON", tasks: ["Heavy fertilization: 1-1.5 lb N per 1,000 sq ft", "Core aerate", "Overseed thin areas with matching tall fescue blend: 5-7 lbs per 1,000 sq ft", "Lower mowing to 3-3.5 inches"] },
+            { month: "October-November", tasks: ["Fall fertilization: 1 lb N per 1,000 sq ft", "Continue mowing until growth stops", "Final mow at 2.5-3 inches"] }
+        ],
+        sources: [
+            { institution: "Penn State Extension", title: "Tall Fescue Lawn Maintenance", url: "https://extension.psu.edu/lawn-care" },
+            { institution: "NC State Extension", title: "Carolina Lawns: Tall Fescue", url: "https://content.ces.ncsu.edu/carolina-lawns" }
+        ]
+    },
+
+    tallFescueBlend_zone7: {
+        grassType: "Tall Fescue Blend",
+        zone: 7,
+        description: "Tall fescue blend for Zone 7 — transition zone; use heat-tolerant varieties and commit to fall recovery",
+        schedule: [
+            { month: "February-March", soilTemp: "55°F", tasks: ["Apply pre-emergent early (soil warms faster)", "First fertilization: 1 lb N per 1,000 sq ft", "Begin mowing at 3-3.5 inches"] },
+            { month: "April-May", tasks: ["Second fertilization: 1 lb N per 1,000 sq ft", "Mow weekly", "Water 1-1.5 inches per week"] },
+            { month: "June-August", tasks: ["Raise mowing to 4 inches for heat stress management", "NO or minimal fertilization (0.5 lb N max)", "Water deeply 1-1.5 inches per week — critical for survival", "Watch for brown patch; apply fungicide if needed", "Expect thinning in hot spots — KBG repairs; overseed remainder in fall"] },
+            { month: "September", importance: "CRITICAL RECOVERY MONTH", tasks: ["Heavy fertilization: 1-1.5 lb N per 1,000 sq ft (early Sept)", "Core aerate all thinned areas", "Overseed aggressively with heat-tolerant tall fescue blend: 6-8 lbs per 1,000 sq ft", "Lower mowing to 3-3.5 inches"] },
+            { month: "October-November", tasks: ["Fall fertilization: 1 lb N per 1,000 sq ft", "Mow until growth stops", "Final mow at 3 inches"] }
+        ],
+        sources: [
+            { institution: "NC State Extension", title: "Carolina Lawns: Transition Zone Tall Fescue", url: "https://content.ces.ncsu.edu/carolina-lawns" },
+            { institution: "Virginia Cooperative Extension", title: "Tall Fescue in the Transition Zone", url: "https://www.pubs.ext.vt.edu/" }
+        ]
+    },
+
+    tallFescueBlend_zone8: {
+        grassType: "Tall Fescue Blend",
+        zone: 8,
+        description: "Tall fescue blend for Zone 8 — challenging; only viable with irrigation and ideally some shade",
+        schedule: [
+            { month: "February", soilTemp: "50-55°F", tasks: ["Apply pre-emergent early — soil warms quickly in Zone 8", "First fertilization: 1 lb N per 1,000 sq ft", "Begin mowing at 3-3.5 inches"] },
+            { month: "March-April", tasks: ["Second fertilization: 1 lb N per 1,000 sq ft", "Mow weekly", "Water 1-1.5 inches per week"] },
+            { month: "May", tasks: ["Light fertilization: 0.5 lb N (may be last safe feeding until fall)", "Raise mowing to 3.5-4 inches as heat arrives"] },
+            { month: "June-August", tasks: ["NO fertilization — lawn is heat-stressed", "Maintain 4 inch mowing height — never go shorter", "Water deeply and consistently: 1.5 inches per week minimum", "Accept significant thinning and browning — tall fescue struggles in Zone 8 summer", "Apply fungicide preventively if brown patch has been an issue"] },
+            { month: "September", importance: "MAKE OR BREAK MONTH", tasks: ["Heavy fertilization: 1.5 lb N per 1,000 sq ft as soon as heat breaks", "Core aerate all thinned and damaged areas", "Overseed heavily with matching tall fescue blend: 8-10 lbs per 1,000 sq ft", "Lower mowing to 3-3.5 inches"] },
+            { month: "October-November", tasks: ["Fall fertilization: 1 lb N per 1,000 sq ft", "Mow until growth stops", "Final mow at 3 inches"] }
+        ],
+        sources: [
+            { institution: "NC State Extension", title: "Carolina Lawns: Tall Fescue in Warm Climates", url: "https://content.ces.ncsu.edu/carolina-lawns" },
+            { institution: "Clemson Cooperative Extension", title: "Tall Fescue in the Southeast", url: "https://www.clemson.edu/extension/hgic/plants/landscape/lawns/" }
+        ]
     }
 };

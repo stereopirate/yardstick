@@ -2443,7 +2443,18 @@ window.ResearchSourcesPage = () => (
                                 <optgroup label="Cool Season"><option value="tall-fescue">Tall Fescue</option><option value="kentucky-bluegrass">Kentucky Bluegrass</option><option value="perennial-ryegrass">Perennial Ryegrass</option><option value="fine-fescue">Fine Fescue</option></optgroup>
                                 <optgroup label="Warm Season"><option value="bermuda">Bermudagrass</option><option value="zoysia">Zoysiagrass</option><option value="st-augustine">St. Augustinegrass</option><option value="centipede">Centipedegrass</option><option value="bahia">Bahiagrass</option></optgroup>
                                 <optgroup label="Native / Low-Input"><option value="buffalograss">Buffalograss</option></optgroup>
+                                <optgroup label="Blends / Mixed Seed"><option value="sun-shade-mix">Sun &amp; Shade Mix</option><option value="dense-shade-mix">Dense Shade Mix</option><option value="tall-fescue-blend">Tall Fescue Blend</option></optgroup>
                             </select>
+                            {grassInfo && grassInfo.blendBrands && (
+                                <div className="mt-2 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                    <div className="text-xs font-bold text-blue-800 mb-2">🏷️ Common brand examples for this blend:</div>
+                                    <ul className="space-y-1">
+                                        {grassInfo.blendBrands.map((b, i) => (
+                                            <li key={i} className="text-xs text-blue-700"><span className="font-semibold">{b.brand} — {b.product}</span><span className="text-blue-500"> ({b.note})</span></li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                         </div>
                         <button onClick={save} className="w-full py-4 bg-[#367C2B] text-white rounded-xl font-bold text-lg">💾 Save Profile</button>
                     </div>
@@ -2531,6 +2542,20 @@ window.ResearchSourcesPage = () => (
                     <div className="bg-white rounded-xl shadow-lg p-4">
                         <h3 className="text-sm font-bold text-orange-600 uppercase mb-3">Watch Out For <CitationBadge sources={grassInfo.sources} label="Common issues" /></h3>
                         <ul className="space-y-2">{grassInfo.commonIssues.map((issue, i) => <li key={i} className="flex items-start gap-2 text-sm text-gray-700"><span className="text-orange-500 mt-0.5">⚠️</span><span>{issue}</span></li>)}</ul>
+                    </div>
+                )}
+                {grassInfo && grassInfo.blendBrands && (
+                    <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                        <h3 className="text-sm font-bold text-blue-800 uppercase mb-3">🏷️ Common Brand Examples</h3>
+                        <p className="text-xs text-blue-600 mb-3">These retail products typically contain this blend type. Use as a reference when buying seed for overseeding.</p>
+                        <ul className="space-y-2">
+                            {grassInfo.blendBrands.map((b, i) => (
+                                <li key={i} className="bg-white rounded-lg p-2 border border-blue-100">
+                                    <div className="text-sm font-semibold text-gray-800">{b.brand} — {b.product}</div>
+                                    <div className="text-xs text-gray-500 mt-0.5">{b.note}</div>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 )}
                 {grassInfo && grassInfo.sources && grassInfo.sources.length > 0 && (
