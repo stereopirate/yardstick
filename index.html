@@ -18,10 +18,10 @@
     <meta name="twitter:description" content="Free lawn care tracker for DIY homeowners. Personalized schedules by grass type &amp; zone, activity logging, and season-by-season guidance.">
     <meta name="twitter:image" content="https://stereopirate.github.io/Lawn-care-tracker/logo.png">
     <title>Yardstick - Research-Backed Lawn Care</title>
-    <!-- ── Phase 2: Brand Fonts — Fraunces + Quicksand ── -->
+    <!-- ── Brand Fonts — Bitter + Cabin + Courier Prime ── -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,600;0,700;0,900;1,600;1,700&family=Cabin:wght@400;500;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="manifest" href="/manifest.json">
 
 <link rel="apple-touch-icon" href="/icon-192.png">
@@ -127,29 +127,35 @@ window.compressImage = function(file, maxDim, quality) {
 </script>
 
 </head>
-<body class="bg-white" style="background-color: #ffffff !important;">
+<body class="bg-white" style="background-color: #EDE8DE !important;">
     <style>
-        /* ── Phase 1: Brand CSS Custom Properties ── */
+        /* ── Brand CSS Custom Properties ── */
         :root {
             --ys-green-900: #1C3318;
-            --ys-green-800: #234D20;
+            --ys-green-800: #1E4D18;
             --ys-green-700: #2D6627;
             --ys-green-600: #367C2B;
-            --ys-green-500: #4A9E3C;
+            --ys-green-500: #4E9E40;
             --ys-green-400: #6BBF5A;
             --ys-green-200: #C4E8BC;
             --ys-green-100: #EBF5E6;
             --ys-green-50:  #F4FAF2;
-            --ys-gold-500:  #C8960C;
+            --ys-yellow:    #F5C842;
+            --ys-gold-500:  #D4A843;
             --ys-gold-400:  #D4A833;
             --ys-gold-300:  #E2C46A;
             --ys-gold-100:  #FDF3D8;
-            --ys-soil-800:  #3B2A1A;
-            --ys-soil-600:  #6B4C2A;
+            --ys-soil-800:  #1E1A14;
+            --ys-soil-600:  #6B6560;
             --ys-soil-400:  #9C7248;
             --ys-soil-200:  #D4B896;
-            --ys-font-body:    'Quicksand', system-ui, -apple-system, sans-serif;
-            --ys-font-display: 'Fraunces', Georgia, serif;
+            --ys-cream:     #F7F3EC;
+            --ys-canvas:    #EDE8DE;
+            --ys-stone:     #6B6560;
+            --ys-stone-light: #B8B2AC;
+            --ys-font-body:    'Cabin', system-ui, -apple-system, sans-serif;
+            --ys-font-display: 'Bitter', Georgia, serif;
+            --ys-font-mono:    'Courier Prime', monospace;
         }
         body, button, input, select, textarea {
             font-family: var(--ys-font-body);
@@ -268,14 +274,14 @@ window.compressImage = function(file, maxDim, quality) {
             padding: 3px 10px; font-size: 11px; font-weight: 700; white-space: nowrap;
         }
 
-        /* ── Phase 2: Primary button with CSS var ── */
+        /* ── Primary button — Bright Yellow CTA ── */
         .ys-btn-primary {
-            background: var(--ys-green-600); color: white; font-family: var(--ys-font-body);
+            background: var(--ys-yellow); color: var(--ys-soil-800); font-family: var(--ys-font-body);
             border: none; border-radius: 14px; font-weight: 700; cursor: pointer;
             transition: background 0.15s ease, transform 0.1s ease;
-            box-shadow: 0 3px 12px rgba(54,124,43,0.28);
+            box-shadow: 0 3px 12px rgba(245,200,66,0.35);
         }
-        .ys-btn-primary:active { background: var(--ys-green-700); transform: scale(0.97); }
+        .ys-btn-primary:active { background: #E8BA2A; transform: scale(0.97); }
 
         /* ── Phase 2: Card base ── */
         .ys-card {
