@@ -272,9 +272,16 @@ var GRASS_KEY_MAP = {
     'tall-fescue': 'tallFescue',
     'kentucky-bluegrass': 'kentuckyBluegrass',
     'perennial-ryegrass': 'perennialRyegrass',
+    'fine-fescue': 'fineFescue',
     'bermuda': 'bermuda',
     'zoysia': 'zoysia',
-    'st-augustine': 'stAugustine'
+    'st-augustine': 'stAugustine',
+    'centipede': 'centipede',
+    'bahia': 'bahia',
+    'buffalograss': 'buffalograss',
+    'sun-shade-mix': 'sunShadeMix',
+    'dense-shade-mix': 'denseShade',
+    'tall-fescue-blend': 'tallFescueBlend'
 };
 
 var MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -357,6 +364,115 @@ var GRASS_INFO = {
         keyTips: ['Must be established by sod or plugs - no viable seed available', 'Keep mowing height high (3.5-4") for healthiest lawn', 'Watch closely for chinch bug damage in hot, dry periods', 'Do not over-fertilize with nitrogen - increases disease risk'],
         zoneNotes: { '4': 'Not viable.', '5': 'Not viable.', '6': 'Not viable - no cold tolerance.', '7': 'Very risky - freeze damage likely.', '8': 'Good in southern Zone 8. Protect from hard freezes.', '9': 'Excellent - ideal climate for st. augustine.' },
         sources: [{ name: 'UF/IFAS Extension', url: 'https://edis.ifas.ufl.edu/topic-st-augustinegrass', topic: 'St. Augustinegrass for Florida Lawns' }, { name: 'Texas A&M AgriLife', url: 'https://agrilifeextension.tamu.edu/st-augustinegrass/', topic: 'St. Augustinegrass Management' }, { name: 'LSU AgCenter', url: 'https://www.lsuagcenter.com/topics/lawn_garden/lawns', topic: 'St. Augustinegrass Care' }]
+    },
+    'fine-fescue': {
+        name: 'Fine Fescue', season: 'Cool Season',
+        mowHeight: '2.5 - 3.5 inches', mowHeightSummer: '3 - 3.5 inches',
+        waterPerWeek: '0.5 - 1 inch', idealSoilPH: '5.5 - 6.5',
+        idealSoilTemp: '50 - 65°F for growth', sunNeeds: 'Shade-tolerant (as little as 2-3 hours direct sun)',
+        fertPerYear: '1 - 2 lbs N per 1,000 sq ft', peakGrowth: 'Spring & Fall',
+        dormancy: 'Semi-dormant in hot, dry summers — recovers in fall',
+        bestFeature: 'Best shade tolerance of all cool-season grasses — grows where others fail',
+        commonIssues: ['Red thread disease', 'Dollar spot', 'Thins in heavy foot traffic', 'Summer heat stress in humid regions'],
+        keyTips: ['Includes creeping red, chewings, hard, and sheep fescue varieties', 'Requires far less fertilizer than bluegrass or tall fescue — do not over-feed', 'Very drought tolerant once established — allow to go semi-dormant in dry summers', 'Best choice for shaded areas, low-maintenance lawns, or low-input landscapes'],
+        zoneNotes: { '4': 'Excellent choice — very cold hardy, ideal for shaded northern lawns.', '5': 'Excellent performance in shade and low-maintenance settings.', '6': 'Good to excellent. Watch for heat stress in humid summers.', '7': 'Best used in shade only. Struggles in full sun in transition zone heat.', '8': 'Not recommended — heat and humidity cause rapid decline.', '9': 'Not viable.' },
+        sources: [{ name: 'Penn State Extension', url: 'https://extension.psu.edu/lawn-care', topic: 'Fine Fescue Lawn Management' }, { name: 'University of Minnesota Extension', url: 'https://extension.umn.edu/lawn-care/fine-fescue', topic: 'Fine Fescue for Low-Maintenance Lawns' }, { name: 'Rutgers Cooperative Extension', url: 'https://njaes.rutgers.edu/', topic: 'Fine Fescue Turf Management' }]
+    },
+    'centipede': {
+        name: 'Centipedegrass', season: 'Warm Season',
+        mowHeight: '1.5 - 2 inches', mowHeightSummer: '1.5 - 2 inches',
+        waterPerWeek: '1 inch', idealSoilPH: '5.0 - 6.0',
+        idealSoilTemp: '65°F+ for active growth', sunNeeds: 'Full sun to light shade (4+ hours)',
+        fertPerYear: '1 - 2 lbs N per 1,000 sq ft', peakGrowth: 'Summer',
+        dormancy: 'Goes dormant below 55°F — turns tan/brown',
+        bestFeature: 'Lowest maintenance warm-season grass — slow growth means less mowing and fertilizing',
+        commonIssues: ['Iron deficiency (chlorosis — yellowing)', 'Centipede decline', 'Large patch disease', 'Thatch buildup from excess fertilizer'],
+        keyTips: ['Do NOT over-fertilize — excess nitrogen damages centipede and causes decline', 'Prefers acidic soil (pH 5.0–6.0); do not lime unless a soil test confirms need', 'Apply iron sulfate if yellowing occurs — do not add extra nitrogen', 'Rarely needs more than 1–2 light fertilizations per year'],
+        zoneNotes: { '4': 'Not viable — too cold.', '5': 'Not viable.', '6': 'Not viable.', '7': 'Marginal in warmer parts of Zone 7b only.', '8': 'Excellent — centipede country. Thrives in the Southeast.', '9': 'Good performance, especially in acidic soils.' },
+        sources: [{ name: 'Clemson Cooperative Extension', url: 'https://www.clemson.edu/extension/hgic/plants/landscape/lawns/hgic1216.html', topic: 'Centipedegrass Maintenance' }, { name: 'NC State Extension', url: 'https://content.ces.ncsu.edu/carolina-lawns', topic: 'Centipedegrass in the Southeast' }, { name: 'UGA Extension', url: 'https://extension.uga.edu/publications/lawn-garden.html', topic: 'Centipedegrass Management' }]
+    },
+    'bahia': {
+        name: 'Bahiagrass', season: 'Warm Season',
+        mowHeight: '3 - 4 inches', mowHeightSummer: '3 - 4 inches',
+        waterPerWeek: '0.75 - 1 inch', idealSoilPH: '5.5 - 6.5',
+        idealSoilTemp: '65°F+ for active growth', sunNeeds: 'Full sun required (6+ hours)',
+        fertPerYear: '2 - 4 lbs N per 1,000 sq ft', peakGrowth: 'Summer',
+        dormancy: 'Goes dormant below 55°F — turns light tan/brown',
+        bestFeature: 'Extremely deep root system — exceptional drought and traffic tolerance for low-input lawns',
+        commonIssues: ['Mole crickets (major pest in Florida)', 'Dollar spot', 'Persistent seed heads requiring frequent mowing', 'Poor cold tolerance'],
+        keyTips: ['Produces Y-shaped seed heads frequently — mow often to remove them', 'Extremely drought tolerant once established — needs little irrigation', 'Apply mole cricket bait in late summer if tunneling is visible', 'Argentine and Pensacola are the most common and cold-tolerant varieties'],
+        zoneNotes: { '4': 'Not viable.', '5': 'Not viable.', '6': 'Not viable.', '7': 'Not recommended — cold sensitivity causes winter damage.', '8': 'Good in southern areas, especially Florida and Gulf Coast.', '9': 'Excellent — prime bahia territory.' },
+        sources: [{ name: 'UF/IFAS Extension', url: 'https://edis.ifas.ufl.edu/topic-bahiagrass', topic: 'Bahiagrass for Florida Lawns' }, { name: 'LSU AgCenter', url: 'https://www.lsuagcenter.com/topics/lawn_garden/lawns', topic: 'Bahiagrass Lawn Care' }, { name: 'Texas A&M AgriLife', url: 'https://agrilifeextension.tamu.edu/', topic: 'Bahiagrass Management' }]
+    },
+    'buffalograss': {
+        name: 'Buffalograss', season: 'Native Warm Season',
+        mowHeight: '2 - 4 inches', mowHeightSummer: '3 - 4 inches',
+        waterPerWeek: '0.25 - 0.5 inches', idealSoilPH: '6.5 - 7.5',
+        idealSoilTemp: '60°F+ for active growth', sunNeeds: 'Full sun required (8+ hours) — no shade tolerance',
+        fertPerYear: '0.5 - 2 lbs N per 1,000 sq ft', peakGrowth: 'Late Spring - Summer',
+        dormancy: 'Goes dormant below 50°F and in drought — turns tan/straw',
+        bestFeature: 'Native North American prairie grass — ultra-low water and fertilizer needs; ideal for sustainable lawns',
+        commonIssues: ['Broadleaf weeds invade thinned turf easily', 'Thins and dies in shade', 'Slow to establish from seed or plugs', 'Declines in humid climates'],
+        keyTips: ['Requires up to 75% less water than Kentucky bluegrass — do not over-irrigate', 'Do not over-fertilize — promotes weed invasion and disease', 'Performs best in clay soils of the Great Plains and western regions', 'Avoid in humid southeastern climates — bermuda or zoysia perform far better there'],
+        zoneNotes: { '4': 'Marginal — can winterkill in extreme cold. Works in protected sites in dry climates.', '5': 'Good in dry western climates. Struggles in humid eastern states.', '6': 'Good in western and central states. Poor choice in humid southeast.', '7': 'Good where heat and drought dominate. Not suited for humid Gulf regions.', '8': 'Works in dry western areas, but bermuda or zoysia outperform in most Zone 8 conditions.', '9': 'Not recommended — too much humidity and competition from other grasses.' },
+        sources: [{ name: 'Kansas State Extension', url: 'https://www.bookstore.ksre.ksu.edu/', topic: 'Buffalograss Lawn Care for the Plains' }, { name: 'Texas A&M AgriLife', url: 'https://agrilifeextension.tamu.edu/', topic: 'Buffalograss Management' }, { name: 'University of Nebraska Extension', url: 'https://extension.unl.edu/', topic: 'Buffalograss for Low-Maintenance Lawns' }]
+    },
+    'sun-shade-mix': {
+        name: 'Sun & Shade Mix', season: 'Cool Season Blend',
+        mowHeight: '3 - 3.5 inches', mowHeightSummer: '3.5 - 4 inches',
+        waterPerWeek: '1 - 1.25 inches', idealSoilPH: '6.0 - 6.5',
+        idealSoilTemp: '50 - 65°F for growth', sunNeeds: 'Adaptable — 3+ hours (partial shade to full sun)',
+        fertPerYear: '2 - 3 lbs N per 1,000 sq ft', peakGrowth: 'Spring & Fall',
+        dormancy: 'KBG component may go dormant in summer heat; fine fescue slows — both recover in fall',
+        bestFeature: 'Versatile blend that adapts to mixed sun and shade across the same lawn',
+        commonIssues: ['Species compete and shift over time — sunnier areas favor KBG, shaded areas favor fine fescue', 'Fine fescue thins in high-traffic sunny spots', 'Inconsistent color and texture across varied light conditions', 'KBG component slow to establish from seed'],
+        keyTips: ['Fertilize and mow to match the most demanding species (KBG rates and heights)', 'Fall is the most important season — fertilize and overseed in September', 'Always overseed with the same blend product to maintain mix balance', 'Core aerate in fall to help all species compete evenly'],
+        blendBrands: [
+            { brand: 'Scotts', product: 'Turf Builder Sun & Shade Mix', note: 'KBG + Perennial Rye + Fine Fescue' },
+            { brand: 'Pennington', product: 'Smart Seed Sun & Shade', note: 'Fine Fescue + KBG + Ryegrass' },
+            { brand: 'GreenView', product: 'Sun & Shade Grass Seed', note: 'Fine Fescue + KBG blend' },
+            { brand: 'Vigoro', product: 'Sun & Shade Grass Seed', note: 'Fine Fescue + KBG + Rye mix' }
+        ],
+        zoneNotes: { '4': 'Good choice for mixed sun/shade northern lawns. Fine fescue thrives in the cool climate.', '5': 'Excellent performance across varied light conditions. Standard fall program applies.', '6': 'Good to excellent. Full-sun areas may thin in summer — overseed faithfully each fall.', '7': 'Use in shaded or partly shaded settings only. Full-sun areas will stress in transition zone heat.', '8': 'Not recommended — cool-season components struggle in summer heat.', '9': 'Not viable.' },
+        sources: [{ name: 'Penn State Extension', url: 'https://extension.psu.edu/lawn-care', topic: 'Cool-Season Grass Blends' }, { name: 'University of Minnesota Extension', url: 'https://extension.umn.edu/lawn-care/kentucky-bluegrass', topic: 'KBG and Fine Fescue Blends' }, { name: 'Rutgers Cooperative Extension', url: 'https://njaes.rutgers.edu/fs1316/', topic: 'Fine Fescue and Ryegrass Blends' }]
+    },
+    'dense-shade-mix': {
+        name: 'Dense Shade Mix', season: 'Cool Season Blend',
+        mowHeight: '3 - 3.5 inches', mowHeightSummer: '3.5 - 4 inches',
+        waterPerWeek: '0.5 - 1 inch', idealSoilPH: '5.5 - 6.5',
+        idealSoilTemp: '50 - 65°F for growth', sunNeeds: 'Deep shade tolerant — as little as 2 hours direct sun',
+        fertPerYear: '1 - 2 lbs N per 1,000 sq ft', peakGrowth: 'Spring & Fall',
+        dormancy: 'Fine fescues semi-dormant in summer heat; thin under prolonged heat stress but recover in fall',
+        bestFeature: 'Handles deeper shade than any other cool-season blend — grows where most grasses fail',
+        commonIssues: ['Very thin in high-traffic areas — not a play lawn choice', 'Susceptible to dollar spot and red thread disease', 'Declines rapidly in areas that lose shade coverage', 'Does not tolerate compaction well'],
+        keyTips: ['Fine fescue dominates this blend — follow its low-input care guidelines', 'Never over-fertilize: more than 2 lbs N/year causes surge growth and disease', 'Less water needed than other blends — shade reduces evaporation significantly', 'Overseed with the same shade blend product to maintain species balance'],
+        blendBrands: [
+            { brand: 'Scotts', product: 'Turf Builder Dense Shade Mix', note: 'Fine Fescue varieties dominant' },
+            { brand: 'Jonathan Green', product: 'Dense Shade Grass Seed', note: 'Creeping Red + Chewings Fescue' },
+            { brand: 'Pennington', product: 'Smart Seed Dense Shade', note: 'Fine Fescue blend for deep shade' },
+            { brand: 'Barenbrug', product: 'Shade Mixture', note: 'Hard Fescue + Creeping Red Fescue' }
+        ],
+        zoneNotes: { '4': 'Excellent — fine fescues peak in cool, shaded northern settings.', '5': 'Excellent under trees and north-facing slopes.', '6': 'Good in true shade. Watch for heat stress in dappled light areas in summer.', '7': 'Use in true dense shade only. Combination of heat and any sun causes rapid thinning.', '8': 'Not recommended.', '9': 'Not viable.' },
+        sources: [{ name: 'University of Minnesota Extension', url: 'https://extension.umn.edu/lawn-care/fine-fescue', topic: 'Fine Fescue for Low-Maintenance and Shade' }, { name: 'Penn State Extension', url: 'https://extension.psu.edu/lawn-care', topic: 'Shade-Tolerant Grass Types' }, { name: 'Rutgers Cooperative Extension', url: 'https://njaes.rutgers.edu/', topic: 'Fine Fescue Turf Management' }]
+    },
+    'tall-fescue-blend': {
+        name: 'Tall Fescue Blend', season: 'Cool Season Blend',
+        mowHeight: '3 - 4 inches', mowHeightSummer: '3.5 - 4 inches',
+        waterPerWeek: '1 - 1.5 inches', idealSoilPH: '5.8 - 6.5',
+        idealSoilTemp: '50 - 65°F for growth', sunNeeds: 'Full sun to partial shade (4-6 hrs)',
+        fertPerYear: '3 - 4 lbs N per 1,000 sq ft', peakGrowth: 'Spring & Fall',
+        dormancy: 'May slow and thin in peak summer heat; KBG component helps fill bare spots in fall',
+        bestFeature: 'Premium tall fescue with a small KBG component for self-repair — fills bare spots better than pure TF',
+        commonIssues: ['Brown patch in humid summers', 'Summer heat stress in Zone 7–8', 'Slight color/texture variation between species', 'KBG component (5-10%) won\'t thrive in dense shade'],
+        keyTips: ['Treat like pure tall fescue — TF dominates the blend; KBG is the self-repair component', 'Always overseed with a matching tall fescue blend product, not pure TF seed', 'September is the most critical month — fertilize and overseed heavily', 'Raise mowing height to 3.5–4 inches through summer heat'],
+        blendBrands: [
+            { brand: 'Jonathan Green', product: 'Black Beauty Original', note: 'The classic TF blend — gold standard for transition zone' },
+            { brand: 'Jonathan Green', product: 'Black Beauty Ultra', note: 'Premium blend with endophytes for insect resistance' },
+            { brand: 'Scotts', product: 'Turf Builder Tall Fescue Mix', note: 'Tall Fescue + small % KBG' },
+            { brand: 'Pennington', product: 'Smart Seed Tall Fescue & KBG', note: 'Drought-resistant TF varieties + KBG' }
+        ],
+        zoneNotes: { '4': 'Marginal — tall fescue is not ideal this far north. KBG is the better primary choice.', '5': 'Good choice, especially for transitional light conditions (4–6 hours sun).', '6': 'Excellent — the primary recommendation for most Zone 6 lawns.', '7': 'Very good in the transition zone. Use heat-tolerant varieties (Firecracker LS, Mustang 4).', '8': 'Challenging in full summer heat. Shade and irrigation help significantly.', '9': 'Not recommended — too hot for tall fescue through summer.' },
+        sources: [{ name: 'Penn State Extension', url: 'https://extension.psu.edu/lawn-care', topic: 'Tall Fescue Lawn Maintenance Calendar' }, { name: 'NC State Extension', url: 'https://content.ces.ncsu.edu/carolina-lawns', topic: 'Carolina Lawns: Tall Fescue' }, { name: 'Purdue Extension', url: 'https://www.purdue.edu/hla/sites/turf/tall-fescue/', topic: 'Tall Fescue Management' }]
     }
 };
 
