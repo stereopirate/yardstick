@@ -237,7 +237,7 @@ return (
             </button>
         </div>
         
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">🌱 Lawn Profile</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Lawn Profile</h2>
 
         {/* Basic Information */}
         <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100 mb-4">

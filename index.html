@@ -406,7 +406,7 @@ window.ActivityDetails = ({ activity }) => {
 
         if (!fb.configured) return (
             <div className="animate-fade-in">
-                <h2 className="text-2xl font-bold mb-2">🌿 Lawn Gallery</h2>
+                <h2 className="text-2xl font-bold mb-2">Lawn Gallery</h2>
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 text-center mt-4">
                     <div className="text-3xl mb-2">🔧</div>
                     <div className="font-bold text-amber-800">Firebase not configured</div>
@@ -417,7 +417,7 @@ window.ActivityDetails = ({ activity }) => {
 
         if (!currentUser) return (
             <div className="animate-fade-in">
-                <h2 className="text-2xl font-bold mb-2">🌿 Lawn Gallery</h2>
+                <h2 className="text-2xl font-bold mb-2">Lawn Gallery</h2>
                 <p className="text-sm text-gray-500 mb-6">Share and browse lawn progress photos from the community</p>
                 <div className="bg-[#EBF5E6] border border-[#C4E8BC] rounded-2xl p-6 text-center">
                     <div className="text-5xl mb-3">📷</div>
@@ -433,7 +433,7 @@ window.ActivityDetails = ({ activity }) => {
 
         return (
             <div className="animate-fade-in">
-                <h2 className="text-2xl font-bold mb-1">🌿 Lawn Gallery</h2>
+                <h2 className="text-2xl font-bold mb-1">Lawn Gallery</h2>
                 <p className="text-sm text-gray-500 mb-4">Browse and share lawn progress photos</p>
 
                 {/* Filter tabs */}
@@ -2405,7 +2405,7 @@ window.ResearchSourcesPage = () => (
         if (profileEditing) {
             return (
                 <div>
-                    <h2 className="text-2xl font-bold mb-6">🌱 Lawn Profile</h2>
+                    <h2 className="text-2xl font-bold mb-6">Lawn Profile</h2>
                     <div className="bg-white rounded-lg shadow p-4 space-y-4">
                         <div>
                             <label className="block text-sm font-medium mb-2">Lawn Size (sq ft)</label>
@@ -2465,7 +2465,7 @@ window.ResearchSourcesPage = () => (
         return (
             <div className="space-y-4">
                 <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-2xl font-bold">🌱 My Yard</h2>
+                    <h2 className="text-2xl font-bold">My Yard</h2>
                     <button onClick={() => onEditToggle(true)} className="px-4 py-2 text-sm font-semibold text-[#367C2B] border-2 border-[#367C2B] rounded-lg hover:bg-[#367C2B]/10">Edit Profile</button>
                 </div>
                 <div className="bg-gradient-to-r from-[#367C2B] to-[#4a9c3a] rounded-xl p-5 text-white shadow-lg">
@@ -3724,7 +3724,7 @@ window.ResearchSourcesPage = () => (
         if (!authReady || dataLoading) {
             return (
                 <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-                    <div className="text-5xl mb-4">🌱</div>
+                    <img src="logo.svg" alt="Yardstick" className="h-20 w-20 mb-4" />
                     <div className="text-xl font-bold text-[#367C2B] mb-2">Yardstick</div>
                     <div className="text-sm text-gray-500">Loading your lawn data...</div>
                     <div className="mt-6 flex gap-1">
