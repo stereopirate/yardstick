@@ -1424,10 +1424,12 @@ window.ResearchSourcesPage = () => (
         // ── WRITE activities ──────────────────────────────────────────────────
         const saveActivity = useCallback(async (activity) => {
             if (!isCloud) {
+                // Strip photo fields — photos require a signed-in account and Firebase Storage
+                const { photoUrl: _photoUrl, ...localActivity } = activity;
                 const stored = JSON.parse(localStorage.getItem('lawnCareActivities') || '[]');
-                const updated = [...stored, activity];
+                const updated = [...stored, localActivity];
                 localStorage.setItem('lawnCareActivities', JSON.stringify(updated));
-                return activity;
+                return localActivity;
             }
             const { db, collection, addDoc, serverTimestamp } = fb;
             const ref = await addDoc(
@@ -3569,7 +3571,7 @@ window.ResearchSourcesPage = () => (
                 notes: activityData.notes,
                 cost: activityData.cost ? parseFloat(activityData.cost) : null,
                 data: activityData.data,
-                photoUrl: photoUrl || null,
+                ...(photoUrl && { photoUrl }),
                 createdAt: new Date().toISOString()
             };
             const saved = await store.saveActivity(newActivity);
