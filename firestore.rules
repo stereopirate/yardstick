@@ -1,63 +1,125 @@
 rules_version = '2';
 
+// ─────────────────────────────────────────────────────────────────────────────
 // Easy Green – Yardstick Lawn Care Tracker
-// Firebase Firestore Security Rules
+// Firestore Security Rules
 //
-// Collections used by this app:
-//   gallery              – community photo feed (root)
-//   users/{uid}/activities  – per-user activity log (subcollection)
-//   users/{uid}/equipment   – per-user equipment list (subcollection)
-//   users/{uid}/profile/data – per-user lawn profile (subcollection)
-//   feedback             – bug reports / feature requests / contact (root)
-//   proInterest          – pro plan waitlist signups (root)
+// Collections used by this app
+// ─────────────────────────────────────────────────────────────────────────────
 //
-// To deploy: paste into Firebase Console → Firestore → Rules → Publish
-// Or via CLI: firebase deploy --only firestore:rules
+//  ROOT COLLECTIONS
+//  ─────────────────────────────────────────────────────────────────────────
+//  gallery        Community photo feed. Logged-in users can read all photos
+//                 and upload their own. Only the uploader (or admin) can delete.
+//
+//  feedback       Bug reports, feature requests, and contact form submissions.
+//                 Anyone (including unauthenticated visitors) can create — keeps
+//                 friction low for bug reports. Admin-only for reads + status updates.
+//
+//  proInterest    Pro plan waitlist signups. Anyone can submit an email.
+//                 Admin-only reads.
+//
+//  USER SUBCOLLECTIONS  (all under users/{uid})
+//  ─────────────────────────────────────────────────────────────────────────
+//  users/{uid}/activities        Activity log entries
+//  users/{uid}/equipment/{id}    Equipment items + maintenance history
+//  users/{uid}/profile/data      Lawn profile (grass type, zone, lot size, etc.)
+//
+// ─────────────────────────────────────────────────────────────────────────────
+// To deploy
+// ─────────────────────────────────────────────────────────────────────────────
+//
+//  Option A — Firebase Console (no CLI required):
+//    1. Open Firebase Console → Firestore → Rules tab
+//    2. Replace everything with these rules
+//    3. Click Publish
+//
+//  Option B — Firebase CLI:
+//    firebase deploy --only firestore:rules
+//
+// ─────────────────────────────────────────────────────────────────────────────
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Community Gallery ────────────────────────────────────────────────────
-    // Any logged-in user can view and contribute photos.
-    // Only the photo's original uploader (or admin) can delete.
+    // ── Helper: is the caller the app admin? ──────────────────────────────────
+    function isAdmin() {
+      return request.auth != null
+          && request.auth.token.email == 'yardsticklawncareapp@gmail.com';
+    }
+
+    // ── Helper: is the caller signed in? ─────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+
+    // ═════════════════════════════════════════════════════════════════════════
+    // GALLERY  –  /gallery/{photoId}
+    // ═════════════════════════════════════════════════════════════════════════
     match /gallery/{photoId} {
-      allow read:   if request.auth != null;
-      allow create: if request.auth != null
+
+      // Any signed-in user can browse the community feed
+      allow read: if isSignedIn();
+
+      // A signed-in user can add a photo only if they stamp it with their own uid
+      allow create: if isSignedIn()
                     && request.resource.data.userId == request.auth.uid;
-      allow delete: if request.auth != null
-                    && (resource.data.userId == request.auth.uid
-                        || request.auth.token.email == 'yardsticklawncareapp@gmail.com');
-      // Updates not used — photos are create-or-delete only
+
+      // Only the original uploader or the admin may remove a photo
+      allow delete: if isSignedIn()
+                    && (resource.data.userId == request.auth.uid || isAdmin());
+
+      // Photos are immutable after upload — updates are not used
       allow update: if false;
     }
 
-    // ── Per-user Private Data ────────────────────────────────────────────────
-    // Covers all subcollections under users/{uid}:
-    //   activities, equipment, profile/data
-    // Each user can only read and write their own data.
+
+    // ═════════════════════════════════════════════════════════════════════════
+    // USER PRIVATE DATA  –  /users/{userId}/**
+    // ═════════════════════════════════════════════════════════════════════════
+    // Covers every subcollection:
+    //   users/{uid}/activities/{actId}
+    //   users/{uid}/equipment/{eqId}
+    //   users/{uid}/profile/data
+    //
+    // Each user may only access their own documents.
     match /users/{userId}/{document=**} {
-      allow read, write: if request.auth != null
+      allow read, write: if isSignedIn()
                          && request.auth.uid == userId;
     }
 
-    // ── Feedback / Support Submissions ───────────────────────────────────────
-    // Anyone (including unauthenticated users) can submit a report —
-    // this keeps friction low for bug reports from users who aren't signed in.
-    // Only the admin can read all submissions or update their status.
+
+    // ═════════════════════════════════════════════════════════════════════════
+    // FEEDBACK  –  /feedback/{docId}
+    // ═════════════════════════════════════════════════════════════════════════
     match /feedback/{docId} {
+
+      // Open to everyone — unauthenticated users can still file a bug report.
+      // The client sends userId: null when not signed in; that is intentional.
       allow create: if true;
-      allow read, update: if request.auth != null
-                          && request.auth.token.email == 'yardsticklawncareapp@gmail.com';
+
+      // Admin can read all submissions and update their status field
+      // (new → in-review → resolved → closed)
+      allow read, update: if isAdmin();
+
+      // No one may delete — keep an audit trail
       allow delete: if false;
     }
 
-    // ── Pro Plan Interest / Waitlist ─────────────────────────────────────────
-    // Anyone can add their email to the waitlist.
-    // Only the admin can view signups.
+
+    // ═════════════════════════════════════════════════════════════════════════
+    // PRO INTEREST / WAITLIST  –  /proInterest/{docId}
+    // ═════════════════════════════════════════════════════════════════════════
     match /proInterest/{docId} {
+
+      // Anyone can sign up, even without an account
       allow create: if true;
-      allow read:   if request.auth != null
-                    && request.auth.token.email == 'yardsticklawncareapp@gmail.com';
+
+      // Admin-only reads so email list stays private
+      allow read: if isAdmin();
+
+      // Immutable once submitted
       allow update, delete: if false;
     }
 
