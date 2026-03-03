@@ -3915,8 +3915,6 @@ window.ResearchSourcesPage = () => (
                     </div>
                 )}
 
-                <SeasonBanner weather={weather} />
-
                 <div className="max-w-5xl mx-auto flex">
 
                     {/* ─── Desktop Left Sidebar ─────────────────────────────── */}
@@ -4054,6 +4052,10 @@ window.ResearchSourcesPage = () => (
                             </div>
                             {/* Weather card */}
                             <WeatherSnapshot weather={weather} weatherLoading={weatherLoading} lawnProfile={lawnProfile} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} />
+                            {/* Season banner card */}
+                            <div className="rounded-2xl overflow-hidden shadow-sm">
+                                <SeasonBanner weather={weather} />
+                            </div>
                             {/* Today's Advisory card */}
                             {weather && <TodayAdvisoryCard weather={weather} />}
                             {/* Frost countdown banner */}
