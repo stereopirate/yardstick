@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome Splash Card — Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@700;900&family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+    :root {
+        --ys-green-900: #1C3318;
+        --ys-green-800: #1E4D18;
+        --ys-green-700: #2D6627;
+        --ys-green-600: #367C2B;
+        --ys-green-100: #EBF5E6;
+        --ys-green-50:  #F4FAF2;
+        --ys-yellow:      #F5C842;
+        --ys-soil-800:  #1E1A14;
+        --ys-font-body:    'Cabin', system-ui, sans-serif;
+        --ys-font-display: 'Bitter', Georgia, serif;
+        --ys-canvas: #EDE8DE;
+    }
+    body { font-family: var(--ys-font-body); background: #d6d0c6; }
+    h1, h2, h3 { font-family: var(--ys-font-display); }
+
+    .ys-btn-primary {
+        background: var(--ys-yellow); color: var(--ys-soil-800);
+        border: none; border-radius: 14px; font-weight: 700; cursor: pointer;
+        font-family: var(--ys-font-body);
+        transition: background 0.15s ease, transform 0.1s ease;
+        box-shadow: 0 3px 12px rgba(245,200,66,0.35);
+    }
+    .ys-btn-primary:active { background: #E8BA2A; transform: scale(0.97); }
+    .ys-card { background: white; border-radius: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04); }
+    .btn-press { transition: transform 0.1s ease, opacity 0.1s ease; cursor: pointer; }
+    .btn-press:active { transform: scale(0.95); opacity: 0.9; }
+
+    /* Active grass button state for preview */
+    .grass-btn { border: 2px solid #E5E7EB; background: white; color: #374151; }
+    .grass-btn.selected { border-color: var(--ys-green-600); background: var(--ys-green-50); color: var(--ys-green-700); }
+    .grass-btn:hover { border-color: var(--ys-green-600); }
+
+    .step-label {
+        font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+        background: rgba(0,0,0,0.08); color: #555; border-radius: 20px;
+        padding: 3px 10px; display: inline-block; margin-bottom: 12px;
+    }
+</style>
+</head>
+<body class="p-6 md:p-10">
+
+<div class="max-w-md mx-auto mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-1">Welcome Splash Card</h1>
+    <p class="text-sm text-gray-500">All three steps shown — mobile width (390px equivalent)</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- STEP 1: SPLASH                                             -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="max-w-md mx-auto mb-10">
+    <div class="step-label">Step 1 — Splash (initial state)</div>
+    <div class="rounded-2xl overflow-hidden" style="background:linear-gradient(145deg,#1C3318 0%,#1E4D18 60%,#2D6627 100%);box-shadow:0 8px 32px rgba(28,51,24,0.32);position:relative;">
+        <!-- Decorative circles -->
+        <div style="position:absolute;top:-40px;right:-30px;width:180px;height:180px;background:rgba(255,255,255,0.04);border-radius:50%;pointer-events:none;"></div>
+        <div style="position:absolute;bottom:-50px;left:-20px;width:140px;height:140px;background:rgba(255,255,255,0.03);border-radius:50%;pointer-events:none;"></div>
+
+        <div class="px-5 pt-6 pb-2" style="position:relative;z-index:1;">
+            <!-- Free badge -->
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-3"
+                style="background:#F5C842;color:#1E1A14;">
+                🌿 Free · No Account Required
+            </div>
+            <!-- Headline -->
+            <h2 class="text-2xl font-bold text-white leading-tight mb-1">
+                A smarter lawn starts with your zip code.
+            </h2>
+            <p class="text-sm mb-4" style="color:rgba(255,255,255,0.65);">
+                Get a personalized care plan matched to your grass type, USDA hardiness zone, and local weather — in seconds.
+            </p>
+            <!-- Feature grid -->
+            <div class="grid grid-cols-2 gap-2 mb-5">
+                <div class="flex items-start gap-2 rounded-xl px-2.5 py-2" style="background:rgba(255,255,255,0.08);">
+                    <span class="text-lg flex-shrink-0 mt-0.5">📅</span>
+                    <div>
+                        <div class="text-xs font-bold text-white leading-tight">Personalized Plan</div>
+                        <div class="text-xs leading-tight" style="color:rgba(255,255,255,0.55);">Month-by-month tasks for your grass &amp; zone</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-2 rounded-xl px-2.5 py-2" style="background:rgba(255,255,255,0.08);">
+                    <span class="text-lg flex-shrink-0 mt-0.5">📊</span>
+                    <div>
+                        <div class="text-xs font-bold text-white leading-tight">Track Progress</div>
+                        <div class="text-xs leading-tight" style="color:rgba(255,255,255,0.55);">Log every mow, feed, and treatment</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-2 rounded-xl px-2.5 py-2" style="background:rgba(255,255,255,0.08);">
+                    <span class="text-lg flex-shrink-0 mt-0.5">🌤️</span>
+                    <div>
+                        <div class="text-xs font-bold text-white leading-tight">Weather-Smart Tips</div>
+                        <div class="text-xs leading-tight" style="color:rgba(255,255,255,0.55);">Local forecast-based advisories</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-2 rounded-xl px-2.5 py-2" style="background:rgba(255,255,255,0.08);">
+                    <span class="text-lg flex-shrink-0 mt-0.5">🔬</span>
+                    <div>
+                        <div class="text-xs font-bold text-white leading-tight">Research-Backed</div>
+                        <div class="text-xs leading-tight" style="color:rgba(255,255,255,0.55);">University extension data, not guesses</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Zip input -->
+            <div class="flex gap-2 mb-1">
+                <input type="text" placeholder="Enter your zip code"
+                    class="flex-1 px-4 py-3 rounded-xl text-sm font-semibold outline-none"
+                    style="background:rgba(255,255,255,0.95);color:#1E1A14;border:none;font-family:'Cabin',sans-serif;">
+                <button class="ys-btn-primary px-4 py-3 text-sm font-bold rounded-xl flex-shrink-0 btn-press"
+                    style="min-width:84px;">
+                    Get Plan →
+                </button>
+            </div>
+        </div>
+        <!-- Sign-in nudge -->
+        <div class="px-5 py-3 flex items-center justify-between" style="border-top:1px solid rgba(255,255,255,0.10);">
+            <span class="text-xs" style="color:rgba(255,255,255,0.45);">Already have an account?</span>
+            <button class="text-xs font-bold btn-press" style="color:#F5C842;background:none;border:none;">
+                Sign In →
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- STEP 2: GRASS TYPE                                         -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="max-w-md mx-auto mb-10">
+    <div class="step-label">Step 2 — Grass Type (after zip lookup)</div>
+    <div class="rounded-2xl overflow-hidden ys-card">
+        <div class="px-5 pt-5 pb-4">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                    style="background:#EBF5E6;">🌱</div>
+                <div>
+                    <div class="text-xs font-bold uppercase tracking-widest mb-0.5" style="color:#367C2B;">
+                        Zone 6B · Step 2 of 2
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 leading-tight">
+                        What type of grass do you have?
+                    </h3>
+                </div>
+            </div>
+            <p class="text-xs text-gray-500 mb-4">
+                Knowing your grass type unlocks a full year care program with research-backed timing. Not sure? You can always update it later in My Yard.
+            </p>
+
+            <!-- Cool Season -->
+            <div class="text-xs font-bold uppercase tracking-widest mb-2" style="color:#3B82F6;">Cool Season</div>
+            <div class="grid grid-cols-2 gap-2 mb-4">
+                <button class="grass-btn text-left px-3 py-2.5 rounded-xl text-sm font-semibold btn-press selected">Tall Fescue</button>
+                <button class="grass-btn text-left px-3 py-2.5 rounded-xl text-sm font-semibold btn-press">Kentucky Bluegrass</button>
+                <button class="grass-btn text-left px-3 py-2.5 rounded-xl text-sm font-semibold btn-press">Perennial Ryegrass</button>
+                <button class="grass-btn text-left px-3 py-2.5 rounded-xl text-sm font-semibold btn-press">Fine Fescue</button>
+            </div>
+
+            <!-- Warm Season -->
+            <div class="text-xs font-bold uppercase tracking-widest mb-2" style="color:#F97316;">Warm Season</div>
+            <div class="grid grid-cols-2 gap-2 mb-4">
+                <button class="grass-btn text-left px-3 py-2.5 rounded-xl text-sm font-semibold btn-press">Bermudagrass</button>
+                <button class="grass-btn text-left px-3 py-2.5 rounded-xl text-sm font-semibold btn-press">Zoysiagrass</button>
+                <button class="grass-btn text-left px-3 py-2.5 rounded-xl text-sm font-semibold btn-press">St. Augustinegrass</button>
+                <button class="grass-btn text-left px-3 py-2.5 rounded-xl text-sm font-semibold btn-press">Centipedegrass</button>
+                <button class="grass-btn text-left px-3 py-2.5 rounded-xl text-sm font-semibold btn-press">Bahiagrass</button>
+                <button class="grass-btn text-left px-3 py-2.5 rounded-xl text-sm font-semibold btn-press">Buffalograss</button>
+            </div>
+
+            <button class="w-full text-center text-xs text-gray-400 btn-press py-1" style="background:none;border:none;">
+                Not sure — skip for now
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- STEP 3: ACCOUNT CTA                                        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="max-w-md mx-auto mb-10">
+    <div class="step-label">Step 3 — Account CTA (after grass selected)</div>
+    <div class="rounded-2xl overflow-hidden" style="background:linear-gradient(145deg,#1C3318 0%,#1E4D18 60%,#2D6627 100%);box-shadow:0 8px 32px rgba(28,51,24,0.32);position:relative;">
+        <div style="position:absolute;top:-40px;right:-30px;width:180px;height:180px;background:rgba(255,255,255,0.04);border-radius:50%;pointer-events:none;"></div>
+        <div style="position:absolute;bottom:-50px;left:-20px;width:140px;height:140px;background:rgba(255,255,255,0.03);border-radius:50%;pointer-events:none;"></div>
+
+        <div class="px-5 pt-6 pb-2" style="position:relative;z-index:1;">
+            <!-- Setup complete badge row -->
+            <div class="flex items-center gap-2 mb-3">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-base font-bold"
+                    style="background:#F5C842;color:#1E1A14;">✓</div>
+                <div class="text-xs font-bold uppercase tracking-widest" style="color:rgba(255,255,255,0.6);">
+                    Setup Complete
+                </div>
+            </div>
+            <!-- Headline -->
+            <h3 class="text-2xl font-bold text-white mb-1">
+                Your yard plan is ready.
+            </h3>
+            <p class="text-sm mb-4" style="color:rgba(255,255,255,0.65);">
+                Tall Fescue for Zone 6B is now active below. Create a free account to get the most out of Yardstick.
+            </p>
+            <!-- Account perks -->
+            <div class="space-y-2 mb-5">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-base flex-shrink-0">☁️</span>
+                    <span class="text-xs font-medium" style="color:rgba(255,255,255,0.80);">Sync your data across all your devices</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <span class="text-base flex-shrink-0">🌱</span>
+                    <span class="text-xs font-medium" style="color:rgba(255,255,255,0.80);">Save a detailed lawn &amp; grass profile</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <span class="text-base flex-shrink-0">🎯</span>
+                    <span class="text-xs font-medium" style="color:rgba(255,255,255,0.80);">More personalized recommendations over time</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <span class="text-base flex-shrink-0">📋</span>
+                    <span class="text-xs font-medium" style="color:rgba(255,255,255,0.80);">Full activity history — every mow, feed &amp; treatment</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <span class="text-base flex-shrink-0">🗓️</span>
+                    <span class="text-xs font-medium" style="color:rgba(255,255,255,0.80);">Seasonal care reminders for your grass type</span>
+                </div>
+            </div>
+            <button class="ys-btn-primary w-full py-3 text-sm font-bold rounded-xl btn-press">
+                Create Free Account →
+            </button>
+        </div>
+        <!-- Sign-in nudge -->
+        <div class="px-5 py-3 flex items-center justify-between" style="border-top:1px solid rgba(255,255,255,0.10);">
+            <span class="text-xs" style="color:rgba(255,255,255,0.45);">Already have an account?</span>
+            <button class="text-xs font-bold btn-press" style="color:#F5C842;background:none;border:none;">
+                Sign In →
+            </button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

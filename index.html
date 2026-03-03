@@ -3370,9 +3370,9 @@ window.ResearchSourcesPage = () => (
 
 
     // ─── WelcomeSplashCard ───────────────────────────────────────────────────────
-    // Shown to first-time visitors (no profile, not logged in).
+    // Always shown at the top of the home screen when the user is not logged in.
     // Step 1: zip code entry → Step 2: grass type selection → Step 3: account CTA
-    function WelcomeSplashCard({ onZipLookup, zipLookupLoading, zipLookupError, lawnProfile, onDismiss, onSignIn, onSaveProfile }) {
+    function WelcomeSplashCard({ onZipLookup, zipLookupLoading, zipLookupError, lawnProfile, onSignIn, onSaveProfile }) {
         const { useState, useEffect } = React;
         const [step, setStep] = useState('splash'); // 'splash' | 'grass' | 'done'
         const [zipInput, setZipInput] = useState('');
@@ -3406,11 +3406,6 @@ window.ResearchSourcesPage = () => (
             setStep('done');
         };
 
-        const handleDismiss = () => {
-            localStorage.setItem('ys_splash_dismissed', '1');
-            onDismiss();
-        };
-
         const COOL = [
             { key: 'tall-fescue',       name: 'Tall Fescue' },
             { key: 'kentucky-bluegrass', name: 'Kentucky Bluegrass' },
@@ -3433,6 +3428,14 @@ window.ResearchSourcesPage = () => (
             { icon: '🔬', label: 'Research-Backed',    desc: 'University extension data, not guesses' },
         ];
 
+        const accountPerks = [
+            { icon: '☁️', text: 'Sync your data across all your devices' },
+            { icon: '🌱', text: 'Save a detailed lawn & grass profile' },
+            { icon: '🎯', text: 'More personalized recommendations over time' },
+            { icon: '📋', text: 'Full activity history — every mow, feed & treatment' },
+            { icon: '🗓️', text: 'Seasonal care reminders for your grass type' },
+        ];
+
         // ── Step 1: Splash ──
         if (step === 'splash') return (
             <div className="rounded-2xl overflow-hidden animate-fade-in" style={{
@@ -3443,12 +3446,6 @@ window.ResearchSourcesPage = () => (
                 {/* Decorative circles */}
                 <div style={{position:'absolute',top:'-40px',right:'-30px',width:'180px',height:'180px',background:'rgba(255,255,255,0.04)',borderRadius:'50%',pointerEvents:'none'}} />
                 <div style={{position:'absolute',bottom:'-50px',left:'-20px',width:'140px',height:'140px',background:'rgba(255,255,255,0.03)',borderRadius:'50%',pointerEvents:'none'}} />
-                {/* Dismiss */}
-                <button onClick={handleDismiss} aria-label="Dismiss welcome card"
-                    className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center rounded-full btn-press"
-                    style={{background:'rgba(255,255,255,0.12)',border:'1px solid rgba(255,255,255,0.2)',color:'rgba(255,255,255,0.65)',fontSize:'18px',lineHeight:'1'}}>
-                    ×
-                </button>
                 <div className="px-5 pt-6 pb-2" style={{position:'relative',zIndex:1}}>
                     {/* Free badge */}
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-3"
@@ -3528,7 +3525,7 @@ window.ResearchSourcesPage = () => (
                         </div>
                     </div>
                     <p className="text-xs text-gray-500 mb-4">
-                        Knowing your grass type unlocks a full year care program with research-backed timing. Not sure? You can always update it later.
+                        Knowing your grass type unlocks a full year care program with research-backed timing. Not sure? You can always update it later in My Yard.
                     </p>
                     {/* Cool Season */}
                     <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#3B82F6'}}>Cool Season</div>
@@ -3560,7 +3557,7 @@ window.ResearchSourcesPage = () => (
                             </button>
                         ))}
                     </div>
-                    <button onClick={handleDismiss}
+                    <button onClick={() => setStep('done')}
                         className="w-full text-center text-xs text-gray-400 btn-press py-1">
                         Not sure — skip for now
                     </button>
@@ -3571,30 +3568,48 @@ window.ResearchSourcesPage = () => (
         // ── Step 3: Done / Account CTA ──
         return (
             <div className="rounded-2xl overflow-hidden animate-scale-in" style={{
-                background: 'linear-gradient(135deg, var(--ys-green-800), var(--ys-green-700))',
-                boxShadow: '0 4px 20px rgba(28,51,24,0.22)',
+                background: 'linear-gradient(145deg, var(--ys-green-900) 0%, var(--ys-green-800) 60%, var(--ys-green-700) 100%)',
+                boxShadow: '0 8px 32px rgba(28,51,24,0.32)',
+                position: 'relative',
             }}>
-                <div className="px-5 py-5 text-center">
-                    <div className="text-4xl mb-2">🎉</div>
-                    <h3 className="text-lg font-bold text-white mb-1" style={{fontFamily:'var(--ys-font-display)'}}>
-                        Your yard plan is ready!
-                    </h3>
-                    <p className="text-sm mb-4" style={{color:'rgba(255,255,255,0.7)'}}>
-                        {selectedGrass && GRASS_INFO[selectedGrass] ? GRASS_INFO[selectedGrass].name : 'Your lawn'}{' '}
-                        in Zone {lawnProfile && lawnProfile.zone ? lawnProfile.zone.toUpperCase() : '–'} — personalized care advice is now active below.
-                    </p>
-                    <div className="rounded-xl px-4 py-3 mb-4 text-xs text-left"
-                        style={{background:'rgba(255,255,255,0.10)',color:'rgba(255,255,255,0.80)'}}>
-                        <span className="font-bold text-white">Want to save your progress?</span> Create a free account to sync your data across devices, log activities, and unlock your full year lawn care program.
+                <div style={{position:'absolute',top:'-40px',right:'-30px',width:'180px',height:'180px',background:'rgba(255,255,255,0.04)',borderRadius:'50%',pointerEvents:'none'}} />
+                <div style={{position:'absolute',bottom:'-50px',left:'-20px',width:'140px',height:'140px',background:'rgba(255,255,255,0.03)',borderRadius:'50%',pointerEvents:'none'}} />
+                <div className="px-5 pt-6 pb-2" style={{position:'relative',zIndex:1}}>
+                    <div className="flex items-center gap-2 mb-3">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-base"
+                            style={{background:'var(--ys-yellow)'}}>✓</div>
+                        <div className="text-xs font-bold uppercase tracking-widest" style={{color:'rgba(255,255,255,0.6)'}}>
+                            Setup Complete
+                        </div>
                     </div>
-                    <button onClick={() => { handleDismiss(); onSignIn(); }}
-                        className="w-full ys-btn-primary py-3 text-sm font-bold rounded-xl btn-press mb-2">
+                    <h3 className="text-2xl font-bold text-white mb-1" style={{fontFamily:'var(--ys-font-display)'}}>
+                        Your yard plan is ready.
+                    </h3>
+                    <p className="text-sm mb-4" style={{color:'rgba(255,255,255,0.65)'}}>
+                        {selectedGrass && GRASS_INFO[selectedGrass] ? GRASS_INFO[selectedGrass].name : 'Personalized advice'}{' '}
+                        for Zone {lawnProfile && lawnProfile.zone ? lawnProfile.zone.toUpperCase() : '–'} is now active below.
+                        Create a free account to get the most out of Yardstick.
+                    </p>
+                    {/* Account perks list */}
+                    <div className="space-y-2 mb-5">
+                        {accountPerks.map(p => (
+                            <div key={p.icon} className="flex items-center gap-2.5">
+                                <span className="text-base flex-shrink-0">{p.icon}</span>
+                                <span className="text-xs font-medium" style={{color:'rgba(255,255,255,0.80)'}}>{p.text}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <button onClick={onSignIn}
+                        className="w-full ys-btn-primary py-3 text-sm font-bold rounded-xl btn-press">
                         Create Free Account →
                     </button>
-                    <button onClick={handleDismiss}
-                        className="w-full text-center text-xs py-1 btn-press"
-                        style={{color:'rgba(255,255,255,0.5)'}}>
-                        Continue without account
+                </div>
+                {/* Sign-in nudge */}
+                <div className="px-5 py-3 flex items-center justify-between"
+                    style={{borderTop:'1px solid rgba(255,255,255,0.10)'}}>
+                    <span className="text-xs" style={{color:'rgba(255,255,255,0.45)'}}>Already have an account?</span>
+                    <button onClick={onSignIn} className="text-xs font-bold btn-press" style={{color:'var(--ys-yellow)'}}>
+                        Sign In →
                     </button>
                 </div>
             </div>
@@ -3628,13 +3643,7 @@ window.ResearchSourcesPage = () => (
         const [zipLookupLoading, setZipLookupLoading] = useState(false);
         const [zipLookupError, setZipLookupError] = useState('');
 
-        // ── Splash state — show once to visitors with no profile and no account ──
-        const [showSplash, setShowSplash] = useState(() => {
-            if (localStorage.getItem('ys_splash_dismissed') === '1') return false;
-            const stored = localStorage.getItem('lawnProfile');
-            if (stored) { try { const p = JSON.parse(stored); if (p.zipCode) return false; } catch(e) {} }
-            return true;
-        });
+        // ── Splash card is shown whenever the user is not logged in (no state needed) ──
 
         // ── Auth state ──────────────────────────────────────────────────────────
         const [currentUser, setCurrentUser] = useState(null);
@@ -4248,13 +4257,12 @@ window.ResearchSourcesPage = () => (
                     {!view && (
                         <div className="space-y-3">
                             {/* Welcome Splash Card — first-time visitors only */}
-                            {showSplash && !currentUser && (
+                            {!currentUser && (
                                 <WelcomeSplashCard
                                     onZipLookup={lookupZoneByZip}
                                     zipLookupLoading={zipLookupLoading}
                                     zipLookupError={zipLookupError}
                                     lawnProfile={lawnProfile}
-                                    onDismiss={() => setShowSplash(false)}
                                     onSignIn={() => setShowAuthModal(true)}
                                     onSaveProfile={handleProfileSave}
                                 />
