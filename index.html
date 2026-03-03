@@ -3372,7 +3372,7 @@ window.ResearchSourcesPage = () => (
     // ─── WelcomeSplashCard ───────────────────────────────────────────────────────
     // Always shown at the top of the home screen when the user is not logged in.
     // Step 1: zip code entry → Step 2: grass type selection → Step 3: account CTA
-    function WelcomeSplashCard({ onZipLookup, zipLookupLoading, zipLookupError, lawnProfile, onSignIn, onSaveProfile }) {
+    function WelcomeSplashCard({ onZipLookup, zipLookupLoading, zipLookupError, lawnProfile, onSignIn, onSaveProfile, onComplete }) {
         const { useState, useEffect } = React;
         const [step, setStep] = useState('splash'); // 'splash' | 'grass' | 'done'
         const [zipInput, setZipInput] = useState('');
@@ -3403,6 +3403,7 @@ window.ResearchSourcesPage = () => (
             const existing = localStorage.getItem('lawnProfile');
             const merged = Object.assign({}, existing ? JSON.parse(existing) : {}, { specificGrass: grassKey });
             await onSaveProfile(merged);
+            onComplete && onComplete();
             setStep('done');
         };
 
@@ -3557,7 +3558,7 @@ window.ResearchSourcesPage = () => (
                             </button>
                         ))}
                     </div>
-                    <button onClick={() => setStep('done')}
+                    <button onClick={() => { onComplete && onComplete(); setStep('done'); }}
                         className="w-full text-center text-xs text-gray-400 btn-press py-1">
                         Not sure — skip for now
                     </button>
@@ -3643,7 +3644,9 @@ window.ResearchSourcesPage = () => (
         const [zipLookupLoading, setZipLookupLoading] = useState(false);
         const [zipLookupError, setZipLookupError] = useState('');
 
-        // ── Splash card is shown whenever the user is not logged in (no state needed) ──
+        // ── Onboarding — shown to logged-out users who haven't completed setup ──
+        const [onboardingDone, setOnboardingDone] = useState(() => localStorage.getItem('yardstick_onboarding_done') === '1');
+        const [splashJustDone, setSplashJustDone] = useState(false);
 
         // ── Auth state ──────────────────────────────────────────────────────────
         const [currentUser, setCurrentUser] = useState(null);
@@ -4256,8 +4259,8 @@ window.ResearchSourcesPage = () => (
                     <main className="flex-1 min-w-0 p-2 md:p-4 pb-6">
                     {!view && (
                         <div className="space-y-3">
-                            {/* Welcome Splash Card — first-time visitors only */}
-                            {!currentUser && (
+                            {/* Welcome Splash Card — shown to logged-out users who haven't completed onboarding */}
+                            {!currentUser && (!onboardingDone || splashJustDone) && (
                                 <WelcomeSplashCard
                                     onZipLookup={lookupZoneByZip}
                                     zipLookupLoading={zipLookupLoading}
@@ -4265,8 +4268,15 @@ window.ResearchSourcesPage = () => (
                                     lawnProfile={lawnProfile}
                                     onSignIn={() => setShowAuthModal(true)}
                                     onSaveProfile={handleProfileSave}
+                                    onComplete={() => {
+                                        localStorage.setItem('yardstick_onboarding_done', '1');
+                                        setOnboardingDone(true);
+                                        setSplashJustDone(true);
+                                    }}
                                 />
                             )}
+                            {/* Dashboard — only shown after onboarding is complete or user is logged in */}
+                            {(currentUser || onboardingDone) && (<>
                             {/* Coach Card */}
                             <div className="ys-coach-card px-4 py-3">
                                 <div className="flex items-center justify-between" style={{position:'relative', zIndex:1}}>
@@ -4562,6 +4572,7 @@ window.ResearchSourcesPage = () => (
                                     </button>
                                 </div>
                             </div>
+                            </>)}
                         </div>
                     )}
                     {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} />}</div>}
