@@ -3369,6 +3369,253 @@ window.ResearchSourcesPage = () => (
     };
 
 
+    // ─── WelcomeSplashCard ───────────────────────────────────────────────────────
+    // Always shown at the top of the home screen when the user is not logged in.
+    // Step 1: zip code entry → Step 2: grass type selection → Step 3: account CTA
+    function WelcomeSplashCard({ onZipLookup, zipLookupLoading, zipLookupError, lawnProfile, onSignIn, onSaveProfile }) {
+        const { useState, useEffect } = React;
+        const [step, setStep] = useState('splash'); // 'splash' | 'grass' | 'done'
+        const [zipInput, setZipInput] = useState('');
+        const [localZipError, setLocalZipError] = useState('');
+        const [submitted, setSubmitted] = useState(false);
+        const [selectedGrass, setSelectedGrass] = useState('');
+
+        // Detect successful zip lookup → advance to grass step
+        useEffect(() => {
+            if (submitted && !zipLookupLoading) {
+                if (!zipLookupError && lawnProfile && lawnProfile.zone) {
+                    setStep('grass');
+                }
+                setSubmitted(false);
+            }
+        }, [submitted, zipLookupLoading, zipLookupError, lawnProfile && lawnProfile.zone]);
+
+        const handleZipSubmit = () => {
+            const zip = zipInput.trim();
+            if (!/^\d{5}$/.test(zip)) { setLocalZipError('Enter a valid 5-digit US zip code.'); return; }
+            setLocalZipError('');
+            setSubmitted(true);
+            onZipLookup(zip);
+        };
+
+        const handleGrassSelect = async (grassKey) => {
+            setSelectedGrass(grassKey);
+            const existing = localStorage.getItem('lawnProfile');
+            const merged = Object.assign({}, existing ? JSON.parse(existing) : {}, { specificGrass: grassKey });
+            await onSaveProfile(merged);
+            setStep('done');
+        };
+
+        const COOL = [
+            { key: 'tall-fescue',       name: 'Tall Fescue' },
+            { key: 'kentucky-bluegrass', name: 'Kentucky Bluegrass' },
+            { key: 'perennial-ryegrass', name: 'Perennial Ryegrass' },
+            { key: 'fine-fescue',        name: 'Fine Fescue' },
+        ];
+        const WARM = [
+            { key: 'bermuda',      name: 'Bermudagrass' },
+            { key: 'zoysia',       name: 'Zoysiagrass' },
+            { key: 'st-augustine', name: 'St. Augustinegrass' },
+            { key: 'centipede',    name: 'Centipedegrass' },
+            { key: 'bahia',        name: 'Bahiagrass' },
+            { key: 'buffalograss', name: 'Buffalograss' },
+        ];
+
+        const features = [
+            { icon: '📅', label: 'Personalized Plan',  desc: 'Month-by-month tasks for your grass & zone' },
+            { icon: '📊', label: 'Track Progress',     desc: 'Log every mow, feed, and treatment' },
+            { icon: '🌤️', label: 'Weather-Smart Tips', desc: 'Local forecast-based advisories' },
+            { icon: '🔬', label: 'Research-Backed',    desc: 'University extension data, not guesses' },
+        ];
+
+        const accountPerks = [
+            { icon: '☁️', text: 'Sync your data across all your devices' },
+            { icon: '🌱', text: 'Save a detailed lawn & grass profile' },
+            { icon: '🎯', text: 'More personalized recommendations over time' },
+            { icon: '📋', text: 'Full activity history — every mow, feed & treatment' },
+            { icon: '🗓️', text: 'Seasonal care reminders for your grass type' },
+        ];
+
+        // ── Step 1: Splash ──
+        if (step === 'splash') return (
+            <div className="rounded-2xl overflow-hidden animate-fade-in" style={{
+                background: 'linear-gradient(145deg, var(--ys-green-900) 0%, var(--ys-green-800) 60%, var(--ys-green-700) 100%)',
+                boxShadow: '0 8px 32px rgba(28,51,24,0.32)',
+                position: 'relative',
+            }}>
+                {/* Decorative circles */}
+                <div style={{position:'absolute',top:'-40px',right:'-30px',width:'180px',height:'180px',background:'rgba(255,255,255,0.04)',borderRadius:'50%',pointerEvents:'none'}} />
+                <div style={{position:'absolute',bottom:'-50px',left:'-20px',width:'140px',height:'140px',background:'rgba(255,255,255,0.03)',borderRadius:'50%',pointerEvents:'none'}} />
+                <div className="px-5 pt-6 pb-2" style={{position:'relative',zIndex:1}}>
+                    {/* Free badge */}
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-3"
+                        style={{background:'var(--ys-yellow)',color:'var(--ys-soil-800)'}}>
+                        🌿 Free &middot; No Account Required
+                    </div>
+                    {/* Headline */}
+                    <h2 className="text-2xl font-bold text-white leading-tight mb-1" style={{fontFamily:'var(--ys-font-display)'}}>
+                        A smarter lawn starts with your zip code.
+                    </h2>
+                    <p className="text-sm mb-4" style={{color:'rgba(255,255,255,0.65)'}}>
+                        Get a personalized care plan matched to your grass type, USDA hardiness zone, and local weather — in seconds.
+                    </p>
+                    {/* Feature grid */}
+                    <div className="grid grid-cols-2 gap-2 mb-5">
+                        {features.map(f => (
+                            <div key={f.label} className="flex items-start gap-2 rounded-xl px-2.5 py-2"
+                                style={{background:'rgba(255,255,255,0.08)'}}>
+                                <span className="text-lg flex-shrink-0 mt-0.5">{f.icon}</span>
+                                <div>
+                                    <div className="text-xs font-bold text-white leading-tight">{f.label}</div>
+                                    <div className="text-xs leading-tight" style={{color:'rgba(255,255,255,0.55)'}}>{f.desc}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    {/* Zip input */}
+                    <div className="flex gap-2 mb-1">
+                        <input
+                            type="text" inputMode="numeric" pattern="\d*" maxLength={5}
+                            value={zipInput}
+                            onChange={e => { setZipInput(e.target.value.replace(/\D/g,'')); setLocalZipError(''); }}
+                            onKeyDown={e => { if (e.key === 'Enter') handleZipSubmit(); }}
+                            placeholder="Enter your zip code"
+                            className="flex-1 px-4 py-3 rounded-xl text-sm font-semibold outline-none"
+                            style={{background:'rgba(255,255,255,0.95)',color:'#1E1A14',border:'none',fontFamily:'var(--ys-font-body)'}}
+                        />
+                        <button onClick={handleZipSubmit} disabled={zipLookupLoading}
+                            className="ys-btn-primary px-4 py-3 text-sm font-bold rounded-xl flex-shrink-0 btn-press"
+                            style={{minWidth:'84px',opacity:zipLookupLoading?0.7:1}}>
+                            {zipLookupLoading ? '…' : 'Get Plan →'}
+                        </button>
+                    </div>
+                    {(localZipError || zipLookupError) && (
+                        <div className="text-xs font-semibold px-1 pb-1" style={{color:'#FFCDD2'}}>
+                            ⚠️ {localZipError || zipLookupError}
+                        </div>
+                    )}
+                </div>
+                {/* Sign-in nudge */}
+                <div className="px-5 py-3 flex items-center justify-between"
+                    style={{borderTop:'1px solid rgba(255,255,255,0.10)'}}>
+                    <span className="text-xs" style={{color:'rgba(255,255,255,0.45)'}}>Already have an account?</span>
+                    <button onClick={onSignIn} className="text-xs font-bold btn-press" style={{color:'var(--ys-yellow)'}}>
+                        Sign In →
+                    </button>
+                </div>
+            </div>
+        );
+
+        // ── Step 2: Grass type ──
+        if (step === 'grass') return (
+            <div className="rounded-2xl overflow-hidden animate-fade-in ys-card">
+                <div className="px-5 pt-5 pb-4">
+                    <div className="flex items-center gap-3 mb-3">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                            style={{background:'var(--ys-green-100)'}}>🌱</div>
+                        <div>
+                            <div className="text-xs font-bold uppercase tracking-widest mb-0.5"
+                                style={{color:'var(--ys-green-600)'}}>
+                                Zone {lawnProfile && lawnProfile.zone ? lawnProfile.zone.toUpperCase() : '–'} &middot; Step 2 of 2
+                            </div>
+                            <h3 className="text-lg font-bold text-gray-800 leading-tight"
+                                style={{fontFamily:'var(--ys-font-display)'}}>
+                                What type of grass do you have?
+                            </h3>
+                        </div>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-4">
+                        Knowing your grass type unlocks a full year care program with research-backed timing. Not sure? You can always update it later in My Yard.
+                    </p>
+                    {/* Cool Season */}
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#3B82F6'}}>Cool Season</div>
+                    <div className="grid grid-cols-2 gap-2 mb-4">
+                        {COOL.map(g => (
+                            <button key={g.key} onClick={() => handleGrassSelect(g.key)}
+                                className="text-left px-3 py-2.5 rounded-xl border-2 text-sm font-semibold btn-press transition"
+                                style={{
+                                    borderColor: selectedGrass === g.key ? 'var(--ys-green-600)' : '#E5E7EB',
+                                    background:  selectedGrass === g.key ? 'var(--ys-green-50)' : 'white',
+                                    color:       selectedGrass === g.key ? 'var(--ys-green-700)' : '#374151',
+                                }}>
+                                {g.name}
+                            </button>
+                        ))}
+                    </div>
+                    {/* Warm Season */}
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#F97316'}}>Warm Season</div>
+                    <div className="grid grid-cols-2 gap-2 mb-4">
+                        {WARM.map(g => (
+                            <button key={g.key} onClick={() => handleGrassSelect(g.key)}
+                                className="text-left px-3 py-2.5 rounded-xl border-2 text-sm font-semibold btn-press transition"
+                                style={{
+                                    borderColor: selectedGrass === g.key ? 'var(--ys-green-600)' : '#E5E7EB',
+                                    background:  selectedGrass === g.key ? 'var(--ys-green-50)' : 'white',
+                                    color:       selectedGrass === g.key ? 'var(--ys-green-700)' : '#374151',
+                                }}>
+                                {g.name}
+                            </button>
+                        ))}
+                    </div>
+                    <button onClick={() => setStep('done')}
+                        className="w-full text-center text-xs text-gray-400 btn-press py-1">
+                        Not sure — skip for now
+                    </button>
+                </div>
+            </div>
+        );
+
+        // ── Step 3: Done / Account CTA ──
+        return (
+            <div className="rounded-2xl overflow-hidden animate-scale-in" style={{
+                background: 'linear-gradient(145deg, var(--ys-green-900) 0%, var(--ys-green-800) 60%, var(--ys-green-700) 100%)',
+                boxShadow: '0 8px 32px rgba(28,51,24,0.32)',
+                position: 'relative',
+            }}>
+                <div style={{position:'absolute',top:'-40px',right:'-30px',width:'180px',height:'180px',background:'rgba(255,255,255,0.04)',borderRadius:'50%',pointerEvents:'none'}} />
+                <div style={{position:'absolute',bottom:'-50px',left:'-20px',width:'140px',height:'140px',background:'rgba(255,255,255,0.03)',borderRadius:'50%',pointerEvents:'none'}} />
+                <div className="px-5 pt-6 pb-2" style={{position:'relative',zIndex:1}}>
+                    <div className="flex items-center gap-2 mb-3">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-base"
+                            style={{background:'var(--ys-yellow)'}}>✓</div>
+                        <div className="text-xs font-bold uppercase tracking-widest" style={{color:'rgba(255,255,255,0.6)'}}>
+                            Setup Complete
+                        </div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-1" style={{fontFamily:'var(--ys-font-display)'}}>
+                        Your yard plan is ready.
+                    </h3>
+                    <p className="text-sm mb-4" style={{color:'rgba(255,255,255,0.65)'}}>
+                        {selectedGrass && GRASS_INFO[selectedGrass] ? GRASS_INFO[selectedGrass].name : 'Personalized advice'}{' '}
+                        for Zone {lawnProfile && lawnProfile.zone ? lawnProfile.zone.toUpperCase() : '–'} is now active below.
+                        Create a free account to get the most out of Yardstick.
+                    </p>
+                    {/* Account perks list */}
+                    <div className="space-y-2 mb-5">
+                        {accountPerks.map(p => (
+                            <div key={p.icon} className="flex items-center gap-2.5">
+                                <span className="text-base flex-shrink-0">{p.icon}</span>
+                                <span className="text-xs font-medium" style={{color:'rgba(255,255,255,0.80)'}}>{p.text}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <button onClick={onSignIn}
+                        className="w-full ys-btn-primary py-3 text-sm font-bold rounded-xl btn-press">
+                        Create Free Account →
+                    </button>
+                </div>
+                {/* Sign-in nudge */}
+                <div className="px-5 py-3 flex items-center justify-between"
+                    style={{borderTop:'1px solid rgba(255,255,255,0.10)'}}>
+                    <span className="text-xs" style={{color:'rgba(255,255,255,0.45)'}}>Already have an account?</span>
+                    <button onClick={onSignIn} className="text-xs font-bold btn-press" style={{color:'var(--ys-yellow)'}}>
+                        Sign In →
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
     // ─── Main App ───────────────────────────────────────────────────────────────
     function LawnCareTracker() {
         const [activities, setActivities] = useState([]);
@@ -3395,6 +3642,8 @@ window.ResearchSourcesPage = () => (
         });
         const [zipLookupLoading, setZipLookupLoading] = useState(false);
         const [zipLookupError, setZipLookupError] = useState('');
+
+        // ── Splash card is shown whenever the user is not logged in (no state needed) ──
 
         // ── Auth state ──────────────────────────────────────────────────────────
         const [currentUser, setCurrentUser] = useState(null);
@@ -4007,6 +4256,17 @@ window.ResearchSourcesPage = () => (
                     <main className="flex-1 min-w-0 p-2 md:p-4 pb-6">
                     {!view && (
                         <div className="space-y-3">
+                            {/* Welcome Splash Card — first-time visitors only */}
+                            {!currentUser && (
+                                <WelcomeSplashCard
+                                    onZipLookup={lookupZoneByZip}
+                                    zipLookupLoading={zipLookupLoading}
+                                    zipLookupError={zipLookupError}
+                                    lawnProfile={lawnProfile}
+                                    onSignIn={() => setShowAuthModal(true)}
+                                    onSaveProfile={handleProfileSave}
+                                />
+                            )}
                             {/* Coach Card */}
                             <div className="ys-coach-card px-4 py-3">
                                 <div className="flex items-center justify-between" style={{position:'relative', zIndex:1}}>
