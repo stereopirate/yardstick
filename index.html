@@ -9,14 +9,14 @@
     <meta name="description" content="Research-backed lawn care tracking for DIY homeowners. Track mowing, fertilizing, watering and more — personalized by grass type and USDA zone.">
     <!-- Open Graph / social sharing -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://stereopirate.github.io/Lawn-care-tracker/">
+    <meta property="og:url" content="https://yardstick.diy">
     <meta property="og:title" content="Yardstick — Research-Backed Lawn Care">
     <meta property="og:description" content="Free lawn care tracker for DIY homeowners. Personalized schedules by grass type &amp; zone, activity logging, and season-by-season guidance.">
-    <meta property="og:image" content="https://stereopirate.github.io/Lawn-care-tracker/logo.png">
+    <meta property="og:image" content="https://yardstick.diy/yardstick-logo-light.svg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Yardstick — Research-Backed Lawn Care">
     <meta name="twitter:description" content="Free lawn care tracker for DIY homeowners. Personalized schedules by grass type &amp; zone, activity logging, and season-by-season guidance.">
-    <meta name="twitter:image" content="https://stereopirate.github.io/Lawn-care-tracker/logo.png">
+    <meta name="twitter:image" content="https://yardstick.diy/yardstick-logo-light.svg">
     <title>Yardstick - Research-Backed Lawn Care</title>
     <!-- ── Brand Fonts — Bitter + Cabin ── -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1552,7 +1552,7 @@ window.ResearchSourcesPage = () => (
                 <div className="auth-modal" onClick={e => e.stopPropagation()}>
                     {/* Logo */}
                     <div className="text-center mb-6">
-                        <img src="logo.svg" alt="Yardstick logo" className="h-14 w-14 mx-auto mb-2" />
+                        <img src="yardstick-logo-light.svg" alt="Yardstick logo" className="h-14 w-14 mx-auto mb-2" />
                         <div className="text-xl font-extrabold text-gray-900">Yardstick</div>
                         <div className="text-sm text-gray-500 mt-1">
                             {mode === 'signin' ? 'Sign in to sync your lawn data across devices' : 'Create a free account to save your data to the cloud'}
@@ -2823,7 +2823,7 @@ window.ResearchSourcesPage = () => (
         // ── Share ────────────────────────────────────────────────────────────────
         const [shareCopied, setShareCopied] = React.useState(false);
         const handleShare = () => {
-            const msg = '🌿 I\'ve been tracking my lawn care with Yardstick — it\'s free and research-backed! Check it out: https://stereopirate.github.io/Lawn-care-tracker/';
+            const msg = '🌿 I\'ve been tracking my lawn care with Yardstick — it\'s free and research-backed! Check it out: https://yardstick.diy';
             navigator.clipboard.writeText(msg).then(() => {
                 setShareCopied(true);
                 setTimeout(() => setShareCopied(false), 2500);
@@ -3724,7 +3724,7 @@ window.ResearchSourcesPage = () => (
         if (!authReady || dataLoading) {
             return (
                 <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-                    <img src="logo.svg" alt="Yardstick" className="h-20 w-20 mb-4" />
+                    <img src="yardstick-logo-light.svg" alt="Yardstick" className="h-20 w-20 mb-4" />
                     <div className="text-xl font-bold text-[#367C2B] mb-2">Yardstick</div>
                     <div className="text-sm text-gray-500">Loading your lawn data...</div>
                     <div className="mt-6 flex gap-1">
@@ -3748,7 +3748,7 @@ window.ResearchSourcesPage = () => (
                         {/* Logo */}
                         <button onClick={() => { setView(null); setSelectedActivityType(null); setMobileMenuOpen(false); }} className="flex items-center btn-press">
                             <div className="flex items-center gap-2.5">
-                                <img src="logo.svg" alt="Yardstick logo" className="h-8 w-8" />
+                                <img src="yardstick-logo-light.svg" alt="Yardstick logo" className="h-8 w-8" />
                                 <div className="flex flex-col leading-none">
                                     <span className="text-xl font-bold text-white tracking-tight" style={{fontFamily:'var(--ys-font-display)', lineHeight:'1.1'}}>Yardstick</span>
                                     <span className="text-white/50 font-medium" style={{fontSize:'9px', letterSpacing:'0.08em', textTransform:'uppercase'}}>Lawn Care</span>
