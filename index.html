@@ -1552,8 +1552,7 @@ window.ResearchSourcesPage = () => (
                 <div className="auth-modal" onClick={e => e.stopPropagation()}>
                     {/* Logo */}
                     <div className="text-center mb-6">
-                        <img src="yardstick-logo-light.svg" alt="Yardstick logo" className="h-auto mx-auto mb-2" style={{width:'200px'}} />
-                        <div className="text-xl font-extrabold text-gray-900">Yardstick</div>
+                        <img src="yardstick-logo-light.svg" alt="Yardstick logo" className="h-auto mx-auto mb-4" style={{width:'200px'}} />
                         <div className="text-sm text-gray-500 mt-1">
                             {mode === 'signin' ? 'Sign in to sync your lawn data across devices' : 'Create a free account to save your data to the cloud'}
                         </div>
@@ -3725,7 +3724,6 @@ window.ResearchSourcesPage = () => (
             return (
                 <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
                     <img src="yardstick-logo-light.svg" alt="Yardstick" className="h-auto mb-4" style={{width:'240px'}} />
-                    <div className="text-xl font-bold text-[#367C2B] mb-2">Yardstick</div>
                     <div className="text-sm text-gray-500">Loading your lawn data...</div>
                     <div className="mt-6 flex gap-1">
                         {[0,1,2].map(i => <div key={i} className="w-2 h-2 bg-[#367C2B] rounded-full animate-bounce" style={{animationDelay: `${i*0.15}s`}}></div>)}
