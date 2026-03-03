@@ -1390,6 +1390,11 @@ window.ResearchSourcesPage = () => (
     const ResearchSourcesPage = window.ResearchSourcesPage;
     const SchedulesView       = window.SchedulesView;
 
+    // ─── Feature Flags ───────────────────────────────────────────────────────────
+    // Set PRO_GATE_ENABLED = true when launching the Pro tier.
+    // While false, Pro-badged features remain fully usable by all users (beta).
+    const PRO_GATE_ENABLED = false;
+
     // ─── Firebase Data Layer ────────────────────────────────────────────────────
     // Wraps all reads/writes so the rest of the app doesn't care whether
     // data lives in localStorage or Firestore.
@@ -2187,6 +2192,20 @@ window.ResearchSourcesPage = () => (
             </div>
         );
     };
+
+    // ─── ProFeatureNotice ─────────────────────────────────────────────────────────
+    const ProFeatureNotice = ({ onUnlock }) => (
+        <div className="p-6 rounded-2xl border-2 border-amber-200 text-center" style={{background:'var(--ys-gold-100)'}}>
+            <div className="text-3xl mb-3">🔒</div>
+            <h3 className="font-bold text-gray-800 mb-1" style={{fontFamily:'var(--ys-font-display)'}}>Pro Feature</h3>
+            <p className="text-sm text-gray-500 mb-4">Sign in to unlock the Treatment Calculator and other Pro tools.</p>
+            <button onClick={onUnlock}
+                className="px-6 py-2.5 rounded-xl font-bold text-sm text-white btn-press"
+                style={{background:'var(--ys-green-600)'}}>
+                Sign in to unlock
+            </button>
+        </div>
+    );
 
     // ─── InlineCalculator ────────────────────────────────────────────────────────
     const InlineCalculator = ({ product }) => {
@@ -3675,7 +3694,7 @@ window.ResearchSourcesPage = () => (
     }
 
     // ─── TreatmentCalculator ─────────────────────────────────────────────────────
-    const TreatmentCalculator = ({ lawnProfile, onNavigate }) => {
+    const TreatmentCalculator = ({ lawnProfile, onNavigate, proGated, onUnlock }) => {
         const profileSize = lawnProfile && lawnProfile.lawnSize ? String(lawnProfile.lawnSize) : '';
         const categories = Object.keys(TREATMENT_CATEGORIES);
         const [category, setCategory] = React.useState('preemergent');
@@ -3717,9 +3736,13 @@ window.ResearchSourcesPage = () => (
 
         return (
             <div className="animate-fade-in">
-                <h2 style={{fontFamily:'var(--ys-font-display)'}} className="text-2xl font-bold text-gray-900 mb-1">Treatment Calculator</h2>
+                <div className="flex items-center gap-2 mb-1">
+                    <h2 style={{fontFamily:'var(--ys-font-display)'}} className="text-2xl font-bold text-gray-900">Treatment Calculator</h2>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>PRO</span>
+                </div>
                 <p className="text-sm text-gray-500 mb-5">Calculate exactly how much product you need based on your yard size.</p>
 
+                {proGated ? <ProFeatureNotice onUnlock={onUnlock} /> : (<React.Fragment>
                 {/* Category selector */}
                 <div className="mb-5">
                     <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">Treatment Type</label>
@@ -3825,6 +3848,7 @@ window.ResearchSourcesPage = () => (
                         Select a product and enter your yard area to see how much you need.
                     </div>
                 )}
+                </React.Fragment>)}
             </div>
         );
     };
@@ -4705,7 +4729,10 @@ window.ResearchSourcesPage = () => (
                             <button onClick={() => setView('calculator')} className="w-full bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-3 flex items-center gap-3 card-hover btn-press">
                                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{background:'var(--ys-green-100)'}}>🧮</div>
                                 <div className="flex-1 min-w-0 text-left">
-                                    <div className="text-sm font-bold text-gray-800">Treatment Calculator</div>
+                                    <div className="flex items-center gap-1.5">
+                                        <div className="text-sm font-bold text-gray-800">Treatment Calculator</div>
+                                        <span className="text-xs font-bold px-1.5 py-0 rounded-full" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)', lineHeight:'1.6'}}>PRO</span>
+                                    </div>
                                     <div className="text-xs text-gray-400">Calculate how much product to apply</div>
                                 </div>
                                 <div className="text-xs font-bold flex-shrink-0" style={{color:'var(--ys-green-600)'}}>→</div>
@@ -4808,7 +4835,7 @@ window.ResearchSourcesPage = () => (
                     {view === 'sources' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><ResearchSourcesPage /></div>}
                     {view === 'account' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><AccountPage activities={activities} equipment={equipment} lawnProfile={lawnProfile} store={store} currentUser={currentUser} onSignOut={handleSignOut} onSignIn={() => setShowAuthModal(true)} firebaseConfigured={!!fb.configured} userName={userName} onUserNameChange={handleUserNameChange} onNavigate={setView} /></div>}
                     {view === 'contact' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><ContactPage currentUser={currentUser} firebaseConfigured={!!fb.configured} /></div>}
-                    {view === 'calculator' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><TreatmentCalculator lawnProfile={lawnProfile} onNavigate={setView} /></div>}
+                    {view === 'calculator' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><TreatmentCalculator lawnProfile={lawnProfile} onNavigate={setView} proGated={PRO_GATE_ENABLED && !currentUser} onUnlock={() => setShowAuthModal(true)} /></div>}
 
                     {/* ─── Feedback Footer ─────────────────────────────────── */}
                     <div className="mt-8 mb-4 rounded-xl border border-[#367C2B]/20 bg-[#367C2B]/5 px-4 py-3 flex items-center gap-3">
