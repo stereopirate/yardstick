@@ -281,18 +281,28 @@
       color: var(--stone-light);
     }
 
+    /* ── Featured article grid ── */
+    .featured-grid {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    @media (min-width: 700px) {
+      .featured-grid { grid-template-columns: 1fr 1fr; }
+    }
+
     /* ── Featured article (full-width card) ── */
     .article-featured {
       background: var(--cream);
       border-radius: 5px;
       overflow: hidden;
       box-shadow: inset 0 0 0 1px rgba(30,26,20,0.12), 0 3px 14px rgba(30,26,20,0.09);
-      margin-bottom: 14px;
+      margin-bottom: 0;
       display: flex;
       flex-direction: column;
     }
-    @media (min-width: 600px) {
-      .article-featured { flex-direction: row; }
+    .featured-marker {
+      flex-shrink: 0;
     }
     .featured-marker {
       background: var(--green-dark);
@@ -847,6 +857,8 @@
       <span class="section-count">Foundational guides</span>
     </div>
 
+    <div class="featured-grid">
+
     <a href="/learn/crabgrass-pre-emergent-timing" class="article-featured" data-category="Weed Control" data-grass="All">
       <div class="featured-marker">
         <div>
@@ -878,6 +890,8 @@
         </div>
       </div>
     </a>
+
+    </div><!-- end featured-grid -->
 
     <!-- ── Weed Control ── -->
     <div class="category-section" data-category-section="Weed Control" style="display:none">
