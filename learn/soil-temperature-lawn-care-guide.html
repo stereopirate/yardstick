@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soil Temperature Guide for Lawn Care | Yardstick</title>
+  <meta name="description" content="The complete university-backed reference for soil temperature thresholds — seeding, fertilizing, pre-emergent timing, dormancy, and green-up — for every grass type.">
+  <meta name="keywords" content="soil temperature lawn care, soil temp grass seed germination, soil temperature fertilizer timing, when to fertilize soil temperature, lawn care temperature guide">
+  <link rel="canonical" href="https://yardstick.diy/learn/soil-temperature-lawn-care-guide">
+  <meta property="og:title" content="Soil Temperature Guide for Lawn Care | Yardstick">
+  <meta property="og:description" content="University-backed soil temperature thresholds for every lawn care activity — seeding, fertilizing, pre-emergent, green-up, and dormancy — by grass type.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://yardstick.diy/learn/soil-temperature-lawn-care-guide">
+  <meta property="og:site_name" content="Yardstick">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Soil Temperature Guide for Lawn Care",
+    "description": "University-backed soil temperature thresholds for every lawn care activity across all grass types and USDA zones.",
+    "author": { "@type": "Organization", "name": "Yardstick" },
+    "publisher": { "@type": "Organization", "name": "Yardstick", "url": "https://yardstick.diy" },
+    "datePublished": "2026-03-04",
+    "dateModified": "2026-03-04"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,600;0,700;0,900;1,700&family=Cabin:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ff-display: 'Bitter', Georgia, serif;
+      --ff-body: 'Cabin', sans-serif;
+      --ff-mono: 'Courier Prime', monospace;
+      --green: #367C2B;
+      --green-dark: #1E4D18;
+      --green-light: #4E9E40;
+      --yellow: #F5C842;
+      --straw: #D4A843;
+      --clay: #C05A2C;
+      --cream: #F7F3EC;
+      --bg: #EDE8DE;
+      --white: #FFFFFF;
+      --soil: #1E1A14;
+      --stone: #6B6560;
+      --stone-light: #B8B2AC;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: var(--ff-body); background: var(--bg); color: var(--soil); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { color: var(--green-dark); text-decoration: underline; }
+
+    /* ── Header ── */
+    .site-header { background: var(--green-dark); background-image: radial-gradient(ellipse at 100% 0%, rgba(78,158,64,0.18), transparent 60%); padding: 0 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(30,26,20,0.18); }
+    .site-header-inner { max-width: 1040px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .site-logo svg { display: block; }
+    .site-nav { display: flex; align-items: center; gap: 6px; }
+    .nav-link { font-family: var(--ff-body); font-size: 0.78rem; font-weight: 600; color: rgba(247,243,236,0.75); padding: 6px 10px; border-radius: 3px; transition: color 0.15s, background 0.15s; }
+    .nav-link:hover { color: var(--cream); background: rgba(247,243,236,0.08); text-decoration: none; }
+    .nav-link.hide-mobile { display: none; }
+    @media (min-width: 640px) { .nav-link.hide-mobile { display: block; } }
+    .nav-cta { background: var(--yellow); color: var(--soil); font-family: var(--ff-body); font-size: 0.78rem; font-weight: 700; padding: 7px 14px; border-radius: 3px; transition: background 0.15s, transform 0.15s; }
+    .nav-cta:hover { background: #E8BA2A; transform: translateY(-1px); text-decoration: none; color: var(--soil); }
+
+    /* ── Layout ── */
+    .page-wrap { max-width: 1040px; margin: 0 auto; padding: 0 14px; }
+    .content-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px 0 48px; }
+    @media (min-width: 820px) { .content-grid { grid-template-columns: 1fr 280px; gap: 28px; align-items: start; } }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb { padding: 14px 0 0; font-family: var(--ff-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone-light); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .breadcrumb a { color: var(--stone); }
+    .breadcrumb a:hover { color: var(--green); text-decoration: none; }
+
+    /* ── Article header ── */
+    .article-header { padding: 16px 0 20px; }
+    .article-meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 3px; font-family: var(--ff-body); font-size: 0.72rem; font-weight: 600; background: transparent; }
+    .badge-hub { border: 1.5px solid var(--clay); color: var(--clay); }
+    .badge-zones { border: 1.5px solid var(--straw); color: #7A5410; }
+    .badge-grass { border: 1.5px solid var(--green); color: var(--green-dark); }
+    .article-timestamp { font-family: var(--ff-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone-light); }
+    .article-headline { font-family: var(--ff-display); font-size: clamp(1.65rem, 5vw, 2.5rem); font-weight: 900; color: var(--green-dark); line-height: 1.15; margin-bottom: 12px; }
+    .article-deck { font-family: var(--ff-body); font-size: 1rem; color: var(--stone); line-height: 1.65; max-width: 660px; margin-bottom: 18px; }
+
+    /* ── Source bar ── */
+    .source-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(54,124,43,0.07); border: 1px solid rgba(54,124,43,0.18); border-radius: 5px; margin-bottom: 6px; flex-wrap: wrap; }
+    .source-bar-label { font-family: var(--ff-mono); font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--green-dark); white-space: nowrap; }
+    .source-bar-list { font-family: var(--ff-body); font-size: 0.78rem; color: var(--stone); }
+
+    /* ── Cards ── */
+    .card { background: var(--cream); border-radius: 5px; padding: 18px 20px; box-shadow: inset 0 0 0 1px rgba(30,26,20,0.12), 0 3px 14px rgba(30,26,20,0.09); }
+    .card + .card { margin-top: 14px; }
+    .card-eyebrow { font-family: var(--ff-mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--straw); display: block; margin-bottom: 5px; }
+    .card-title { font-family: var(--ff-display); font-size: 1.15rem; font-weight: 700; color: var(--green-dark); line-height: 1.3; margin-bottom: 10px; }
+    .card-body { font-family: var(--ff-body); font-size: 0.88rem; color: var(--stone); line-height: 1.65; }
+    .card-body p + p { margin-top: 10px; }
+    .card-divider { border: none; border-top: 1px dashed rgba(30,26,20,0.14); margin: 14px 0; }
+    .card-source { font-family: var(--ff-mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone-light); }
+    .card-source a { color: var(--stone-light); text-decoration: underline; }
+    .card-source a:hover { color: var(--green); }
+
+    /* ── Section headers ── */
+    .section-header { margin: 28px 0 14px; }
+    .section-eyebrow { font-family: var(--ff-mono); font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--straw); display: block; margin-bottom: 5px; }
+    .section-title { font-family: var(--ff-display); font-size: clamp(1.25rem, 3vw, 1.65rem); font-weight: 700; color: var(--green-dark); line-height: 1.2; }
+
+    /* ── Prose ── */
+    .prose { font-family: var(--ff-body); font-size: 0.9rem; color: var(--soil); line-height: 1.72; }
+    .prose p { margin-bottom: 14px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--soil); font-weight: 700; }
+    .prose sup { font-size: 0.65rem; color: var(--green); font-weight: 700; }
+    .prose sup a { color: var(--green); }
+    .prose sup a:hover { color: var(--green-dark); }
+
+    /* ── Threshold table ── */
+    .threshold-table { width: 100%; border-collapse: collapse; font-family: var(--ff-body); font-size: 0.82rem; margin: 14px 0; }
+    .threshold-table thead th { background: var(--green-dark); color: var(--cream); font-family: var(--ff-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 10px 12px; text-align: left; }
+    .threshold-table tbody tr:nth-child(even) { background: rgba(30,26,20,0.04); }
+    .threshold-table tbody td { padding: 10px 12px; border-bottom: 1px solid rgba(30,26,20,0.08); vertical-align: top; color: var(--soil); }
+    .threshold-table tbody td:first-child { font-weight: 600; color: var(--green-dark); white-space: nowrap; }
+    .threshold-table-wrap { overflow-x: auto; border-radius: 5px; box-shadow: inset 0 0 0 1px rgba(30,26,20,0.12); }
+
+    /* ── Temperature data block ── */
+    .temp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 14px 0; }
+    @media (min-width: 500px) { .temp-grid { grid-template-columns: repeat(4, 1fr); } }
+    .temp-cell { background: var(--cream); border-radius: 5px; padding: 14px 12px; text-align: center; box-shadow: inset 0 0 0 1px rgba(30,26,20,0.12); }
+    .temp-cell.active { background: var(--green-dark); }
+    .temp-cell.caution { background: rgba(212,168,67,0.12); border: 1.5px solid rgba(212,168,67,0.35); }
+    .temp-cell.danger { background: rgba(192,90,44,0.1); border: 1.5px solid rgba(192,90,44,0.25); }
+    .temp-val { font-family: var(--ff-display); font-size: 1.5rem; font-weight: 900; display: block; line-height: 1; margin-bottom: 5px; }
+    .temp-cell .temp-val { color: var(--green-dark); }
+    .temp-cell.active .temp-val { color: var(--yellow); }
+    .temp-cell.caution .temp-val { color: #7A5410; }
+    .temp-cell.danger .temp-val { color: var(--clay); }
+    .temp-label { font-family: var(--ff-mono); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; display: block; }
+    .temp-cell .temp-label { color: var(--stone); }
+    .temp-cell.active .temp-label { color: rgba(247,243,236,0.75); }
+    .temp-cell.caution .temp-label { color: #7A5410; }
+    .temp-cell.danger .temp-label { color: var(--clay); }
+
+    /* ── Alerts ── */
+    .alert { display: flex; align-items: flex-start; gap: 12px; border-radius: 5px; padding: 14px 16px; margin: 14px 0; }
+    .alert-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .alert-content { flex: 1; }
+    .alert-title { display: block; font-family: var(--ff-body); font-weight: 700; font-size: 0.88rem; margin-bottom: 4px; }
+    .alert-text { font-family: var(--ff-body); font-size: 0.82rem; line-height: 1.55; color: var(--soil); }
+    .alert-tip { background: rgba(212,168,67,0.12); border: 1px solid rgba(212,168,67,0.28); }
+    .alert-tip .alert-title { color: #7A5410; }
+    .alert-warn { background: rgba(192,90,44,0.1); border: 1px solid rgba(192,90,44,0.22); }
+    .alert-warn .alert-title { color: var(--clay); }
+    .alert-success { background: rgba(54,124,43,0.1); border: 1px solid rgba(54,124,43,0.22); }
+    .alert-success .alert-title { color: var(--green-dark); }
+
+    /* ── Sidebar ── */
+    .sidebar { display: flex; flex-direction: column; gap: 14px; }
+    @media (min-width: 820px) { .sidebar { position: sticky; top: 72px; } }
+
+    .toc-card { background: var(--cream); border-radius: 5px; padding: 18px; box-shadow: inset 0 0 0 1px rgba(30,26,20,0.12), 0 3px 14px rgba(30,26,20,0.09); }
+    .toc-title { font-family: var(--ff-mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone-light); display: block; margin-bottom: 10px; }
+    .toc-list { list-style: none; padding: 0; }
+    .toc-list li { border-bottom: 1px solid rgba(30,26,20,0.08); }
+    .toc-list li:last-child { border-bottom: none; }
+    .toc-list a { display: block; font-family: var(--ff-body); font-size: 0.8rem; font-weight: 600; color: var(--stone); padding: 8px 0; transition: color 0.15s; text-decoration: none; }
+    .toc-list a:hover { color: var(--green); }
+    .toc-list .toc-num { font-family: var(--ff-mono); font-size: 0.62rem; color: var(--stone-light); margin-right: 6px; }
+
+    .app-cta-card { background: var(--green-dark); background-image: radial-gradient(ellipse at 90% 0%, rgba(78,158,64,0.2), transparent 60%); border-radius: 5px; padding: 18px; overflow: hidden; }
+    .app-cta-eyebrow { font-family: var(--ff-mono); font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--yellow); display: block; margin-bottom: 6px; }
+    .app-cta-title { font-family: var(--ff-display); font-size: 1rem; font-weight: 700; color: var(--cream); line-height: 1.3; margin-bottom: 8px; }
+    .app-cta-body { font-family: var(--ff-body); font-size: 0.8rem; color: rgba(247,243,236,0.8); line-height: 1.55; margin-bottom: 14px; }
+    .btn-cta { display: block; background: var(--yellow); color: var(--soil); font-family: var(--ff-body); font-weight: 700; font-size: 0.84rem; padding: 11px 16px; border-radius: 3px; text-align: center; transition: background 0.15s; }
+    .btn-cta:hover { background: #E8BA2A; text-decoration: none; color: var(--soil); }
+
+    .quick-facts-card { background: var(--cream); border-radius: 5px; padding: 18px; box-shadow: inset 0 0 0 1px rgba(30,26,20,0.12), 0 3px 14px rgba(30,26,20,0.09); }
+    .qf-title { font-family: var(--ff-mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone-light); display: block; margin-bottom: 10px; }
+    .qf-list { list-style: none; padding: 0; }
+    .qf-item { display: flex; align-items: baseline; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(30,26,20,0.08); }
+    .qf-item:last-child { border-bottom: none; }
+    .qf-temp { font-family: var(--ff-display); font-size: 1.1rem; font-weight: 900; color: var(--green-dark); min-width: 46px; flex-shrink: 0; }
+    .qf-desc { font-family: var(--ff-body); font-size: 0.78rem; color: var(--stone); line-height: 1.4; }
+
+    /* ── Footnotes ── */
+    .footnotes { margin-top: 32px; padding-top: 18px; border-top: 2px solid rgba(30,26,20,0.1); }
+    .footnotes-title { font-family: var(--ff-mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone-light); display: block; margin-bottom: 12px; }
+    .footnotes ol { padding-left: 20px; }
+    .footnotes li { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--stone); line-height: 1.6; margin-bottom: 6px; }
+    .footnotes li a { color: var(--stone); word-break: break-all; }
+    .footnotes li a:hover { color: var(--green); }
+
+    /* ── Related articles ── */
+    .related-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
+    @media (min-width: 500px) { .related-grid { grid-template-columns: repeat(2, 1fr); } }
+    .related-card { background: var(--cream); border-radius: 5px; padding: 14px 16px; box-shadow: inset 0 0 0 1px rgba(30,26,20,0.12); text-decoration: none; display: block; transition: box-shadow 0.15s; }
+    .related-card:hover { box-shadow: inset 0 0 0 1px rgba(54,124,43,0.4), 0 3px 12px rgba(30,26,20,0.1); text-decoration: none; }
+    .related-eyebrow { font-family: var(--ff-mono); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone-light); display: block; margin-bottom: 4px; }
+    .related-title { font-family: var(--ff-body); font-size: 0.84rem; font-weight: 700; color: var(--green-dark); line-height: 1.3; }
+    .related-arrow { font-family: var(--ff-body); font-size: 0.76rem; color: var(--green); display: block; margin-top: 6px; font-weight: 600; }
+
+    /* ── Footer ── */
+    .site-footer { background: var(--soil); padding: 28px 16px; margin-top: 48px; }
+    .site-footer-inner { max-width: 1040px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-family: var(--ff-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(247,243,236,0.45); }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a { font-family: var(--ff-body); font-size: 0.76rem; color: rgba(247,243,236,0.55); font-weight: 600; }
+    .footer-links a:hover { color: var(--cream); text-decoration: none; }
+  </style>
+
+</head>
+<body>
+
+<!-- ── Site Header ── -->
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="https://yardstick.diy" class="site-logo" aria-label="Yardstick home">
+      <svg viewBox="0 0 200 38" height="28" width="auto" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <text x="0" y="30" font-family="Bitter, Georgia, serif" font-weight="900" font-size="32" fill="#F7F3EC" letter-spacing="-0.5">Yardstick</text>
+        <rect x="0" y="33" width="198" height="4" rx="1" fill="#F5C842"/>
+        <rect x="22" y="33" width="1.5" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="44" y="33" width="1.5" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="66" y="33" width="1.5" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="88" y="33" width="1.5" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="110" y="33" width="1.5" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="132" y="33" width="1.5" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="154" y="33" width="1.5" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="176" y="33" width="1.5" height="4" fill="#1E1A14" opacity="0.25"/>
+      </svg>
+    </a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="https://yardstick.diy/learn" class="nav-link">Learn</a>
+      <a href="https://yardstick.diy" class="nav-link hide-mobile">App</a>
+      <a href="https://yardstick.diy" class="nav-cta">Track your lawn</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── Page Content ── -->
+
+<main>
+  <div class="page-wrap">
+
+```
+<!-- Breadcrumb -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="https://yardstick.diy">Home</a>
+  <span aria-hidden="true">›</span>
+  <a href="https://yardstick.diy/learn">Learn</a>
+  <span aria-hidden="true">›</span>
+  <span>Soil temperature guide</span>
+</nav>
+
+<!-- Article Header -->
+<header class="article-header">
+  <div class="article-meta-row">
+    <span class="badge badge-hub">Hub guide</span>
+    <span class="badge badge-zones">All zones</span>
+    <span class="badge badge-grass">All grass types</span>
+    <span class="article-timestamp">Updated March 2026</span>
+  </div>
+  <h1 class="article-headline">Soil temperature guide<br>for lawn care</h1>
+  <p class="article-deck">Your lawn doesn't follow the calendar — it follows the soil. Every major lawn care activity has a precise soil temperature threshold backed by university research. This guide covers all of them, by grass type.</p>
+  <div class="source-bar">
+    <span class="source-bar-label">Sources</span>
+    <span class="source-bar-list">MU Extension · Penn State Extension · MSU Extension · Purdue Extension · University of Maryland · Nebraska Extension · Cornell Cooperative Extension · Oregon State University</span>
+  </div>
+</header>
+
+<!-- Content Grid -->
+<div class="content-grid">
+
+  <!-- Main Column -->
+  <article>
+
+    <!-- Section 1: Why soil temp, not air temp -->
+    <div id="why-soil-temp" class="section-header">
+      <span class="section-eyebrow">01 — The foundation</span>
+      <h2 class="section-title">Why soil temperature, not air temperature</h2>
+    </div>
+
+    <div class="prose">
+      <p>A warm April week doesn't mean your lawn is ready for fertilizer. An early October cold snap doesn't mean you've missed your seeding window. What controls nearly every biological process in your lawn — germination, root growth, nutrient uptake, dormancy, herbicide activation — is the temperature of the soil itself, measured at the depth where it actually happens.</p>
+      <p>Soil acts as a thermal insulator. Because its pore spaces are filled with air or water — both excellent insulators — soil warms and cools far more slowly than the air above it.<sup><a href="#fn-1">1</a></sup> Air temperatures can swing 30°F in a single day. At 2–4 inches of depth, those swings are almost invisible. This is why two consecutive warm days in February don't open your pre-emergent window, and why a cold snap in late September doesn't immediately halt cool-season grass growth.</p>
+      <p>The University of Maryland notes that "grass must be actively growing to benefit from fertilizer" and that fertilizer not taken up during dormancy leaches past the root zone entirely — wasting money and contributing to groundwater contamination.<sup><a href="#fn-2">2</a></sup> The threshold that defines "actively growing" is soil temperature, not the date on the calendar.</p>
+    </div>
+
+    <div class="alert alert-tip">
+      <span class="alert-icon">🌡️</span>
+      <div class="alert-content">
+        <strong class="alert-title">How to take an accurate reading</strong>
+        <span class="alert-text">Insert a probe thermometer 2–4 inches into the soil — the depth where grass seeds germinate and roots develop. Take readings in the early morning (around 8–9 AM), when the overnight chill is still present and surface heating from the sun hasn't begun. Take readings on 3–5 consecutive days and use the average. Single-day readings can be misleading.<sup><a href="#fn-3">3</a></sup></span>
+      </div>
+    </div>
+
+    <!-- Section 2: Cool-season thresholds -->
+    <div id="cool-season" class="section-header">
+      <span class="section-eyebrow">02 — Cool-season grasses</span>
+      <h2 class="section-title">Cool-season grass thresholds</h2>
+    </div>
+
+    <div class="prose">
+      <p>Cool-season grasses — Tall Fescue, Kentucky Bluegrass, Perennial Ryegrass, and Fine Fescues — are classified as C3 plants. Their physiology is optimized for the cool, moist conditions of spring and fall. According to the University of Missouri Extension's turfgrass management guide, cool-season grasses achieve best root growth when soil temperatures range between <strong>50°F and 65°F</strong>, and best shoot and leaf growth when air temperatures range between 60°F and 75°F.<sup><a href="#fn-4">4</a></sup> Penn State Extension confirms that optimum temperatures for leaf growth among cool-season turfgrasses fall in the 60–75°F range.<sup><a href="#fn-5">5</a></sup></p>
+    </div>
+
+    <!-- Cool-season temp grid -->
+    <div class="temp-grid">
+      <div class="temp-cell danger">
+        <span class="temp-val">&lt;40°F</span>
+        <span class="temp-label">Dormant / no growth</span>
+      </div>
+      <div class="temp-cell caution">
+        <span class="temp-val">40–50°F</span>
+        <span class="temp-label">Very slow growth resumes</span>
+      </div>
+      <div class="temp-cell active">
+        <span class="temp-val">50–65°F</span>
+        <span class="temp-label">Prime root growth window</span>
+      </div>
+      <div class="temp-cell caution">
+        <span class="temp-val">&gt;80°F</span>
+        <span class="temp-label">Stress / summer dormancy</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="card-eyebrow">Cool-season activity thresholds</span>
+      <h3 class="card-title">What to do at each soil temperature</h3>
+      <div class="threshold-table-wrap">
+        <table class="threshold-table">
+          <thead>
+            <tr>
+              <th>Soil Temp</th>
+              <th>Activity</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Below 45°F</td>
+              <td>Hold all inputs</td>
+              <td>Grass dormant or nearly so; fertilizer and seed both wasted</td>
+            </tr>
+            <tr>
+              <td>45–50°F</td>
+              <td>Early green-up monitoring</td>
+              <td>Watch for growth resumption; do not fertilize yet</td>
+            </tr>
+            <tr>
+              <td>50–55°F</td>
+              <td>Pre-emergent application window opens</td>
+              <td>Apply before crabgrass germinates; cool-season seed can germinate but slowly</td>
+            </tr>
+            <tr>
+              <td>50–65°F</td>
+              <td>Seed germination (spring or fall)</td>
+              <td>Optimal range for Kentucky Bluegrass, Tall Fescue, Perennial Ryegrass<sup><a href="#fn-6">6</a></sup></td>
+            </tr>
+            <tr>
+              <td>55–65°F</td>
+              <td>Spring fertilizer application</td>
+              <td>Grass actively growing; nutrients taken up efficiently<sup><a href="#fn-2">2</a></sup></td>
+            </tr>
+            <tr>
+              <td>65–75°F</td>
+              <td>Peak shoot growth</td>
+              <td>Mow frequently; avoid heavy nitrogen — root growth is slowing<sup><a href="#fn-5">5</a></sup></td>
+            </tr>
+            <tr>
+              <td>Above 80°F</td>
+              <td>Reduce all inputs; water if needed</td>
+              <td>Grass may enter summer dormancy; fertilizer can burn stressed turf</td>
+            </tr>
+            <tr>
+              <td>50–65°F (fall)</td>
+              <td>Fall seeding and fertilization</td>
+              <td>Best window for overseeding; fall nitrogen builds carbohydrate reserves<sup><a href="#fn-7">7</a></sup></td>
+            </tr>
+            <tr>
+              <td>Below 50°F (fall)</td>
+              <td>Late-fall fertilizer (dormant feeding)</td>
+              <td>Apply before ground freezes; slow-release N stored for spring green-up<sup><a href="#fn-8">8</a></sup></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <hr class="card-divider">
+      <p class="card-source">Sources: <a href="https://extension.missouri.edu/publications/mg10" target="_blank" rel="noopener">MU Extension MG10</a> · <a href="https://extension.psu.edu/the-cool-season-turfgrasses-basic-structures-growth-and-development" target="_blank" rel="noopener">Penn State Extension</a> · <a href="https://www.canr.msu.edu/resources/establishing_a_new_lawn_using_seed_e2910" target="_blank" rel="noopener">MSU Extension E2910</a></p>
+    </div>
+
+    <!-- Seeding detail -->
+    <div id="seeding" class="section-header">
+      <span class="section-eyebrow">03 — Seeding windows</span>
+      <h2 class="section-title">Soil temperature and grass seed germination</h2>
+    </div>
+
+    <div class="prose">
+      <p>Timing seed to soil temperature is the single most important variable in successful lawn establishment. MSU Extension confirms that cool-season grasses — Kentucky Bluegrass, Perennial Ryegrass, and Tall Fescue — grow best when soil temperatures are between <strong>50°F and 65°F</strong>.<sup><a href="#fn-6">6</a></sup> Below 50°F, germination stalls or fails entirely. Above 75–80°F, seeds desiccate before germinating, and competing summer weeds overwhelm young seedlings.</p>
+      <p>MSU Extension identifies <strong>August 15 to September 15</strong> as the best window for seeding cool-season lawns in the Great Lakes region — a window defined precisely because soil temperatures are in the optimal range and trending downward, not upward.<sup><a href="#fn-6">6</a></sup> Penn State Extension's lawn management guide echoes this, recommending late summer to early fall as the best seeding time for new lawn establishment, noting that new seedlings have two cool growing seasons (fall and spring) before encountering their first heat stress.<sup><a href="#fn-9">9</a></sup></p>
+      <p>Spring seeding is a second-best option. The window is shorter: soil temps must clear 50°F but you must finish seeding before they climb above 65–70°F and summer weed pressure intensifies. Work from your last expected frost date forward, not from a calendar month.</p>
+    </div>
+
+    <div class="alert alert-warn">
+      <span class="alert-icon">⚠️</span>
+      <div class="alert-content">
+        <strong class="alert-title">Pre-emergent and seeding conflict</strong>
+        <span class="alert-text">Pre-emergent herbicides (prodiamine, dithiopyr) create a chemical barrier that prevents all seed germination — including your grass seed. If you applied pre-emergent in spring, you typically need to wait 3–4 months before overseeding. Plan your fall seeding date first, then count backwards to determine whether spring pre-emergent is feasible that year. See our <a href="/learn/crabgrass-pre-emergent-timing-by-zone">crabgrass pre-emergent timing guide</a> for zone-specific windows.</span>
+      </div>
+    </div>
+
+    <!-- Section 3: Fertilizer timing -->
+    <div id="fertilizer" class="section-header">
+      <span class="section-eyebrow">04 — Fertilizer timing</span>
+      <h2 class="section-title">When soil temperature controls fertilizer effectiveness</h2>
+    </div>
+
+    <div class="prose">
+      <p>Fertilizer does not feed grass directly — it feeds the soil biology and makes nutrients available to roots actively growing in warm soil. When soil temperatures fall below 50–55°F, root activity slows dramatically and the grass cannot take up nitrogen efficiently, regardless of how much you apply.</p>
+      <p>Cornell Cooperative Extension, writing for New York's Department of Environmental Conservation, states directly: grass must be actively growing to benefit from fertilizer, and that fertilizer not absorbed by dormant grass "leaches into the subsoil and makes its way into groundwater."<sup><a href="#fn-2">2</a></sup> The DEC document notes that on Long Island, soil temperatures typically do not drop below 55°F until sometime in November — and that fall applications must be timed accordingly, giving the plant enough active-growth time to absorb nitrogen before it goes dormant.</p>
+      <p>For cool-season grasses, Purdue Extension is emphatic: <strong>cool-season turfgrass species should be fertilized mainly in the autumn</strong>, with September and November identified as the two best application times.<sup><a href="#fn-8">8</a></sup> Fall nitrogen promotes root development, enhances carbohydrate storage, extends color retention, and produces earlier spring green-up — without the flush of shoot growth that spring nitrogen causes.</p>
+      <p>Spring fertilization, by contrast, should be light and timed to when the grass is clearly growing — not the first warm week of March. Penn State Extension's seasonal management guide recommends applying spring fertilizer during mid- to late-spring, once the turf has broken dormancy and is actively growing.<sup><a href="#fn-9">9</a></sup></p>
+    </div>
+
+    <div class="alert alert-tip">
+      <span class="alert-icon">💡</span>
+      <div class="alert-content">
+        <strong class="alert-title">Late-fall "dormant feeding" for cool-season lawns</strong>
+        <span class="alert-text">Penn State Extension identifies a valuable late-fall nitrogen window: the period when foliar growth has slowed or stopped, but soil is not yet frozen. In most of Pennsylvania this is mid-November. Nitrogen applied at this time is stored in crown tissue and fuels early spring green-up without forcing fall top growth.<sup><a href="#fn-10">10</a></sup> Use slow-release formulations at this timing.</span>
+      </div>
+    </div>
+
+    <!-- Section 4: Warm-season thresholds -->
+    <div id="warm-season" class="section-header">
+      <span class="section-eyebrow">05 — Warm-season grasses</span>
+      <h2 class="section-title">Warm-season grass thresholds</h2>
+    </div>
+
+    <div class="prose">
+      <p>Warm-season grasses — Bermudagrass, Zoysiagrass, St. Augustinegrass, Centipedegrass — are classified as C4 plants. They are physiologically optimized for high-temperature conditions and have no meaningful activity in cool soils. According to the University of Missouri Extension, warm-season grasses achieve best shoot growth when <strong>air temperatures range 80–95°F</strong> and best root growth when <strong>soil temperatures range 75–85°F</strong>.<sup><a href="#fn-4">4</a></sup></p>
+      <p>These grasses begin dormancy when soil temperatures fall to 50°F. A widely cited Georgia Extension-sourced temperature chart documents the precise sequence: chilling injury is possible below 50°F, dormancy initiates at 50°F, root growth slows below 50°F, and root growth ceases entirely at 33°F for warm-season grasses.<sup><a href="#fn-11">11</a></sup></p>
+      <p>On the warm end: for warm-season grasses, the same chart shows shoot growth ceasing above 120°F and root growth ceasing above 110°F — extreme conditions that are rarely reached in typical lawn settings, but underscore why these grasses need heat to thrive.</p>
+    </div>
+
+    <!-- Warm-season temp grid -->
+    <div class="temp-grid">
+      <div class="temp-cell danger">
+        <span class="temp-val">&lt;50°F</span>
+        <span class="temp-label">Dormancy / discoloration</span>
+      </div>
+      <div class="temp-cell caution">
+        <span class="temp-val">50–65°F</span>
+        <span class="temp-label">Transitional — no fertilizer</span>
+      </div>
+      <div class="temp-cell active">
+        <span class="temp-val">65–85°F</span>
+        <span class="temp-label">Active growth / fertilize</span>
+      </div>
+      <div class="temp-cell active">
+        <span class="temp-val">75–85°F</span>
+        <span class="temp-label">Optimal root growth</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="card-eyebrow">Warm-season activity thresholds</span>
+      <h3 class="card-title">What to do at each soil temperature</h3>
+      <div class="threshold-table-wrap">
+        <table class="threshold-table">
+          <thead>
+            <tr>
+              <th>Soil Temp</th>
+              <th>Activity</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Below 50°F</td>
+              <td>No inputs — fully dormant</td>
+              <td>Dormancy initiates; chilling injury possible; no fertilizer, no herbicide<sup><a href="#fn-11">11</a></sup></td>
+            </tr>
+            <tr>
+              <td>50–65°F</td>
+              <td>Monitor for green-up</td>
+              <td>Grass transitioning out of dormancy; do not fertilize until more than 50% green<sup><a href="#fn-12">12</a></sup></td>
+            </tr>
+            <tr>
+              <td>65°F+</td>
+              <td>First fertilizer application</td>
+              <td>Roots actively growing in upper soil; nitrogen taken up efficiently<sup><a href="#fn-4">4</a></sup></td>
+            </tr>
+            <tr>
+              <td>65–70°F</td>
+              <td>Seed germination window opens</td>
+              <td>Minimum soil temp for Bermuda, Zoysia, St. Augustine seed germination<sup><a href="#fn-13">13</a></sup></td>
+            </tr>
+            <tr>
+              <td>75–85°F</td>
+              <td>Peak root growth / main fertilization period</td>
+              <td>Optimal root-zone soil temperature per MU Extension<sup><a href="#fn-4">4</a></sup></td>
+            </tr>
+            <tr>
+              <td>Below 65°F (fall)</td>
+              <td>Stop nitrogen applications</td>
+              <td>MU Extension: final warm-season N should be applied by late August<sup><a href="#fn-4">4</a></sup></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <hr class="card-divider">
+      <p class="card-source">Sources: <a href="https://extension.missouri.edu/publications/mg10" target="_blank" rel="noopener">MU Extension MG10</a> · <a href="https://www.walterreeves.com/lawn-care/importance-of-soil-temps/" target="_blank" rel="noopener">UGA-sourced temperature chart via Walter Reeves</a></p>
+    </div>
+
+    <div class="prose">
+      <p>A key practical point: Utah State University turfgrass specialist Kelly Kopp advises that warm-season grasses should not be fertilized until they are more than 50% green and soil temperatures at 4 inches reach 65°F.<sup><a href="#fn-12">12</a></sup> Fertilizing dormant or barely-active warm-season grass forces crown tissue growth without the root system to support it — increasing disease risk and wasting inputs.</p>
+    </div>
+
+    <!-- Section 5: Pre-emergent -->
+    <div id="pre-emergent" class="section-header">
+      <span class="section-eyebrow">06 — Weed control</span>
+      <h2 class="section-title">Pre-emergent herbicide and soil temperature</h2>
+    </div>
+
+    <div class="prose">
+      <p>Pre-emergent herbicides are the clearest example of a lawn care task where the application window is defined entirely by soil temperature, not the calendar. The target isn't the herbicide's stability — it's the germination biology of the weeds you're trying to prevent.</p>
+      <p>Crabgrass (<em>Digitaria</em> spp.) begins germinating when soil temperatures reach <strong>53–55°F</strong>, sustained for approximately 5 days, at 2–4 inches of depth. University of Maryland turfgrass specialist Geoffrey Rinehart states: "in order to germinate, crabgrass needs soil temperatures around 53–55°F sustained for 5 days."<sup><a href="#fn-14">14</a></sup> This is the trigger point that determines when to apply pre-emergent: your application must go down before the soil reaches this threshold, not after.</p>
+      <p>Michigan State University research documents that approximately 80% of crabgrass germination occurs between 60°F and 70°F — the period of maximum risk.<sup><a href="#fn-15">15</a></sup> Once soil temperatures consistently exceed 70°F, the germination window has largely closed, but so has the effective pre-emergent application window.</p>
+      <p>For goosegrass and spurge, the germination threshold is slightly higher: 60–65°F.<sup><a href="#fn-11">11</a></sup> In warm-climate zones (8–9), where crabgrass pressure is highest, pre-emergent timing often needs to precede what calendar-based guides suggest by several weeks.</p>
+      <p>For full zone-by-zone pre-emergent timing data, see our detailed guide: <a href="/learn/crabgrass-pre-emergent-timing-by-zone">Crabgrass pre-emergent timing by USDA zone</a>.</p>
+    </div>
+
+    <!-- Section 6: Dormancy & green-up -->
+    <div id="dormancy" class="section-header">
+      <span class="section-eyebrow">07 — Seasonal transitions</span>
+      <h2 class="section-title">Dormancy and spring green-up</h2>
+    </div>
+
+    <div class="prose">
+      <p>Dormancy in turfgrass is not a disease or a sign of failure — it is a physiologically regulated state that protects the plant's crown during periods of heat or cold stress. Understanding which temperatures trigger dormancy entry and exit helps you plan around it rather than fight it.</p>
+    </div>
+
+    <div class="card">
+      <span class="card-eyebrow">Dormancy reference</span>
+      <h3 class="card-title">Cool-season vs. warm-season dormancy triggers</h3>
+      <div class="threshold-table-wrap">
+        <table class="threshold-table">
+          <thead>
+            <tr>
+              <th>Grass type</th>
+              <th>Dormancy enters</th>
+              <th>Growth resumes</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cool-season (KBG, Fescue, Rye)</td>
+              <td>Summer: soil above ~80°F / Winter: soil below ~40–45°F</td>
+              <td>Spring: soil clears 50°F / Fall: soil drops below 70°F</td>
+              <td>Winter dormancy ends well before air temps feel "warm"<sup><a href="#fn-4">4</a></sup></td>
+            </tr>
+            <tr>
+              <td>Warm-season (Bermuda, Zoysia, St. Augustine)</td>
+              <td>Fall: soil at/below 50°F</td>
+              <td>Spring: soil consistently above 65°F</td>
+              <td>50% green-up rule applies before any inputs<sup><a href="#fn-12">12</a></sup></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <hr class="card-divider">
+      <p class="card-source">Sources: <a href="https://extension.missouri.edu/publications/mg10" target="_blank" rel="noopener">MU Extension MG10</a> · <a href="https://www.walterreeves.com/lawn-care/importance-of-soil-temps/" target="_blank" rel="noopener">UGA temperature chart via Walter Reeves</a></p>
+    </div>
+
+    <div class="prose">
+      <p>For cool-season grasses, summer dormancy is an important survival mechanism. Nebraska Extension notes that Kentucky Bluegrass can typically survive dormancy periods of 4–5 weeks, but survival drops significantly if temperatures remain continuously above 80°F for longer periods. Applying 0.25 inches of water every 3–4 weeks during dormancy keeps crowns hydrated without triggering premature green-up.<sup><a href="#fn-16">16</a></sup></p>
+      <p>A common mistake is applying fertilizer to cool-season grass immediately on the first warm spring day. Penn State's seasonal management guide notes that during "peak periods of growth in the spring, you may need to mow your lawn more than once per week" — a sign the grass is already growing vigorously before most homeowners think to fertilize.<sup><a href="#fn-9">9</a></sup> Let the grass tell you it's growing (mow before you feed).</p>
+    </div>
+
+    <!-- Section 7: Aeration -->
+    <div id="aeration" class="section-header">
+      <span class="section-eyebrow">08 — Aeration timing</span>
+      <h2 class="section-title">Aeration and soil temperature</h2>
+    </div>
+
+    <div class="prose">
+      <p>Aeration timing is governed by a simple principle: aerate when the grass is actively growing and can recover quickly, not when it is dormant or stressed. Penn State Extension specifies that "aeration should be performed during periods of cool weather — early to mid-spring or late summer to early fall — to facilitate rapid recovery."<sup><a href="#fn-9">9</a></sup> For cool-season grasses, this maps to the 50–65°F soil temperature window. For warm-season grasses, late spring to early summer — when soil temperatures are in the 65–80°F range and the grass is in active growth — is the recommended window per MU Extension.<sup><a href="#fn-4">4</a></sup></p>
+      <p>Aerating warm-season grass while still in dormancy (soil below 50–55°F) creates open channels that can desiccate crown tissue, delays spring green-up, and does not recover before summer heat. Aerating cool-season grass when soil exceeds 80°F subjects already-stressed turf to additional injury with no recovery capacity.</p>
+    </div>
+
+    <!-- Section 8: How to monitor -->
+    <div id="monitoring" class="section-header">
+      <span class="section-eyebrow">09 — Practical tools</span>
+      <h2 class="section-title">How to monitor soil temperature</h2>
+    </div>
+
+    <div class="prose">
+      <p>You have three options for knowing your soil temperature: measure it yourself, look it up from a nearby weather station, or use the Yardstick app, which estimates your current soil temperature from live weather data.</p>
+    </div>
+
+    <div class="card">
+      <span class="card-eyebrow">Three monitoring methods</span>
+      <h3 class="card-title">From least to most accurate</h3>
+      <div class="card-body">
+        <p><strong>Method 1 — Estimate from air temperature.</strong> Average your high and low air temperatures over the past 3 days and subtract 7–10°F. This is a rough estimate — useful for a quick check but not reliable for critical timing decisions like pre-emergent application.</p>
+        <p><strong>Method 2 — NOAA soil temperature maps.</strong> The USDA and NOAA maintain free soil temperature mapping tools updated from weather station data. Useful for regional trends but may not reflect your specific microclimate, especially in hilly or shaded areas.</p>
+        <p><strong>Method 3 — Probe thermometer.</strong> The most accurate method. Insert a probe 2–4 inches into the soil at 8–9 AM. Take readings on 3 consecutive days. Average them. This is the same protocol used by university extension services to define their application windows.<sup><a href="#fn-3">3</a></sup> An inexpensive ($10–$15) analog probe thermometer from any garden center is sufficient.</p>
+      </div>
+    </div>
+
+    <div class="alert alert-success">
+      <span class="alert-icon">📱</span>
+      <div class="alert-content">
+        <strong class="alert-title">Track soil temperature in Yardstick</strong>
+        <span class="alert-text">The Yardstick app estimates your current soil temperature from Open-Meteo weather data and displays it on your dashboard alongside your grass type's key thresholds. No login required — just enter your ZIP code and grass type. <a href="https://yardstick.diy">Open the app →</a></span>
+      </div>
+    </div>
+
+    <!-- Related articles -->
+    <div class="section-header">
+      <span class="section-eyebrow">Keep reading</span>
+      <h2 class="section-title">Related guides</h2>
+    </div>
+    <div class="related-grid">
+      <a href="/learn/crabgrass-pre-emergent-timing-by-zone" class="related-card">
+        <span class="related-eyebrow">Weed control</span>
+        <span class="related-title">Crabgrass pre-emergent timing by USDA zone</span>
+        <span class="related-arrow">Read guide →</span>
+      </a>
+      <a href="/learn/tall-fescue-fertilizer-schedule" class="related-card">
+        <span class="related-eyebrow">Cool-season</span>
+        <span class="related-title">Tall Fescue fertilizer schedule by month</span>
+        <span class="related-arrow">Coming soon →</span>
+      </a>
+      <a href="/learn/bermuda-grass-fertilizer-schedule" class="related-card">
+        <span class="related-eyebrow">Warm-season</span>
+        <span class="related-title">Bermuda grass fertilizer schedule by zone</span>
+        <span class="related-arrow">Coming soon →</span>
+      </a>
+      <a href="/learn/when-to-overseed-cool-season-grass" class="related-card">
+        <span class="related-eyebrow">Seeding</span>
+        <span class="related-title">When to overseed cool-season grass by zone</span>
+        <span class="related-arrow">Coming soon →</span>
+      </a>
+    </div>
+
+    <!-- Footnotes -->
+    <div class="footnotes">
+      <span class="footnotes-title">Sources &amp; citations</span>
+      <ol>
+        <li id="fn-1">Green Meadow Lawn Care. "When Does Grass Seed Germinate? Air Temp vs. Soil Temp." Soil acts as an insulator — pore spaces of air and water slow temperature change significantly compared to air. <a href="https://blog.greenmeadowlawncare.com/when-does-grass-seed-germinate-air-temp-vs-soil-temp" target="_blank" rel="noopener">blog.greenmeadowlawncare.com</a></li>
+        <li id="fn-2">New York State DEC / Cornell Cooperative Extension. "Timing Fertilizer Application on Long Island." N. Portmess, A.M. Petrovic, Cornell University. Grass must be actively growing to benefit from fertilizer; fertilizer not absorbed leaches to groundwater. <a href="https://extapps.dec.ny.gov/docs/water_pdf/ffstiming.pdf" target="_blank" rel="noopener">extapps.dec.ny.gov</a></li>
+        <li id="fn-3">Cooperative Extension via Ask Extension. "When to measure soil temperature." Take readings in early morning; insert to seed/root depth; 3 consecutive days for reliable average. <a href="https://ask.extension.org/kb/faq.php?id=747476" target="_blank" rel="noopener">ask.extension.org</a></li>
+        <li id="fn-4">Fresenburg, B. and Miller, L. University of Missouri Extension. "Managing Lawns and Turfgrass." MG10. Cool-season grasses: best root growth 50–65°F, leaf growth at air 60–75°F. Warm-season grasses: best shoot growth at air 80–95°F, best root growth soil 75–85°F. Final warm-season N by late August. <a href="https://extension.missouri.edu/publications/mg10" target="_blank" rel="noopener">extension.missouri.edu/publications/mg10</a></li>
+        <li id="fn-5">Landschoot, P. Penn State Extension. "The Cool-Season Turfgrasses: Basic Structures, Growth and Development." Optimum temperatures for leaf growth among cool-season turfgrasses range from 60°F to 75°F. <a href="https://extension.psu.edu/the-cool-season-turfgrasses-basic-structures-growth-and-development" target="_blank" rel="noopener">extension.psu.edu</a></li>
+        <li id="fn-6">Michigan State University Extension. "Establishing a New Lawn Using Seed." E2910. Cool-season grasses grow best when soil temperatures are between 50 and 65°F; best seeding window August 15 – September 15. <a href="https://www.canr.msu.edu/resources/establishing_a_new_lawn_using_seed_e2910" target="_blank" rel="noopener">canr.msu.edu</a></li>
+        <li id="fn-7">Purdue Turfgrass Science. "Fertilizer." Fall nitrogen promotes good root development, enhances storage of energy reserves, and extends color retention in cool-season lawns. <a href="https://turf.purdue.edu/category/maintenance/fertilizer/" target="_blank" rel="noopener">turf.purdue.edu</a></li>
+        <li id="fn-8">Purdue Turfgrass Science. "Fertilizer." Cool-season turfgrass species should be fertilized mainly in the autumn. September and November are the two best times to fertilize a lawn in Indiana. <a href="https://turf.purdue.edu/category/maintenance/fertilizer/" target="_blank" rel="noopener">turf.purdue.edu</a></li>
+        <li id="fn-9">Landschoot, P. Penn State Extension. "Lawn Management Through the Seasons." Late summer to early fall is best for seed establishment; spring fertilizer applied when turf is actively growing; aerate during cool weather. <a href="https://extension.psu.edu/lawn-management-through-the-seasons" target="_blank" rel="noopener">extension.psu.edu</a></li>
+        <li id="fn-10">Landschoot, P. Penn State Extension. "Turfgrass Fertilization: A Basic Guide." Late-fall fertilization defined as the time foliar growth slows or stops but soil is not frozen; most areas of Pennsylvania, mid-November. <a href="https://extension.psu.edu/turfgrass-fertilization-a-basic-guide-for-professional-turfgrass-managers" target="_blank" rel="noopener">extension.psu.edu</a></li>
+        <li id="fn-11">Reeves, W. "Importance of Soil Temps." UGA Extension-sourced temperature thresholds for warm- and cool-season grasses. Warm-season: dormancy at 50°F; root growth ceases at 33°F; goosegrass/spurge germinate at 60–65°F. <a href="https://www.walterreeves.com/lawn-care/importance-of-soil-temps/" target="_blank" rel="noopener">walterreeves.com</a></li>
+        <li id="fn-12">Kopp, K. Utah State University Extension. Quoted in LawnStarter "Spring Lawn Care Calendar by Region." Warm-season grasses should not be fertilized until more than 50% green and soil temperatures at 4 inches reach 65°F. <a href="https://www.lawnstarter.com/blog/lawn-care-2/spring-calendar-cool-season-vs-warm-season-grass/" target="_blank" rel="noopener">lawnstarter.com (Kelly Kopp / USU Extension)</a></li>
+        <li id="fn-13">NMSU Extension. "Turfgrass Establishment." H509. Warm-season grasses require soil temperatures of 65°F or above for establishment; historically considered necessary for buffalograss and bermudagrass seeding. <a href="https://pubs.nmsu.edu/_h/H509/index.html" target="_blank" rel="noopener">pubs.nmsu.edu</a></li>
+        <li id="fn-14">Rinehart, G. University of Maryland Institute of Applied Agriculture. "Early Spring Lawn Tips for Fertilizer and Pre-emergent Timing." Crabgrass needs soil temperatures around 53–55°F sustained for 5 days to germinate. <a href="https://marylandgrows.umd.edu/2023/03/13/early-spring-lawn-tips-for-fertilizer-and-pre-emergent-timing/" target="_blank" rel="noopener">marylandgrows.umd.edu</a></li>
+        <li id="fn-15">Michigan State University Extension. Crabgrass germination research: approximately 80% of germination occurs when soil temperatures are between 60°F and 70°F. Referenced in Yardstick crabgrass pre-emergent timing guide. <a href="/learn/crabgrass-pre-emergent-timing-by-zone">yardstick.diy/learn/crabgrass-pre-emergent-timing-by-zone</a></li>
+        <li id="fn-16">Nebraska Extension. "Lawn Water Use During Drought." G2191. Kentucky Bluegrass can typically survive dormancy periods of 4–5 weeks; 0.25 inch water every 3–4 weeks maintains crown hydration without green-up. <a href="https://extensionpubs.unl.edu/publication/g2191/na/html/view" target="_blank" rel="noopener">extensionpubs.unl.edu</a></li>
+      </ol>
+    </div>
+
+  </article>
+
+  <!-- Sidebar Column -->
+  <aside class="sidebar" aria-label="Sidebar">
+
+    <!-- TOC -->
+    <div class="toc-card">
+      <span class="toc-title">In this guide</span>
+      <ul class="toc-list">
+        <li><a href="#why-soil-temp"><span class="toc-num">01</span> Why soil temp matters</a></li>
+        <li><a href="#cool-season"><span class="toc-num">02</span> Cool-season thresholds</a></li>
+        <li><a href="#seeding"><span class="toc-num">03</span> Seed germination</a></li>
+        <li><a href="#fertilizer"><span class="toc-num">04</span> Fertilizer timing</a></li>
+        <li><a href="#warm-season"><span class="toc-num">05</span> Warm-season thresholds</a></li>
+        <li><a href="#pre-emergent"><span class="toc-num">06</span> Pre-emergent timing</a></li>
+        <li><a href="#dormancy"><span class="toc-num">07</span> Dormancy &amp; green-up</a></li>
+        <li><a href="#aeration"><span class="toc-num">08</span> Aeration timing</a></li>
+        <li><a href="#monitoring"><span class="toc-num">09</span> How to monitor</a></li>
+      </ul>
+    </div>
+
+    <!-- Quick facts -->
+    <div class="quick-facts-card">
+      <span class="qf-title">Key thresholds at a glance</span>
+      <ul class="qf-list">
+        <li class="qf-item">
+          <span class="qf-temp">50°F</span>
+          <span class="qf-desc">Cool-season root growth resumes; warm-season dormancy begins</span>
+        </li>
+        <li class="qf-item">
+          <span class="qf-temp">53–55°F</span>
+          <span class="qf-desc">Crabgrass germination threshold — pre-emergent must be down</span>
+        </li>
+        <li class="qf-item">
+          <span class="qf-temp">50–65°F</span>
+          <span class="qf-desc">Cool-season seed germination window; optimal root growth range</span>
+        </li>
+        <li class="qf-item">
+          <span class="qf-temp">55–65°F</span>
+          <span class="qf-temp">Fertilize cool-season grass (spring or fall)</span>
+        </li>
+        <li class="qf-item">
+          <span class="qf-temp">65°F+</span>
+          <span class="qf-desc">Warm-season grass safe to fertilize; seed germination begins</span>
+        </li>
+        <li class="qf-item">
+          <span class="qf-temp">75–85°F</span>
+          <span class="qf-desc">Peak warm-season root growth; ideal aeration window for Bermuda/Zoysia</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- App CTA -->
+    <div class="app-cta-card">
+      <span class="app-cta-eyebrow">Free app — no login required</span>
+      <h3 class="app-cta-title">See your current soil temperature</h3>
+      <p class="app-cta-body">Yardstick estimates your real-time soil temperature from live weather data and shows where you stand against every key threshold for your grass type.</p>
+      <a href="https://yardstick.diy" class="btn-cta">Track your lawn →</a>
+    </div>
+
+  </aside>
+</div><!-- /content-grid -->
+```
+
+  </div><!-- /page-wrap -->
+</main>
+
+<!-- ── Footer ── -->
+
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer-inner">
+    <svg viewBox="0 0 200 38" height="24" width="auto" xmlns="http://www.w3.org/2000/svg" aria-label="Yardstick">
+      <text x="0" y="30" font-family="Bitter, Georgia, serif" font-weight="900" font-size="32" fill="#F7F3EC" letter-spacing="-0.5">Yardstick</text>
+      <rect x="0" y="33" width="198" height="4" rx="1" fill="#F5C842"/>
+    </svg>
+    <span class="footer-copy">© 2026 Yardstick · yardstick.diy</span>
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="https://yardstick.diy/learn">Learn</a>
+      <a href="https://yardstick.diy">App</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
