@@ -2219,7 +2219,7 @@ window.ResearchSourcesPage = () => (
                 </button>
                 {onViewPricing && (
                     <button onClick={onViewPricing} className="w-full text-sm font-semibold text-gray-400 py-1 btn-press">
-                        See Pro pricing
+                        Learn about Pro →
                     </button>
                 )}
             </div>
@@ -2898,6 +2898,120 @@ window.ResearchSourcesPage = () => (
                                     {s.title && <span className="text-gray-400">— {s.title}</span>}
                                 </div>
                             ))}
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    // ─── ProSignupView ────────────────────────────────────────────────────────────
+    const ProSignupView = ({ currentUser, firebaseConfigured, onClose }) => {
+        const fb = window.__FIREBASE__ || {};
+        const [email, setEmail] = React.useState(currentUser?.email || '');
+        const [submitting, setSubmitting] = React.useState(false);
+        const [submitted, setSubmitted] = React.useState(() => !!localStorage.getItem('yardstick_pro_interest_submitted'));
+        const [error, setError] = React.useState(null);
+
+        const PRO_FEATURES = [
+            ['📅', 'Full Year Lawn Care Program', 'Personalized monthly schedules by grass type & zone'],
+            ['🧮', 'Treatment Calculator', 'Calculate exact product amounts for your yard size'],
+            ['🗓️', 'My Tasks', 'Recurring reminders with due-date tracking'],
+            ['📊', 'Advanced Stats & Dashboard', 'Monthly breakdowns, streaks & activity trends'],
+            ['📖', 'Product Guide', 'Curated mower, spreader & fertilizer database'],
+            ['☁️', 'Cloud Sync', 'Access your data on any device, never lose history'],
+        ];
+
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+            if (!email.trim()) return;
+            setSubmitting(true); setError(null);
+            const payload = { email: email.trim(), userId: currentUser?.uid || null, submittedAt: new Date().toISOString() };
+            const saveToLocal = () => {
+                const existing = JSON.parse(localStorage.getItem('yardstick_pro_interest') || '[]');
+                existing.push(payload);
+                localStorage.setItem('yardstick_pro_interest', JSON.stringify(existing));
+            };
+            try {
+                if (firebaseConfigured && fb.configured) {
+                    try {
+                        await fb.addDoc(fb.collection(fb.db, 'proInterest'), { ...payload, submittedAt: fb.serverTimestamp() });
+                    } catch { saveToLocal(); }
+                } else {
+                    saveToLocal();
+                }
+                localStorage.setItem('yardstick_pro_interest_submitted', 'true');
+                setSubmitted(true);
+            } catch {
+                setError('Could not submit — please try again.');
+            } finally {
+                setSubmitting(false);
+            }
+        };
+
+        return (
+            <div className="space-y-5 animate-fade-in">
+                <div>
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white" style={{background:'var(--ys-gold-500)'}}>PRO</span>
+                        <span className="text-xs text-gray-400 font-semibold">Coming soon</span>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-800 leading-tight" style={{fontFamily:'var(--ys-font-display)'}}>Get early access to Yardstick Pro</h2>
+                    <p className="text-sm text-gray-500 mt-1">Join the waitlist and be the first to know when Pro launches.</p>
+                </div>
+
+                {/* Feature list */}
+                <div className="rounded-2xl overflow-hidden border" style={{borderColor:'var(--ys-gold-300)', background:'linear-gradient(135deg, #fffbeb 0%, #fef3c7 60%, #fff 100%)'}}>
+                    <div className="px-4 pt-4 pb-3">
+                        <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{color:'var(--ys-gold-500)'}}>What's included in Pro</div>
+                        <div className="space-y-3">
+                            {PRO_FEATURES.map(([icon, title, desc]) => (
+                                <div key={title} className="flex items-start gap-3">
+                                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-base" style={{background:'var(--ys-gold-100)'}}>
+                                        {icon}
+                                    </div>
+                                    <div className="min-w-0">
+                                        <div className="text-sm font-bold text-gray-800">{title}</div>
+                                        <div className="text-xs text-gray-500">{desc}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Signup form or success */}
+                {submitted ? (
+                    <div className="rounded-2xl border p-5 text-center" style={{background:'var(--ys-green-100)', borderColor:'var(--ys-green-200)'}}>
+                        <div className="text-3xl mb-2">🎉</div>
+                        <div className="font-bold text-gray-800 mb-1" style={{fontFamily:'var(--ys-font-display)'}}>You're on the list!</div>
+                        <div className="text-sm text-gray-500">We'll email you as soon as Pro is ready. Thanks for your interest!</div>
+                        {onClose && <button onClick={onClose} className="mt-4 text-sm font-bold btn-press" style={{color:'var(--ys-green-600)'}}>← Back to app</button>}
+                    </div>
+                ) : (
+                    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                        <div className="font-bold text-gray-800 mb-1">Notify me when Pro launches</div>
+                        <div className="text-xs text-gray-400 mb-4">No spam. One email when it's ready.</div>
+                        <form onSubmit={handleSubmit} className="space-y-3">
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                placeholder="your@email.com"
+                                required
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#367C2B]"
+                            />
+                            {error && <div className="text-xs text-red-500">{error}</div>}
+                            <button
+                                type="submit"
+                                disabled={submitting || !email.trim()}
+                                className="w-full py-3 rounded-xl text-sm font-bold text-white btn-press disabled:opacity-50"
+                                style={{background:'var(--ys-gold-500)', boxShadow:'0 4px 16px rgba(200,150,12,0.28)'}}>
+                                {submitting ? 'Submitting…' : 'Join the Pro Waitlist →'}
+                            </button>
+                        </form>
+                        <div className="mt-4 pt-3 border-t border-gray-100 text-center text-xs text-gray-400">
+                            Already want to use the app? <button onClick={onClose} className="font-bold btn-press" style={{color:'var(--ys-green-600)'}}>Continue for free →</button>
                         </div>
                     </div>
                 )}
@@ -4050,7 +4164,7 @@ window.ResearchSourcesPage = () => (
                 </div>
                 <p className="text-sm text-gray-500 mb-5">Calculate exactly how much product you need based on your yard size.</p>
 
-                {proGated ? <ProFeatureNotice featureName="Treatment Calculator" onUnlock={onUnlock} onViewPricing={onNavigate ? () => onNavigate('pricing') : null} /> : (<React.Fragment>
+                {proGated ? <ProFeatureNotice featureName="Treatment Calculator" onUnlock={onUnlock} onViewPricing={onNavigate ? () => onNavigate('proSignup') : null} /> : (<React.Fragment>
                 {/* Category selector */}
                 <div className="mb-5">
                     <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">Treatment Type</label>
@@ -4862,7 +4976,7 @@ window.ResearchSourcesPage = () => (
                         <div className="ys-sidebar-section-label mt-2">Resources</div>
                         {[
                             { key: 'products', emoji: '📖', label: 'Product Guide', pro: true },
-                            { key: 'pricing',  emoji: '✨', label: 'Plans & Pricing' },
+                            { key: 'proSignup', emoji: '⭐', label: 'Join Pro Waitlist' },
                             { key: 'sources',  emoji: '📚', label: 'Research Sources' },
                             { key: 'contact',  emoji: '💬', label: 'Help & Feedback' },
                             { key: 'account', emoji: '👤', label: 'My Account' },
@@ -5181,6 +5295,19 @@ window.ResearchSourcesPage = () => (
                                     </div>
                                 );
                             })()}
+                            {/* Data-loss warning — logged-out users with activities */}
+                            {!currentUser && activities.length > 0 && (
+                                <div className="rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3 flex items-start gap-3">
+                                    <span className="text-lg flex-shrink-0 mt-0.5">⚠️</span>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="text-sm font-bold text-gray-800 mb-0.5">Your lawn data is only on this device</div>
+                                        <div className="text-xs text-gray-500">Create a free account to back up your {activities.length} {activities.length === 1 ? 'activity' : 'activities'} and access them anywhere.</div>
+                                    </div>
+                                    <button onClick={() => setView('account')} className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg text-white btn-press" style={{background:'var(--ys-green-600)'}}>
+                                        Back Up →
+                                    </button>
+                                </div>
+                            )}
                             {/* Monthly summary strip */}
                             {(() => {
                                 const thisMonth = new Date().getMonth();
@@ -5208,32 +5335,43 @@ window.ResearchSourcesPage = () => (
                                     </div>
                                 );
                             })()}
-                            {/* Pro soft banner — only shown to logged-out users */}
+                            {/* Pro callout card — only shown to logged-out users */}
                             {!currentUser && (
-                                <div className="flex items-center gap-3 px-4 py-3 rounded-xl border" style={{background:'var(--ys-gold-100)', borderColor:'var(--ys-gold-300)'}}>
-                                    <span className="text-xs font-bold px-2 py-0.5 rounded-full text-white flex-shrink-0" style={{background:'var(--ys-gold-500)'}}>PRO</span>
-                                    <span className="text-xs font-semibold text-gray-700 flex-1 min-w-0">Unlock Full Year Program, Treatment Calculator, Scheduler &amp; Stats</span>
-                                    <button onClick={() => setView('pricing')} className="text-xs font-bold whitespace-nowrap flex-shrink-0 btn-press" style={{color:'var(--ys-gold-500)'}}>See Plans →</button>
+                                <div className="rounded-2xl border p-4" style={{background:'var(--ys-gold-100)', borderColor:'var(--ys-gold-300)'}}>
+                                    <div className="flex items-center gap-2 mb-1.5">
+                                        <span className="text-xs font-bold px-2 py-0.5 rounded-full text-white flex-shrink-0" style={{background:'var(--ys-gold-500)'}}>PRO</span>
+                                        <span className="text-sm font-bold text-gray-800">Unlock the full Yardstick experience</span>
+                                    </div>
+                                    <p className="text-xs text-gray-500 mb-3">Full Year Lawn Program, Treatment Calculator, Smart Scheduler &amp; Advanced Stats — start free.</p>
+                                    <div className="flex gap-2">
+                                        <button onClick={() => setView('account')} className="flex-1 py-2.5 rounded-xl text-sm font-bold text-white btn-press" style={{background:'var(--ys-green-600)', boxShadow:'0 2px 10px rgba(54,124,43,0.25)'}}>
+                                            Create Free Account →
+                                        </button>
+                                        <button onClick={() => setView('proSignup')} className="px-3 py-2.5 rounded-xl text-xs font-bold btn-press" style={{color:'var(--ys-soil-800)', background:'var(--ys-gold-300)'}}>
+                                            Join Pro Waitlist
+                                        </button>
+                                    </div>
                                 </div>
                             )}
                             </>)}
                         </div>
                     )}
                     {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} />}</div>}
-                    {view === 'history' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><HistoryView activities={activities} onDelete={deleteActivity} /></div>}
+                    {view === 'history' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!currentUser && (<div className="mb-4 rounded-2xl border p-4 flex items-center gap-3" style={{background:'var(--ys-gold-100)', borderColor:'var(--ys-gold-300)'}}><span className="text-xl flex-shrink-0">📊</span><div className="flex-1 min-w-0"><div className="text-sm font-bold text-gray-800">Want advanced stats &amp; charts?</div><div className="text-xs text-gray-500">Upgrade to Pro for monthly breakdowns, streaks &amp; trends.</div></div><button onClick={() => setView('account')} className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg text-white btn-press" style={{background:'var(--ys-green-600)'}}>Unlock →</button></div>)}<HistoryView activities={activities} onDelete={deleteActivity} /></div>}
                     {view === 'gallery' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><GalleryView currentUser={currentUser} onSignIn={() => setShowAuthModal(true)} /></div>}
                     {view === 'garage' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><MyGarage equipment={equipment} activities={activities} onAdd={addEquipment} onDelete={deleteEquipment} onUpdate={updateEquipment} onNavigate={setView} /></div>}
                     {view === 'profile' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><LawnProfile profileFormData={profileFormData} profileEditing={profileEditing} lawnProfile={lawnProfile} weather={weather} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} onSave={handleProfileSave} onEditToggle={setProfileEditing} onNavigate={setView} /></div>}
-                    {view === 'gameplan' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Full Year Lawn Program" onUnlock={() => setShowAuthModal(true)} onViewPricing={() => setView('pricing')} /> : <YearlyGameplan lawnProfile={lawnProfile} weather={weather} onNavigate={setView} />}</div>}
+                    {view === 'gameplan' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Full Year Lawn Program" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <YearlyGameplan lawnProfile={lawnProfile} weather={weather} onNavigate={setView} />}</div>}
                     {view === 'schedules' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><SchedulesView schedules={schedules} onAdd={addSchedule} onDelete={deleteSchedule} onLog={logScheduledActivity} /></div>}
-                    {view === 'dashboard' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Advanced Stats" onUnlock={() => setShowAuthModal(true)} onViewPricing={() => setView('pricing')} /> : <Dashboard activities={activities} statsView={statsView} onStatsViewChange={setStatsView} weather={weather} lawnProfile={lawnProfile} onNavigate={setView} />}</div>}
-                    {view === 'products' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Product Guide" onUnlock={() => setShowAuthModal(true)} onViewPricing={() => setView('pricing')} /> : <ProductGuide />}</div>}
+                    {view === 'dashboard' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Advanced Stats" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <Dashboard activities={activities} statsView={statsView} onStatsViewChange={setStatsView} weather={weather} lawnProfile={lawnProfile} onNavigate={setView} />}</div>}
+                    {view === 'products' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Product Guide" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <ProductGuide />}</div>}
                     {view === 'sources' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><ResearchSourcesPage /></div>}
                     {view === 'account' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><AccountPage activities={activities} equipment={equipment} lawnProfile={lawnProfile} store={store} currentUser={currentUser} onSignOut={handleSignOut} onSignIn={() => setShowAuthModal(true)} firebaseConfigured={!!fb.configured} userName={userName} onUserNameChange={handleUserNameChange} onNavigate={setView} /></div>}
                     {view === 'contact' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><ContactPage currentUser={currentUser} firebaseConfigured={!!fb.configured} /></div>}
-                    {view === 'calculator' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><TreatmentCalculator lawnProfile={lawnProfile} onNavigate={setView} proGated={PRO_GATE_ENABLED && !currentUser} onUnlock={() => setShowAuthModal(true)} /></div>}
+                    {view === 'calculator' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><TreatmentCalculator lawnProfile={lawnProfile} onNavigate={setView} proGated={PRO_GATE_ENABLED && !currentUser} onUnlock={() => setView('account')} /></div>}
                     {view === 'admin' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><AdminSubmissionsPage currentUser={currentUser} firebaseConfigured={!!fb.configured} /></div>}
                     {view === 'pricing' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><PricingView onSignIn={() => { setView(null); setShowAuthModal(true); }} onClose={() => setView(null)} /></div>}
+                    {view === 'proSignup' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><ProSignupView currentUser={currentUser} firebaseConfigured={!!fb.configured} onClose={() => setView(null)} /></div>}
 
                     {/* ─── Feedback Footer ─────────────────────────────────── */}
                     <div className="mt-8 mb-4 rounded-xl border border-[#367C2B]/20 bg-[#367C2B]/5 px-4 py-3 flex items-center gap-3">
