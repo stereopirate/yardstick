@@ -3729,7 +3729,7 @@ window.ResearchSourcesPage = () => (
     // ─── WelcomeSplashCard ───────────────────────────────────────────────────────
     // Always shown at the top of the home screen when the user is not logged in.
     // Step 1: zip code entry → Step 2: grass type selection → Step 3: account CTA
-    function WelcomeSplashCard({ onZipLookup, zipLookupLoading, zipLookupError, lawnProfile, onSignIn, onSaveProfile, onComplete }) {
+    function WelcomeSplashCard({ onZipLookup, zipLookupLoading, zipLookupError, lawnProfile, onSignIn, onSaveProfile, onComplete, onDismiss }) {
         const { useState, useEffect } = React;
         const [step, setStep] = useState('splash'); // 'splash' | 'grass' | 'done'
         const [zipInput, setZipInput] = useState('');
@@ -3797,35 +3797,36 @@ window.ResearchSourcesPage = () => (
         // ── Step 1: Splash ──
         if (step === 'splash') return (
             <div className="rounded-2xl overflow-hidden animate-fade-in" style={{
-                background: 'linear-gradient(145deg, var(--ys-green-900) 0%, var(--ys-green-800) 60%, var(--ys-green-700) 100%)',
-                boxShadow: '0 8px 32px rgba(28,51,24,0.32)',
-                position: 'relative',
+                background: 'white',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+                border: '1px solid rgba(0,0,0,0.06)',
             }}>
-                {/* Decorative circles */}
-                <div style={{position:'absolute',top:'-40px',right:'-30px',width:'180px',height:'180px',background:'rgba(255,255,255,0.04)',borderRadius:'50%',pointerEvents:'none'}} />
-                <div style={{position:'absolute',bottom:'-50px',left:'-20px',width:'140px',height:'140px',background:'rgba(255,255,255,0.03)',borderRadius:'50%',pointerEvents:'none'}} />
-                <div className="px-5 pt-6 pb-2" style={{position:'relative',zIndex:1}}>
-                    {/* Free badge */}
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-3"
-                        style={{background:'var(--ys-yellow)',color:'var(--ys-soil-800)'}}>
+                {/* Top accent bar */}
+                <div style={{height:'4px', background:'linear-gradient(90deg, var(--ys-green-700) 0%, var(--ys-green-500) 60%, var(--ys-yellow) 100%)'}} />
+
+                <div className="px-5 pt-5 pb-5">
+                    {/* Badge */}
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-4"
+                        style={{background:'var(--ys-green-100)', color:'var(--ys-green-700)', border:'1px solid var(--ys-green-200)'}}>
                         🌿 Free &middot; No Account Required
                     </div>
                     {/* Headline */}
-                    <h2 className="text-2xl font-bold text-white leading-tight mb-1" style={{fontFamily:'var(--ys-font-display)'}}>
-                        A smarter lawn starts with your zip code.
+                    <h2 className="text-2xl font-bold leading-tight mb-2"
+                        style={{fontFamily:'var(--ys-font-display)', color:'var(--ys-soil-800)'}}>
+                        Stop guessing.<br/>Start growing.
                     </h2>
-                    <p className="text-sm mb-4" style={{color:'rgba(255,255,255,0.65)'}}>
+                    <p className="text-sm text-gray-500 mb-5">
                         Get a personalized care plan matched to your grass type, USDA hardiness zone, and local weather — in seconds.
                     </p>
                     {/* Feature grid */}
                     <div className="grid grid-cols-2 gap-2 mb-5">
                         {features.map(f => (
-                            <div key={f.label} className="flex items-start gap-2 rounded-xl px-2.5 py-2"
-                                style={{background:'rgba(255,255,255,0.08)'}}>
+                            <div key={f.label} className="flex items-start gap-2.5 rounded-xl px-3 py-2.5"
+                                style={{background:'var(--ys-green-50)', border:'1px solid var(--ys-green-100)'}}>
                                 <span className="text-lg flex-shrink-0 mt-0.5">{f.icon}</span>
                                 <div>
-                                    <div className="text-xs font-bold text-white leading-tight">{f.label}</div>
-                                    <div className="text-xs leading-tight" style={{color:'rgba(255,255,255,0.55)'}}>{f.desc}</div>
+                                    <div className="text-xs font-bold leading-tight" style={{color:'var(--ys-soil-800)'}}>{f.label}</div>
+                                    <div className="text-xs leading-tight text-gray-500">{f.desc}</div>
                                 </div>
                             </div>
                         ))}
@@ -3839,26 +3840,32 @@ window.ResearchSourcesPage = () => (
                             onKeyDown={e => { if (e.key === 'Enter') handleZipSubmit(); }}
                             placeholder="Enter your zip code"
                             className="flex-1 px-4 py-3 rounded-xl text-sm font-semibold outline-none"
-                            style={{background:'rgba(255,255,255,0.95)',color:'#1E1A14',border:'none',fontFamily:'var(--ys-font-body)'}}
+                            style={{background:'var(--ys-canvas)', color:'var(--ys-soil-800)', border:'2px solid var(--ys-green-200)', fontFamily:'var(--ys-font-body)'}}
                         />
                         <button onClick={handleZipSubmit} disabled={zipLookupLoading}
                             className="ys-btn-primary px-4 py-3 text-sm font-bold rounded-xl flex-shrink-0 btn-press"
-                            style={{minWidth:'84px',opacity:zipLookupLoading?0.7:1}}>
-                            {zipLookupLoading ? '…' : 'Get Plan →'}
+                            style={{minWidth:'96px', opacity:zipLookupLoading?0.7:1}}>
+                            {zipLookupLoading ? '…' : 'Get My Plan →'}
                         </button>
                     </div>
                     {(localZipError || zipLookupError) && (
-                        <div className="text-xs font-semibold px-1 pb-1" style={{color:'#FFCDD2'}}>
+                        <div className="text-xs font-semibold px-1 py-1" style={{color:'#DC2626'}}>
                             ⚠️ {localZipError || zipLookupError}
                         </div>
                     )}
                 </div>
-                {/* Sign-in nudge */}
-                <div className="px-5 py-3 flex items-center justify-between"
-                    style={{borderTop:'1px solid rgba(255,255,255,0.10)'}}>
-                    <span className="text-xs" style={{color:'rgba(255,255,255,0.45)'}}>Already have an account?</span>
-                    <button onClick={onSignIn} className="text-xs font-bold btn-press" style={{color:'var(--ys-yellow)'}}>
-                        Sign In →
+
+                {/* Sign-in section — prominent, contrasting footer */}
+                <div className="px-5 py-4 flex items-center justify-between gap-4"
+                    style={{background:'var(--ys-canvas)', borderTop:'1px solid rgba(0,0,0,0.06)'}}>
+                    <div>
+                        <div className="text-sm font-bold" style={{color:'var(--ys-soil-800)'}}>Already have an account?</div>
+                        <div className="text-xs text-gray-500">Sign in to restore your lawn data</div>
+                    </div>
+                    <button onClick={onSignIn}
+                        className="flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-bold btn-press"
+                        style={{background:'var(--ys-green-800)', color:'white', border:'none', whiteSpace:'nowrap'}}>
+                        Log In →
                     </button>
                 </div>
             </div>
@@ -3926,48 +3933,68 @@ window.ResearchSourcesPage = () => (
         // ── Step 3: Done / Account CTA ──
         return (
             <div className="rounded-2xl overflow-hidden animate-scale-in" style={{
-                background: 'linear-gradient(145deg, var(--ys-green-900) 0%, var(--ys-green-800) 60%, var(--ys-green-700) 100%)',
-                boxShadow: '0 8px 32px rgba(28,51,24,0.32)',
+                background: 'white',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+                border: '1px solid rgba(0,0,0,0.06)',
                 position: 'relative',
             }}>
-                <div style={{position:'absolute',top:'-40px',right:'-30px',width:'180px',height:'180px',background:'rgba(255,255,255,0.04)',borderRadius:'50%',pointerEvents:'none'}} />
-                <div style={{position:'absolute',bottom:'-50px',left:'-20px',width:'140px',height:'140px',background:'rgba(255,255,255,0.03)',borderRadius:'50%',pointerEvents:'none'}} />
-                <div className="px-5 pt-6 pb-2" style={{position:'relative',zIndex:1}}>
+                {/* Dismiss (X) button */}
+                {onDismiss && (
+                    <button onClick={onDismiss}
+                        className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full btn-press"
+                        style={{background:'var(--ys-canvas)', border:'1px solid rgba(0,0,0,0.08)', color:'#6B7280', zIndex:2}}
+                        aria-label="Dismiss">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
+                )}
+
+                {/* Success header — dark green stripe */}
+                <div className="px-5 pt-5 pb-4" style={{
+                    background: 'linear-gradient(135deg, var(--ys-green-800) 0%, var(--ys-green-700) 100%)',
+                }}>
                     <div className="flex items-center gap-2 mb-3">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-base"
-                            style={{background:'var(--ys-yellow)'}}>✓</div>
-                        <div className="text-xs font-bold uppercase tracking-widest" style={{color:'rgba(255,255,255,0.6)'}}>
-                            Setup Complete
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                            style={{background:'var(--ys-yellow)'}}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ys-soil-800)" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                        </div>
+                        <div className="text-xs font-bold uppercase tracking-widest" style={{color:'rgba(255,255,255,0.65)'}}>
+                            Setup Complete &middot; Zone {lawnProfile && lawnProfile.zone ? lawnProfile.zone.toUpperCase() : '–'}
                         </div>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-1" style={{fontFamily:'var(--ys-font-display)'}}>
-                        Your yard plan is ready.
+                    <h3 className="text-xl font-bold text-white leading-tight" style={{fontFamily:'var(--ys-font-display)'}}>
+                        Your personalized yard plan is ready.
                     </h3>
-                    <p className="text-sm mb-4" style={{color:'rgba(255,255,255,0.65)'}}>
-                        {selectedGrass && GRASS_INFO[selectedGrass] ? GRASS_INFO[selectedGrass].name : 'Personalized advice'}{' '}
-                        for Zone {lawnProfile && lawnProfile.zone ? lawnProfile.zone.toUpperCase() : '–'} is now active below.
-                        Create a free account to get the most out of Yardstick.
-                    </p>
-                    {/* Account perks list */}
-                    <div className="space-y-2 mb-5">
+                    {selectedGrass && GRASS_INFO[selectedGrass] && (
+                        <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold"
+                            style={{background:'rgba(255,255,255,0.15)', color:'white', border:'1px solid rgba(255,255,255,0.25)'}}>
+                            🌱 {GRASS_INFO[selectedGrass].name}
+                        </div>
+                    )}
+                </div>
+
+                {/* Upsell body — white */}
+                <div className="px-5 pt-4 pb-5">
+                    <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{color:'var(--ys-green-600)'}}>
+                        Unlock the full experience — it's free
+                    </div>
+                    <div className="space-y-2.5 mb-5">
                         {accountPerks.map(p => (
-                            <div key={p.icon} className="flex items-center gap-2.5">
-                                <span className="text-base flex-shrink-0">{p.icon}</span>
-                                <span className="text-xs font-medium" style={{color:'rgba(255,255,255,0.80)'}}>{p.text}</span>
+                            <div key={p.icon} className="flex items-center gap-3">
+                                <span className="w-7 h-7 rounded-lg flex items-center justify-center text-sm flex-shrink-0"
+                                    style={{background:'var(--ys-green-100)'}}>
+                                    {p.icon}
+                                </span>
+                                <span className="text-sm font-medium text-gray-700">{p.text}</span>
                             </div>
                         ))}
                     </div>
                     <button onClick={onSignIn}
-                        className="w-full ys-btn-primary py-3 text-sm font-bold rounded-xl btn-press">
+                        className="w-full ys-btn-primary py-3.5 text-sm font-bold rounded-xl btn-press mb-3">
                         Create Free Account →
                     </button>
-                </div>
-                {/* Sign-in nudge */}
-                <div className="px-5 py-3 flex items-center justify-between"
-                    style={{borderTop:'1px solid rgba(255,255,255,0.10)'}}>
-                    <span className="text-xs" style={{color:'rgba(255,255,255,0.45)'}}>Already have an account?</span>
-                    <button onClick={onSignIn} className="text-xs font-bold btn-press" style={{color:'var(--ys-yellow)'}}>
-                        Sign In →
+                    <button onClick={onDismiss}
+                        className="w-full text-center text-sm font-medium text-gray-400 py-1 btn-press">
+                        Continue to Dashboard →
                     </button>
                 </div>
             </div>
@@ -4635,10 +4662,10 @@ window.ResearchSourcesPage = () => (
                                     Sign Up / Log In
                                 </button>
                             )}
-                            {/* Hamburger — mobile only, hidden at md */}
+                            {/* Hamburger — mobile only, hidden at md, hidden for new users until onboarding done */}
                             <button
                                 className="md:hidden flex items-center justify-center w-11 h-11 rounded-xl btn-press"
-                                style={{background:'rgba(255,255,255,0.12)', border:'1px solid rgba(255,255,255,0.22)'}}
+                                style={{background:'rgba(255,255,255,0.12)', border:'1px solid rgba(255,255,255,0.22)', ...((!currentUser && !onboardingDone) ? {display:'none'} : {})}}
                                 onClick={() => setMobileMenuOpen(prev => !prev)}
                                 aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
                                 aria-expanded={mobileMenuOpen}
@@ -4650,8 +4677,8 @@ window.ResearchSourcesPage = () => (
                             </button>
                         </div>
                     </div>
-                    {/* Mobile menu panel — inside header, hidden at md */}
-                    {mobileMenuOpen && (
+                    {/* Mobile menu panel — inside header, hidden at md, hidden for new users */}
+                    {mobileMenuOpen && (currentUser || onboardingDone) && (
                         <div className="md:hidden border-t border-white/20 bg-white shadow-xl menu-slide" style={{maxHeight:'calc(100vh - 56px)', overflowY:'auto'}}>
                             <div className="max-w-5xl mx-auto px-2 py-2">
                                 {/* Prominent Log CTA */}
@@ -4760,7 +4787,7 @@ window.ResearchSourcesPage = () => (
                 </header>
 
                 {/* Backdrop overlay — closes mobile menu when tapping outside */}
-                {mobileMenuOpen && (
+                {mobileMenuOpen && (currentUser || onboardingDone) && (
                     <div
                         className="md:hidden fixed inset-0 bg-black/20"
                         style={{zIndex: 35}}
@@ -4779,8 +4806,8 @@ window.ResearchSourcesPage = () => (
 
                 <div className="max-w-5xl mx-auto flex">
 
-                    {/* ─── Desktop Left Sidebar ─────────────────────────────── */}
-                    <aside className="ys-sidebar hidden md:flex flex-col">
+                    {/* ─── Desktop Left Sidebar — hidden for new users until onboarding complete ─── */}
+                    <aside className="ys-sidebar hidden md:flex flex-col" style={(!currentUser && !onboardingDone) ? {display:'none'} : {}}>
                         {/* Log Activity CTA */}
                         <button
                             onClick={() => { setView('add'); setSelectedActivityType(null); }}
@@ -4895,6 +4922,7 @@ window.ResearchSourcesPage = () => (
                                         setOnboardingDone(true);
                                         setSplashJustDone(true);
                                     }}
+                                    onDismiss={() => setSplashJustDone(false)}
                                 />
                             )}
                             {/* Dashboard — only shown after onboarding is complete or user is logged in */}
