@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{{ page.title }} | Yardstick</title>
+  <meta name="description" content="{{ page.description }}">
+  {% if page.keywords %}<meta name="keywords" content="{{ page.keywords }}">{% endif %}
+  <link rel="canonical" href="https://yardstick.diy/learn/{{ page.slug }}">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ page.title }}">
+  <meta property="og:description" content="{{ page.description }}">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://yardstick.diy/learn/{{ page.slug }}">
+  <meta property="og:site_name" content="Yardstick">
+
+  <!-- Article Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {{ page.title | jsonify }},
+    "description": {{ page.description | jsonify }},
+    "author": { "@type": "Organization", "name": "Yardstick" },
+    "publisher": { "@type": "Organization", "name": "Yardstick", "url": "https://yardstick.diy" },
+    "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
+    "dateModified": "{{ page.date | date: '%Y-%m-%d' }}"
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,600;0,700;0,900;1,700&family=Cabin:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Shared Learn stylesheet -->
+  <link rel="stylesheet" href="/learn/learn.css">
+</head>
+<body>
+
+<!-- ── Site Header ── -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="https://yardstick.diy" class="site-logo" aria-label="Yardstick home">
+      <svg viewBox="0 0 200 38" height="28" width="auto" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <text x="0" y="30" font-family="Bitter, Georgia, serif" font-weight="900" font-size="32" fill="#F7F3EC" letter-spacing="-0.5">Yardstick</text>
+        <rect x="0" y="33" width="196" height="4" rx="1" fill="#F5C842"/>
+        <rect x="22" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="44" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="66" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="88" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="110" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="132" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="154" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+        <rect x="176" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+      </svg>
+    </a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="https://yardstick.diy/learn" class="nav-link nav-mobile-hide">Guides</a>
+      <a href="https://yardstick.diy" class="nav-cta">Track your lawn →</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── Page Content ── -->
+<div class="page-wrap">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="https://yardstick.diy">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="https://yardstick.diy/learn">Guides</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>{{ page.title }}</span>
+  </nav>
+
+  <!-- Article Header -->
+  <header class="article-header">
+    <div class="article-meta-row">
+      {% if page.category %}<span class="article-badge">{{ page.category }}</span>{% endif %}
+      {% if page.zones %}<span class="article-badge zones">Zones {{ page.zones }}</span>{% endif %}
+      <span class="article-timestamp">Updated {{ page.date | date: "%B %Y" }}</span>
+    </div>
+    <h1 class="article-headline">{{ page.title }}</h1>
+    {% if page.description %}
+    <p class="article-deck">{{ page.description }}</p>
+    {% endif %}
+    {% if page.sources %}
+    <div class="article-source-bar">
+      <span class="source-dot"></span>
+      Sources: {{ page.sources }}
+    </div>
+    {% endif %}
+  </header>
+
+  <!-- Two-column layout -->
+  <div class="article-layout">
+
+    <!-- Main article body -->
+    <main class="article-body">
+      {{ content }}
+    </main>
+
+    <!-- Sidebar -->
+    <aside class="article-sidebar">
+
+      <!-- App CTA -->
+      <div class="sidebar-cta">
+        <div class="sidebar-cta-header">
+          <div class="sidebar-cta-eyebrow">Free lawn care tracker</div>
+          <div class="sidebar-cta-title">{% if page.cta_title %}{{ page.cta_title }}{% else %}Put this research to work in your yard{% endif %}</div>
+        </div>
+        <div class="sidebar-cta-body">
+          <p class="sidebar-cta-text">{% if page.cta_text %}{{ page.cta_text }}{% else %}Yardstick tracks your lawn care activities, builds a zone-specific care program, and reminds you when timing windows open.{% endif %}</p>
+          <div class="sidebar-cta-feature">Log activities with date and product</div>
+          <div class="sidebar-cta-feature">Zone-specific care programs</div>
+          <div class="sidebar-cta-feature">Live soil temperature by zip code</div>
+          <div class="sidebar-cta-feature">No account required</div>
+          <a href="https://yardstick.diy" class="btn-sidebar-cta">Track your lawn free →</a>
+        </div>
+      </div>
+
+      <!-- Table of Contents -->
+      {% if page.toc %}
+      <div class="sidebar-toc">
+        <div class="sidebar-toc-label">In this guide</div>
+        <ul class="toc-list">
+          {% assign toc_items = page.toc | split: "\n" %}
+          {% for item in toc_items %}
+            {% if item != "" %}
+            {% assign anchor = item | downcase | replace: " ", "-" | replace: ":", "" | replace: "?", "" | replace: "/", "" %}
+            <li><a href="#{{ anchor }}">{{ item }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <!-- Quick Facts -->
+      {% if page.quick_facts %}
+      <div class="sidebar-facts">
+        <div class="sidebar-facts-label">Quick reference</div>
+        {% assign facts = page.quick_facts | split: "\n" %}
+        {% for fact in facts %}
+          {% if fact != "" %}
+          {% assign parts = fact | split: ": " %}
+          <div class="fact-row">
+            <span class="fact-key">{{ parts[0] }}</span>
+            <span class="fact-val">{{ parts[1] }}</span>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Related Guides -->
+      {% if page.related_1_title %}
+      <div class="sidebar-related">
+        <div class="sidebar-related-label">Related guides</div>
+        {% if page.related_1_title %}
+        <a href="{{ page.related_1_url }}" class="related-item">
+          {{ page.related_1_title }}
+          {% if page.related_1_meta %}<span class="related-item-meta">{{ page.related_1_meta }}</span>{% endif %}
+        </a>
+        {% endif %}
+        {% if page.related_2_title %}
+        <a href="{{ page.related_2_url }}" class="related-item">
+          {{ page.related_2_title }}
+          {% if page.related_2_meta %}<span class="related-item-meta">{{ page.related_2_meta }}</span>{% endif %}
+        </a>
+        {% endif %}
+        {% if page.related_3_title %}
+        <a href="{{ page.related_3_url }}" class="related-item">
+          {{ page.related_3_title }}
+          {% if page.related_3_meta %}<span class="related-item-meta">{{ page.related_3_meta }}</span>{% endif %}
+        </a>
+        {% endif %}
+      </div>
+      {% endif %}
+
+    </aside>
+
+  </div><!-- end article-layout -->
+
+  <!-- Bottom CTA Band -->
+  <div class="article-cta-band">
+    <div class="article-cta-band-inner">
+      <div class="cta-band-eyebrow">Free · No account required</div>
+      <h2 class="cta-band-title">Put this research to work in your yard</h2>
+      <p class="cta-band-text">Yardstick tracks your lawn care activities, monitors soil temperature for your zip code, and builds your care program from the same university extension research in this guide.</p>
+      <a href="https://yardstick.diy" class="btn-cta-band">Track your lawn free →</a>
+      <p class="cta-band-note">Privacy-first · Data stays on your device · No subscription</p>
+    </div>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<!-- ── Footer ── -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-top">
+      <div>
+        <svg viewBox="0 0 200 38" height="24" width="auto" xmlns="http://www.w3.org/2000/svg" aria-label="Yardstick">
+          <text x="0" y="30" font-family="Bitter, Georgia, serif" font-weight="900" font-size="32" fill="#F7F3EC" letter-spacing="-0.5">Yardstick</text>
+          <rect x="0" y="33" width="196" height="4" rx="1" fill="#F5C842"/>
+          <rect x="44" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+          <rect x="88" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+          <rect x="132" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+          <rect x="176" y="33" width="1.2" height="4" fill="#1E1A14" opacity="0.25"/>
+        </svg>
+        <p class="footer-tagline">Lawn care backed by science. Built for your yard.</p>
+      </div>
+      <div class="footer-nav-group">
+        <span class="footer-nav-label">App</span>
+        <a href="https://yardstick.diy" class="footer-nav-link">Track your lawn</a>
+        <a href="https://yardstick.diy" class="footer-nav-link">Activity log</a>
+        <a href="https://yardstick.diy" class="footer-nav-link">Care programs</a>
+      </div>
+      <div class="footer-nav-group">
+        <span class="footer-nav-label">Guides</span>
+        <a href="/learn" class="footer-nav-link">All guides</a>
+        <a href="/learn#Weed Control" class="footer-nav-link">Weed control</a>
+        <a href="/learn#Fertilizing" class="footer-nav-link">Fertilizing</a>
+        <a href="/learn#Overseeding" class="footer-nav-link">Overseeding</a>
+      </div>
+      <div class="footer-nav-group">
+        <span class="footer-nav-label">Research</span>
+        <a href="https://yardstick.diy" class="footer-nav-link">University sources</a>
+        <a href="https://yardstick.diy/about" class="footer-nav-link">About Yardstick</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-legal">© 2026 Yardstick · yardstick.diy · Research-backed lawn care</span>
+      <span class="footer-legal">No ads · No tracking · No subscription</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

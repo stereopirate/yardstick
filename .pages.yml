@@ -1,0 +1,133 @@
+media:
+  input: learn/images
+  output: learn/images
+
+content:
+  - name: learn-articles
+    label: Learn Articles
+    path: learn
+    type: collection
+    filename: "{fields.slug}"
+    extension: md
+    view:
+      fields: [title, category, date]
+      default_field: title
+      default_order: desc
+    fields:
+      - name: layout
+        label: Layout
+        type: string
+        hidden: true
+        default: article
+
+      - name: title
+        label: Article Title
+        type: string
+        required: true
+
+      - name: description
+        label: Meta Description (SEO — 150-160 chars)
+        type: string
+        required: true
+
+      - name: slug
+        label: URL Slug (e.g. lawn-mowing-height-guide)
+        type: string
+        required: true
+
+      - name: category
+        label: Category
+        type: select
+        required: true
+        options:
+          values:
+            - Weed Control
+            - Fertilizing
+            - Seeding
+            - Mowing
+            - Seasonal
+            - Grass Guides
+            - Soil & Aeration
+            - Pests & Disease
+            - Education
+
+      - name: category_tag
+        label: Category tag class (tag-weed / tag-fert / tag-seed / tag-mow / tag-aerate / tag-edu / tag-cal)
+        type: string
+        default: tag-edu
+
+      - name: date
+        label: Publish Date
+        type: date
+        required: true
+
+      - name: zones
+        label: USDA Zones (e.g. "4–9" or "6, 7, 8")
+        type: string
+        default: "4–9"
+
+      - name: grass_types
+        label: Grass Types (comma-separated, e.g. "Tall Fescue, Kentucky Bluegrass")
+        type: string
+
+      - name: sources
+        label: University Sources (comma-separated short names)
+        type: string
+
+      - name: cta_title
+        label: Sidebar CTA headline
+        type: string
+        default: "Put this research to work in your yard"
+
+      - name: cta_text
+        label: Sidebar CTA body text
+        type: string
+        default: "Yardstick tracks your lawn care activities, builds a zone-specific care program, and reminds you when timing windows open."
+
+      - name: quick_facts
+        label: Quick Facts (one per line as "Key: Value")
+        type: text
+
+      - name: toc
+        label: Table of Contents (one section title per line)
+        type: text
+
+      - name: related_1_title
+        label: Related Guide 1 — Title
+        type: string
+
+      - name: related_1_url
+        label: Related Guide 1 — URL
+        type: string
+
+      - name: related_1_meta
+        label: Related Guide 1 — Meta (e.g. "Fertilizing · Zones 5–7")
+        type: string
+
+      - name: related_2_title
+        label: Related Guide 2 — Title
+        type: string
+
+      - name: related_2_url
+        label: Related Guide 2 — URL
+        type: string
+
+      - name: related_2_meta
+        label: Related Guide 2 — Meta
+        type: string
+
+      - name: related_3_title
+        label: Related Guide 3 — Title
+        type: string
+
+      - name: related_3_url
+        label: Related Guide 3 — URL
+        type: string
+
+      - name: related_3_meta
+        label: Related Guide 3 — Meta
+        type: string
+
+      - name: body
+        label: Article Content
+        type: rich-text
