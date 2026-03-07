@@ -421,6 +421,10 @@
     .tag-mow     { border-color: var(--green);  color: var(--green-dark); }
     .tag-edu     { border-color: var(--stone);  color: var(--stone); }
     .tag-cal     { border-color: var(--green);  color: var(--green-dark); }
+    .tag-seasonal{ border-color: #D97706;       color: #92400E; }
+    .tag-grass   { border-color: var(--green);  color: var(--green-dark); }
+    .tag-pest    { border-color: #7C3AED;       color: #5B21B6; }
+    .tag-soil    { border-color: var(--stone);  color: var(--stone); }
 
     /* Grass type pill */
     .card-grass-pill {
@@ -837,6 +841,12 @@
     <button class="filter-btn" data-filter="Overseeding" onclick="applyFilter('Overseeding', this)">Overseeding</button>
     <button class="filter-btn" data-filter="Aeration" onclick="applyFilter('Aeration', this)">Aeration</button>
     <button class="filter-btn" data-filter="Watering" onclick="applyFilter('Watering', this)">Watering</button>
+    <button class="filter-btn" data-filter="Seeding" onclick="applyFilter('Seeding', this)">Seeding</button>
+    <button class="filter-btn" data-filter="Mowing" onclick="applyFilter('Mowing', this)">Mowing</button>
+    <button class="filter-btn" data-filter="Seasonal" onclick="applyFilter('Seasonal', this)">Seasonal</button>
+    <button class="filter-btn" data-filter="Grass Guides" onclick="applyFilter('Grass Guides', this)">Grass guides</button>
+    <button class="filter-btn" data-filter="Soil &amp; Aeration" onclick="applyFilter('Soil &amp; Aeration', this)">Soil &amp; aeration</button>
+    <button class="filter-btn" data-filter="Pests &amp; Disease" onclick="applyFilter('Pests &amp; Disease', this)">Pests &amp; disease</button>
     <button class="filter-btn" data-filter="Education" onclick="applyFilter('Education', this)">Fundamentals</button>
     <button class="filter-btn" data-filter="Care Calendar" onclick="applyFilter('Care Calendar', this)">Calendars</button>
   </div>
@@ -898,7 +908,7 @@
       <div class="category-divider">
         <span class="category-icon">🛡️</span>
         <span class="category-name">Weed control</span>
-        <span class="category-article-count">3 guides</span>
+        <span class="category-article-count">5 guides</span>
       </div>
       <div class="article-grid">
 
@@ -922,6 +932,36 @@
           <span class="card-read-link">Read guide →</span>
         </a>
 
+        <a href="/learn/lawn-weed-identification-guide" class="article-card" data-category="Weed Control" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-weed">Weed Control</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">Lawn weed identification guide: 12 common weeds and how to treat them</div>
+          <span class="card-source">Penn State Ext. · Purdue Ext. · NC State</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/post-emergent-herbicide-guide" class="article-card" data-category="Weed Control" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-weed">Weed Control</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">Post-emergent herbicide guide: timing, selectivity, and application</div>
+          <span class="card-source">Purdue Ext. · Penn State Ext. · Univ. of Kentucky</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/prevent-weeds-without-chemicals" class="article-card" data-category="Weed Control" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-weed">Weed Control</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">How to prevent weeds without chemicals: cultural weed control strategies</div>
+          <span class="card-source">Penn State Ext. · Purdue Ext. · Ohio State Ext.</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
       </div>
     </div>
 
@@ -930,7 +970,7 @@
       <div class="category-divider">
         <span class="category-icon">🌱</span>
         <span class="category-name">Fertilizing</span>
-        <span class="category-article-count">6 guides</span>
+        <span class="category-article-count">9 guides</span>
       </div>
       <div class="article-grid">
 
@@ -991,6 +1031,36 @@
           </div>
           <div class="card-title">Fall fertilizer timing: the most important lawn feeding of the year</div>
           <span class="card-source">Penn State Ext. · Univ. of Kentucky</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/how-to-read-fertilizer-bag" class="article-card" data-category="Fertilizing" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-fert">Fertilizing</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">How to read a fertilizer bag: N-P-K ratios, release types, and coverage</div>
+          <span class="card-source">Purdue Ext. · Penn State Ext. · Ohio State Ext.</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/cool-season-grass-fertilizer-schedule" class="article-card" data-category="Fertilizing" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-fert">Fertilizing</span>
+            <span class="card-grass-pill">Cool-season · Zones 4–7</span>
+          </div>
+          <div class="card-title">Cool-season grass fertilizer schedule: when and how much to apply</div>
+          <span class="card-source">Penn State Ext. · Univ. of Minnesota · Purdue Ext.</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/warm-season-grass-fertilizer-schedule" class="article-card" data-category="Fertilizing" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-fert">Fertilizing</span>
+            <span class="card-grass-pill">Warm-season · Zones 7–9</span>
+          </div>
+          <div class="card-title">Warm-season grass fertilizer schedule: Bermuda, Zoysia, St. Augustine</div>
+          <span class="card-source">Univ. of Georgia · Clemson Ext. · NC State TurfFiles</span>
           <span class="card-read-link">Read guide →</span>
         </a>
 
@@ -1231,6 +1301,218 @@
           </div>
           <div class="card-title">Lawn care for zone 9: month-by-month calendar</div>
           <span class="card-source">Univ. of Florida IFAS · Texas A&amp;M AgriLife</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── Seeding ── -->
+    <div class="category-section" data-category-section="Seeding" style="display:none">
+      <div class="category-divider">
+        <span class="category-icon">🌾</span>
+        <span class="category-name">Seeding &amp; renovation</span>
+        <span class="category-article-count">3 guides</span>
+      </div>
+      <div class="article-grid">
+
+        <a href="/learn/when-to-overseed-lawn" class="article-card" data-category="Seeding" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-seed">Seeding</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">When to overseed your lawn: zone-by-zone timing guide</div>
+          <span class="card-source">Penn State Ext. · Purdue Ext. · NC State TurfFiles</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/how-to-fix-patchy-lawn" class="article-card" data-category="Seeding" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-seed">Seeding</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">How to fix a patchy lawn: diagnosing and repairing bare spots</div>
+          <span class="card-source">Penn State Ext. · Virginia Cooperative Ext. · Ohio State Ext.</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/lawn-renovation-guide" class="article-card" data-category="Seeding" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-seed">Seeding</span>
+            <span class="card-grass-pill">Cool-season · Zones 4–7</span>
+          </div>
+          <div class="card-title">Lawn renovation guide: when to overseed vs. start over completely</div>
+          <span class="card-source">Penn State Ext. · Purdue Ext. · Univ. of Kentucky</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── Mowing ── -->
+    <div class="category-section" data-category-section="Mowing" style="display:none">
+      <div class="category-divider">
+        <span class="category-icon">✂️</span>
+        <span class="category-name">Mowing</span>
+        <span class="category-article-count">2 guides</span>
+      </div>
+      <div class="article-grid">
+
+        <a href="/learn/lawn-mowing-height-guide" class="article-card" data-category="Mowing" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-mow">Mowing</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">Lawn mowing height guide: research-backed heights for every grass type</div>
+          <span class="card-source">Penn State Ext. · Univ. of Georgia · NC State TurfFiles</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/mowing-frequency-guide" class="article-card" data-category="Mowing" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-mow">Mowing</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">How often to mow your lawn: the one-third rule and seasonal frequency</div>
+          <span class="card-source">Penn State Ext. · Purdue Ext. · Ohio State Ext.</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── Seasonal ── -->
+    <div class="category-section" data-category-section="Seasonal" style="display:none">
+      <div class="category-divider">
+        <span class="category-icon">🗓️</span>
+        <span class="category-name">Seasonal care</span>
+        <span class="category-article-count">3 guides</span>
+      </div>
+      <div class="article-grid">
+
+        <a href="/learn/spring-lawn-care-checklist" class="article-card" data-category="Seasonal" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-seasonal">Seasonal</span>
+            <span class="card-grass-pill">All zones</span>
+          </div>
+          <div class="card-title">Spring lawn care checklist: zone-by-zone tasks from March through May</div>
+          <span class="card-source">Penn State Ext. · Purdue Ext. · Univ. of Georgia</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/fall-lawn-care-checklist" class="article-card" data-category="Seasonal" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-seasonal">Seasonal</span>
+            <span class="card-grass-pill">All zones</span>
+          </div>
+          <div class="card-title">Fall lawn care checklist: the highest-impact season for cool-season grasses</div>
+          <span class="card-source">Penn State Ext. · Univ. of Minnesota · Ohio State Ext.</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/winter-lawn-care-guide" class="article-card" data-category="Seasonal" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-seasonal">Seasonal</span>
+            <span class="card-grass-pill">All zones</span>
+          </div>
+          <div class="card-title">Winter lawn care guide: dormancy, frost protection, and pre-spring prep</div>
+          <span class="card-source">Penn State Ext. · Univ. of Minnesota · Clemson Ext.</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── Grass Guides ── -->
+    <div class="category-section" data-category-section="Grass Guides" style="display:none">
+      <div class="category-divider">
+        <span class="category-icon">🌿</span>
+        <span class="category-name">Grass type guides</span>
+        <span class="category-article-count">3 guides</span>
+      </div>
+      <div class="article-grid">
+
+        <a href="/learn/bermuda-grass-care-guide" class="article-card" data-category="Grass Guides" data-grass="Bermudagrass">
+          <div class="card-tag-row">
+            <span class="card-tag tag-grass">Grass Guides</span>
+            <span class="card-grass-pill">Bermuda · Zones 7–9</span>
+          </div>
+          <div class="card-title">Bermuda grass care guide: complete annual maintenance calendar</div>
+          <span class="card-source">Univ. of Georgia · Clemson Ext. · NC State TurfFiles</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/tall-fescue-care-guide" class="article-card" data-category="Grass Guides" data-grass="Tall Fescue">
+          <div class="card-tag-row">
+            <span class="card-tag tag-grass">Grass Guides</span>
+            <span class="card-grass-pill">Tall Fescue · Zones 5–7</span>
+          </div>
+          <div class="card-title">Tall Fescue care guide: zones 5–7 annual maintenance calendar</div>
+          <span class="card-source">Penn State Ext. · Virginia Cooperative Ext. · NC State</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/zoysia-grass-care-guide" class="article-card" data-category="Grass Guides" data-grass="Zoysiagrass">
+          <div class="card-tag-row">
+            <span class="card-tag tag-grass">Grass Guides</span>
+            <span class="card-grass-pill">Zoysia · Zones 6–9</span>
+          </div>
+          <div class="card-title">Zoysia grass care guide: thatch management, dormancy, and annual calendar</div>
+          <span class="card-source">Clemson Ext. · NC State TurfFiles · Univ. of Georgia</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── Soil & Aeration ── -->
+    <div class="category-section" data-category-section="Soil &amp; Aeration" style="display:none">
+      <div class="category-divider">
+        <span class="category-icon">🪱</span>
+        <span class="category-name">Soil &amp; aeration</span>
+        <span class="category-article-count">2 guides</span>
+      </div>
+      <div class="article-grid">
+
+        <a href="/learn/lawn-aeration-guide" class="article-card" data-category="Soil &amp; Aeration" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-soil">Soil &amp; Aeration</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">Lawn aeration guide: when, why, and how to aerate for healthier roots</div>
+          <span class="card-source">Penn State Ext. · Purdue Ext. · Ohio State Ext.</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+        <a href="/learn/soil-ph-lawn-care" class="article-card" data-category="Soil &amp; Aeration" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-soil">Soil &amp; Aeration</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">Soil pH for lawn care: testing, liming, and adjusting for your grass type</div>
+          <span class="card-source">Penn State Ext. · Purdue Ext. · Univ. of Georgia</span>
+          <span class="card-read-link">Read guide →</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── Pests & Disease ── -->
+    <div class="category-section" data-category-section="Pests &amp; Disease" style="display:none">
+      <div class="category-divider">
+        <span class="category-icon">🐛</span>
+        <span class="category-name">Pests &amp; disease</span>
+        <span class="category-article-count">1 guide</span>
+      </div>
+      <div class="article-grid">
+
+        <a href="/learn/lawn-grub-control-guide" class="article-card" data-category="Pests &amp; Disease" data-grass="All">
+          <div class="card-tag-row">
+            <span class="card-tag tag-pest">Pests &amp; Disease</span>
+            <span class="card-grass-pill">All grass types</span>
+          </div>
+          <div class="card-title">Lawn grub control: how to identify, time, and treat white grubs</div>
+          <span class="card-source">Univ. of Kentucky · Penn State Ext. · Purdue Ext.</span>
           <span class="card-read-link">Read guide →</span>
         </a>
 

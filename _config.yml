@@ -1,0 +1,37 @@
+title: Yardstick
+description: Research-backed lawn care for DIY homeowners
+url: https://yardstick.diy
+baseurl: ""
+
+# Exclude non-content files from Jekyll processing
+exclude:
+  - README.md
+  - CLAUDE.md
+  - DESIGN-SYSTEM.md
+  - PROJECT-OVERVIEW.md
+  - marketing/
+  - "*.txt"
+  - node_modules/
+  - Gemfile
+  - Gemfile.lock
+
+# Do NOT exclude JS files — GitHub Pages needs them served as-is
+# Jekyll only processes files with YAML frontmatter, so JS/HTML files
+# without frontmatter are copied verbatim regardless.
+
+# Markdown settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  hard_wrap: false
+
+# Article permalink pattern
+# learn/my-article.md → /learn/my-article/
+collections_dir: .
+defaults:
+  - scope:
+      path: "learn"
+      type: "pages"
+    values:
+      layout: "article"
