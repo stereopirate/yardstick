@@ -904,7 +904,7 @@
     </div><!-- end featured-grid -->
 
     <!-- ── Weed Control ── -->
-    <div class="category-section" data-category-section="Weed Control" style="display:none">
+    <div class="category-section" data-category-section="Weed Control" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">🛡️</span>
         <span class="category-name">Weed control</span>
@@ -966,7 +966,7 @@
     </div>
 
     <!-- ── Fertilizing ── -->
-    <div class="category-section" data-category-section="Fertilizing" style="display:none">
+    <div class="category-section" data-category-section="Fertilizing" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">🌱</span>
         <span class="category-name">Fertilizing</span>
@@ -1068,7 +1068,7 @@
     </div>
 
     <!-- ── Overseeding ── -->
-    <div class="category-section" data-category-section="Overseeding" style="display:none">
+    <div class="category-section" data-category-section="Overseeding" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">🌾</span>
         <span class="category-name">Overseeding</span>
@@ -1130,7 +1130,7 @@
     </div>
 
     <!-- ── Aeration ── -->
-    <div class="category-section" data-category-section="Aeration" style="display:none">
+    <div class="category-section" data-category-section="Aeration" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">⊕</span>
         <span class="category-name">Aeration</span>
@@ -1162,7 +1162,7 @@
     </div>
 
     <!-- ── Watering ── -->
-    <div class="category-section" data-category-section="Watering" style="display:none">
+    <div class="category-section" data-category-section="Watering" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">💧</span>
         <span class="category-name">Watering</span>
@@ -1204,7 +1204,7 @@
     </div>
 
     <!-- ── Fundamentals ── -->
-    <div class="category-section" data-category-section="Education" style="display:none">
+    <div class="category-section" data-category-section="Education" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">📋</span>
         <span class="category-name">Fundamentals</span>
@@ -1256,7 +1256,7 @@
     </div>
 
     <!-- ── Care Calendars ── -->
-    <div class="category-section" data-category-section="Care Calendar" style="display:none">
+    <div class="category-section" data-category-section="Care Calendar" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">📅</span>
         <span class="category-name">Zone care calendars</span>
@@ -1308,7 +1308,7 @@
     </div>
 
     <!-- ── Seeding ── -->
-    <div class="category-section" data-category-section="Seeding" style="display:none">
+    <div class="category-section" data-category-section="Seeding" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">🌾</span>
         <span class="category-name">Seeding &amp; renovation</span>
@@ -1350,7 +1350,7 @@
     </div>
 
     <!-- ── Mowing ── -->
-    <div class="category-section" data-category-section="Mowing" style="display:none">
+    <div class="category-section" data-category-section="Mowing" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">✂️</span>
         <span class="category-name">Mowing</span>
@@ -1382,7 +1382,7 @@
     </div>
 
     <!-- ── Seasonal ── -->
-    <div class="category-section" data-category-section="Seasonal" style="display:none">
+    <div class="category-section" data-category-section="Seasonal" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">🗓️</span>
         <span class="category-name">Seasonal care</span>
@@ -1424,7 +1424,7 @@
     </div>
 
     <!-- ── Grass Guides ── -->
-    <div class="category-section" data-category-section="Grass Guides" style="display:none">
+    <div class="category-section" data-category-section="Grass Guides" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">🌿</span>
         <span class="category-name">Grass type guides</span>
@@ -1466,7 +1466,7 @@
     </div>
 
     <!-- ── Soil & Aeration ── -->
-    <div class="category-section" data-category-section="Soil &amp; Aeration" style="display:none">
+    <div class="category-section" data-category-section="Soil &amp; Aeration" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">🪱</span>
         <span class="category-name">Soil &amp; aeration</span>
@@ -1498,7 +1498,7 @@
     </div>
 
     <!-- ── Pests & Disease ── -->
-    <div class="category-section" data-category-section="Pests &amp; Disease" style="display:none">
+    <div class="category-section" data-category-section="Pests &amp; Disease" data-hidden="true">
       <div class="category-divider">
         <span class="category-icon">🐛</span>
         <span class="category-name">Pests &amp; disease</span>
@@ -1736,7 +1736,11 @@
     const matchBtn = document.querySelector(`[data-filter="${hashFilter}"]`);
     if (matchBtn) {
       applyFilter(hashFilter, matchBtn);
+    } else {
+      applyFilter('all', document.querySelector('[data-filter="all"]'));
     }
+  } else {
+    applyFilter('all', document.querySelector('[data-filter="all"]'));
   }
 </script>
 
