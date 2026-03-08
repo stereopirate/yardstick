@@ -177,11 +177,10 @@ return (
                         const timeAgo = daysSince === 0 ? 'Today' : daysSince === 1 ? 'Yesterday' : `${daysSince} days ago`;
                         return (
                             <div key={activity.id} className="flex items-start gap-3 pb-3 border-b border-gray-100 last:border-0">
-                                <img 
-                                    src={ACTIVITY_TYPES[activity.type].icon} 
-                                    alt="" 
-                                    className="w-10 h-10 rounded-full flex-shrink-0"
-                                />
+                                {ACTIVITY_TYPES[activity.type].imgSrc
+                                    ? <img src={ACTIVITY_TYPES[activity.type].imgSrc} alt="" className="w-10 h-10 rounded-full flex-shrink-0 object-contain" />
+                                    : <div className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center text-2xl bg-gray-100">{ACTIVITY_TYPES[activity.type].icon}</div>
+                                }
                                 <div className="flex-1 min-w-0">
                                     <div className="font-semibold text-gray-900">{ACTIVITY_TYPES[activity.type].name}</div>
                                     <div className="text-sm text-gray-600">{timeAgo}</div>

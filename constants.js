@@ -151,7 +151,7 @@ var TREATMENT_CATEGORIES = {
 
 var ACTIVITY_TYPES = {
     mowing: {
-        name: 'Mowing Lawn', icon: '🌱', color: 'bg-[#367C2B]',
+        name: 'Mowing Lawn', icon: '🌱', imgSrc: 'icon-mowing.png', color: 'bg-[#367C2B]',
         fields: [
             { name: 'mowerType', label: 'Mower Type', type: 'select', options: ['Walk Behind', 'Riding', 'Zero Turn'] },
             { name: 'mowerUsed', label: 'Mower Model', type: 'product-select', productType: 'mowers', filterBy: 'mowerType', filterProp: 'mowerCategory' },
