@@ -151,7 +151,7 @@ var TREATMENT_CATEGORIES = {
 
 var ACTIVITY_TYPES = {
     mowing: {
-        name: 'Mowing Lawn', icon: '🌱', imgSrc: 'icon-mowing.png', color: 'bg-[#367C2B]',
+        name: 'Mowing Lawn', icon: '🌱', imgSrc: 'icon-mowing.svg', color: 'bg-[#367C2B]',
         fields: [
             { name: 'mowerType', label: 'Mower Type', type: 'select', options: ['Walk Behind', 'Riding', 'Zero Turn'] },
             { name: 'mowerUsed', label: 'Mower Model', type: 'product-select', productType: 'mowers', filterBy: 'mowerType', filterProp: 'mowerCategory' },
@@ -161,7 +161,7 @@ var ACTIVITY_TYPES = {
         ]
     },
     fertilizer: {
-        name: 'Fertilizing', icon: '🌾', color: 'bg-orange-500',
+        name: 'Fertilizing', icon: '🌾', imgSrc: 'icon-fertilizer.svg', color: 'bg-orange-500',
         fields: [
             { name: 'product', label: 'Product', type: 'text', placeholder: 'e.g. Scotts Turf Builder' },
             { name: 'npk', label: 'NPK Ratio', type: 'text', placeholder: 'e.g. 32-0-4' },
@@ -170,7 +170,7 @@ var ACTIVITY_TYPES = {
         ]
     },
     watering: {
-        name: 'Watering', icon: '💧', color: 'bg-blue-500',
+        name: 'Watering', icon: '💧', imgSrc: 'icon-watering.svg', color: 'bg-blue-500',
         fields: [
             { name: 'method', label: 'Method', type: 'select', options: ['Sprinkler', 'Drip', 'Hand Watering', 'Rain'] },
             { name: 'duration', label: 'Duration (minutes)', type: 'number', placeholder: '30' },
@@ -178,7 +178,7 @@ var ACTIVITY_TYPES = {
         ]
     },
     seeding: {
-        name: 'Seeding', icon: '🌿', color: 'bg-amber-600',
+        name: 'Seeding', icon: '🌿', imgSrc: 'icon-seeding.svg', color: 'bg-amber-600',
         fields: [
             { name: 'seedType', label: 'Seed Type', type: 'text', placeholder: 'e.g. Tall Fescue' },
             { name: 'seedRate', label: 'Seed Rate (lbs/1000 sq ft)', type: 'number', placeholder: '5' },
@@ -187,7 +187,7 @@ var ACTIVITY_TYPES = {
         ]
     },
     trimming: {
-        name: 'Trimming/Edging', icon: '✂️', color: 'bg-emerald-500',
+        name: 'Trimming/Edging', icon: '✂️', imgSrc: 'icon-trimming.svg', color: 'bg-emerald-500',
         fields: [
             { name: 'trimmerUsed', label: 'Trimmer', type: 'product-select', productType: 'trimmers' },
             { name: 'areas', label: 'Areas Trimmed', type: 'select', options: ['Full perimeter', 'Partial', 'Edges only', 'Around obstacles'] },
@@ -195,7 +195,7 @@ var ACTIVITY_TYPES = {
         ]
     },
     aeration: {
-        name: 'Aeration', icon: '🔧', color: 'bg-purple-500',
+        name: 'Aeration', icon: '🔧', imgSrc: 'icon-aerating.svg', color: 'bg-purple-500',
         fields: [
             { name: 'type', label: 'Aeration Type', type: 'select', options: ['Core/Plug', 'Spike', 'Liquid'] },
             { name: 'equipment', label: 'Equipment', type: 'text', placeholder: 'e.g. Ryan Lawnaire' },
@@ -203,7 +203,7 @@ var ACTIVITY_TYPES = {
         ]
     },
     treatment: {
-        name: 'Treatment/Spray', icon: '🧴', color: 'bg-pink-500',
+        name: 'Treatment/Spray', icon: '🧴', imgSrc: 'icon-fertilizer.svg', color: 'bg-pink-500',
         fields: [
             { name: 'category', label: 'Treatment Type', type: 'select', options: Object.keys(TREATMENT_CATEGORIES) },
             { name: 'product', label: 'Product', type: 'text', placeholder: 'e.g. Prodiamine 65 WDG' },
@@ -213,7 +213,7 @@ var ACTIVITY_TYPES = {
         ]
     },
     maintenance: {
-        name: 'Maintenance', icon: '🔩', color: 'bg-gray-500',
+        name: 'Maintenance', icon: '🔩', imgSrc: 'icon-garage.svg', color: 'bg-gray-500',
         fields: [
             { name: 'task', label: 'Task', type: 'select', options: ['Oil Change', 'Blade Sharpening', 'Air Filter', 'Spark Plug', 'Dethatch', 'Other'] },
             { name: 'equipment', label: 'Equipment Serviced', type: 'text', placeholder: 'e.g. Honda HRX217' },
@@ -221,13 +221,13 @@ var ACTIVITY_TYPES = {
         ]
     },
     general: {
-        name: 'General Task', icon: '📋', color: 'bg-gray-400',
+        name: 'General Task', icon: '📋', imgSrc: 'icon-general.svg', color: 'bg-gray-400',
         fields: [
             { name: 'task', label: 'Task Description', type: 'text', placeholder: 'What did you do?' }
         ]
     },
     photo: {
-        name: 'Photo Log', icon: '📷', color: 'bg-indigo-50',
+        name: 'Photo Log', icon: '📷', imgSrc: 'icon-gallery.svg', color: 'bg-indigo-50',
         fields: [
             { name: 'subject', label: 'What are you capturing?', type: 'select', options: ['Lawn progress', 'New growth', 'Problem area', 'Before treatment', 'After treatment', 'Seasonal change', 'Achievement', 'Other'] }
         ]
