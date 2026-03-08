@@ -2205,12 +2205,12 @@ window.ResearchSourcesPage = () => (
     // ─── ProFeatureNotice ─────────────────────────────────────────────────────────
     const ProFeatureNotice = ({ onUnlock, onViewPricing, featureName }) => (
         <div className="p-6 rounded-2xl border border-gray-200 bg-white text-center shadow-sm animate-fade-in">
-            <div className="w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center text-2xl" style={{background:'var(--ys-gold-100)'}}>🔒</div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold mb-2" style={{background:'var(--ys-gold-500)', color:'#fff'}}>PRO</div>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold mb-3" style={{background:'var(--ys-gold-500)', color:'#fff'}}>PRO</div>
             <h3 className="font-bold text-gray-800 mb-1 text-lg" style={{fontFamily:'var(--ys-font-display)'}}>
                 {featureName || 'Pro Feature'}
             </h3>
-            <p className="text-sm text-gray-500 mb-5">Sign up free to unlock — Full Year Program, Treatment Calculator, Smart Scheduler &amp; Advanced Stats included.</p>
+            <p className="text-sm text-gray-500 mb-1">This is a Pro feature — and it's <strong>free during beta</strong>.</p>
+            <p className="text-xs text-gray-400 mb-5">Create a free account to unlock your Full Year Program, Treatment Calculator, Advanced Stats &amp; more.</p>
             <div className="space-y-2.5">
                 <button onClick={onUnlock}
                     className="w-full px-6 py-3 rounded-xl font-bold text-sm text-white btn-press"
@@ -2960,7 +2960,8 @@ window.ResearchSourcesPage = () => (
                 {/* Feature list */}
                 <div className="rounded-2xl overflow-hidden border" style={{borderColor:'var(--ys-gold-300)', background:'linear-gradient(135deg, #fffbeb 0%, #fef3c7 60%, #fff 100%)'}}>
                     <div className="px-4 pt-4 pb-3">
-                        <div className="text-xs font-bold uppercase tracking-widest mb-3" style={{color:'var(--ys-gold-500)'}}>What's included in Pro</div>
+                        <div className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{color:'var(--ys-gold-500)'}}>What's in Pro</div>
+                        <div className="text-xs text-gray-500 mb-3">All of these are <strong>free during beta</strong> with a Yardstick account</div>
                         <div className="space-y-3">
                             {PRO_FEATURES.map(([icon, title, desc]) => (
                                 <div key={title} className="flex items-start gap-3">
@@ -4005,10 +4006,10 @@ window.ResearchSourcesPage = () => (
                         </div>
                     </div>
                     <p className="text-xs text-gray-500 mb-4">
-                        Knowing your grass type unlocks a full year care program with research-backed timing. Not sure? You can always update it later in My Yard.
+                        Knowing your grass type unlocks a research-backed year-round care plan. Use the zone hints on each section, or expand the identifier below.
                     </p>
                     {/* Cool Season */}
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#3B82F6'}}>Cool Season</div>
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#3B82F6'}}>❄️ Cool Season — Zones 5–7 (Northern US)</div>
                     <div className="grid grid-cols-2 gap-2 mb-4">
                         {COOL.map(g => (
                             <button key={g.key} onClick={() => handleGrassSelect(g.key)}
@@ -4023,8 +4024,8 @@ window.ResearchSourcesPage = () => (
                         ))}
                     </div>
                     {/* Warm Season */}
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#F97316'}}>Warm Season</div>
-                    <div className="grid grid-cols-2 gap-2 mb-4">
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#F97316'}}>☀️ Warm Season — Zones 8–10 (Southern US)</div>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
                         {WARM.map(g => (
                             <button key={g.key} onClick={() => handleGrassSelect(g.key)}
                                 className="text-left px-3 py-2.5 rounded-xl border-2 text-sm font-semibold btn-press transition"
@@ -4037,9 +4038,52 @@ window.ResearchSourcesPage = () => (
                             </button>
                         ))}
                     </div>
+                    {/* "Help me identify" accordion — inline IIFE so it can hold its own useState */}
+                    {(() => {
+                        const [idOpen, setIdOpen] = React.useState(false);
+                        return (
+                            <div className="mb-3 rounded-xl border border-gray-200 overflow-hidden">
+                                <button onClick={() => setIdOpen(o => !o)}
+                                    className="w-full flex items-center justify-between px-3 py-2.5 bg-gray-50 btn-press"
+                                    style={{border:'none'}}>
+                                    <span className="text-xs font-semibold text-gray-500">🔍 Not sure? Help me identify my grass</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth={2.5} strokeLinecap="round"
+                                        style={{transform: idOpen ? 'rotate(180deg)' : 'none', transition:'transform 0.2s', flexShrink:0}}>
+                                        <path d="M6 9l6 6 6-6"/>
+                                    </svg>
+                                </button>
+                                {idOpen && (
+                                    <div className="px-3 py-3 bg-white space-y-2.5 border-t border-gray-100">
+                                        <div className="flex items-start gap-2 text-xs text-gray-600">
+                                            <span className="flex-shrink-0">❄️</span>
+                                            <span><strong className="text-gray-800">Green in winter, struggles in peak summer heat?</strong> Cool season — Tall Fescue, Kentucky Bluegrass, or Ryegrass.</span>
+                                        </div>
+                                        <div className="flex items-start gap-2 text-xs text-gray-600">
+                                            <span className="flex-shrink-0">☀️</span>
+                                            <span><strong className="text-gray-800">Tan/straw in winter, lush in summer?</strong> Warm season — Bermudagrass, Zoysia, or St. Augustine.</span>
+                                        </div>
+                                        <div className="flex items-start gap-2 text-xs text-gray-600">
+                                            <span className="flex-shrink-0">📍</span>
+                                            <span><strong className="text-gray-800">Zone 7 or further south (TX, GA, FL, Carolinas)?</strong> Almost certainly warm season unless you specifically seeded cool season grass.</span>
+                                        </div>
+                                        <div className="flex items-start gap-2 text-xs text-gray-600">
+                                            <span className="flex-shrink-0">🔬</span>
+                                            <span><strong className="text-gray-800">Still unsure?</strong> Your local cooperative extension office can ID a grass sample for free —{' '}
+                                                <a href={`https://www.google.com/search?q=cooperative+extension+office+grass+identification`}
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    className="font-semibold underline" style={{color:'var(--ys-green-600)'}}>
+                                                    find yours here
+                                                </a>.
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })()}
                     <button onClick={() => { onComplete && onComplete(); setStep('done'); }}
                         className="w-full text-center text-xs text-gray-400 btn-press py-1">
-                        Not sure — skip for now
+                        Skip for now — I'll set this in My Yard later
                     </button>
                 </div>
             </div>
@@ -4264,84 +4308,82 @@ window.ResearchSourcesPage = () => (
 
     // ─── PricingView ─────────────────────────────────────────────────────────────
     const PricingView = ({ onSignIn, onClose }) => {
-        const [annual, setAnnual] = React.useState(true);
         const FREE_FEATURES = [
             'Activity logging (all types)',
             'Lawn activity history',
             'Equipment tracker (My Garage)',
-            'Local weather snapshot',
+            'Local weather & soil temp',
             "Today's advisory alerts",
-            'Frost & soil temp alerts',
+            'Frost & pre-emergent alerts',
             'Mobile-first PWA — works offline',
         ];
-        const PRO_FEATURES = [
-            'Full Year Lawn Care Program',
-            'Treatment Calculator',
-            'My Tasks — recurring scheduler',
-            'Advanced Stats & Dashboard',
-            'Product Guide & comparisons',
-            'Cloud sync across devices',
-            'Photo uploads for activities',
+        const BETA_FEATURES = [
+            ['📅', 'Full Year Lawn Care Program', 'Personalized monthly schedule for your grass & zone'],
+            ['🧮', 'Treatment Calculator', 'Exact product amounts for your yard size'],
+            ['🗓️', 'My Tasks', 'Recurring reminders with due-date tracking'],
+            ['📊', 'Advanced Stats & Dashboard', 'Monthly breakdowns, streaks & activity trends'],
+            ['📖', 'Product Guide', 'Curated mower, spreader & fertilizer database'],
+            ['☁️', 'Cloud Sync', 'Access your data on any device'],
         ];
-        const price = annual ? '34.99' : '3.99';
-        const priceLabel = annual ? '/year' : '/month';
         return (
             <div className="animate-fade-in space-y-4">
                 <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-1" style={{fontFamily:'var(--ys-font-display)'}}>Simple, honest pricing</h2>
-                    <p className="text-sm text-gray-500">Start free. Upgrade when you're ready.</p>
-                </div>
-                {/* Billing toggle */}
-                <div className="flex items-center justify-center gap-1 bg-gray-100 rounded-xl p-1 max-w-xs mx-auto">
-                    <button onClick={() => setAnnual(false)} className={`flex-1 text-sm font-semibold py-2 rounded-lg transition ${!annual ? 'bg-white shadow-sm text-gray-800' : 'text-gray-500'}`}>Monthly</button>
-                    <button onClick={() => setAnnual(true)} className={`flex-1 text-sm font-semibold py-2 rounded-lg transition flex items-center justify-center gap-1.5 ${annual ? 'bg-white shadow-sm text-gray-800' : 'text-gray-500'}`}>
-                        Annual
-                        {annual && <span className="text-xs font-bold px-1.5 py-0.5 rounded-full" style={{background:'var(--ys-gold-500)', color:'#fff'}}>-30%</span>}
-                    </button>
-                </div>
-                {/* Free tier */}
-                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
-                    <div className="flex items-baseline justify-between mb-1">
-                        <div className="text-lg font-bold text-gray-800">Free</div>
-                        <div className="text-2xl font-black text-gray-800">$0</div>
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-3" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>
+                        🌱 Beta — everything free while we build
                     </div>
-                    <div className="text-xs text-gray-400 mb-4">No account required to start</div>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-1" style={{fontFamily:'var(--ys-font-display)'}}>Free during beta</h2>
+                    <p className="text-sm text-gray-500">All features are unlocked for beta testers. Pricing will be announced when we launch.</p>
+                </div>
+                {/* Free tier — always available */}
+                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+                    <div className="flex items-center gap-2 mb-1">
+                        <div className="text-lg font-bold text-gray-800">Always Free</div>
+                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{background:'var(--ys-green-100)', color:'var(--ys-green-700)'}}>No account needed</span>
+                    </div>
+                    <div className="text-xs text-gray-400 mb-4">Use the core tracker without signing up</div>
                     <ul className="space-y-2 mb-5">
                         {FREE_FEATURES.map(f => (
                             <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
-                                <span className="font-bold flex-shrink-0 text-green-600">✓</span>{f}
-                            </li>
-                        ))}
-                    </ul>
-                    {onClose && <button onClick={onClose} className="w-full py-2.5 rounded-xl text-sm font-bold border border-gray-200 text-gray-600 btn-press">Continue with Free</button>}
-                </div>
-                {/* Pro tier */}
-                <div className="rounded-2xl border-2 shadow-sm p-5 relative overflow-hidden" style={{borderColor:'var(--ys-green-600)', background:'linear-gradient(160deg, #f9fef7 0%, #fff 100%)'}}>
-                    <div className="absolute top-3 right-3">
-                        <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white" style={{background:'var(--ys-gold-500)'}}>MOST POPULAR</span>
-                    </div>
-                    <div className="flex items-baseline gap-2 mb-0.5 pr-28">
-                        <div className="text-lg font-bold" style={{color:'var(--ys-green-700)'}}>Pro</div>
-                        <span className="text-2xl font-black text-gray-800">${price}</span>
-                        <span className="text-xs text-gray-400">{priceLabel}</span>
-                    </div>
-                    {annual && <div className="text-xs font-bold mb-1" style={{color:'var(--ys-gold-500)'}}>Save 30% vs monthly</div>}
-                    <div className="text-xs text-gray-400 mb-4">Everything in Free, plus:</div>
-                    <ul className="space-y-2 mb-5">
-                        {PRO_FEATURES.map(f => (
-                            <li key={f} className="flex items-center gap-2 text-sm text-gray-700">
                                 <span className="font-bold flex-shrink-0" style={{color:'var(--ys-green-600)'}}>✓</span>{f}
                             </li>
                         ))}
                     </ul>
-                    <button onClick={onSignIn} className="w-full py-3 rounded-xl text-sm font-bold text-white btn-press" style={{background:'var(--ys-green-600)', boxShadow:'0 4px 16px rgba(54,124,43,0.28)'}}>
-                        Start Free 7-Day Trial →
-                    </button>
-                    <div className="text-xs text-center text-gray-400 mt-2">No credit card required to try</div>
+                    {onClose && <button onClick={onClose} className="w-full py-2.5 rounded-xl text-sm font-bold border border-gray-200 text-gray-600 btn-press">Continue without account</button>}
                 </div>
-                {/* Value prop footer */}
+                {/* Pro tier — free during beta */}
+                <div className="rounded-2xl border-2 shadow-sm p-5 relative overflow-hidden" style={{borderColor:'var(--ys-gold-500)', background:'linear-gradient(160deg, #fffbeb 0%, #fff 100%)'}}>
+                    <div className="absolute top-3 right-3">
+                        <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white" style={{background:'var(--ys-gold-500)'}}>FREE IN BETA</span>
+                    </div>
+                    <div className="flex items-center gap-2 mb-0.5 pr-28">
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full text-white" style={{background:'var(--ys-gold-500)'}}>PRO</span>
+                        <div className="text-lg font-bold text-gray-800">Features</div>
+                    </div>
+                    <div className="text-xs text-gray-400 mb-4">Unlocked free with a Yardstick account — pricing TBD at launch</div>
+                    <div className="space-y-3 mb-5">
+                        {BETA_FEATURES.map(([icon, title, desc]) => (
+                            <div key={title} className="flex items-start gap-3">
+                                <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-sm" style={{background:'var(--ys-gold-100)'}}>
+                                    {icon}
+                                </div>
+                                <div className="min-w-0">
+                                    <div className="text-sm font-bold text-gray-800">{title}</div>
+                                    <div className="text-xs text-gray-500">{desc}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <button onClick={onSignIn} className="w-full py-3 rounded-xl text-sm font-bold text-white btn-press" style={{background:'var(--ys-green-600)', boxShadow:'0 4px 16px rgba(54,124,43,0.28)'}}>
+                        Create Free Account — Unlock All Features →
+                    </button>
+                </div>
+                {/* Beta footer */}
                 <div className="bg-gray-50 rounded-xl px-4 py-3 text-center">
-                    <div className="text-xs text-gray-500">💡 Pro pays for itself — skip one lawn care consultation and you're ahead for the year.</div>
+                    <div className="text-xs text-gray-500">💌 Join the Pro waitlist to get notified on pricing &amp; launch —{' '}
+                        <button onClick={onClose} className="font-semibold underline btn-press" style={{color:'var(--ys-green-600)', background:'none', border:'none', padding:0, cursor:'pointer'}}>
+                            find it in the app menu
+                        </button>.
+                    </div>
                 </div>
             </div>
         );
@@ -4977,7 +5019,7 @@ window.ResearchSourcesPage = () => (
                         <div className="ys-sidebar-section-label mt-2">Resources</div>
                         {[
                             { key: 'products', emoji: '📖', label: 'Product Guide', pro: true },
-                            { key: 'proSignup', emoji: '⭐', label: 'Join Pro Waitlist' },
+                            { key: 'proSignup', emoji: '⭐', label: 'Pro — Get Early Access' },
                             { key: 'sources',  emoji: '📚', label: 'Research Sources' },
                             { key: 'contact',  emoji: '💬', label: 'Help & Feedback' },
                             { key: 'account', emoji: '👤', label: 'My Account' },
@@ -5419,12 +5461,12 @@ window.ResearchSourcesPage = () => (
                                         <span className="text-sm font-bold text-gray-800">Get your full lawn plan — free</span>
                                     </div>
                                     <p className="text-xs text-gray-500 mb-3">Create a free account to unlock your Full Year Program, Treatment Calculator, Smart Scheduler &amp; Stats.</p>
-                                    <div className="flex gap-2">
-                                        <button onClick={() => setView('account')} className="flex-1 py-2.5 rounded-xl text-sm font-bold text-white btn-press" style={{background:'var(--ys-green-600)', boxShadow:'0 2px 10px rgba(54,124,43,0.25)'}}>
-                                            Create Free Account →
-                                        </button>
-                                        <button onClick={() => setView('proSignup')} className="px-3 py-2.5 rounded-xl text-xs font-bold btn-press" style={{color:'var(--ys-soil-600)', background:'var(--ys-green-100)'}}>
-                                            Join Pro Waitlist
+                                    <button onClick={() => setView('account')} className="w-full py-2.5 rounded-xl text-sm font-bold text-white btn-press" style={{background:'var(--ys-green-600)', boxShadow:'0 2px 10px rgba(54,124,43,0.25)'}}>
+                                        Create Free Account →
+                                    </button>
+                                    <div className="text-center mt-2">
+                                        <button onClick={() => setView('proSignup')} className="text-xs text-gray-400 btn-press" style={{background:'none', border:'none', cursor:'pointer'}}>
+                                            Interested in Pro? Join the early access list →
                                         </button>
                                     </div>
                                 </div>
