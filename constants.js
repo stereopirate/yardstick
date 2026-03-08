@@ -213,7 +213,7 @@ var ACTIVITY_TYPES = {
         ]
     },
     maintenance: {
-        name: 'Maintenance', icon: '🔩', imgSrc: 'icon-garage.svg', color: 'bg-gray-500',
+        name: 'Maintenance', icon: '🔩', imgSrc: 'icon-maintenance.svg', color: 'bg-gray-500',
         fields: [
             { name: 'task', label: 'Task', type: 'select', options: ['Oil Change', 'Blade Sharpening', 'Air Filter', 'Spark Plug', 'Dethatch', 'Other'] },
             { name: 'equipment', label: 'Equipment Serviced', type: 'text', placeholder: 'e.g. Honda HRX217' },
