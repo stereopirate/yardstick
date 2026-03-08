@@ -203,7 +203,7 @@ var ACTIVITY_TYPES = {
         ]
     },
     treatment: {
-        name: 'Treatment/Spray', icon: '🧴', color: 'bg-pink-500',
+        name: 'Treatment/Spray', icon: '🧴', imgSrc: 'icon-fertilizer.svg', color: 'bg-pink-500',
         fields: [
             { name: 'category', label: 'Treatment Type', type: 'select', options: Object.keys(TREATMENT_CATEGORIES) },
             { name: 'product', label: 'Product', type: 'text', placeholder: 'e.g. Prodiamine 65 WDG' },
