@@ -4159,6 +4159,11 @@ window.ResearchSourcesPage = () => (
             { key: 'perennial-ryegrass', name: 'Perennial Ryegrass' },
             { key: 'fine-fescue',        name: 'Fine Fescue' },
         ];
+        const BLENDS = [
+            { key: 'sun-shade-mix',     name: 'Sun & Shade Mix',   note: 'KBG + Rye + Fine Fescue' },
+            { key: 'dense-shade-mix',   name: 'Dense Shade Mix',   note: 'Fine Fescue dominant' },
+            { key: 'tall-fescue-blend', name: 'Tall Fescue Blend', note: 'Tall Fescue + KBG' },
+        ];
         const WARM = [
             { key: 'bermuda',      name: 'Bermudagrass' },
             { key: 'zoysia',       name: 'Zoysiagrass' },
@@ -4296,6 +4301,22 @@ window.ResearchSourcesPage = () => (
                                     color:       selectedGrass === g.key ? 'var(--ys-green-700)' : '#374151',
                                 }}>
                                 {g.name}
+                            </button>
+                        ))}
+                    </div>
+                    {/* Cool Season Blends */}
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#8B5CF6'}}>🌿 Cool Season Blends — Popular Seed Mixes</div>
+                    <div className="grid grid-cols-2 gap-2 mb-4">
+                        {BLENDS.map(g => (
+                            <button key={g.key} onClick={() => handleGrassSelect(g.key)}
+                                className="text-left px-3 py-2.5 rounded-xl border-2 text-sm font-semibold btn-press transition"
+                                style={{
+                                    borderColor: selectedGrass === g.key ? 'var(--ys-green-600)' : '#E5E7EB',
+                                    background:  selectedGrass === g.key ? 'var(--ys-green-50)' : 'white',
+                                    color:       selectedGrass === g.key ? 'var(--ys-green-700)' : '#374151',
+                                }}>
+                                <div>{g.name}</div>
+                                <div className="text-xs font-normal mt-0.5" style={{color: selectedGrass === g.key ? 'var(--ys-green-600)' : '#9CA3AF'}}>{g.note}</div>
                             </button>
                         ))}
                     </div>
