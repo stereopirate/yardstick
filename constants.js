@@ -167,10 +167,14 @@ var TREATMENT_PRODUCTS = {
         { id: 'pre5', name: 'Other (specify)', brand: 'Various', activeIngredient: '', rate: 'See label', timing: '', notes: 'Custom product' }
     ],
     postemergent: [
-        { id: 'post1', name: 'Tenacity', brand: 'Syngenta', activeIngredient: 'Mesotrione 40%', rate: '0.25 oz per 1,000 sq ft', rateValue: 0.25, rateUnit: 'oz', ratePer: 1000, target: 'Crabgrass, broadleaf weeds', notes: 'Safe for seeding' },
-        { id: 'post2', name: 'Ortho Weed B Gon', brand: 'Ortho', activeIngredient: '2,4-D + Quinclorac', rate: 'Per label', target: 'Broadleaf & grassy weeds', notes: 'Ready-to-spray' },
-        { id: 'post3', name: 'Speedzone', brand: 'PBI Gordon', activeIngredient: '2,4-D + others', rate: '1.5 fl oz per 1,000 sq ft', rateValue: 1.5, rateUnit: 'fl oz', ratePer: 1000, target: 'Fast-acting broadleaf', notes: 'Works in cool temps' },
-        { id: 'post4', name: 'Quinclorac 75DF', brand: 'Various', activeIngredient: 'Quinclorac 75%', rate: '0.25 oz per 1,000 sq ft', rateValue: 0.25, rateUnit: 'oz', ratePer: 1000, target: 'Crabgrass, clover', notes: 'Selective herbicide' },
+        { id: 'post1', name: 'Tenacity', brand: 'Syngenta', activeIngredient: 'Mesotrione 40%', rate: '0.25 oz per 1,000 sq ft', rateValue: 0.25, rateUnit: 'oz', ratePer: 1000, target: 'Crabgrass, broadleaf weeds', notes: 'Safe for seeding',
+          grassWarning: { types: ['bermuda', 'zoysia', 'st-augustine', 'bahia', 'buffalograss'], message: 'Not safe on warm-season grasses — Mesotrione will bleach and injure Bermuda, Zoysia, St. Augustine, Bahia, and Buffalograss.' } },
+        { id: 'post2', name: 'Ortho Weed B Gon', brand: 'Ortho', activeIngredient: '2,4-D + Quinclorac', rate: 'Per label', target: 'Broadleaf & grassy weeds', notes: 'Ready-to-spray',
+          grassCaution: { types: ['st-augustine', 'centipede'], message: 'Most Weed B Gon formulas are not labeled for St. Augustine or Centipede — check the label before applying.' } },
+        { id: 'post3', name: 'Speedzone', brand: 'PBI Gordon', activeIngredient: '2,4-D + others', rate: '1.5 fl oz per 1,000 sq ft', rateValue: 1.5, rateUnit: 'fl oz', ratePer: 1000, target: 'Fast-acting broadleaf', notes: 'Works in cool temps',
+          grassWarning: { types: ['bermuda', 'zoysia', 'st-augustine', 'centipede', 'bahia', 'buffalograss'], message: 'For cool-season grasses only. Contains 2,4-D and dicamba which will damage warm-season turf including Bermuda, Zoysia, and St. Augustine.' } },
+        { id: 'post4', name: 'Quinclorac 75DF', brand: 'Various', activeIngredient: 'Quinclorac 75%', rate: '0.25 oz per 1,000 sq ft', rateValue: 0.25, rateUnit: 'oz', ratePer: 1000, target: 'Crabgrass, clover', notes: 'Selective herbicide',
+          grassWarning: { types: ['st-augustine', 'centipede', 'bahia'], message: 'Not safe on St. Augustine, Centipede, or Bahia grass — will cause significant turf injury.' } },
         { id: 'post5', name: 'Other (specify)', brand: 'Various', activeIngredient: '', rate: 'See label', target: '', notes: 'Custom product' }
     ],
     fungicide: [

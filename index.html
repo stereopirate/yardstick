@@ -4495,6 +4495,8 @@ window.ResearchSourcesPage = () => (
     // ─── TreatmentCalculator ─────────────────────────────────────────────────────
     const TreatmentCalculator = ({ lawnProfile, onNavigate, proGated, onUnlock }) => {
         const profileSize = lawnProfile && lawnProfile.lawnSize ? String(lawnProfile.lawnSize) : '';
+        const profileGrass = lawnProfile && lawnProfile.specificGrass ? lawnProfile.specificGrass : null;
+        const grassInfo = profileGrass && GRASS_INFO[profileGrass] ? GRASS_INFO[profileGrass] : null;
         const categories = Object.keys(TREATMENT_CATEGORIES);
         const [category, setCategory] = React.useState('preemergent');
         const [productId, setProductId] = React.useState('');
@@ -4507,6 +4509,18 @@ window.ResearchSourcesPage = () => (
         const selectedProduct = products.find(p => p.id === productId) || null;
         const hasKnownRate = selectedProduct && selectedProduct.rateValue;
         const showCustom = !!productId && !hasKnownRate;
+
+        // Grass compatibility checks
+        const grassWarning = (() => {
+            if (!profileGrass || !selectedProduct || !selectedProduct.grassWarning) return null;
+            const { types, message } = selectedProduct.grassWarning;
+            return types.includes(profileGrass) ? message : null;
+        })();
+        const grassCaution = (() => {
+            if (!profileGrass || !selectedProduct || !selectedProduct.grassCaution) return null;
+            const { types, message } = selectedProduct.grassCaution;
+            return types.includes(profileGrass) ? message : null;
+        })();
 
         const areaNum = parseFloat(area) || 0;
 
@@ -4539,9 +4553,30 @@ window.ResearchSourcesPage = () => (
                     <h2 style={{fontFamily:'var(--ys-font-display)'}} className="text-2xl font-bold text-gray-900">Treatment Calculator</h2>
                     <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>PRO</span>
                 </div>
-                <p className="text-sm text-gray-500 mb-5">Calculate exactly how much product you need based on your yard size.</p>
+                <p className="text-sm text-gray-500 mb-5">Calculate exactly how much product you need based on your grass type and yard size.</p>
 
                 {proGated ? <ProFeatureNotice featureName="Treatment Calculator" onUnlock={onUnlock} onViewPricing={onNavigate ? () => onNavigate('proSignup') : null} /> : (<React.Fragment>
+
+                {/* Grass type context strip */}
+                <div className="mb-5 flex items-center gap-2 flex-wrap">
+                    {grassInfo ? (
+                        <React.Fragment>
+                            <span className="text-xs text-gray-400">Grass type:</span>
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold"
+                                style={{background:'var(--ys-green-100)', color:'var(--ys-green-700)', border:'1px solid var(--ys-green-200)'}}>
+                                🌿 {grassInfo.name}
+                                {grassInfo.season && <span className="font-normal opacity-70">· {grassInfo.season}</span>}
+                            </span>
+                        </React.Fragment>
+                    ) : (
+                        <div className="text-xs text-gray-400">
+                            💡 <button type="button" onClick={() => onNavigate && onNavigate('profile')}
+                                className="font-semibold underline" style={{color:'var(--ys-green-600)'}}>Set your grass type in My Yard</button>
+                            {' '}to get compatibility checks
+                        </div>
+                    )}
+                </div>
+
                 {/* Category selector */}
                 <div className="mb-5">
                     <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">Treatment Type</label>
@@ -4562,6 +4597,13 @@ window.ResearchSourcesPage = () => (
                     </div>
                 </div>
 
+                {/* Research basis note for fungicide/insecticide */}
+                {(category === 'fungicide' || category === 'insecticide') && (
+                    <div className="mb-5 p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-800">
+                        <strong>📚 Research basis:</strong> Rates informed by University of Kentucky's Chemical Control of Turfgrass Diseases guide and University of Missouri Extension IPM publications. Always follow product label directions.
+                    </div>
+                )}
+
                 {/* Product selector */}
                 <div className="mb-5">
                     <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">Product</label>
@@ -4576,6 +4618,18 @@ window.ResearchSourcesPage = () => (
                         <div className="mt-1.5 text-xs text-gray-400">{selectedProduct.activeIngredient} · {selectedProduct.rate}</div>
                     )}
                 </div>
+
+                {/* Grass compatibility warning/caution — shown after product is selected */}
+                {grassWarning && (
+                    <div className="mb-5 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-800 animate-fade-in">
+                        <strong>⚠️ Grass Compatibility Warning:</strong> {grassWarning}
+                    </div>
+                )}
+                {!grassWarning && grassCaution && (
+                    <div className="mb-5 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 animate-fade-in">
+                        <strong>⚠️ Caution:</strong> {grassCaution}
+                    </div>
+                )}
 
                 {/* Yard area */}
                 <div className="mb-5">
@@ -4634,6 +4688,9 @@ window.ResearchSourcesPage = () => (
                         )}
                         {selectedProduct && selectedProduct.notes && (
                             <div className="mt-2 text-xs italic text-gray-500">{selectedProduct.notes}</div>
+                        )}
+                        {selectedProduct && selectedProduct.timing && (
+                            <div className="mt-2 text-xs text-gray-500">⏱ Timing: {selectedProduct.timing}</div>
                         )}
                     </div>
                 )}
