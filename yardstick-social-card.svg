@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E4D18"/>
+      <stop offset="55%" stop-color="#2D6627"/>
+      <stop offset="100%" stop-color="#367C2B"/>
+    </linearGradient>
+    <!-- Subtle texture overlay -->
+    <linearGradient id="overlayGrad" x1="0" y1="0" x2="0" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.18"/>
+    </linearGradient>
+    <!-- Yellow glow for accent -->
+    <radialGradient id="yellowGlow" cx="920" cy="180" r="260" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F5C842" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#F5C842" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Blade mask -->
+    <clipPath id="cardClip">
+      <rect x="0" y="0" width="1200" height="630" rx="0"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#cardClip)">
+    <!-- Background -->
+    <rect width="1200" height="630" fill="url(#bgGrad)"/>
+    <rect width="1200" height="630" fill="url(#overlayGrad)"/>
+    <rect width="1200" height="630" fill="url(#yellowGlow)"/>
+
+```
+<!-- Decorative grass blade shapes — bottom right -->
+<g opacity="0.10" fill="#ffffff">
+  <ellipse cx="1100" cy="520" rx="14" ry="180" transform="rotate(-18 1100 520)"/>
+  <ellipse cx="1130" cy="540" rx="10" ry="150" transform="rotate(-8 1130 540)"/>
+  <ellipse cx="1160" cy="530" rx="12" ry="165" transform="rotate(-28 1160 530)"/>
+  <ellipse cx="1075" cy="560" rx="9" ry="130" transform="rotate(-5 1075 560)"/>
+  <ellipse cx="1150" cy="580" rx="8" ry="120" transform="rotate(-35 1150 580)"/>
+  <ellipse cx="1050" cy="545" rx="11" ry="155" transform="rotate(5 1050 545)"/>
+</g>
+
+<!-- Decorative grass blade shapes — top left, subtle -->
+<g opacity="0.06" fill="#ffffff">
+  <ellipse cx="80" cy="120" rx="10" ry="140" transform="rotate(12 80 120)"/>
+  <ellipse cx="55" cy="100" rx="8" ry="110" transform="rotate(22 55 100)"/>
+  <ellipse cx="100" cy="140" rx="7" ry="100" transform="rotate(5 100 140)"/>
+</g>
+
+<!-- Top accent bar (yellow) -->
+<rect x="0" y="0" width="1200" height="6" fill="#F5C842"/>
+
+<!-- Left content column -->
+<!-- Logo wordmark area -->
+<g transform="translate(80, 80)">
+  <!-- Wordmark: YARDSTICK -->
+  <text
+    x="0" y="0"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-weight="700"
+    font-size="52"
+    letter-spacing="-1"
+    fill="#ffffff"
+    dominant-baseline="hanging">YARDSTICK</text>
+
+  <!-- Tagline pill -->
+  <rect x="0" y="68" width="270" height="30" rx="15" fill="#F5C842" opacity="0.95"/>
+  <text
+    x="135" y="83"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="700"
+    font-size="12.5"
+    letter-spacing="1.2"
+    fill="#1E4D18"
+    text-anchor="middle"
+    dominant-baseline="middle">RESEARCH-BACKED LAWN CARE</text>
+</g>
+
+<!-- Main headline -->
+<text
+  x="80" y="240"
+  font-family="Georgia, 'Times New Roman', serif"
+  font-weight="700"
+  font-size="72"
+  fill="#ffffff"
+  dominant-baseline="hanging"
+  letter-spacing="-1.5">Stop guessing.</text>
+<text
+  x="80" y="326"
+  font-family="Georgia, 'Times New Roman', serif"
+  font-weight="700"
+  font-size="72"
+  fill="#F5C842"
+  dominant-baseline="hanging"
+  letter-spacing="-1.5">Start growing.</text>
+
+<!-- Subheadline -->
+<text
+  x="80" y="432"
+  font-family="Arial, Helvetica, sans-serif"
+  font-weight="400"
+  font-size="24"
+  fill="rgba(255,255,255,0.82)"
+  dominant-baseline="hanging">Personalized care plans from university extension research.</text>
+<text
+  x="80" y="466"
+  font-family="Arial, Helvetica, sans-serif"
+  font-weight="400"
+  font-size="24"
+  fill="rgba(255,255,255,0.82)"
+  dominant-baseline="hanging">Free. No account required.</text>
+
+<!-- Feature pills row -->
+<g transform="translate(80, 530)">
+  <!-- Pill 1 -->
+  <rect x="0" y="0" width="178" height="38" rx="19" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+  <text x="89" y="19" font-family="Arial, Helvetica, sans-serif" font-weight="600" font-size="13" fill="rgba(255,255,255,0.90)" text-anchor="middle" dominant-baseline="middle">📅  Personalized Plan</text>
+
+  <!-- Pill 2 -->
+  <rect x="192" y="0" width="162" height="38" rx="19" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+  <text x="273" y="19" font-family="Arial, Helvetica, sans-serif" font-weight="600" font-size="13" fill="rgba(255,255,255,0.90)" text-anchor="middle" dominant-baseline="middle">🌤️  Weather-Smart</text>
+
+  <!-- Pill 3 -->
+  <rect x="368" y="0" width="150" height="38" rx="19" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+  <text x="443" y="19" font-family="Arial, Helvetica, sans-serif" font-weight="600" font-size="13" fill="rgba(255,255,255,0.90)" text-anchor="middle" dominant-baseline="middle">🔬  University Data</text>
+</g>
+
+<!-- Right side: mock phone card -->
+<g transform="translate(800, 60)">
+  <!-- Phone frame -->
+  <rect x="0" y="0" width="310" height="510" rx="32" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+  <!-- Inner screen -->
+  <rect x="12" y="12" width="286" height="486" rx="22" fill="#F4FAF2"/>
+
+  <!-- Top status bar notch -->
+  <rect x="100" y="20" width="110" height="10" rx="5" fill="rgba(0,0,0,0.12)"/>
+
+  <!-- Header bar on "screen" -->
+  <rect x="12" y="38" width="286" height="52" rx="0" fill="#2D6627"/>
+  <rect x="12" y="38" width="286" height="52" fill="none"/>
+  <text x="155" y="64" font-family="Georgia, serif" font-weight="700" font-size="17" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">My Lawn Plan</text>
+
+  <!-- Weather advisory card -->
+  <rect x="26" y="106" width="258" height="56" rx="12" fill="#EBF5E6" stroke="#C4E8BC" stroke-width="1"/>
+  <text x="44" y="128" font-family="Arial, sans-serif" font-weight="700" font-size="11" fill="#2D6627" dominant-baseline="middle">✅  CONDITIONS GOOD</text>
+  <text x="44" y="148" font-family="Arial, sans-serif" font-size="10.5" fill="#4E9E40" dominant-baseline="middle">Soil temp 68°F · Great day to fertilize</text>
+
+  <!-- Monthly task card -->
+  <rect x="26" y="174" width="258" height="100" rx="12" fill="#ffffff" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="44" y="197" font-family="Arial, sans-serif" font-weight="700" font-size="12" fill="#1E1A14" dominant-baseline="middle">🗓  March Tasks</text>
+  <text x="44" y="218" font-family="Arial, sans-serif" font-size="11" fill="#6B6560" dominant-baseline="middle">□  Apply pre-emergent herbicide</text>
+  <text x="44" y="236" font-family="Arial, sans-serif" font-size="11" fill="#6B6560" dominant-baseline="middle">□  First fertilizer application</text>
+  <text x="44" y="254" font-family="Arial, sans-serif" font-size="11" fill="#6B6560" dominant-baseline="middle">□  Soil temp check before seeding</text>
+
+  <!-- Progress / grass type card -->
+  <rect x="26" y="286" width="120" height="80" rx="12" fill="#ffffff" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="86" y="312" font-family="Arial, sans-serif" font-weight="700" font-size="11" fill="#1E1A14" text-anchor="middle" dominant-baseline="middle">Grass Type</text>
+  <text x="86" y="334" font-family="Georgia, serif" font-weight="700" font-size="13" fill="#367C2B" text-anchor="middle" dominant-baseline="middle">Tall Fescue</text>
+  <text x="86" y="354" font-family="Arial, sans-serif" font-size="10" fill="#9C7248" text-anchor="middle" dominant-baseline="middle">Zone 7a</text>
+
+  <!-- Activity log mini card -->
+  <rect x="158" y="286" width="126" height="80" rx="12" fill="#ffffff" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="221" y="312" font-family="Arial, sans-serif" font-weight="700" font-size="11" fill="#1E1A14" text-anchor="middle" dominant-baseline="middle">Last Logged</text>
+  <text x="221" y="332" font-family="Arial, sans-serif" font-size="22" fill="#367C2B" text-anchor="middle" dominant-baseline="middle">🌿</text>
+  <text x="221" y="356" font-family="Arial, sans-serif" font-size="10" fill="#9C7248" text-anchor="middle" dominant-baseline="middle">Mowed · 2 days ago</text>
+
+  <!-- Bottom URL badge -->
+  <rect x="26" y="378" width="258" height="40" rx="20" fill="#367C2B"/>
+  <text x="155" y="398" font-family="Arial, sans-serif" font-weight="700" font-size="14" fill="#F5C842" text-anchor="middle" dominant-baseline="middle">yardstick.diy  →</text>
+
+  <!-- Bottom decorative bar -->
+  <rect x="100" y="478" width="110" height="5" rx="2.5" fill="rgba(0,0,0,0.10)"/>
+</g>
+
+<!-- Bottom right: URL -->
+<text
+  x="1120" y="600"
+  font-family="Arial, Helvetica, sans-serif"
+  font-weight="700"
+  font-size="16"
+  fill="rgba(255,255,255,0.45)"
+  text-anchor="end"
+  dominant-baseline="auto">yardstick.diy</text>
+```
+
+  </g>
+</svg>
