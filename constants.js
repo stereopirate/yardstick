@@ -306,10 +306,10 @@ var RESEARCH_SOURCES = [
     { id: 'ncstate', name: 'NC State Extension',               count: 12, url: 'https://content.ces.ncsu.edu/',                     topics: 'Transition Zone Management, Tall Fescue Heat Tolerance, Bermudagrass, Zoysiagrass, Centipedegrass' },
     { id: 'uga',     name: 'University of Georgia Extension',  count: 10, url: 'https://extension.uga.edu/',                        topics: 'Warm-Season Grasses, Bermudagrass Varieties, St. Augustine Care, Disease Control' },
     { id: 'tamu',    name: 'Texas A&M AgriLife Extension',     count: 9,  url: 'https://agrilifeextension.tamu.edu/',               topics: 'Bermudagrass, St. Augustine, Zoysiagrass, Heat Management, Drought Tolerance' },
-    { id: 'msu',     name: 'Michigan State Extension',         count: 5,  url: 'https://www.canr.msu.edu/turf/',                    topics: 'Cool-Season Grasses, Northern Climate Management, Kentucky Bluegrass' },
+    { id: 'msu',     name: 'Michigan State Extension',         count: 5,  url: 'https://www.canr.msu.edu/turf/',                    topics: 'Cool-Season Grasses, Northern Climate Management, Kentucky Bluegrass, Pre-Emergent Timing, Growing Degree Days', features: 'Soil Temp Engine' },
     { id: 'clemson', name: 'Clemson Extension',                count: 7,  url: 'https://www.clemson.edu/extension/',                topics: 'Transition Zone, Centipedegrass, Tall Fescue in Heat, Bermudagrass Spring Dead Spot' },
     { id: 'vt',      name: 'Virginia Tech Extension',          count: 6,  url: 'https://ext.vt.edu/',                               topics: 'Transition Zone Grasses, Tall Fescue Varieties, Bermudagrass Cold Hardiness' },
-    { id: 'ufl',     name: 'University of Florida IFAS',       count: 8,  url: 'https://sfyl.ifas.ufl.edu/',                        topics: 'St. Augustine, Bahiagrass, Centipedegrass, Year-Round Management' },
+    { id: 'ufl',     name: 'University of Florida IFAS',       count: 8,  url: 'https://sfyl.ifas.ufl.edu/',                        topics: 'St. Augustine, Bahiagrass, Centipedegrass, Year-Round Management, ET-Based Irrigation Scheduling', features: 'Water Budget' },
     { id: 'kstate',  name: 'Kansas State Extension',           count: 5,  url: 'https://www.bookstore.ksre.ksu.edu/',               topics: 'Bermudagrass Cold Tolerance, Transition Zone, Zoysiagrass' },
     { id: 'umn',     name: 'University of Minnesota Extension', count: 4, url: 'https://extension.umn.edu/',                        topics: 'Kentucky Bluegrass, Cool-Season Grasses, Zone 4 Management' },
     { id: 'lsu',     name: 'LSU AgCenter',                     count: 6,  url: 'https://www.lsuagcenter.com/',                      topics: 'Warm-Season Grasses, Centipedegrass, St. Augustine, High Humidity Management' },
@@ -317,9 +317,15 @@ var RESEARCH_SOURCES = [
     { id: 'rutgers', name: 'Rutgers Cooperative Extension',    count: 4,  url: 'https://njaes.rutgers.edu/',                        topics: 'Cool-Season Turf, Disease Management, Fine Fescues' },
     { id: 'uark',    name: 'University of Arkansas Extension', count: 4,  url: 'https://www.uaex.uada.edu/',                       topics: 'Transition Zone, Bermudagrass, Zoysiagrass, Tall Fescue' },
     { id: 'uconn',   name: 'UConn Extension',                  count: 3,  url: 'https://extension.uconn.edu/',                     topics: 'Cool-Season Grasses, Fine Fescues, Northeast Climate' },
-    { id: 'aces',    name: 'Alabama Cooperative Extension',    count: 5,  url: 'https://www.aces.edu/',                             topics: 'Warm-Season Grasses, Bermudagrass, Centipedegrass, Southeast Climate' },
+    { id: 'aces',    name: 'Alabama Cooperative Extension',    count: 5,  url: 'https://www.aces.edu/',                             topics: 'Warm-Season Grasses, Bermudagrass, Centipedegrass, Southeast Climate, Mower Maintenance', features: 'My Garage' },
     { id: 'okstate', name: 'Oklahoma State Extension',         count: 4,  url: 'https://extension.okstate.edu/',                   topics: 'Bermudagrass, Transition Zone, Drought Management' },
-    { id: 'umass',   name: 'UMass Extension',                  count: 3,  url: 'https://ag.umass.edu/turf',                        topics: 'Cool-Season Grasses, Sports Turf, Northern Management' }
+    { id: 'umass',   name: 'UMass Extension',                  count: 3,  url: 'https://ag.umass.edu/turf',                        topics: 'Cool-Season Grasses, Sports Turf, Northern Management' },
+    { id: 'uky',       name: 'University of Kentucky Extension',   count: 6,  url: 'https://uknowledge.uky.edu/anr_reports/',           topics: 'Turfgrass Disease Management, Fungicide Efficacy, Chemical Control of Turfgrass Diseases, Treatment Timing', features: 'Treatment Calculator' },
+    { id: 'missouri',  name: 'University of Missouri Extension',   count: 4,  url: 'https://extension.missouri.edu/',                  topics: 'Disease Identification & Control, Pest Management, Cultural Practices for Disease Prevention', features: 'Treatment Calculator' },
+    { id: 'colostate', name: 'Colorado State University Extension', count: 4, url: 'https://extension.colostate.edu/',                 topics: 'ET-Based Irrigation Scheduling, Water Balance Approach, Soil Water Deficit Management', features: 'Water Budget' },
+    { id: 'umd',       name: 'University of Maryland Extension',   count: 3,  url: 'https://extension.umd.edu/',                      topics: 'Precision Irrigation, Evapotranspiration & Water Management, Penman-Monteith ET Calculations', features: 'Water Budget' },
+    { id: 'uwmadison', name: 'UW-Madison Turfgrass Science',       count: 4,  url: 'https://turf.wisc.edu/',                          topics: 'Crabgrass Pre-Emergence Timing, Growing Degree Day Models, Soil Temperature Thresholds', features: 'Soil Temp Engine' },
+    { id: 'illinois',  name: 'University of Illinois Extension',   count: 4,  url: 'https://extension.illinois.edu/lawns/',            topics: 'Mower Maintenance Schedules, Crabgrass Management, Equipment Upkeep for Homeowners', features: 'My Garage' }
 ];
 
 var GRASS_KEY_MAP = {
