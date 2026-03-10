@@ -4869,14 +4869,7 @@ window.ResearchSourcesPage = () => (
         const [zipLookupError, setZipLookupError] = useState('');
 
         // ── Onboarding — shown to logged-out users who haven't completed setup ──
-        // Also treat as done if the profile already has zone + grass (returning users pre-flag)
-        const [onboardingDone, setOnboardingDone] = useState(() => {
-            if (localStorage.getItem('yardstick_onboarding_done') === '1') return true;
-            try {
-                const p = JSON.parse(localStorage.getItem('lawnProfile') || 'null');
-                return !!(p && p.zone && p.specificGrass);
-            } catch(e) { return false; }
-        });
+        const [onboardingDone, setOnboardingDone] = useState(() => localStorage.getItem('yardstick_onboarding_done') === '1');
         const [splashJustDone, setSplashJustDone] = useState(false);
         const [saveBannerDismissed, setSaveBannerDismissed] = useState(() => localStorage.getItem('yardstick_save_banner_dismissed') === '1');
 
