@@ -4138,13 +4138,14 @@ window.ResearchSourcesPage = () => (
     // ─── WelcomeSplashCard ───────────────────────────────────────────────────────
     // Always shown at the top of the home screen when the user is not logged in.
     // Step 1: zip code entry → Step 2: grass type selection → Step 3: account CTA
-    function WelcomeSplashCard({ onZipLookup, zipLookupLoading, zipLookupError, lawnProfile, onSignIn, onSaveProfile, onComplete, onDismiss }) {
+    function WelcomeSplashCard({ onZipLookup, zipLookupLoading, zipLookupError, lawnProfile, onSignIn, onSaveProfile, onComplete, onDismiss, onManualZone }) {
         const { useState, useEffect } = React;
         const [step, setStep] = useState('splash'); // 'splash' | 'grass' | 'done'
         const [zipInput, setZipInput] = useState('');
         const [localZipError, setLocalZipError] = useState('');
         const [submitted, setSubmitted] = useState(false);
         const [selectedGrass, setSelectedGrass] = useState('');
+        const [zonePickerValue, setZonePickerValue] = useState('');
 
         // Detect successful zip lookup → advance to grass step
         useEffect(() => {
@@ -4268,6 +4269,35 @@ window.ResearchSourcesPage = () => (
                     {(localZipError || zipLookupError) && (
                         <div className="text-xs font-semibold px-1 py-1" style={{color:'#DC2626'}}>
                             ⚠️ {localZipError || zipLookupError}
+                        </div>
+                    )}
+                    {zipLookupError && (
+                        <div className="mt-3 pt-3" style={{borderTop:'1px solid var(--ys-green-100)'}}>
+                            <div className="text-xs font-semibold mb-1.5" style={{color:'var(--ys-soil-600)'}}>Select your USDA zone manually to continue:</div>
+                            <div className="flex gap-2">
+                                <select
+                                    value={zonePickerValue}
+                                    onChange={e => setZonePickerValue(e.target.value)}
+                                    className="flex-1 px-3 py-2 rounded-xl text-sm font-semibold outline-none"
+                                    style={{background:'var(--ys-canvas)', color:'var(--ys-soil-800)', border:'2px solid var(--ys-green-200)', fontFamily:'var(--ys-font-body)'}}>
+                                    <option value="">— Pick your zone —</option>
+                                    {['3','3a','3b','4','4a','4b','5','5a','5b','6','6a','6b','7','7a','7b','8','8a','8b','9','9a','9b','10','10a','10b','11'].map(z => (
+                                        <option key={z} value={z}>Zone {z.toUpperCase()}</option>
+                                    ))}
+                                </select>
+                                <button
+                                    type="button"
+                                    disabled={!zonePickerValue}
+                                    onClick={() => {
+                                        if (!zonePickerValue) return;
+                                        onManualZone && onManualZone(zonePickerValue);
+                                        setStep('grass');
+                                    }}
+                                    className="flex-shrink-0 px-4 py-2 rounded-xl text-sm font-bold btn-press"
+                                    style={{background:'var(--ys-green-600)', color:'white', opacity: zonePickerValue ? 1 : 0.5}}>
+                                    Next →
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -4839,7 +4869,14 @@ window.ResearchSourcesPage = () => (
         const [zipLookupError, setZipLookupError] = useState('');
 
         // ── Onboarding — shown to logged-out users who haven't completed setup ──
-        const [onboardingDone, setOnboardingDone] = useState(() => localStorage.getItem('yardstick_onboarding_done') === '1');
+        // Also treat as done if the profile already has zone + grass (returning users pre-flag)
+        const [onboardingDone, setOnboardingDone] = useState(() => {
+            if (localStorage.getItem('yardstick_onboarding_done') === '1') return true;
+            try {
+                const p = JSON.parse(localStorage.getItem('lawnProfile') || 'null');
+                return !!(p && p.zone && p.specificGrass);
+            } catch(e) { return false; }
+        });
         const [splashJustDone, setSplashJustDone] = useState(false);
         const [saveBannerDismissed, setSaveBannerDismissed] = useState(() => localStorage.getItem('yardstick_save_banner_dismissed') === '1');
 
@@ -5520,6 +5557,13 @@ window.ResearchSourcesPage = () => (
                                         setSplashJustDone(true);
                                     }}
                                     onDismiss={() => setSplashJustDone(false)}
+                                    onManualZone={(zone) => {
+                                        const existing = localStorage.getItem('lawnProfile');
+                                        const merged = { ...(existing ? JSON.parse(existing) : {}), zone };
+                                        localStorage.setItem('lawnProfile', JSON.stringify(merged));
+                                        setLawnProfile(merged);
+                                        setProfileFormData(prev => ({ ...prev, zone }));
+                                    }}
                                 />
                             )}
                             {/* Dashboard — only shown after onboarding is complete or user is logged in */}
