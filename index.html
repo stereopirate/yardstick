@@ -26,6 +26,12 @@
   gtag('js', new Date());
 
   gtag('config', 'G-VYFPED6CKW');
+
+  window.trackEvent = function(eventName, params) {
+      if (typeof gtag === 'function') {
+          gtag('event', eventName, params || {});
+      }
+  };
 </script>
     
 
