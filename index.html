@@ -25,8 +25,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-VYFPED6CKW');
+  gtag('config', 'G-VYFPED6CKW', {
+      // Send page_view only via our custom SPA tracker, not on initial load,
+      // to avoid double-counting the first screen.
+      send_page_view: false,
+  });
 
+  // Centralised event helper — safe to call even before gtag is ready
   window.trackEvent = function(eventName, params) {
       if (typeof gtag === 'function') {
           gtag('event', eventName, params || {});
@@ -982,6 +987,7 @@ window.ActivityDetails = ({ activity }) => {
                                                         onUpdate(item.id, {
                                                             maintenanceLogs: { ...logs, [type]: { loggedAt: Date.now(), hoursAtLog: mowingHours } }
                                                         });
+                                                        window.trackEvent('maintenance_logged', { maintenance_type: type });
                                                     };
                                                     const MaintenanceRow = ({ type, label, interval }) => {
                                                         const lastLog = logs[type];
@@ -1561,6 +1567,7 @@ window.ResearchSourcesPage = () => (
             try {
                 const provider = new fb.GoogleAuthProvider();
                 const result = await fb.signInWithPopup(fb.auth, provider);
+                window.trackEvent('login', { method: 'google' });
                 onSuccess(result.user);
             } catch(e) {
                 setError(e.message);
@@ -1575,8 +1582,10 @@ window.ResearchSourcesPage = () => (
                 let result;
                 if (mode === 'signin') {
                     result = await fb.signInWithEmailAndPassword(fb.auth, email, password);
+                    window.trackEvent('login', { method: 'email' });
                 } else {
                     result = await fb.createUserWithEmailAndPassword(fb.auth, email, password);
+                    window.trackEvent('sign_up', { method: 'email' });
                 }
                 onSuccess(result.user);
             } catch(e) {
@@ -3327,6 +3336,7 @@ window.ResearchSourcesPage = () => (
         const handleShare = () => {
             const msg = '🌿 I\'ve been tracking my lawn care with Yardstick — it\'s free and research-backed! Check it out: https://yardstick.diy';
             navigator.clipboard.writeText(msg).then(() => {
+                window.trackEvent('share', { method: 'clipboard', content_type: 'app_referral' });
                 setShareCopied(true);
                 setTimeout(() => setShareCopied(false), 2500);
             });
@@ -3342,6 +3352,7 @@ window.ResearchSourcesPage = () => (
             link.href = url;
             link.download = `yardstick-backup-${new Date().toISOString().split('T')[0]}.json`;
             link.click();
+            window.trackEvent('data_exported', { activity_count: activities.length, equipment_count: equipment.length });
         };
         const resetData = () => {
             if (confirm('⚠️ Delete ALL data? This cannot be undone!')) {
@@ -3380,6 +3391,7 @@ window.ResearchSourcesPage = () => (
                     saveToLocal();
                 }
                 localStorage.setItem('yardstick_pro_interest_submitted', 'true');
+                window.trackEvent('pro_interest_submitted', { signed_in: !!currentUser });
                 setProSubmitted(true);
             } catch (err) {
                 setProError('Could not submit — please try again.');
@@ -3959,6 +3971,7 @@ window.ResearchSourcesPage = () => (
                     existing.push({ ...payload, submittedAt: new Date().toISOString() });
                     localStorage.setItem('yardstick_feedback', JSON.stringify(existing));
                 }
+                window.trackEvent('feedback_submitted', { feedback_type: type });
                 setSubmitted(true);
             } catch (err) {
                 console.error('Feedback submission error:', err);
@@ -4963,6 +4976,7 @@ window.ResearchSourcesPage = () => (
         }, [authReady, currentUser]);
 
         const handleSignOut = async () => {
+            window.trackEvent('sign_out', {});
             if (fb.configured) await fb.signOut(fb.auth);
             setCurrentUser(null);
         };
@@ -5125,6 +5139,12 @@ window.ResearchSourcesPage = () => (
             };
             const saved = await store.saveActivity(newActivity);
             setActivities(prev => [...prev, saved]);
+            window.trackEvent('activity_logged', {
+                activity_type: selectedActivityType,
+                has_photo: !!photoUrl,
+                has_cost: !!(activityData.cost && parseFloat(activityData.cost) > 0),
+                has_notes: !!(activityData.notes && activityData.notes.trim()),
+            });
 
             // Share photo to community gallery if requested
             if (photoUrl && activityData.shareToGallery && fb.configured && currentUser) {
@@ -5146,6 +5166,7 @@ window.ResearchSourcesPage = () => (
                         soilType: profileFormData.soilType || null,
                         createdAt: serverTimestamp()
                     });
+                    window.trackEvent('gallery_share', { activity_type: selectedActivityType });
                 } catch(e) {
                     console.error('Gallery share failed:', e);
                 }
@@ -5160,6 +5181,7 @@ window.ResearchSourcesPage = () => (
             if (confirm('Delete this activity?')) {
                 await store.deleteActivity(id);
                 setActivities(prev => prev.filter(a => a.id !== id));
+                window.trackEvent('activity_deleted', {});
             }
         };
 
@@ -5167,6 +5189,7 @@ window.ResearchSourcesPage = () => (
             const newItem = { id: Date.now(), ...equipmentData, createdAt: new Date().toISOString() };
             const saved = await store.saveEquipment(newItem);
             setEquipment(prev => [...prev, saved]);
+            window.trackEvent('equipment_added', { equipment_type: equipmentData.type });
         };
 
         const deleteEquipment = async (id) => {
@@ -5186,6 +5209,12 @@ window.ResearchSourcesPage = () => (
             setLawnProfile(profile);
             setProfileFormData(profile);
             setProfileEditing(false);
+            window.trackEvent('profile_saved', {
+                grass_type: profile.specificGrass || null,
+                zone: profile.zone || null,
+                has_lawn_size: !!(profile.lawnSize),
+                has_soil_type: !!(profile.soilType),
+            });
         };
 
         // Schedule actions (localStorage only — simple, no cloud sync needed)
@@ -5198,6 +5227,7 @@ window.ResearchSourcesPage = () => (
             const updated = [...schedules, newSched];
             setSchedules(updated);
             saveSchedulesToStorage(updated);
+            window.trackEvent('schedule_added', { activity_type: schedData.type, frequency_days: schedData.frequencyDays });
         };
 
         const deleteSchedule = (id) => {
@@ -5226,6 +5256,7 @@ window.ResearchSourcesPage = () => (
             };
             store.saveActivity(newActivity).then(saved => {
                 setActivities(prev => [...prev, saved]);
+                window.trackEvent('schedule_activity_logged', { activity_type: sched.type });
                 alert(`✅ Logged: ${sched.name}`);
             });
         };
@@ -5551,6 +5582,10 @@ window.ResearchSourcesPage = () => (
                                         localStorage.setItem('yardstick_onboarding_done', '1');
                                         setOnboardingDone(true);
                                         setSplashJustDone(true);
+                                        window.trackEvent('onboarding_complete', {
+                                            grass_type: lawnProfile?.specificGrass || null,
+                                            zone: lawnProfile?.zone || null,
+                                        });
                                     }}
                                     onDismiss={() => setSplashJustDone(false)}
                                     onManualZone={(zone) => {
