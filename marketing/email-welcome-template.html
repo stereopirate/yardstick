@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>Welcome to Yardstick!</title>
+  <style>
+    /* Reset */
+    * { box-sizing: border-box; }
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+    body { margin: 0; padding: 0; background-color: #EDE8DC; font-family: Arial, Helvetica, sans-serif; }
+
+    /* Fluid container — fills phone screen, caps at 600px on desktop */
+    .email-wrapper {
+      width: 100%;
+      background-color: #EDE8DC;
+    }
+    .email-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #EDE8DC;
+    }
+
+    /* Header */
+    .header-block {
+      background-color: #234D20;
+      padding: 36px 32px 32px;
+      text-align: left;
+    }
+    .header-wordmark {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      margin: 0 0 10px 0;
+      display: block;
+    }
+    .header-rule {
+      display: block;
+      width: 180px;
+      height: 4px;
+      background-color: #C8960C;
+      margin: 0 0 18px 0;
+      border: none;
+    }
+    .header-tagline {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #C4E8BC; /* high-contrast light green — readable on dark green */
+      text-transform: uppercase;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Body */
+    .body-block {
+      background-color: #FDFAF5;
+      padding: 36px 32px 40px;
+    }
+    .body-heading {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #234D20;
+      line-height: 1.25;
+      margin: 0 0 20px 0;
+    }
+    .body-text {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #3B3B3B;
+      margin: 0 0 24px 0;
+    }
+
+    /* Feature list */
+    .feature-list {
+      margin: 0 0 32px 0;
+      padding: 0;
+      list-style: none;
+    }
+    .feature-list li {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #3B3B3B;
+      padding: 10px 0 10px 28px;
+      position: relative;
+      border-bottom: 1px solid #E8E2D8;
+    }
+    .feature-list li:last-child { border-bottom: none; }
+    .feature-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #367C2B;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .feature-label {
+      font-weight: 700;
+      color: #234D20;
+    }
+
+    /* CTA Button */
+    .cta-wrapper {
+      text-align: center;
+      margin: 8px 0 32px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background-color: #367C2B;
+      color: #FFFFFF !important;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 16px 36px;
+      border-radius: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Footer */
+    .footer-block {
+      background-color: #234D20;
+      padding: 24px 32px;
+      text-align: center;
+    }
+    .footer-text {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #9DC897;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .footer-text a {
+      color: #9DC897;
+      text-decoration: underline;
+    }
+    .footer-divider {
+      border: none;
+      border-top: 1px solid #2D6627;
+      margin: 14px 0;
+    }
+
+    /* Mobile tweaks */
+    @media only screen and (max-width: 480px) {
+      .header-block  { padding: 28px 20px 24px; }
+      .header-wordmark { font-size: 36px; }
+      .body-block    { padding: 28px 20px 32px; }
+      .body-heading  { font-size: 24px; }
+      .body-text     { font-size: 15px; }
+      .footer-block  { padding: 20px 20px; }
+      .cta-btn       { display: block; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Outer wrapper — fills 100% of email client width -->
+  <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+    <tr>
+      <td align="center">
+
+        <!-- Centered container capped at 600px -->
+        <table class="email-container" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width:600px;">
+
+          <!-- ===== HEADER ===== -->
+          <tr>
+            <td class="header-block">
+              <span class="header-wordmark">Yardstick</span>
+              <span class="header-rule"></span>
+              <p class="header-tagline">Lawn care backed by science.<br>Built for your yard.</p>
+            </td>
+          </tr>
+
+          <!-- ===== BODY ===== -->
+          <tr>
+            <td class="body-block">
+
+              <h1 class="body-heading">Your yard now has a yardstick.</h1>
+
+              <p class="body-text">
+                Welcome to Yardstick. You've got access to research-backed lawn care recommendations
+                built from university extension science — personalized to your grass type, your location,
+                and your yard's specific conditions. No ads. No product pushing. Just your lawn, measured.
+              </p>
+
+              <ul class="feature-list">
+                <li>
+                  <span class="feature-label">Zone-aware care programs</span> —
+                  12-month schedules matched to your grass type and USDA climate zone.
+                </li>
+                <li>
+                  <span class="feature-label">Soil temperature guidance</span> —
+                  know when the ground is actually ready, not just when the calendar says so.
+                </li>
+                <li>
+                  <span class="feature-label">Activity &amp; product logging</span> —
+                  track every mow, fertilizer application, and treatment with exact rates and dates.
+                </li>
+                <li>
+                  <span class="feature-label">Equipment tracker</span> —
+                  75+ mower models with hour logging and maintenance alerts.
+                </li>
+                <li>
+                  <span class="feature-label">110+ university sources</span> —
+                  every recommendation cites real research from Penn State, Purdue, UGA, and more.
+                </li>
+              </ul>
+
+              <div class="cta-wrapper">
+                <a href="https://yardstick.diy" class="cta-btn">Open Your Yardstick →</a>
+              </div>
+
+              <p class="body-text" style="margin-bottom:0; font-size:14px; color:#6B6B6B;">
+                Yardstick runs entirely in your browser at <a href="https://yardstick.diy" style="color:#367C2B;">yardstick.diy</a> — no subscription, no account needed after this. Your data stays on your device.
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- ===== FOOTER ===== -->
+          <tr>
+            <td class="footer-block">
+              <p class="footer-text">
+                You're receiving this because you signed up at yardstick.diy.<br>
+                <a href="{{unsubscribe}}">Unsubscribe</a> · <a href="https://yardstick.diy">Visit Yardstick</a>
+              </p>
+              <hr class="footer-divider">
+              <p class="footer-text" style="color:#6BBF5A; font-size:11px;">
+                Research-backed lawn care &nbsp;·&nbsp; 19 university extension sources &nbsp;·&nbsp; Free forever
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
