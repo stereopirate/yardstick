@@ -86,7 +86,7 @@
         try {
             const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
             const { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,
-                    createUserWithEmailAndPassword, signOut, onAuthStateChanged } =
+                    createUserWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } =
                 await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js');
             const { getFirestore, doc, getDoc, setDoc, collection, getDocs, addDoc,
                     deleteDoc, updateDoc, serverTimestamp, query, orderBy, where, limit } =
@@ -100,7 +100,7 @@
                 db: getFirestore(app),
                 storage: getStorage(app),
                 GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,
-                createUserWithEmailAndPassword, signOut, onAuthStateChanged,
+                createUserWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser,
                 doc, getDoc, setDoc, collection, getDocs, addDoc,
                 deleteDoc, updateDoc, serverTimestamp, query, orderBy, where, limit,
                 storageRef, uploadBytes, getDownloadURL,
@@ -3442,6 +3442,49 @@ window.ResearchSourcesPage = () => (
             }
         };
 
+        // ── Delete account ───────────────────────────────────────────────────────
+        const [deleteOpen, setDeleteOpen] = React.useState(false);
+        const [deleteConfirmText, setDeleteConfirmText] = React.useState('');
+        const [deleteStatus, setDeleteStatus] = React.useState(null); // null | 'deleting' | 'error'
+        const [deleteError, setDeleteError] = React.useState('');
+        const handleDeleteAccount = async () => {
+            if (deleteConfirmText !== 'DELETE') return;
+            setDeleteStatus('deleting');
+            setDeleteError('');
+            try {
+                if (store.isCloud && currentUser) {
+                    const { db, collection, getDocs, deleteDoc, doc, deleteUser: fbDeleteUser } = fb;
+                    // Delete all Firestore subcollections
+                    const [actSnap, eqSnap] = await Promise.all([
+                        getDocs(collection(db, 'users', currentUser.uid, 'activities')),
+                        getDocs(collection(db, 'users', currentUser.uid, 'equipment')),
+                    ]);
+                    const deletions = [
+                        ...actSnap.docs.map(d => deleteDoc(d.ref)),
+                        ...eqSnap.docs.map(d => deleteDoc(d.ref)),
+                        deleteDoc(doc(db, 'users', currentUser.uid, 'profile', 'data')),
+                    ];
+                    await Promise.all(deletions);
+                    // Delete Firebase Auth account
+                    await fbDeleteUser(currentUser);
+                }
+                // Clear local storage
+                ['lawnCareActivities','lawnCareEquipment','lawnProfile',
+                 'yardstick_display_name','yardstick_pro_interest','yardstick_pro_interest_submitted',
+                 'yardstick_feedback'].forEach(k => localStorage.removeItem(k));
+                window.trackEvent && window.trackEvent('account_deleted', {});
+                window.location.reload();
+            } catch (err) {
+                console.error('Delete account error:', err);
+                if (err.code === 'auth/requires-recent-login') {
+                    setDeleteError('For security, please sign out and sign back in before deleting your account.');
+                } else {
+                    setDeleteError('Something went wrong. Please try again or contact support.');
+                }
+                setDeleteStatus('error');
+            }
+        };
+
         // ── Pro waitlist ─────────────────────────────────────────────────────────
         const [proEmail, setProEmail] = React.useState(currentUser?.email || '');
         const [proSubmitting, setProSubmitting] = React.useState(false);
@@ -3705,7 +3748,50 @@ window.ResearchSourcesPage = () => (
                     )}
                 </div>
 
-                {/* ── 7. Share Yardstick ──────────────────────────────────────── */}
+                {/* ── 7. Delete Account ───────────────────────────────────────── */}
+                {(store.isCloud && currentUser) && (
+                    <div className="bg-white rounded-2xl shadow-sm border border-red-100 overflow-hidden">
+                        <button onClick={() => { setDeleteOpen(o => !o); setDeleteConfirmText(''); setDeleteStatus(null); setDeleteError(''); }}
+                            className="w-full flex items-center justify-between px-4 py-3.5 text-left btn-press">
+                            <div className="flex items-center gap-2">
+                                <span className="text-base">🗑️</span>
+                                <span className="font-semibold text-red-600 text-sm">Delete Account</span>
+                            </div>
+                            <svg className={`w-4 h-4 text-red-300 transition-transform ${deleteOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        {deleteOpen && (
+                            <div className="px-4 pb-4 pt-1 border-t border-red-50 space-y-3">
+                                <p className="text-xs text-gray-500 leading-relaxed">
+                                    This will permanently delete your account and all your lawn care data — activities, equipment, and profile. <strong>This cannot be undone.</strong>
+                                </p>
+                                <div className="p-3 rounded-xl bg-red-50">
+                                    <p className="text-xs font-semibold text-red-700 mb-2">Type <span className="font-mono font-bold">DELETE</span> to confirm:</p>
+                                    <input
+                                        type="text"
+                                        value={deleteConfirmText}
+                                        onChange={e => { setDeleteConfirmText(e.target.value); setDeleteStatus(null); setDeleteError(''); }}
+                                        placeholder="DELETE"
+                                        className="w-full border border-red-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-red-400 font-mono"
+                                    />
+                                </div>
+                                {deleteError && (
+                                    <p className="text-xs text-red-600 font-medium">{deleteError}</p>
+                                )}
+                                <button
+                                    onClick={handleDeleteAccount}
+                                    disabled={deleteConfirmText !== 'DELETE' || deleteStatus === 'deleting'}
+                                    className="w-full py-2.5 px-4 bg-red-600 text-white rounded-xl font-semibold text-sm btn-press disabled:opacity-40 disabled:cursor-not-allowed"
+                                >
+                                    {deleteStatus === 'deleting' ? 'Deleting…' : 'Permanently Delete My Account'}
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* ── 9. Share Yardstick ──────────────────────────────────────── */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
                     <div className="flex items-center justify-between">
                         <div>
@@ -3722,7 +3808,7 @@ window.ResearchSourcesPage = () => (
                     </div>
                 </div>
 
-                {/* ── 8. About ────────────────────────────────────────────────── */}
+                {/* ── 10. About ───────────────────────────────────────────────── */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
                     <h3 className="text-sm font-bold text-gray-700 mb-2">About</h3>
                     <div className="flex items-center gap-2 mb-1">
