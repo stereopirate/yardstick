@@ -2510,6 +2510,7 @@ window.ResearchSourcesPage = () => (
         const [localFormData, setLocalFormData] = useState({ date: new Date().toISOString().split('T')[0], notes: '', data: {} });
         const [photoPreview, setPhotoPreview] = useState(null);
         const [shareToGallery, setShareToGallery] = useState(false);
+        const [photoError, setPhotoError] = useState(null);
         const fb = window.__FIREBASE__ || {};
         const canUploadPhoto = fb.configured && !!currentUser;
 
@@ -2577,12 +2578,14 @@ window.ResearchSourcesPage = () => (
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     if (isPhotoLog && !localFormData.photoFile) {
-                        alert('Please add a photo before saving.');
+                        setPhotoError('Please add a photo before saving.');
                         return;
                     }
+                    setPhotoError(null);
                     onSubmit({ ...localFormData, shareToGallery });
                 }} className="bg-white rounded-lg shadow-lg p-6">
                     {isPhotoLog && renderPhotoSection(true)}
+                    {photoError && <p className="text-red-600 text-sm mb-3 font-medium">{photoError}</p>}
                     <div className="mb-4">
                         <label className="block text-sm font-semibold mb-2">Date</label>
                         <input type="date" required value={localFormData.date}
@@ -3437,7 +3440,6 @@ window.ResearchSourcesPage = () => (
                 localStorage.removeItem('lawnCareEquipment');
                 localStorage.removeItem('lawnProfile');
                 localStorage.removeItem('yardstick_display_name');
-                alert('✅ Data cleared');
                 window.location.reload();
             }
         };
@@ -5289,7 +5291,7 @@ window.ResearchSourcesPage = () => (
                     photoUrl = await getDownloadURL(snap.ref);
                 } catch(e) {
                     console.error('Photo upload failed:', e);
-                    alert('⚠️ Activity saved, but photo upload failed. Check your connection and try again.');
+                    // photo upload failed — activity still saved, error logged above
                 }
             }
 
@@ -5338,7 +5340,6 @@ window.ResearchSourcesPage = () => (
                 }
             }
 
-            alert('✅ Activity saved!');
             setView(null);
             setSelectedActivityType(null);
         };
@@ -5423,7 +5424,6 @@ window.ResearchSourcesPage = () => (
             store.saveActivity(newActivity).then(saved => {
                 setActivities(prev => [...prev, saved]);
                 window.trackEvent('schedule_activity_logged', { activity_type: sched.type });
-                alert(`✅ Logged: ${sched.name}`);
             });
         };
 
