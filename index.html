@@ -1948,28 +1948,35 @@ window.ResearchSourcesPage = () => (
         const advisories = generateAdvisories(weather, lawnProfile, activities);
         if (!advisories.length) return null;
         const statusStyle = {
-            hold:    { bg: '#FEF2F2', badge: '#EF4444', badgeText: '#fff', label: 'HOLD' },
-            caution: { bg: '#FFFBEB', badge: '#F59E0B', badgeText: '#fff', label: 'NOTE' },
-            go:      { bg: '#F0FDF4', badge: '#22C55E', badgeText: '#fff', label: 'GOOD' },
+            hold:    { bg: '#FEF2F2', badge: '#EF4444', badgeText: '#fff', label: 'HOLD',   border: '#FECACA', accentColor: '#EF4444' },
+            caution: { bg: '#FFFBEB', badge: '#F59E0B', badgeText: '#fff', label: 'CAUTION', border: '#FDE68A', accentColor: '#F59E0B' },
+            go:      { bg: '#F0FDF4', badge: '#16A34A', badgeText: '#fff', label: 'GOOD',   border: '#BBF7D0', accentColor: '#16A34A' },
         };
+        const topStatus = advisories.find(a => a.status === 'hold') || advisories.find(a => a.status === 'caution') || advisories[0];
+        const topStyle = statusStyle[topStatus.status];
         return (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-100">
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Today's Advisory</span>
+            <div className="rounded-2xl shadow-sm overflow-hidden" style={{border: `1px solid ${topStyle.border}`, borderLeft: `4px solid ${topStyle.accentColor}`}}>
+                <div className="flex items-center justify-between px-4 py-2.5" style={{background: topStyle.bg, borderBottom: `1px solid ${topStyle.border}`}}>
+                    <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full flex-shrink-0" style={{background: topStyle.accentColor}}></div>
+                        <span className="text-xs font-bold uppercase tracking-widest" style={{color: topStyle.accentColor}}>Today's Advisory</span>
+                    </div>
                     <span className="text-xs text-gray-400">{weather.location}</span>
                 </div>
                 {advisories.map((adv, i) => {
                     const s = statusStyle[adv.status];
                     return (
-                        <div key={i} style={{backgroundColor: s.bg}} className={`px-4 py-3 ${i < advisories.length - 1 ? 'border-b border-white/60' : ''}`}>
-                            <div className="flex items-start gap-2.5">
-                                <span className="text-lg flex-shrink-0 mt-0.5">{adv.icon}</span>
+                        <div key={i} className="bg-white" style={{borderBottom: i < advisories.length - 1 ? `1px solid ${s.border}` : 'none'}}>
+                            <div className="px-4 py-3 flex items-start gap-3">
+                                <div className="w-8 h-8 rounded-xl flex items-center justify-center text-base flex-shrink-0 mt-0.5" style={{background: s.bg}}>
+                                    {adv.icon}
+                                </div>
                                 <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                                        <span className="text-xs font-bold px-1.5 py-0.5 rounded-full" style={{backgroundColor: s.badge, color: s.badgeText}}>{s.label}</span>
+                                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                                        <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full tracking-wide" style={{backgroundColor: s.badge, color: s.badgeText}}>{s.label}</span>
                                         <span className="text-sm font-bold text-gray-800">{adv.title}</span>
                                     </div>
-                                    <p className="text-xs text-gray-600 leading-snug">{adv.detail}</p>
+                                    <p className="text-xs text-gray-500 leading-snug">{adv.detail}</p>
                                 </div>
                             </div>
                         </div>
@@ -2123,16 +2130,22 @@ window.ResearchSourcesPage = () => (
             actionText = '→ Overseed now';
             gradFrom = '#6d3309'; gradTo = '#8a3f0a';
         }
+        const hexToRgba = (hex, alpha) => {
+            const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+            return `rgba(${r},${g},${b},${alpha})`;
+        };
         return (
-            <div className="animate-fade-in px-4 py-3 flex items-center justify-between" style={{borderLeft: `4px solid ${gradFrom}`}}>
-                <div className="flex items-center gap-2.5">
-                    <span className="text-lg">{bannerIcon}</span>
+            <div className="animate-fade-in px-4 py-3 flex items-center justify-between" style={{background: hexToRgba(gradFrom, 0.07), borderLeft: `4px solid ${gradFrom}`}}>
+                <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{background: hexToRgba(gradFrom, 0.15)}}>
+                        {bannerIcon}
+                    </div>
                     <div>
-                        <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">{seasonLabel}</div>
+                        <div className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{color: gradFrom}}>{seasonLabel}</div>
                         <div className="text-xs text-gray-600">{seasonDetail}</div>
                     </div>
                 </div>
-                <div className="text-xs font-semibold text-gray-600 bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 whitespace-nowrap flex-shrink-0 ml-3">
+                <div className="text-xs font-semibold rounded-lg px-2.5 py-1.5 whitespace-nowrap flex-shrink-0 ml-3" style={{background: hexToRgba(gradFrom, 0.12), color: gradFrom}}>
                     {actionText}
                 </div>
             </div>
@@ -2319,23 +2332,41 @@ window.ResearchSourcesPage = () => (
                         </div>
                     </div>
                     <div className="grid grid-cols-4 gap-1.5 p-1.5 bg-gray-50">
-                        <div className="text-center py-2 px-1 bg-white rounded-xl shadow-sm">
-                            <div className="text-xs text-gray-400 mb-0.5">Humidity</div>
+                        <div className="text-center py-2.5 px-1 bg-white rounded-xl shadow-sm">
+                            <svg className="w-3.5 h-3.5 mx-auto mb-1 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                            <div className="text-[10px] text-gray-400 mb-0.5">Humidity</div>
                             <div className="text-sm font-bold text-gray-800">{weather.humidity}%</div>
                         </div>
-                        <div className="text-center py-2 px-1 bg-white rounded-xl shadow-sm">
-                            <div className="text-xs text-gray-400 mb-0.5">Wind</div>
+                        <div className="text-center py-2.5 px-1 bg-white rounded-xl shadow-sm">
+                            <svg className="w-3.5 h-3.5 mx-auto mb-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+                            <div className="text-[10px] text-gray-400 mb-0.5">Wind</div>
                             <div className="text-sm font-bold text-gray-800">{weather.windSpeed} mph</div>
                         </div>
-                        <div className="text-center py-2 px-1 bg-white rounded-xl shadow-sm">
-                            <div className="text-xs text-gray-400 mb-0.5">7-Day Rain</div>
+                        <div className="text-center py-2.5 px-1 bg-white rounded-xl shadow-sm">
+                            <svg className="w-3.5 h-3.5 mx-auto mb-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25M8 19v3m4-3v3m4-3v3"/></svg>
+                            <div className="text-[10px] text-gray-400 mb-0.5">7-Day Rain</div>
                             <div className="text-sm font-bold text-gray-800">{weather.rainfall}"</div>
                         </div>
-                        <div className="text-center py-2 px-1 bg-white rounded-xl shadow-sm">
-                            {weather.precipProbability !== null
-                                ? <><div className="text-xs text-gray-400 mb-0.5">Rain %</div><div className="text-sm font-bold text-gray-800">{weather.precipProbability}%</div></>
-                                : uvLabel ? <><div className="text-xs text-gray-400 mb-0.5">UV</div><div className="text-sm font-bold text-gray-800">{weather.uvIndex} {uvLabel}</div></>
-                                : <><div className="text-xs text-gray-400 mb-0.5">UV</div><div className="text-sm font-bold text-gray-800">—</div></>}
+                        <div className="text-center py-2.5 px-1 bg-white rounded-xl shadow-sm">
+                            {weather.precipProbability !== null ? (
+                                <>
+                                    <svg className="w-3.5 h-3.5 mx-auto mb-1 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M23 12a11.05 11.05 0 0 0-22 0zm-5 7a3 3 0 0 1-6 0v-7"/></svg>
+                                    <div className="text-[10px] text-gray-400 mb-0.5">Rain %</div>
+                                    <div className="text-sm font-bold text-gray-800">{weather.precipProbability}%</div>
+                                </>
+                            ) : uvLabel ? (
+                                <>
+                                    <svg className="w-3.5 h-3.5 mx-auto mb-1 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><circle cx="12" cy="12" r="4"/><path strokeLinecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                                    <div className="text-[10px] text-gray-400 mb-0.5">UV</div>
+                                    <div className="text-sm font-bold text-gray-800">{weather.uvIndex} {uvLabel}</div>
+                                </>
+                            ) : (
+                                <>
+                                    <svg className="w-3.5 h-3.5 mx-auto mb-1 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><circle cx="12" cy="12" r="4"/><path strokeLinecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                                    <div className="text-[10px] text-gray-400 mb-0.5">UV</div>
+                                    <div className="text-sm font-bold text-gray-800">—</div>
+                                </>
+                            )}
                         </div>
                     </div>
                     <div className="border-t border-gray-100 flex items-center divide-x divide-gray-100">
@@ -5773,11 +5804,21 @@ window.ResearchSourcesPage = () => (
                                 </div>
                             </div>
                                 ); })()}
+                            {/* ── Section: Weather & Conditions ── */}
+                            <div className="flex items-center gap-2 pt-1">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Weather &amp; Conditions</span>
+                                <div className="flex-1 h-px bg-gray-200"></div>
+                            </div>
                             {/* Weather card */}
                             <WeatherSnapshot weather={weather} weatherLoading={weatherLoading} lawnProfile={lawnProfile} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} />
                             {/* Season banner card */}
                             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                                 <SeasonBanner weather={weather} />
+                            </div>
+                            {/* ── Section: Your Plan ── */}
+                            <div className="flex items-center gap-2 pt-1">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Your Plan</span>
+                                <div className="flex-1 h-px bg-gray-200"></div>
                             </div>
                             {/* Today's Advisory card */}
                             {weather && <TodayAdvisoryCard weather={weather} lawnProfile={lawnProfile} activities={activities} />}
@@ -5899,11 +5940,17 @@ window.ResearchSourcesPage = () => (
                                     const d = new Date().getDate();
                                     return d <= 7 ? 'Early' : d <= 14 ? 'Mid' : d <= 21 ? 'Mid–Late' : 'Late';
                                 })();
+                                const StatusBadge = ({ status }) => {
+                                    if (!status) return null;
+                                    if (status === 'go')      return <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 flex-shrink-0 whitespace-nowrap">Go</span>;
+                                    if (status === 'caution') return <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 flex-shrink-0 whitespace-nowrap">Soon</span>;
+                                    return <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-red-100 text-red-700 flex-shrink-0 whitespace-nowrap">Hold</span>;
+                                };
                                 return (
                                     <button onClick={() => setView('gameplan')} className="w-full bg-white rounded-2xl shadow-sm border border-[#367C2B]/20 p-4 card-hover btn-press text-left">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-8 h-8 rounded-lg bg-[#e8f5e9] flex items-center justify-center text-lg flex-shrink-0">📅</div>
+                                        <div className="flex items-center justify-between mb-3">
+                                            <div className="flex items-center gap-2.5">
+                                                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style={{background:'var(--ys-green-100)'}}>📅</div>
                                                 <div>
                                                     <div className="text-sm font-bold text-gray-800">This Week's Priority</div>
                                                     <div className="text-xs text-gray-400">{weekLabel} {curMonth}{currentEntry?.importance ? ` · ${currentEntry.importance}` : ''}</div>
@@ -5912,19 +5959,15 @@ window.ResearchSourcesPage = () => (
                                             <span className="text-xs font-bold text-[#367C2B]">Full plan →</span>
                                         </div>
                                         {scoredTasks.length > 0 ? (
-                                            <div className="space-y-1.5 mt-2">
-                                                {scoredTasks.slice(0, 3).map(({ task, ws }, i) => {
-                                                    const dot = !ws ? null : ws.status === 'go' ? '🟢' : ws.status === 'caution' ? '🟡' : '🔴';
-                                                    return (
-                                                        <div key={i} className="flex items-start gap-2 text-xs text-gray-600">
-                                                            <span className="flex-shrink-0 mt-0.5">{getIcon(task)}</span>
-                                                            <span className="flex-1 leading-snug">{task}</span>
-                                                            {dot && <span className="flex-shrink-0">{dot}</span>}
-                                                        </div>
-                                                    );
-                                                })}
-                                                {scoredTasks.length > 3 && <div className="text-xs text-[#367C2B] font-semibold">+{scoredTasks.length - 3} more this month</div>}
-                                                {weather && <div className="text-xs text-gray-400 mt-1.5 pt-1.5 border-t border-gray-100">🟢 do now · 🟡 proceed carefully · 🔴 hold</div>}
+                                            <div className="space-y-2 mt-1">
+                                                {scoredTasks.slice(0, 3).map(({ task, ws }, i) => (
+                                                    <div key={i} className="flex items-center gap-2 bg-gray-50 rounded-lg px-2.5 py-2">
+                                                        <span className="flex-shrink-0 text-base">{getIcon(task)}</span>
+                                                        <span className="flex-1 text-xs text-gray-700 leading-snug font-medium">{task}</span>
+                                                        {ws && <StatusBadge status={ws.status} />}
+                                                    </div>
+                                                ))}
+                                                {scoredTasks.length > 3 && <div className="text-xs text-[#367C2B] font-semibold px-1">+{scoredTasks.length - 3} more this month</div>}
                                                 {upNext && !weather && <div className="text-xs text-gray-400 mt-1 pt-1 border-t border-gray-100">Up next: {upNext}</div>}
                                             </div>
                                         ) : (
@@ -5935,6 +5978,11 @@ window.ResearchSourcesPage = () => (
                                     </button>
                                 );
                             })()}
+                            {/* ── Section: Quick Actions ── */}
+                            <div className="flex items-center gap-2 pt-1">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Quick Actions</span>
+                                <div className="flex-1 h-px bg-gray-200"></div>
+                            </div>
                             {/* Primary CTA */}
                             <button onClick={() => { setView('add'); setSelectedActivityType(null); }} className="w-full text-white rounded-2xl py-4 flex items-center justify-center gap-3 btn-press transition" style={{background:'var(--ys-green-600)', boxShadow:'0 4px 20px rgba(54,124,43,0.32)'}}>
                                 <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{background:'rgba(255,255,255,0.2)'}}>
@@ -5972,13 +6020,13 @@ window.ResearchSourcesPage = () => (
                                                 const days = Math.floor((new Date() - new Date(activity.date)) / (1000*60*60*24));
                                                 const when = days === 0 ? 'Today' : days === 1 ? 'Yesterday' : `${days} days ago`;
                                                 return (
-                                                    <div key={activity.id} className="bg-white rounded-xl border border-gray-100 shadow-sm px-3 py-2.5 flex items-center gap-3 card-hover">
-                                                        <div className={`w-8 h-8 rounded-lg ${colors.bg} flex items-center justify-center text-base flex-shrink-0`}>{type.imgSrc ? <img src={type.imgSrc} className="w-5 h-5 object-contain" alt="" /> : type.icon}</div>
+                                                    <div key={activity.id} className="bg-white rounded-xl shadow-sm px-3 py-2.5 flex items-center gap-3 card-hover overflow-hidden" style={{border: `1px solid ${colors.hex}28`, borderLeft: `4px solid ${colors.hex}`}}>
+                                                        <div className={`w-9 h-9 rounded-xl ${colors.bg} flex items-center justify-center text-base flex-shrink-0`}>{type.imgSrc ? <img src={type.imgSrc} className="w-5 h-5 object-contain" alt="" /> : type.icon}</div>
                                                         <div className="flex-1 min-w-0">
                                                             <div className="text-sm font-bold text-gray-800">{type.name}</div>
                                                             <div className="text-xs text-gray-400">{when}</div>
                                                         </div>
-                                                        <div className="w-2 h-2 rounded-full flex-shrink-0" style={{backgroundColor: colors.hex}}></div>
+                                                        <svg className="w-4 h-4 flex-shrink-0 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/></svg>
                                                     </div>
                                                 );
                                             })}
