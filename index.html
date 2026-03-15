@@ -4323,6 +4323,7 @@ window.ResearchSourcesPage = () => (
         const [submitted, setSubmitted] = useState(false);
         const [selectedGrass, setSelectedGrass] = useState('');
         const [zonePickerValue, setZonePickerValue] = useState('');
+        const [idOpen, setIdOpen] = useState(false);
 
         // Detect successful zip lookup → advance to grass step
         useEffect(() => {
@@ -4562,49 +4563,44 @@ window.ResearchSourcesPage = () => (
                             </button>
                         ))}
                     </div>
-                    {/* "Help me identify" accordion — inline IIFE so it can hold its own useState */}
-                    {(() => {
-                        const [idOpen, setIdOpen] = React.useState(false);
-                        return (
-                            <div className="mb-3 rounded-xl border border-gray-200 overflow-hidden">
-                                <button onClick={() => setIdOpen(o => !o)}
-                                    className="w-full flex items-center justify-between px-3 py-2.5 bg-gray-50 btn-press"
-                                    style={{border:'none'}}>
-                                    <span className="text-xs font-semibold text-gray-500">🔍 Not sure? Help me identify my grass</span>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth={2.5} strokeLinecap="round"
-                                        style={{transform: idOpen ? 'rotate(180deg)' : 'none', transition:'transform 0.2s', flexShrink:0}}>
-                                        <path d="M6 9l6 6 6-6"/>
-                                    </svg>
-                                </button>
-                                {idOpen && (
-                                    <div className="px-3 py-3 bg-white space-y-2.5 border-t border-gray-100">
-                                        <div className="flex items-start gap-2 text-xs text-gray-600">
-                                            <span className="flex-shrink-0">❄️</span>
-                                            <span><strong className="text-gray-800">Green in winter, struggles in peak summer heat?</strong> Cool season — Tall Fescue, Kentucky Bluegrass, or Ryegrass.</span>
-                                        </div>
-                                        <div className="flex items-start gap-2 text-xs text-gray-600">
-                                            <span className="flex-shrink-0">☀️</span>
-                                            <span><strong className="text-gray-800">Tan/straw in winter, lush in summer?</strong> Warm season — Bermudagrass, Zoysia, or St. Augustine.</span>
-                                        </div>
-                                        <div className="flex items-start gap-2 text-xs text-gray-600">
-                                            <span className="flex-shrink-0">📍</span>
-                                            <span><strong className="text-gray-800">Zone 7 or further south (TX, GA, FL, Carolinas)?</strong> Almost certainly warm season unless you specifically seeded cool season grass.</span>
-                                        </div>
-                                        <div className="flex items-start gap-2 text-xs text-gray-600">
-                                            <span className="flex-shrink-0">🔬</span>
-                                            <span><strong className="text-gray-800">Still unsure?</strong> Your local cooperative extension office can ID a grass sample for free —{' '}
-                                                <a href={`https://www.google.com/search?q=cooperative+extension+office+grass+identification`}
-                                                    target="_blank" rel="noopener noreferrer"
-                                                    className="font-semibold underline" style={{color:'var(--ys-green-600)'}}>
-                                                    find yours here
-                                                </a>.
-                                            </span>
-                                        </div>
-                                    </div>
-                                )}
+                    {/* "Help me identify" accordion */}
+                    <div className="mb-3 rounded-xl border border-gray-200 overflow-hidden">
+                        <button onClick={() => setIdOpen(o => !o)}
+                            className="w-full flex items-center justify-between px-3 py-2.5 bg-gray-50 btn-press"
+                            style={{border:'none'}}>
+                            <span className="text-xs font-semibold text-gray-500">🔍 Not sure? Help me identify my grass</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth={2.5} strokeLinecap="round"
+                                style={{transform: idOpen ? 'rotate(180deg)' : 'none', transition:'transform 0.2s', flexShrink:0}}>
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        {idOpen && (
+                            <div className="px-3 py-3 bg-white space-y-2.5 border-t border-gray-100">
+                                <div className="flex items-start gap-2 text-xs text-gray-600">
+                                    <span className="flex-shrink-0">❄️</span>
+                                    <span><strong className="text-gray-800">Green in winter, struggles in peak summer heat?</strong> Cool season — Tall Fescue, Kentucky Bluegrass, or Ryegrass.</span>
+                                </div>
+                                <div className="flex items-start gap-2 text-xs text-gray-600">
+                                    <span className="flex-shrink-0">☀️</span>
+                                    <span><strong className="text-gray-800">Tan/straw in winter, lush in summer?</strong> Warm season — Bermudagrass, Zoysia, or St. Augustine.</span>
+                                </div>
+                                <div className="flex items-start gap-2 text-xs text-gray-600">
+                                    <span className="flex-shrink-0">📍</span>
+                                    <span><strong className="text-gray-800">Zone 7 or further south (TX, GA, FL, Carolinas)?</strong> Almost certainly warm season unless you specifically seeded cool season grass.</span>
+                                </div>
+                                <div className="flex items-start gap-2 text-xs text-gray-600">
+                                    <span className="flex-shrink-0">🔬</span>
+                                    <span><strong className="text-gray-800">Still unsure?</strong> Your local cooperative extension office can ID a grass sample for free —{' '}
+                                        <a href={`https://www.google.com/search?q=cooperative+extension+office+grass+identification`}
+                                            target="_blank" rel="noopener noreferrer"
+                                            className="font-semibold underline" style={{color:'var(--ys-green-600)'}}>
+                                            find yours here
+                                        </a>.
+                                    </span>
+                                </div>
                             </div>
-                        );
-                    })()}
+                        )}
+                    </div>
                     <button onClick={() => { onComplete && onComplete(); setStep('done'); }}
                         className="w-full text-center text-xs text-gray-400 btn-press py-1">
                         Skip for now — I'll set this in My Yard later
