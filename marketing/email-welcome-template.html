@@ -14,17 +14,9 @@
     img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
     body { margin: 0; padding: 0; background-color: #EDE8DC; font-family: Arial, Helvetica, sans-serif; }
 
-    /* Fluid container — fills phone screen, caps at 600px on desktop */
-    .email-wrapper {
-      width: 100%;
-      background-color: #EDE8DC;
-    }
-    .email-container {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      background-color: #EDE8DC;
-    }
+    /* Fluid container */
+    .email-wrapper { width: 100%; background-color: #EDE8DC; }
+    .email-container { width: 100%; max-width: 600px; margin: 0 auto; background-color: #EDE8DC; }
 
     /* Header */
     .header-block {
@@ -55,13 +47,13 @@
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 2px;
-      color: #C4E8BC; /* high-contrast light green — readable on dark green */
+      color: #C4E8BC;
       text-transform: uppercase;
       line-height: 1.6;
       margin: 0;
     }
 
-    /* Body */
+    /* Body sections */
     .body-block {
       background-color: #FDFAF5;
       padding: 36px 32px 40px;
@@ -72,49 +64,149 @@
       font-weight: 700;
       color: #234D20;
       line-height: 1.25;
-      margin: 0 0 20px 0;
+      margin: 0 0 16px 0;
     }
     .body-text {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 16px;
       line-height: 1.7;
       color: #3B3B3B;
-      margin: 0 0 24px 0;
+      margin: 0 0 28px 0;
     }
 
-    /* Feature list */
-    .feature-list {
-      margin: 0 0 32px 0;
+    /* Section divider */
+    .section-divider {
+      border: none;
+      border-top: 2px solid #E8E2D8;
+      margin: 32px 0;
+    }
+
+    /* Section label */
+    .section-label {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #9C7248;
+      margin: 0 0 16px 0;
+    }
+    .section-heading {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #234D20;
+      line-height: 1.3;
+      margin: 0 0 20px 0;
+    }
+
+    /* Setup steps */
+    .setup-steps {
+      margin: 0 0 8px 0;
       padding: 0;
       list-style: none;
     }
-    .feature-list li {
+    .setup-steps li {
+      display: flex;
+      align-items: flex-start;
       font-family: Arial, Helvetica, sans-serif;
       font-size: 15px;
       line-height: 1.5;
       color: #3B3B3B;
-      padding: 10px 0 10px 28px;
-      position: relative;
-      border-bottom: 1px solid #E8E2D8;
+      padding: 12px 0;
+      border-bottom: 1px solid #EDE8DC;
     }
-    .feature-list li:last-child { border-bottom: none; }
-    .feature-list li::before {
-      content: "✓";
-      position: absolute;
-      left: 0;
-      color: #367C2B;
+    .setup-steps li:last-child { border-bottom: none; }
+    .step-num {
+      display: inline-block;
+      min-width: 28px;
+      height: 28px;
+      background-color: #367C2B;
+      color: #FFFFFF;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
       font-weight: 700;
-      font-size: 15px;
+      text-align: center;
+      line-height: 28px;
+      border-radius: 50%;
+      margin-right: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
     }
-    .feature-label {
+    .step-content { flex: 1; }
+    .step-title {
       font-weight: 700;
       color: #234D20;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .step-desc {
+      font-size: 13px;
+      color: #6B6B6B;
+      line-height: 1.5;
     }
 
-    /* CTA Button */
+    /* Feature cards — 2-column on desktop, stacks on mobile */
+    .feature-grid {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-bottom: 8px;
+    }
+    .feature-card-td {
+      width: 50%;
+      vertical-align: top;
+      padding: 4px;
+    }
+    .feature-card {
+      background-color: #F4FAF2;
+      border: 1px solid #D4EBD0;
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .feature-icon {
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .feature-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #234D20;
+      margin: 0 0 5px 0;
+    }
+    .feature-desc {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      line-height: 1.55;
+      color: #5A5A5A;
+      margin: 0;
+    }
+
+    /* Trust bar */
+    .trust-bar {
+      background-color: #EBF5E6;
+      border: 1px solid #C4E8BC;
+      border-radius: 8px;
+      padding: 16px 20px;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .trust-bar p {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #2D6627;
+      margin: 0;
+      line-height: 1.8;
+    }
+    .trust-bar strong { font-weight: 700; }
+
+    /* CTA */
     .cta-wrapper {
       text-align: center;
-      margin: 8px 0 32px;
+      margin: 28px 0 28px;
     }
     .cta-btn {
       display: inline-block;
@@ -124,9 +216,16 @@
       font-size: 16px;
       font-weight: 700;
       text-decoration: none;
-      padding: 16px 36px;
+      padding: 16px 40px;
       border-radius: 8px;
       letter-spacing: 0.3px;
+    }
+    .cta-subtext {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #9C7248;
+      text-align: center;
+      margin: 8px 0 0 0;
     }
 
     /* Footer */
@@ -142,36 +241,29 @@
       line-height: 1.6;
       margin: 0;
     }
-    .footer-text a {
-      color: #9DC897;
-      text-decoration: underline;
-    }
-    .footer-divider {
-      border: none;
-      border-top: 1px solid #2D6627;
-      margin: 14px 0;
-    }
+    .footer-text a { color: #9DC897; text-decoration: underline; }
+    .footer-divider { border: none; border-top: 1px solid #2D6627; margin: 14px 0; }
 
-    /* Mobile tweaks */
+    /* Mobile */
     @media only screen and (max-width: 480px) {
-      .header-block  { padding: 28px 20px 24px; }
-      .header-wordmark { font-size: 36px; }
-      .body-block    { padding: 28px 20px 32px; }
-      .body-heading  { font-size: 24px; }
-      .body-text     { font-size: 15px; }
-      .footer-block  { padding: 20px 20px; }
-      .cta-btn       { display: block; text-align: center; }
+      .header-block     { padding: 28px 20px 24px; }
+      .header-wordmark  { font-size: 36px; }
+      .body-block       { padding: 28px 20px 32px; }
+      .body-heading     { font-size: 24px; }
+      .body-text        { font-size: 15px; }
+      .section-heading  { font-size: 20px; }
+      .footer-block     { padding: 20px; }
+      .cta-btn          { display: block; text-align: center; }
+      /* Stack feature cards on mobile */
+      .feature-card-td  { display: block; width: 100% !important; padding: 4px 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Outer wrapper — fills 100% of email client width -->
   <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
       <td align="center">
-
-        <!-- Centered container capped at 600px -->
         <table class="email-container" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width:600px;">
 
           <!-- ===== HEADER ===== -->
@@ -187,43 +279,132 @@
           <tr>
             <td class="body-block">
 
+              <!-- Welcome -->
               <h1 class="body-heading">Your yard now has a yardstick.</h1>
-
               <p class="body-text">
                 Welcome to Yardstick. You've got access to research-backed lawn care recommendations
                 built from university extension science — personalized to your grass type, your location,
                 and your yard's specific conditions. No ads. No product pushing. Just your lawn, measured.
               </p>
 
-              <ul class="feature-list">
+              <!-- ===== SETUP STEPS ===== -->
+              <hr class="section-divider">
+              <p class="section-label">Get started</p>
+              <h2 class="section-heading">Finish setting up your lawn profile</h2>
+              <p class="body-text" style="margin-bottom:20px; font-size:15px;">
+                To unlock your personalized care program, Yardstick needs a few quick details about your lawn.
+                It only takes a minute — and once it's done, everything in the app is tailored to you.
+              </p>
+
+              <ul class="setup-steps">
                 <li>
-                  <span class="feature-label">Zone-aware care programs</span> —
-                  12-month schedules matched to your grass type and USDA climate zone.
+                  <span class="step-num">1</span>
+                  <span class="step-content">
+                    <span class="step-title">Select your grass type</span>
+                    <span class="step-desc">Choose from 6 supported grass types — Bermuda, Zoysia, St. Augustine, Tall Fescue, Kentucky Bluegrass, and more. Not sure? The app helps you identify it.</span>
+                  </span>
                 </li>
                 <li>
-                  <span class="feature-label">Soil temperature guidance</span> —
-                  know when the ground is actually ready, not just when the calendar says so.
+                  <span class="step-num">2</span>
+                  <span class="step-content">
+                    <span class="step-title">Enter your zip code</span>
+                    <span class="step-desc">Yardstick auto-detects your USDA hardiness zone (4–9) so your care schedule matches your actual climate, not a one-size-fits-all calendar.</span>
+                  </span>
                 </li>
                 <li>
-                  <span class="feature-label">Activity &amp; product logging</span> —
-                  track every mow, fertilizer application, and treatment with exact rates and dates.
+                  <span class="step-num">3</span>
+                  <span class="step-content">
+                    <span class="step-title">Review your Full Year Program</span>
+                    <span class="step-desc">Once your grass and zone are set, your 12-month care schedule is ready — fertilizing windows, seeding timing, mow height adjustments, and more.</span>
+                  </span>
                 </li>
                 <li>
-                  <span class="feature-label">Equipment tracker</span> —
-                  75+ mower models with hour logging and maintenance alerts.
-                </li>
-                <li>
-                  <span class="feature-label">110+ university sources</span> —
-                  every recommendation cites real research from Penn State, Purdue, UGA, and more.
+                  <span class="step-num">4</span>
+                  <span class="step-content">
+                    <span class="step-title">Add your equipment (optional)</span>
+                    <span class="step-desc">Log your mower from 75+ models. Yardstick tracks hours and tells you when maintenance is due — oil changes, blade sharpening, and more.</span>
+                  </span>
                 </li>
               </ul>
 
               <div class="cta-wrapper">
-                <a href="https://yardstick.diy" class="cta-btn">Open Your Yardstick →</a>
+                <a href="https://yardstick.diy" class="cta-btn">Finish My Setup →</a>
+                <p class="cta-subtext">Opens in your browser — nothing to install</p>
               </div>
 
-              <p class="body-text" style="margin-bottom:0; font-size:14px; color:#6B6B6B;">
-                Yardstick runs entirely in your browser at <a href="https://yardstick.diy" style="color:#367C2B;">yardstick.diy</a> — no subscription, no account needed after this. Your data stays on your device.
+              <!-- ===== FEATURE SHOWCASE ===== -->
+              <hr class="section-divider">
+              <p class="section-label">What you've unlocked</p>
+              <h2 class="section-heading">Everything in Yardstick, at a glance</h2>
+
+              <table class="feature-grid" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                <tr>
+                  <td class="feature-card-td">
+                    <div class="feature-card">
+                      <span class="feature-icon">📅</span>
+                      <p class="feature-title">Full Year Care Program</p>
+                      <p class="feature-desc">A 12-month month-by-month schedule specific to your grass type and USDA zone — fertilizing, seeding, aeration, mow height, and seasonal prep.</p>
+                    </div>
+                  </td>
+                  <td class="feature-card-td">
+                    <div class="feature-card">
+                      <span class="feature-icon">🌡️</span>
+                      <p class="feature-title">Soil Temperature Guidance</p>
+                      <p class="feature-desc">Know when your soil is actually ready to fertilize, seed, or apply pre-emergent — not just when the calendar says so. Real-time, zone-aware.</p>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="feature-card-td">
+                    <div class="feature-card">
+                      <span class="feature-icon">📋</span>
+                      <p class="feature-title">Activity Log</p>
+                      <p class="feature-desc">Track every mow, fertilizer application, watering, seeding, trimming, aeration, and maintenance event with exact products, rates, and dates.</p>
+                    </div>
+                  </td>
+                  <td class="feature-card-td">
+                    <div class="feature-card">
+                      <span class="feature-icon">🚜</span>
+                      <p class="feature-title">Equipment Tracker</p>
+                      <p class="feature-desc">75+ mower models from 20+ brands. Log hours, track maintenance intervals, and get alerts for oil changes and blade sharpenings before you forget.</p>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="feature-card-td">
+                    <div class="feature-card">
+                      <span class="feature-icon">🧪</span>
+                      <p class="feature-title">Product Guide</p>
+                      <p class="feature-desc">96+ products — fertilizers, seeds, pre-emergents, fungicides, and more — with active ingredients, application rates, and side-by-side comparison for up to 3 at once.</p>
+                    </div>
+                  </td>
+                  <td class="feature-card-td">
+                    <div class="feature-card">
+                      <span class="feature-icon">🌿</span>
+                      <p class="feature-title">Grass Type Profiles</p>
+                      <p class="feature-desc">Ideal mow heights, watering needs, soil pH ranges, and zone-specific notes for every supported grass type — so you know exactly what your lawn needs.</p>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Trust bar -->
+              <div style="height:16px;"></div>
+              <div class="trust-bar">
+                <p>
+                  <strong>Built on real science, not opinions.</strong><br>
+                  Every recommendation in Yardstick cites research from
+                  <strong>19 university cooperative extension programs</strong> —
+                  Penn State, Purdue, UGA, NC State, Virginia Tech, and more.
+                  <strong>110+ publications</strong> referenced. Zero ads. Free forever.
+                </p>
+              </div>
+
+              <!-- Footer note -->
+              <p class="body-text" style="margin-bottom:0; font-size:13px; color:#6B6B6B; text-align:center;">
+                Yardstick runs entirely in your browser at
+                <a href="https://yardstick.diy" style="color:#367C2B; font-weight:700;">yardstick.diy</a>
+                — your data stays on your device, private and offline-capable.
               </p>
 
             </td>
@@ -238,7 +419,7 @@
               </p>
               <hr class="footer-divider">
               <p class="footer-text" style="color:#6BBF5A; font-size:11px;">
-                Research-backed lawn care &nbsp;·&nbsp; 19 university extension sources &nbsp;·&nbsp; Free forever
+                19 university extension sources &nbsp;·&nbsp; 96+ products &nbsp;·&nbsp; 6 grass types &nbsp;·&nbsp; Free forever
               </p>
             </td>
           </tr>
