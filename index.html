@@ -4824,7 +4824,7 @@ window.ResearchSourcesPage = () => (
 
     // ─── GrassIdentifierView ─────────────────────────────────────────────────────
     const GrassIdentifierView = ({ lawnProfile, onSaveProfile, onNavigate }) => {
-        const { useState, useEffect, useRef, useCallback } = React;
+        const { useState } = React;
 
         // ── Grass data ──────────────────────────────────────────────────────────
         const GRASSES_DATA = [
@@ -4837,7 +4837,7 @@ window.ResearchSourcesPage = () => (
             { key:'tall-fescue', name:'Tall Fescue', sci:'Festuca arundinacea', season:'cool', regions:['Transition Zone','Pacific Northwest','Mid-Atlantic','Midwest'], zones:'4–7', prevalence:'very-common', prevLabel:'Most widely planted cool-season grass', bladeWidth:'Medium to coarse (3–6mm)', texture:'Upright, clumping bunch-type', color:'Dark green — darkest cool-season grass', dormancy:'Stays green in winter; may stress in Zone 7 summers', growth:'Bunch-type — does not spread; fills via overseeding', shade:'Good (3–4 hrs sun)', drought:'Good — deep roots', traffic:'Good', identifyBy:['Wide, flat blades with a prominent center midrib','Coarser texture — rougher than bluegrass or ryegrass','Bunchy, clumping growth — does not spread to fill bare spots','Shiny, waxy underside on the blade','Stays green through mild winters without going dormant'], lookAlikes:['Perennial Ryegrass (finer, glossier)','Kentucky Bluegrass (finer, boat-tip)'], states:'NC, VA, MD, KY, TN, OH, PA, OR, WA', soilPH:'5.5–7.0', mowHt:'3–4"', sources:['NC State Extension','Rutgers Extension','Oregon State Extension'], accent:'#1E5C30' },
             { key:'kentucky-bluegrass', name:'Kentucky Bluegrass', sci:'Poa pratensis', season:'cool', regions:['Northern US','Upper Midwest','Mountain West','Pacific Northwest'], zones:'2–6', prevalence:'very-common', prevLabel:'The classic Northern lawn grass', bladeWidth:'Fine to medium (2–4mm)', texture:'Soft, velvety, spreading sod', color:'Dark blue-green', dormancy:'Goes dormant straw-brown in summer drought and heat', growth:'Spreads via underground rhizomes — self-repairs bare spots', shade:'Low — needs full sun', drought:'Poor — goes dormant under heat/drought', traffic:'Good — self-repairs via rhizomes', identifyBy:['Boat-shaped blade tip — like the bow of a canoe (the key ID feature)','Prominent double mid-vein running lengthwise down the blade center','Soft, velvety feel underfoot','Blue-green color — noticeably cooler tone than fescue','Spreads to fill bare spots on its own via underground rhizomes'], lookAlikes:['Annual Bluegrass / Poa annua (lighter green, weedy)','Fine Fescue (hair-thin blades)'], states:'MN, WI, MI, OH, PA, IA, CO, WA, OR', soilPH:'6.0–7.0', mowHt:'2.5–3.5"', sources:['U of MN Extension','Penn State Extension','Colorado State Extension'], accent:'#1E3C5C' },
             { key:'perennial-ryegrass', name:'Perennial Ryegrass', sci:'Lolium perenne', season:'cool', regions:['Pacific Northwest','Northern US','Transition Zone (overseeding)'], zones:'3–6', prevalence:'common', prevLabel:'Common in mixes & Pacific NW lawns', bladeWidth:'Fine to medium (2–4mm)', texture:'Fine, glossy, upright — premium look', color:'Bright, shiny green', dormancy:'Green through cool seasons; thins in hot summers', growth:'Bunch-type — fast germination, no spreading', shade:'Moderate', drought:'Poor', traffic:'Excellent — most wear-resistant cool-season grass', identifyBy:['Very shiny, glossy underside — reflects light clearly','Fine blades with a sharp-pointed tip','Bright, almost luminous green color','Fastest germinating lawn grass — sprouts in 5–7 days','Often mixed with bluegrass — creates uneven clumpy texture zones'], lookAlikes:['Tall Fescue (coarser, less glossy)','Kentucky Bluegrass (boat-tip, not glossy)'], states:'OR, WA, CA (cool areas), blends nationwide', soilPH:'6.0–7.0', mowHt:'1.5–2.5"', sources:['Oregon State Extension','Rutgers Extension','U of MN Extension'], accent:'#1E5C2C' },
-            { key:'fine-fescue', name:'Fine Fescue', sci:'Festuca spp.', wikiTitle:'Fine fescue', season:'cool', regions:['Northern US','New England','Shaded areas','Pacific Northwest'], zones:'2–6', prevalence:'common', prevLabel:'Common in shade mixes & low-input lawns', bladeWidth:'Very fine — hair-like (0.5–1.5mm)', texture:'Needle-like, wispy, soft-bristle', color:'Medium to blue-green', dormancy:'Can go semi-dormant in summer heat', growth:'Bunch or creeping depending on species', shade:'Best shade tolerance of all cool-season grasses', drought:'Good for a cool-season grass', traffic:'Poor', identifyBy:['Hair-thin, needle-like blades — finest texture of all lawn grasses','Blades often folded or rolled, not flat like other grasses','Wispy, flowing, almost ornamental appearance','Usually found in shaded areas where other grasses fail','Slow growth — very infrequent mowing needed'], lookAlikes:['Perennial Ryegrass (flat, wider blades)','Kentucky Bluegrass (boat-tip, wider)'], states:'ME, VT, NH, MA, MN, WI — shade areas everywhere', soilPH:'5.5–6.5', mowHt:'2.5–3.5"', sources:['U of MN Extension','Penn State Extension','Rutgers Extension'], accent:'#2E5C38' },
+            { key:'fine-fescue', name:'Fine Fescue', sci:'Festuca spp.', season:'cool', regions:['Northern US','New England','Shaded areas','Pacific Northwest'], zones:'2–6', prevalence:'common', prevLabel:'Common in shade mixes & low-input lawns', bladeWidth:'Very fine — hair-like (0.5–1.5mm)', texture:'Needle-like, wispy, soft-bristle', color:'Medium to blue-green', dormancy:'Can go semi-dormant in summer heat', growth:'Bunch or creeping depending on species', shade:'Best shade tolerance of all cool-season grasses', drought:'Good for a cool-season grass', traffic:'Poor', identifyBy:['Hair-thin, needle-like blades — finest texture of all lawn grasses','Blades often folded or rolled, not flat like other grasses','Wispy, flowing, almost ornamental appearance','Usually found in shaded areas where other grasses fail','Slow growth — very infrequent mowing needed'], lookAlikes:['Perennial Ryegrass (flat, wider blades)','Kentucky Bluegrass (boat-tip, wider)'], states:'ME, VT, NH, MA, MN, WI — shade areas everywhere', soilPH:'5.5–6.5', mowHt:'2.5–3.5"', sources:['U of MN Extension','Penn State Extension','Rutgers Extension'], accent:'#2E5C38' },
         ];
 
         const QUIZ_STEPS = [
@@ -4870,53 +4870,24 @@ window.ResearchSourcesPage = () => (
         const [season, setSeason] = useState('all');
         const [selected, setSelected] = useState(null);
         const [hlKey, setHlKey] = useState(null);
-        const [photoMap, setPhotoMap] = useState({});
-        const [loadingMap, setLoadingMap] = useState({});
-        const loadStarted = useRef(false);
 
-        // ── Photo fetcher — uses Wikipedia REST API summary (CORS-safe, reliable thumbnails) ──
-        const fetchPhotosForGrass = useCallback(async (grass) => {
-            try {
-                const tryRest = async (title) => {
-                    const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/ /g, '_'))}`;
-                    const res = await fetch(url);
-                    if (!res.ok) return null;
-                    const data = await res.json();
-                    if (!data.thumbnail?.source) return null;
-                    return { url: data.thumbnail.source, caption: `${grass.name} · Wikipedia` };
-                };
-                // Use wikiTitle override if present, otherwise try sci name then common name
-                const candidates = grass.wikiTitle
-                    ? [grass.wikiTitle, grass.name]
-                    : [grass.sci, grass.name];
-                for (const title of candidates) {
-                    const photo = await tryRest(title);
-                    if (photo) return [photo];
-                }
-                return [];
-            } catch { return []; }
-        }, []);
-
-        // ── Pre-load all photos on mount, staggered ────────────────────────────
-        useEffect(() => {
-            if (loadStarted.current) return;
-            loadStarted.current = true;
-            const initLoading = {};
-            GRASSES_DATA.forEach(g => { initLoading[g.key] = true; });
-            setLoadingMap(initLoading);
-            GRASSES_DATA.forEach((grass, i) => {
-                setTimeout(async () => {
-                    const photos = await fetchPhotosForGrass(grass);
-                    setPhotoMap(prev => ({ ...prev, [grass.key]: photos }));
-                    setLoadingMap(prev => ({ ...prev, [grass.key]: false }));
-                }, i * 200);
-            });
-        }, []);
+        // ── Static close-up photos from Wikimedia Commons ──────────────────────
+        // Special:FilePath URLs are stable canonical redirects; ?width=640 requests a thumbnail.
+        const fp = (file, caption) => ({ url: `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=640`, caption });
+        const photoMap = {
+            'bermuda':            [fp('Starr-070206-4111-Cynodon_dactylon-lawn_and_ant_bait_stick-Olowalu-Maui_(24585842010).jpg', 'Bermudagrass · Wikimedia Commons')],
+            'zoysia':             [fp('Zoysia_japonica_%27Compadre%27_kz1.jpg', 'Zoysiagrass · Wikimedia Commons')],
+            'st-augustine':       [fp('Starr_061017-1219_Stenotaphrum_secundatum.jpg', 'St. Augustinegrass · Wikimedia Commons')],
+            'centipede':          [fp('Eremochloa_ophiuroides_being_pollinated_by_a_honey_bee_02.jpg', 'Centipedegrass · Wikimedia Commons')],
+            'bahia':              [fp('Paspalum_notatum_leaf1_(7391319106).jpg', 'Bahiagrass · Wikimedia Commons')],
+            'buffalograss':       [fp('Buchloe_dactyloides_-_Botanical_Garden%2C_University_of_Frankfurt_-_DSC02546.JPG', 'Buffalograss · Wikimedia Commons')],
+            'tall-fescue':        [fp('Festuca_arundinacea_collar1_(7325848178).jpg', 'Tall Fescue · Wikimedia Commons')],
+            'kentucky-bluegrass': [fp('Poa_pratensis1.JPG', 'Kentucky Bluegrass · Wikimedia Commons')],
+            'perennial-ryegrass': [fp('Lolium_perenne_showing_ligule_and_ribbed_leaf.JPG', 'Perennial Ryegrass · Wikimedia Commons')],
+            'fine-fescue':        [fp('Festuca_rubra_grass.JPG', 'Fine Fescue · Wikimedia Commons')],
+        };
 
         // ── Computed ───────────────────────────────────────────────────────────
-        const loadedCount = Object.values(loadingMap).filter(v => !v).length;
-        const totalCount = GRASSES_DATA.length;
-        const allLoaded = loadedCount === totalCount && totalCount > 0;
         const filtered = GRASSES_DATA.filter(g => season === 'all' || g.season === season);
         const currentGrassKey = lawnProfile && lawnProfile.specificGrass;
 
@@ -4946,16 +4917,7 @@ window.ResearchSourcesPage = () => (
             const [idx, setIdx] = useState(0);
             const [imgErrors, setImgErrors] = useState({});
             const photos = photoMap[grassKey] || [];
-            const loading = loadingMap[grassKey] !== false;
             const valid = photos.filter((_, i) => !imgErrors[i]);
-
-            if (loading) return (
-                <div style={{height:200, background:'var(--ys-canvas)', borderRadius:12, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:8}}>
-                    <style>{`@keyframes gi-spin{to{transform:rotate(360deg)}}`}</style>
-                    <div style={{width:32, height:32, border:'3px solid var(--ys-green-600)', borderTopColor:'transparent', borderRadius:'50%', animation:'gi-spin 0.8s linear infinite'}} />
-                    <span style={{fontFamily:'var(--ys-font-body)', fontSize:12, color:'var(--ys-soil-600)'}}>Searching Wikimedia Commons…</span>
-                </div>
-            );
 
             if (!valid.length) return (
                 <div style={{minHeight:140, background:'var(--ys-canvas)', borderRadius:12, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:8, padding:16, textAlign:'center'}}>
@@ -5087,17 +5049,12 @@ window.ResearchSourcesPage = () => (
 
         const GrassCard = ({ grass }) => {
             const thumb = (photoMap[grass.key] || [])[0];
-            const loading = loadingMap[grass.key] !== false;
             const isCurrent = currentGrassKey === grass.key;
             return (
                 <button onClick={() => handleSelect(grass)} className="card-hover btn-press" style={{background: hlKey===grass.key ? '#F0F8E8' : 'white', border:`2px solid ${hlKey===grass.key ? grass.accent : isCurrent ? grass.accent+'60' : 'rgba(0,0,0,0.07)'}`, borderRadius:16, padding:0, textAlign:'left', cursor:'pointer', overflow:'hidden', width:'100%', boxShadow: hlKey===grass.key ? `0 4px 16px ${grass.accent}30` : '0 1px 4px rgba(0,0,0,0.06)', transition:'all 0.18s', display:'block'}}>
                     <div style={{height:3, background: grass.season==='warm' ? 'linear-gradient(90deg,#F59E0B,#E8A020)' : 'linear-gradient(90deg,#3B82F6,#60A5FA)'}} />
                     <div style={{height:80, background:'var(--ys-canvas)', position:'relative', overflow:'hidden'}}>
-                        {loading ? (
-                            <div style={{height:'100%', display:'flex', alignItems:'center', justifyContent:'center'}}>
-                                <div style={{width:20, height:20, border:'2px solid var(--ys-green-600)', borderTopColor:'transparent', borderRadius:'50%', animation:'gi-spin 0.8s linear infinite'}} />
-                            </div>
-                        ) : thumb ? (
+                        {thumb ? (
                             <img src={thumb.url} alt={grass.name} style={{width:'100%', height:'100%', objectFit:'cover', display:'block'}} onError={e => { e.target.style.display='none'; }} />
                         ) : (
                             <div style={{height:'100%', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:3}}>
@@ -5188,19 +5145,6 @@ window.ResearchSourcesPage = () => (
                     <h2 style={{fontFamily:'var(--ys-font-display)'}} className="text-2xl font-bold text-gray-900 m-0">Grass Identifier</h2>
                 </div>
                 <p className="text-sm text-gray-500 mb-4">Browse all 10 grass types with real photos, or take the quiz to narrow it down.</p>
-
-                {/* Photo loading progress bar */}
-                {!allLoaded && totalCount > 0 && (
-                    <div className="rounded-xl border px-4 py-3 mb-4" style={{background:'var(--ys-green-50)', borderColor:'var(--ys-green-200)'}}>
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="text-xs font-semibold" style={{color:'var(--ys-green-700)'}}>Loading grass photos from Wikimedia Commons…</span>
-                            <span className="text-xs font-bold" style={{fontFamily:'var(--ys-font-body)', color:'var(--ys-green-600)'}}>{loadedCount}/{totalCount}</span>
-                        </div>
-                        <div style={{background:'var(--ys-green-200)', borderRadius:4, height:4}}>
-                            <div style={{height:'100%', borderRadius:4, background:'var(--ys-green-600)', width:`${(loadedCount/totalCount)*100}%`, transition:'width 0.4s ease'}} />
-                        </div>
-                    </div>
-                )}
 
                 {/* Mode toggle */}
                 <div className="flex gap-2 mb-4">
