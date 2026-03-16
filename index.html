@@ -4874,31 +4874,19 @@ window.ResearchSourcesPage = () => (
         const [loadingMap, setLoadingMap] = useState({});
         const loadStarted = useRef(false);
 
-        // ── Photo fetcher ──────────────────────────────────────────────────────
+        // ── Photo fetcher — uses public Wikipedia pageimages API (no key needed) ──
         const fetchPhotosForGrass = useCallback(async (grass) => {
             try {
-                const res = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        model: 'claude-sonnet-4-20250514',
-                        max_tokens: 1000,
-                        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-                        system: `You are a turfgrass expert finding grass identification photos. Search Wikimedia Commons for photos. Return ONLY a raw JSON array — no markdown, no backticks, no explanation. Each element: {"url":"direct_image_url","caption":"brief description"}. Rules: (1) ONLY use direct file URLs from upload.wikimedia.org. (2) Search Wikimedia Commons for the scientific name. (3) Prefer lawn-level view, close-up of blades, stolon or seed head photos. (4) Return 2–4 photos max. (5) If nothing found, return []. Return ONLY the JSON array.`,
-                        messages: [{ role: 'user', content: `Search Wikimedia Commons for lawn grass photos of ${grass.name} (${grass.sci}). Return a JSON array of direct image URLs from upload.wikimedia.org.` }]
-                    })
-                });
-                const data = await res.json();
-                const text = (data.content || [])
-                    .filter(b => b.type === 'text')
-                    .map(b => b.text)
-                    .join('')
-                    .replace(/```json|```/g, '')
-                    .trim();
-                const arr = JSON.parse(text);
-                return Array.isArray(arr)
-                    ? arr.filter(p => p && p.url && p.url.includes('wikimedia'))
-                    : [];
+                const tryWiki = async (title) => {
+                    const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=640&origin=*`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    const page = Object.values(data.query?.pages || {})[0];
+                    if (!page || page.missing || !page.thumbnail) return null;
+                    return { url: page.thumbnail.source, caption: `${grass.name} · Wikipedia` };
+                };
+                const photo = await tryWiki(grass.sci) || await tryWiki(grass.name);
+                return photo ? [photo] : [];
             } catch { return []; }
         }, []);
 
@@ -4914,7 +4902,7 @@ window.ResearchSourcesPage = () => (
                     const photos = await fetchPhotosForGrass(grass);
                     setPhotoMap(prev => ({ ...prev, [grass.key]: photos }));
                     setLoadingMap(prev => ({ ...prev, [grass.key]: false }));
-                }, i * 650);
+                }, i * 200);
             });
         }, []);
 

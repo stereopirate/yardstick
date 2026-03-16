@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grass Photo Load Test</title>
+<style>
+  body { font-family: monospace; background: #f4faf2; padding: 20px; max-width: 900px; margin: 0 auto; }
+  h1 { font-family: serif; color: #1E4D18; }
+  #summary { font-size: 1.1em; font-weight: bold; margin: 12px 0 20px; padding: 10px 16px; border-radius: 8px; }
+  .pass-summary { background: #d4e8c2; color: #1E4D18; }
+  .fail-summary { background: #fde8e8; color: #7f1d1d; }
+  .row { display: flex; align-items: center; gap: 16px; background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; border: 1px solid #ddd; }
+  .status { font-size: 1.3em; width: 28px; flex-shrink: 0; }
+  .info { flex: 1; min-width: 0; }
+  .grass-name { font-weight: bold; font-size: 0.95em; }
+  .sci { color: #666; font-style: italic; font-size: 0.8em; }
+  .via { font-size: 0.75em; color: #555; margin-top: 2px; }
+  .url { font-size: 0.7em; color: #888; word-break: break-all; }
+  .thumb { width: 80px; height: 60px; object-fit: cover; border-radius: 6px; flex-shrink: 0; border: 1px solid #ddd; }
+  .thumb-placeholder { width: 80px; height: 60px; background: #eee; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; flex-shrink: 0; }
+  .loading { color: #999; font-size: 0.85em; }
+  #progress { background: #e0eed4; border-radius: 4px; height: 6px; margin-bottom: 20px; }
+  #progress-bar { background: #367C2B; height: 100%; border-radius: 4px; width: 0; transition: width 0.3s; }
+</style>
+</head>
+<body>
+<h1>🌿 Grass Photo Load Test</h1>
+<p>Tests the same Wikipedia <code>pageimages</code> API used by the Grass Identifier. Each row shows whether at least one photo loads.</p>
+<div id="progress"><div id="progress-bar"></div></div>
+<div id="summary" class="loading">Running tests…</div>
+<div id="results"></div>
+
+<script>
+const GRASSES = [
+  { key:'bermuda',            sci:'Cynodon dactylon',        name:'Bermudagrass' },
+  { key:'zoysia',             sci:'Zoysia japonica',         name:'Zoysiagrass' },
+  { key:'st-augustine',       sci:'Stenotaphrum secundatum', name:'St. Augustinegrass' },
+  { key:'centipede',          sci:'Eremochloa ophiuroides',  name:'Centipedegrass' },
+  { key:'bahia',              sci:'Paspalum notatum',        name:'Bahiagrass' },
+  { key:'buffalograss',       sci:'Bouteloua dactyloides',   name:'Buffalograss' },
+  { key:'tall-fescue',        sci:'Festuca arundinacea',     name:'Tall Fescue' },
+  { key:'kentucky-bluegrass', sci:'Poa pratensis',           name:'Kentucky Bluegrass' },
+  { key:'perennial-ryegrass', sci:'Lolium perenne',          name:'Perennial Ryegrass' },
+  { key:'fine-fescue',        sci:'Festuca spp.',            name:'Fine Fescue' },
+];
+
+async function tryWiki(title) {
+  const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=640&origin=*`;
+  const res = await fetch(url);
+  const data = await res.json();
+  const page = Object.values(data.query?.pages || {})[0];
+  if (!page || page.missing || !page.thumbnail) return null;
+  return page.thumbnail.source;
+}
+
+async function run() {
+  const resultsEl = document.getElementById('results');
+  const summaryEl = document.getElementById('summary');
+  const bar = document.getElementById('progress-bar');
+  let pass = 0, fail = 0;
+
+  for (let i = 0; i < GRASSES.length; i++) {
+    const g = GRASSES[i];
+
+    // Placeholder row while loading
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `
+      <div class="status">⏳</div>
+      <div class="info">
+        <div class="grass-name">${g.name}</div>
+        <div class="sci">${g.sci}</div>
+        <div class="via loading">fetching…</div>
+      </div>
+      <div class="thumb-placeholder">📷</div>`;
+    resultsEl.appendChild(row);
+
+    let url = null, usedFallback = false;
+    try {
+      url = await tryWiki(g.sci);
+      if (!url) { usedFallback = true; url = await tryWiki(g.name); }
+    } catch(e) { /* network error */ }
+
+    const ok = !!url;
+    if (ok) pass++; else fail++;
+
+    const via = ok
+      ? (usedFallback ? 'via common name fallback' : 'via scientific name')
+      : 'NO IMAGE FOUND';
+
+    row.innerHTML = `
+      <div class="status">${ok ? '✅' : '❌'}</div>
+      <div class="info">
+        <div class="grass-name">${g.name}</div>
+        <div class="sci">${g.sci}</div>
+        <div class="via">${via}</div>
+        ${url ? `<div class="url">${url}</div>` : ''}
+      </div>
+      ${url
+        ? `<img class="thumb" src="${url}" alt="${g.name}" onerror="this.outerHTML='<div class=\\'thumb-placeholder\\'>🖼️</div>'">`
+        : `<div class="thumb-placeholder">❌</div>`}`;
+
+    bar.style.width = `${((i + 1) / GRASSES.length) * 100}%`;
+  }
+
+  const allPass = fail === 0;
+  summaryEl.className = allPass ? 'pass-summary' : 'fail-summary';
+  summaryEl.textContent = allPass
+    ? `✅ All ${GRASSES.length}/${GRASSES.length} grass types have images`
+    : `⚠️ ${pass}/${GRASSES.length} passed — ${fail} grass type${fail > 1 ? 's' : ''} missing images`;
+}
+
+run();
+</script>
+</body>
+</html>
