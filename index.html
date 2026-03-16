@@ -4824,7 +4824,7 @@ window.ResearchSourcesPage = () => (
 
     // ─── GrassIdentifierView ─────────────────────────────────────────────────────
     const GrassIdentifierView = ({ lawnProfile, onSaveProfile, onNavigate }) => {
-        const { useState } = React;
+        const { useState, useRef } = React;
 
         // ── Grass data ──────────────────────────────────────────────────────────
         const GRASSES_DATA = [
@@ -4872,19 +4872,67 @@ window.ResearchSourcesPage = () => (
         const [hlKey, setHlKey] = useState(null);
 
         // ── Static close-up photos from Wikimedia Commons ──────────────────────
-        // Special:FilePath URLs are stable canonical redirects; ?width=640 requests a thumbnail.
-        const fp = (file, caption) => ({ url: `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=640`, caption });
+        // Special:FilePath is a stable canonical redirect; spaces → underscores matches MediaWiki norms.
+        const fp = (file, caption) => ({ url: `https://commons.wikimedia.org/wiki/Special:FilePath/${file.replace(/ /g, '_')}?width=640`, caption });
         const photoMap = {
-            'bermuda':            [fp('Starr-070206-4111-Cynodon_dactylon-lawn_and_ant_bait_stick-Olowalu-Maui_(24585842010).jpg', 'Bermudagrass · Wikimedia Commons')],
-            'zoysia':             [fp('Zoysia_japonica_%27Compadre%27_kz1.jpg', 'Zoysiagrass · Wikimedia Commons')],
-            'st-augustine':       [fp('Starr_061017-1219_Stenotaphrum_secundatum.jpg', 'St. Augustinegrass · Wikimedia Commons')],
-            'centipede':          [fp('Eremochloa_ophiuroides_being_pollinated_by_a_honey_bee_02.jpg', 'Centipedegrass · Wikimedia Commons')],
-            'bahia':              [fp('Paspalum_notatum_leaf1_(7391319106).jpg', 'Bahiagrass · Wikimedia Commons')],
-            'buffalograss':       [fp('Buchloe_dactyloides_-_Botanical_Garden%2C_University_of_Frankfurt_-_DSC02546.JPG', 'Buffalograss · Wikimedia Commons')],
-            'tall-fescue':        [fp('Festuca_arundinacea_collar1_(7325848178).jpg', 'Tall Fescue · Wikimedia Commons')],
-            'kentucky-bluegrass': [fp('Poa_pratensis1.JPG', 'Kentucky Bluegrass · Wikimedia Commons')],
-            'perennial-ryegrass': [fp('Lolium_perenne_showing_ligule_and_ribbed_leaf.JPG', 'Perennial Ryegrass · Wikimedia Commons')],
-            'fine-fescue':        [fp('Festuca_rubra_grass.JPG', 'Fine Fescue · Wikimedia Commons')],
+            'bermuda': [
+                fp("Starr-070206-4111-Cynodon_dactylon-lawn_and_ant_bait_stick-Olowalu-Maui_(24585842010).jpg", "Bermudagrass lawn · Wikimedia Commons"),
+                fp("Cynodon dactylon (6170169591).jpg",                                                          "Bermudagrass stolons · Wikimedia Commons"),
+                fp("Cynodon dactylon (6170702310).jpg",                                                          "Bermudagrass close-up · Wikimedia Commons"),
+                fp("Starr-010206-0228-Cynodon dactylon-seed head and habit-Kanaha Beach-Maui (24235528280).jpg", "Bermudagrass seed heads · Wikimedia Commons"),
+            ],
+            'zoysia': [
+                fp("Zoysia_japonica_'Compadre'_kz1.jpg",                                                "Zoysiagrass · Wikimedia Commons"),
+                fp("Gardenology.org-IMG 1973 rbgs11jan.jpg",                                            "Zoysiagrass blades · Wikimedia Commons"),
+                fp("Gardenology.org-IMG 1979 rbgs11jan.jpg",                                            "Zoysiagrass detail · Wikimedia Commons"),
+                fp("University of Georgia, Research and Education Garden grass 3.JPG",                   "Zoysiagrass lawn · Wikimedia Commons"),
+            ],
+            'st-augustine': [
+                fp("Starr_061017-1219_Stenotaphrum_secundatum.jpg",          "St. Augustinegrass · Wikimedia Commons"),
+                fp("Starr 061017-1239 Stenotaphrum secundatum.jpg",          "St. Augustinegrass blades · Wikimedia Commons"),
+                fp("Starr 080314-3564 Stenotaphrum secundatum.jpg",          "St. Augustinegrass stolons · Wikimedia Commons"),
+                fp("Stenotaphrum secundatum habit1 (7417614108).jpg",        "St. Augustinegrass habit · Wikimedia Commons"),
+            ],
+            'centipede': [
+                fp("Eremochloa_ophiuroides_being_pollinated_by_a_honey_bee_02.jpg", "Centipedegrass · Wikimedia Commons"),
+                fp("Centipede_Grass.JPG",                                            "Centipedegrass lawn · Wikimedia Commons"),
+            ],
+            'bahia': [
+                fp("Paspalum_notatum_leaf1_(7391319106).jpg",           "Bahiagrass leaf · Wikimedia Commons"),
+                fp("Paspalum notatum collar1 (7391329848).jpg",         "Bahiagrass collar detail · Wikimedia Commons"),
+                fp("Paspalum notatum flowerhead3 (7391328586).jpg",     "Bahiagrass Y-shaped seed head · Wikimedia Commons"),
+                fp("Paspalum notatum habit1 (7391322684).jpg",          "Bahiagrass habit · Wikimedia Commons"),
+            ],
+            'buffalograss': [
+                fp("Buchloe_dactyloides_-_Botanical_Garden,_University_of_Frankfurt_-_DSC02546.JPG",     "Buffalograss · Wikimedia Commons"),
+                fp("Buchloe dactyloides - Botanischer Garten, Dresden, Germany - DSC08764.JPG",          "Buffalograss plant · Wikimedia Commons"),
+                fp("Buchloe dactyloides, Gaserans 01.jpg",                                               "Buffalograss habit · Wikimedia Commons"),
+                fp("Bouteloua dactyloides 'Cody' kz1.jpg",                                              "Buffalograss 'Cody' cultivar · Wikimedia Commons"),
+            ],
+            'tall-fescue': [
+                fp("Festuca_arundinacea_collar1_(7325848178).jpg",                            "Tall Fescue collar detail · Wikimedia Commons"),
+                fp("Festuca arundinacea collar2 (7325847352).jpg",                            "Tall Fescue collar close-up · Wikimedia Commons"),
+                fp("Festuca arundinacea flowerhead1 (7325811876).jpg",                        "Tall Fescue seed head · Wikimedia Commons"),
+                fp("Festuca arundinacea - Berlin Botanical Garden - IMG 8538.JPG",            "Tall Fescue plant · Wikimedia Commons"),
+            ],
+            'kentucky-bluegrass': [
+                fp("Poa_pratensis1.JPG",                                                                          "Kentucky Bluegrass · Wikimedia Commons"),
+                fp("Starr-090504-7317-Poa pratensis-leaves-Science City-Maui (24327459373).jpg",                  "Kentucky Bluegrass leaves · Wikimedia Commons"),
+                fp("Starr-090504-7157-Poa pratensis-seedhead-Science City-Maui (24836064722).jpg",                "Kentucky Bluegrass seed head · Wikimedia Commons"),
+                fp("Veldbeemdgras Poa pratensis.jpg",                                                             "Kentucky Bluegrass lawn · Wikimedia Commons"),
+            ],
+            'perennial-ryegrass': [
+                fp("Lolium_perenne_showing_ligule_and_ribbed_leaf.JPG",              "Perennial Ryegrass ligule & leaf · Wikimedia Commons"),
+                fp("Lolium perenne ligule1 (7185125013).jpg",                        "Perennial Ryegrass ligule detail · Wikimedia Commons"),
+                fp("Lolium perenne plant2 (7185124265).jpg",                         "Perennial Ryegrass plant · Wikimedia Commons"),
+                fp("Lolium perenne L. (Perennial Ryegrass) - cultivated 2.jpg",     "Perennial Ryegrass cultivated · Wikimedia Commons"),
+            ],
+            'fine-fescue': [
+                fp("Festuca_rubra_grass.JPG",                                                        "Fine Fescue · Wikimedia Commons"),
+                fp("Festuca rubra.JPG",                                                              "Fine Fescue plant · Wikimedia Commons"),
+                fp("Poales - Festuca rubra - 1.jpg",                                                "Fine Fescue detail · Wikimedia Commons"),
+                fp("Gewoon roodzwenkgras tongetje (Festuca rubra var. commutata ligula).jpg",       "Fine Fescue ligule detail · Wikimedia Commons"),
+            ],
         };
 
         // ── Computed ───────────────────────────────────────────────────────────
@@ -4916,6 +4964,7 @@ window.ResearchSourcesPage = () => (
         const PhotoGallery = ({ grassKey }) => {
             const [idx, setIdx] = useState(0);
             const [imgErrors, setImgErrors] = useState({});
+            const touchStartX = useRef(null);
             const photos = photoMap[grassKey] || [];
             const valid = photos.filter((_, i) => !imgErrors[i]);
 
@@ -4930,9 +4979,22 @@ window.ResearchSourcesPage = () => (
             const safeIdx = Math.min(idx, valid.length - 1);
             const photo = valid[safeIdx];
             const origIdx = photos.indexOf(photo);
+
+            const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+            const handleTouchEnd = (e) => {
+                if (touchStartX.current === null) return;
+                const dx = e.changedTouches[0].clientX - touchStartX.current;
+                if (Math.abs(dx) > 40) setIdx(i => dx < 0 ? (i+1)%valid.length : (i-1+valid.length)%valid.length);
+                touchStartX.current = null;
+            };
+
             return (
                 <div>
-                    <div style={{position:'relative', borderRadius:12, overflow:'hidden', background:'var(--ys-canvas)'}}>
+                    <div
+                        style={{position:'relative', borderRadius:12, overflow:'hidden', background:'var(--ys-canvas)', userSelect:'none'}}
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
+                    >
                         <img src={photo.url} alt={photo.caption || 'Grass photo'}
                             style={{width:'100%', height:200, objectFit:'cover', display:'block'}}
                             onError={() => setImgErrors(e => ({...e, [origIdx]:true}))} />
