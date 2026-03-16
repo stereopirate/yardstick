@@ -4837,7 +4837,7 @@ window.ResearchSourcesPage = () => (
             { key:'tall-fescue', name:'Tall Fescue', sci:'Festuca arundinacea', season:'cool', regions:['Transition Zone','Pacific Northwest','Mid-Atlantic','Midwest'], zones:'4–7', prevalence:'very-common', prevLabel:'Most widely planted cool-season grass', bladeWidth:'Medium to coarse (3–6mm)', texture:'Upright, clumping bunch-type', color:'Dark green — darkest cool-season grass', dormancy:'Stays green in winter; may stress in Zone 7 summers', growth:'Bunch-type — does not spread; fills via overseeding', shade:'Good (3–4 hrs sun)', drought:'Good — deep roots', traffic:'Good', identifyBy:['Wide, flat blades with a prominent center midrib','Coarser texture — rougher than bluegrass or ryegrass','Bunchy, clumping growth — does not spread to fill bare spots','Shiny, waxy underside on the blade','Stays green through mild winters without going dormant'], lookAlikes:['Perennial Ryegrass (finer, glossier)','Kentucky Bluegrass (finer, boat-tip)'], states:'NC, VA, MD, KY, TN, OH, PA, OR, WA', soilPH:'5.5–7.0', mowHt:'3–4"', sources:['NC State Extension','Rutgers Extension','Oregon State Extension'], accent:'#1E5C30' },
             { key:'kentucky-bluegrass', name:'Kentucky Bluegrass', sci:'Poa pratensis', season:'cool', regions:['Northern US','Upper Midwest','Mountain West','Pacific Northwest'], zones:'2–6', prevalence:'very-common', prevLabel:'The classic Northern lawn grass', bladeWidth:'Fine to medium (2–4mm)', texture:'Soft, velvety, spreading sod', color:'Dark blue-green', dormancy:'Goes dormant straw-brown in summer drought and heat', growth:'Spreads via underground rhizomes — self-repairs bare spots', shade:'Low — needs full sun', drought:'Poor — goes dormant under heat/drought', traffic:'Good — self-repairs via rhizomes', identifyBy:['Boat-shaped blade tip — like the bow of a canoe (the key ID feature)','Prominent double mid-vein running lengthwise down the blade center','Soft, velvety feel underfoot','Blue-green color — noticeably cooler tone than fescue','Spreads to fill bare spots on its own via underground rhizomes'], lookAlikes:['Annual Bluegrass / Poa annua (lighter green, weedy)','Fine Fescue (hair-thin blades)'], states:'MN, WI, MI, OH, PA, IA, CO, WA, OR', soilPH:'6.0–7.0', mowHt:'2.5–3.5"', sources:['U of MN Extension','Penn State Extension','Colorado State Extension'], accent:'#1E3C5C' },
             { key:'perennial-ryegrass', name:'Perennial Ryegrass', sci:'Lolium perenne', season:'cool', regions:['Pacific Northwest','Northern US','Transition Zone (overseeding)'], zones:'3–6', prevalence:'common', prevLabel:'Common in mixes & Pacific NW lawns', bladeWidth:'Fine to medium (2–4mm)', texture:'Fine, glossy, upright — premium look', color:'Bright, shiny green', dormancy:'Green through cool seasons; thins in hot summers', growth:'Bunch-type — fast germination, no spreading', shade:'Moderate', drought:'Poor', traffic:'Excellent — most wear-resistant cool-season grass', identifyBy:['Very shiny, glossy underside — reflects light clearly','Fine blades with a sharp-pointed tip','Bright, almost luminous green color','Fastest germinating lawn grass — sprouts in 5–7 days','Often mixed with bluegrass — creates uneven clumpy texture zones'], lookAlikes:['Tall Fescue (coarser, less glossy)','Kentucky Bluegrass (boat-tip, not glossy)'], states:'OR, WA, CA (cool areas), blends nationwide', soilPH:'6.0–7.0', mowHt:'1.5–2.5"', sources:['Oregon State Extension','Rutgers Extension','U of MN Extension'], accent:'#1E5C2C' },
-            { key:'fine-fescue', name:'Fine Fescue', sci:'Festuca spp.', season:'cool', regions:['Northern US','New England','Shaded areas','Pacific Northwest'], zones:'2–6', prevalence:'common', prevLabel:'Common in shade mixes & low-input lawns', bladeWidth:'Very fine — hair-like (0.5–1.5mm)', texture:'Needle-like, wispy, soft-bristle', color:'Medium to blue-green', dormancy:'Can go semi-dormant in summer heat', growth:'Bunch or creeping depending on species', shade:'Best shade tolerance of all cool-season grasses', drought:'Good for a cool-season grass', traffic:'Poor', identifyBy:['Hair-thin, needle-like blades — finest texture of all lawn grasses','Blades often folded or rolled, not flat like other grasses','Wispy, flowing, almost ornamental appearance','Usually found in shaded areas where other grasses fail','Slow growth — very infrequent mowing needed'], lookAlikes:['Perennial Ryegrass (flat, wider blades)','Kentucky Bluegrass (boat-tip, wider)'], states:'ME, VT, NH, MA, MN, WI — shade areas everywhere', soilPH:'5.5–6.5', mowHt:'2.5–3.5"', sources:['U of MN Extension','Penn State Extension','Rutgers Extension'], accent:'#2E5C38' },
+            { key:'fine-fescue', name:'Fine Fescue', sci:'Festuca spp.', wikiTitle:'Fine fescue', season:'cool', regions:['Northern US','New England','Shaded areas','Pacific Northwest'], zones:'2–6', prevalence:'common', prevLabel:'Common in shade mixes & low-input lawns', bladeWidth:'Very fine — hair-like (0.5–1.5mm)', texture:'Needle-like, wispy, soft-bristle', color:'Medium to blue-green', dormancy:'Can go semi-dormant in summer heat', growth:'Bunch or creeping depending on species', shade:'Best shade tolerance of all cool-season grasses', drought:'Good for a cool-season grass', traffic:'Poor', identifyBy:['Hair-thin, needle-like blades — finest texture of all lawn grasses','Blades often folded or rolled, not flat like other grasses','Wispy, flowing, almost ornamental appearance','Usually found in shaded areas where other grasses fail','Slow growth — very infrequent mowing needed'], lookAlikes:['Perennial Ryegrass (flat, wider blades)','Kentucky Bluegrass (boat-tip, wider)'], states:'ME, VT, NH, MA, MN, WI — shade areas everywhere', soilPH:'5.5–6.5', mowHt:'2.5–3.5"', sources:['U of MN Extension','Penn State Extension','Rutgers Extension'], accent:'#2E5C38' },
         ];
 
         const QUIZ_STEPS = [
@@ -4874,19 +4874,26 @@ window.ResearchSourcesPage = () => (
         const [loadingMap, setLoadingMap] = useState({});
         const loadStarted = useRef(false);
 
-        // ── Photo fetcher — uses public Wikipedia pageimages API (no key needed) ──
+        // ── Photo fetcher — uses Wikipedia REST API summary (CORS-safe, reliable thumbnails) ──
         const fetchPhotosForGrass = useCallback(async (grass) => {
             try {
-                const tryWiki = async (title) => {
-                    const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=640&origin=*`;
+                const tryRest = async (title) => {
+                    const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/ /g, '_'))}`;
                     const res = await fetch(url);
+                    if (!res.ok) return null;
                     const data = await res.json();
-                    const page = Object.values(data.query?.pages || {})[0];
-                    if (!page || page.missing || !page.thumbnail) return null;
-                    return { url: page.thumbnail.source, caption: `${grass.name} · Wikipedia` };
+                    if (!data.thumbnail?.source) return null;
+                    return { url: data.thumbnail.source, caption: `${grass.name} · Wikipedia` };
                 };
-                const photo = await tryWiki(grass.sci) || await tryWiki(grass.name);
-                return photo ? [photo] : [];
+                // Use wikiTitle override if present, otherwise try sci name then common name
+                const candidates = grass.wikiTitle
+                    ? [grass.wikiTitle, grass.name]
+                    : [grass.sci, grass.name];
+                for (const title of candidates) {
+                    const photo = await tryRest(title);
+                    if (photo) return [photo];
+                }
+                return [];
             } catch { return []; }
         }, []);
 
