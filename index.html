@@ -4736,8 +4736,7 @@ window.ResearchSourcesPage = () => (
                 title: 'Grass Identifier',
                 desc: 'Not sure what grass you have? Browse all 10 types with real photos, or take a 4-question quiz to narrow it down.',
                 badge: null,
-                badgeLabel: null,
-                cta: 'Identify My Grass →',
+                cta: 'Identify My Grass',
                 accent: '#2D6E22',
                 bg: '#EBF5E6',
                 detail: grassName ? `Currently set: ${grassName}` : 'Knowing your grass type is the #1 key to accurate recommendations.',
@@ -4748,11 +4747,43 @@ window.ResearchSourcesPage = () => (
                 title: 'Application Calculator',
                 desc: 'Calculate exactly how much fertilizer, pre-emergent, or other treatment to apply based on your yard size.',
                 badge: 'PRO',
-                badgeLabel: 'PRO',
-                cta: 'Open Calculator →',
+                cta: 'Open Calculator',
                 accent: '#1E4D18',
                 bg: '#F0FAF0',
                 detail: lawnProfile && lawnProfile.lawnSize ? `Your yard: ${Number(lawnProfile.lawnSize).toLocaleString()} sq ft` : 'Enter your yard size to get exact product amounts.',
+            },
+            {
+                key: 'gallery',
+                icon: '📸',
+                title: 'Lawn Gallery',
+                desc: 'Track your lawn\'s transformation over time with photos. Upload pictures when logging activities to build a visual timeline.',
+                badge: null,
+                cta: 'Open Gallery',
+                accent: '#0369A1',
+                bg: '#E0F2FE',
+                detail: 'A picture is worth a thousand words — see your lawn\'s progress season by season.',
+            },
+            {
+                key: 'schedules',
+                icon: '🗓️',
+                title: 'My Tasks',
+                desc: 'Set up recurring lawn care tasks with custom intervals. Get overdue alerts and log completed tasks in one tap.',
+                badge: 'PRO',
+                cta: 'Manage Tasks',
+                accent: '#7C3AED',
+                bg: '#F5F3FF',
+                detail: 'Never miss a mow, fertilizer application, or seasonal treatment again.',
+            },
+            {
+                key: 'products',
+                icon: '📖',
+                title: 'Product Guide',
+                desc: 'Browse and compare 75+ mowers, spreaders, trimmers, fertilizers, and seeds. Filter by brand, type, and your lawn\'s needs.',
+                badge: 'PRO',
+                cta: 'Browse Products',
+                accent: '#B45309',
+                bg: '#FEF3C7',
+                detail: 'Unbiased comparisons based on university extension recommendations.',
             },
         ];
 
@@ -4764,7 +4795,7 @@ window.ResearchSourcesPage = () => (
                         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style={{background:'rgba(255,255,255,0.15)'}}>🛠️</div>
                         <div>
                             <h2 className="text-xl font-bold text-white m-0" style={{fontFamily:'var(--ys-font-display)'}}>Lawn Tools</h2>
-                            <p className="text-xs m-0" style={{color:'rgba(255,255,255,0.7)'}}>Research-backed tools for better decisions</p>
+                            <p className="text-xs m-0" style={{color:'rgba(255,255,255,0.7)'}}>Everything you need in one place</p>
                         </div>
                     </div>
                 </div>
@@ -4775,35 +4806,36 @@ window.ResearchSourcesPage = () => (
                         key={tool.key}
                         onClick={() => onNavigate(tool.key)}
                         className="w-full rounded-2xl border text-left card-hover btn-press"
-                        style={{background:'white', borderColor:'rgba(0,0,0,0.07)', boxShadow:'0 1px 4px rgba(0,0,0,0.06)'}}
+                        style={{background:'white', borderColor:'rgba(0,0,0,0.07)', boxShadow:'0 2px 8px rgba(0,0,0,0.07)'}}
                     >
                         {/* Color top bar */}
-                        <div style={{height:'4px', borderRadius:'16px 16px 0 0', background: `linear-gradient(90deg, ${tool.accent}, ${tool.accent}aa)`}} />
-                        <div className="p-4">
-                            <div className="flex items-start gap-3 mb-2">
-                                <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style={{background:tool.bg}}>
+                        <div style={{height:'5px', borderRadius:'16px 16px 0 0', background: `linear-gradient(90deg, ${tool.accent}, ${tool.accent}99)`}} />
+                        <div className="p-5">
+                            {/* Icon + title row */}
+                            <div className="flex items-center gap-4 mb-3">
+                                <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0" style={{background:tool.bg}}>
                                     {tool.icon}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 mb-0.5">
-                                        <span className="text-base font-bold text-gray-900" style={{fontFamily:'var(--ys-font-display)'}}>{tool.title}</span>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-lg font-bold text-gray-900" style={{fontFamily:'var(--ys-font-display)'}}>{tool.title}</span>
                                         {tool.badge && (
-                                            <span className="text-xs font-bold px-1.5 py-0 rounded-full flex-shrink-0" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)', lineHeight:'1.6'}}>
-                                                {tool.badgeLabel}
+                                            <span className="text-xs font-bold px-1.5 py-0.5 rounded-full flex-shrink-0" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>
+                                                {tool.badge}
                                             </span>
                                         )}
                                     </div>
-                                    <p className="text-xs text-gray-500 leading-relaxed m-0">{tool.desc}</p>
+                                    <p className="text-sm text-gray-500 leading-relaxed m-0">{tool.desc}</p>
                                 </div>
                             </div>
                             {/* Detail / context line */}
-                            <div className="mx-0 mt-2 mb-3 px-3 py-2 rounded-xl text-xs font-medium" style={{background:'var(--ys-canvas)', color:'var(--ys-soil-600)'}}>
+                            <div className="mb-4 px-3 py-2.5 rounded-xl text-xs font-medium" style={{background:'var(--ys-canvas)', color:'var(--ys-soil-600)'}}>
                                 💡 {tool.detail}
                             </div>
-                            {/* CTA */}
-                            <div className="flex items-center justify-between">
-                                <span className="text-sm font-bold" style={{color:tool.accent}}>{tool.cta}</span>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={tool.accent} strokeWidth={2.5} strokeLinecap="round">
+                            {/* CTA button */}
+                            <div className="flex items-center justify-between py-2.5 px-4 rounded-xl" style={{background:tool.accent}}>
+                                <span className="text-sm font-bold text-white">{tool.cta}</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5} strokeLinecap="round">
                                     <path d="M9 18l6-6-6-6"/>
                                 </svg>
                             </div>
@@ -6065,31 +6097,13 @@ window.ResearchSourcesPage = () => (
                                     <span className="text-base font-semibold text-gray-800">Dashboard</span>
                                     {view === null && <span className="ml-auto w-1.5 h-5 rounded-full bg-[#367C2B]" />}
                                 </button>
-                                {/* Activity group */}
-                                <div className="px-3 pt-3 pb-1 text-xs font-bold text-gray-400 uppercase tracking-widest">Activity</div>
-                                {[
-                                    { key: 'history',  icon: '📋', label: 'History' },
-                                    { key: 'dashboard', icon: '📊', label: 'Stats', pro: true },
-                                    { key: 'gallery',  icon: '🌿', label: 'Lawn Gallery' },
-                                ].map(item => (
-                                    <button key={item.key}
-                                        onClick={() => { setView(item.key); setSelectedActivityType(null); setMobileMenuOpen(false); }}
-                                        className={`w-full text-left px-4 py-3.5 rounded-xl flex items-center gap-3 ${view === item.key ? 'bg-[#367C2B]/10 text-[#367C2B]' : 'hover:bg-gray-50'}`}
-                                    >
-                                        <span className="text-xl w-7 text-center">{item.icon}</span>
-                                        <span className="text-base font-semibold text-gray-800">{item.label}</span>
-                                        {item.pro && <span className="ml-auto text-xs font-bold px-1.5 py-0.5 rounded-full flex-shrink-0" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>PRO</span>}
-                                        {view === item.key && <span className={`w-1.5 h-5 rounded-full bg-[#367C2B] flex-shrink-0 ${!item.pro ? 'ml-auto' : ''}`} />}
-                                    </button>
-                                ))}
-                                <div className="border-t border-gray-100 my-1" />
                                 {/* Your Lawn group */}
-                                <div className="px-3 pt-2 pb-1 text-xs font-bold text-gray-400 uppercase tracking-widest">Your Lawn</div>
+                                <div className="px-3 pt-3 pb-1 text-xs font-bold text-gray-400 uppercase tracking-widest">Your Lawn</div>
                                 {[
+                                    { key: 'dashboard', icon: '📊', label: 'Lawn Stats' },
                                     { key: 'profile',   icon: '🌱', label: 'My Yard' },
                                     { key: 'garage',    icon: '🏠', label: 'My Garage' },
                                     { key: 'gameplan',  icon: '📅', label: 'Lawn Care Program', pro: true },
-                                    { key: 'schedules', icon: '🗓️', label: 'My Tasks', pro: true },
                                 ].map(item => (
                                     <button key={item.key}
                                         onClick={() => { setView(item.key); setSelectedActivityType(null); setMobileMenuOpen(false); }}
@@ -6120,7 +6134,6 @@ window.ResearchSourcesPage = () => (
                                 {/* Resources group */}
                                 <div className="px-3 pt-2 pb-1 text-xs font-bold text-gray-400 uppercase tracking-widest">Resources</div>
                                 {[
-                                    { key: 'products', icon: '📖', label: 'Product Guide', pro: true },
                                     { key: 'sources',  icon: '📚', label: 'Research Sources' },
                                     { key: 'contact',  icon: '💬', label: 'Help & Feedback' },
                                     { key: 'account', icon: '👤', label: 'My Account' },
@@ -6206,29 +6219,13 @@ window.ResearchSourcesPage = () => (
                             <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
                             Dashboard
                         </button>
-                        {/* Activity group */}
-                        <div className="ys-sidebar-section-label mt-2">Activity</div>
-                        {[
-                            { key: 'history',   emoji: '📋', label: 'History' },
-                            { key: 'dashboard', emoji: '📊', label: 'Stats', pro: true },
-                            { key: 'gallery',   emoji: '🌿', label: 'Lawn Gallery' },
-                        ].map(item => (
-                            <button key={item.key}
-                                onClick={() => { setView(item.key); setSelectedActivityType(null); }}
-                                className={`ys-sidebar-item ${view === item.key ? 'ys-sidebar-active' : ''}`}
-                            >
-                                <span className="text-base w-5 text-center flex-shrink-0">{item.emoji}</span>
-                                <span className="flex-1 truncate">{item.label}</span>
-                                {item.pro && <span className="text-xs font-bold px-1 py-0.5 rounded-full flex-shrink-0" style={{background:'var(--ys-gold-100)', color:'var(--ys-gold-500)', border:'1px solid var(--ys-gold-300)'}}>PRO</span>}
-                            </button>
-                        ))}
                         {/* Your Lawn group */}
                         <div className="ys-sidebar-section-label mt-2">Your Lawn</div>
                         {[
+                            { key: 'dashboard', emoji: '📊', label: 'Lawn Stats' },
                             { key: 'profile',   emoji: '🌱', label: 'My Yard' },
                             { key: 'garage',    emoji: '🏠', label: 'My Garage' },
                             { key: 'gameplan',  emoji: '📅', label: 'Lawn Program', pro: true },
-                            { key: 'schedules', emoji: '🗓️', label: 'My Tasks', pro: true },
                         ].map(item => (
                             <button key={item.key}
                                 onClick={() => { setView(item.key); setSelectedActivityType(null); }}
@@ -6255,7 +6252,6 @@ window.ResearchSourcesPage = () => (
                         {/* Resources group */}
                         <div className="ys-sidebar-section-label mt-2">Resources</div>
                         {[
-                            { key: 'products', emoji: '📖', label: 'Product Guide', pro: true },
                             { key: 'proSignup', emoji: '⭐', label: 'Yardstick Pro' },
                             { key: 'sources',  emoji: '📚', label: 'Research Sources' },
                             { key: 'contact',  emoji: '💬', label: 'Help & Feedback' },
@@ -6746,7 +6742,7 @@ window.ResearchSourcesPage = () => (
                     {view === 'profile' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><LawnProfile profileFormData={profileFormData} profileEditing={profileEditing} lawnProfile={lawnProfile} weather={weather} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} onSave={handleProfileSave} onEditToggle={setProfileEditing} onNavigate={setView} /></div>}
                     {view === 'gameplan' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Full Year Lawn Program" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <YearlyGameplan lawnProfile={lawnProfile} weather={weather} onNavigate={setView} />}</div>}
                     {view === 'schedules' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><SchedulesView schedules={schedules} onAdd={addSchedule} onDelete={deleteSchedule} onLog={logScheduledActivity} /></div>}
-                    {view === 'dashboard' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Advanced Stats" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <Dashboard activities={activities} statsView={statsView} onStatsViewChange={setStatsView} weather={weather} lawnProfile={lawnProfile} onNavigate={setView} />}</div>}
+                    {view === 'dashboard' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Advanced Stats" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <Dashboard activities={activities} statsView={statsView} onStatsViewChange={setStatsView} weather={weather} lawnProfile={lawnProfile} onNavigate={setView} onDelete={deleteActivity} />}</div>}
                     {view === 'products' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Product Guide" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <ProductGuide />}</div>}
                     {view === 'sources' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><ResearchSourcesPage /></div>}
                     {view === 'account' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><AccountPage activities={activities} equipment={equipment} lawnProfile={lawnProfile} store={store} currentUser={currentUser} onSignOut={handleSignOut} onSignIn={() => setShowAuthModal(true)} firebaseConfigured={!!fb.configured} userName={userName} onUserNameChange={handleUserNameChange} onNavigate={setView} /></div>}
@@ -6776,37 +6772,6 @@ window.ResearchSourcesPage = () => (
                     </main>
                 </div>
 
-                {/* ─── Mobile FAB: Log Activity ───────────────────────────── */}
-                {view !== 'add' && (
-                    <button
-                        className="md:hidden fixed ys-fab"
-                        style={{
-                            bottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
-                            right: '16px',
-                            height: '52px',
-                            paddingLeft: '18px',
-                            paddingRight: '22px',
-                            borderRadius: '26px',
-                            background: 'var(--ys-green-600)',
-                            border: 'none',
-                            cursor: 'pointer',
-                            zIndex: 30,
-                            boxShadow: '0 4px 20px rgba(54,124,43,0.45)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '8px',
-                            color: 'white',
-                        }}
-                        onClick={() => { setView('add'); setSelectedActivityType(null); setMobileMenuOpen(false); }}
-                        aria-label="Log Activity"
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M12 4v16m8-8H4"/>
-                        </svg>
-                        <span style={{fontSize:'14px', fontWeight:700, fontFamily:'var(--ys-font-body)', letterSpacing:'0.01em'}}>Log</span>
-                    </button>
-                )}
             </div>
         );
     }
