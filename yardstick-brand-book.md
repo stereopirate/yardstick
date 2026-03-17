@@ -70,13 +70,13 @@ Use as the primary descriptor everywhere a one-liner is needed: app header, hero
 
 ### Short Description
 
-> Research-backed lawn care for DIYers. Personalized to your yard, grounded in science.
+> Research-backed lawn care for DIYers. Free account. Personalized to your yard, grounded in science.
 
 *Use for: meta tags, social bio, app store listing.*
 
 ### Long Description
 
-> Yardstick is a free, privacy-first lawn care companion built for DIY homeowners who want to do it right. Every recommendation comes from university extension research — not fertilizer brands. Track your activities, monitor soil temps, follow a science-backed program for your grass type and USDA zone, and get coaching that’s grounded in agronomy. No account required. No ads. Just your lawn, measured.
+> Yardstick is a free lawn care companion built for DIY homeowners who want to do it right. Every recommendation comes from university extension research — not fertilizer brands. Create a free account to track your activities, monitor soil temps, and follow a science-backed program for your grass type and USDA zone. No ads. Just your lawn, measured.
 
 *Use for: Reddit posts, GitHub README, About page.*
 
@@ -96,6 +96,7 @@ Use as the primary descriptor everywhere a one-liner is needed: app header, hero
 - Don’t promise specific outcomes (“achieve the perfect lawn”)
 - Don’t use exclamation marks in the app UI
 - Don’t use ALL CAPS for emphasis in body copy
+- Don’t use “no account required” or “no login” framing — encourage free account creation; accounts are the path to long-term data sync, not a barrier
 
 -----
 
@@ -843,6 +844,7 @@ Copy this `:root` block into any new stylesheet, component, or AI-generated code
 |-------|----|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |v1.0   |2025|Initial locked system — Bitter/Cabin/Courier Prime, Parchment theme, Style F cards, filled alerts, outlined badges, SVG wordmark, yellow CTA                                                                                                              |
 |v2.0   |2026|Consolidated brand book — merged design system and brand book into single AI-ready reference. Added complete SVG code, full CSS component library, mobile-first checklist, activity log dot colors, progress bar variant. Updated domain to yardstick.diy.|
+|v2.1   |2026|Copy update — removed “no account required” / “no login” framing across all approved copy. Updated Long Description and Short Description to lead with free account creation. Added explicit DON’T rule against no-login language.                        |
 
 -----
 
