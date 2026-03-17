@@ -8,8 +8,9 @@
 (function () {
     const { useState } = React;
     const ActivityDetails = window.ActivityDetails;
+    const HistoryView = window.HistoryView;
 
-    window.Dashboard = ({ activities, statsView, onStatsViewChange }) => {
+    window.Dashboard = ({ activities, statsView, onStatsViewChange, onDelete }) => {
         const [expandedRecentId, setExpandedRecentId] = useState(null);
         const now = new Date();
 
@@ -63,7 +64,7 @@
 
         return (
             <div className="animate-fade-in">
-                <h2 className="text-2xl font-bold mb-4">📊 Dashboard</h2>
+                <h2 className="text-2xl font-bold mb-4">📊 Lawn Stats</h2>
 
                 {/* Time filter */}
                 <div className="flex gap-2 bg-gray-100 p-1 rounded-lg mb-4">
@@ -176,6 +177,12 @@
                             <div className="text-sm">No activities yet</div>
                         </div>
                     )}
+                </div>
+
+                {/* Activity History */}
+                <div className="mt-6">
+                    <h3 className="text-lg font-bold mb-3">📋 Activity History</h3>
+                    <HistoryView activities={activities} onDelete={onDelete} />
                 </div>
             </div>
         );
