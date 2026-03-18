@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ── Brand CSS Custom Properties ── */
 :root {
     --ys-green-900: #1C3318;

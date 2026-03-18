@@ -933,4 +933,308 @@ function LawnCareTracker() {
                             <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Your Plan</span>
                             <div className="flex-1 h-px bg-gray-200"></div>
                         </div>
+                        {/* Today's Advisory card */}
+                        {weather && <TodayAdvisoryCard weather={weather} lawnProfile={lawnProfile} activities={activities} />}
+                        {/* Frost countdown banner */}
+                        {(() => {
+                            if (!lawnProfile || !lawnProfile.zone) return null;
+                            const zd = ZONE_INFO[lawnProfile.zone] || ZONE_INFO[getParentZone(lawnProfile.zone)];
+                            if (!zd || !zd.firstFrost || !zd.lastFrost) return null;
+                            const now = new Date(), yr = now.getFullYear();
+                            const firstFrost = new Date(yr, zd.firstFrost.month - 1, zd.firstFrost.day);
+                            const lastFrost  = new Date(yr, zd.lastFrost.month  - 1, zd.lastFrost.day );
+                            const dToFirst = Math.floor((firstFrost - now) / 864e5);
+                            const dToLast  = Math.floor((lastFrost  - now) / 864e5);
+                            let banner = null;
+                            if (dToFirst >= 0 && dToFirst <= 45) {
+                                const urgency = dToFirst <= 7 ? 'urgent' : dToFirst <= 21 ? 'warning' : 'info';
+                                const advice  = dToFirst <= 7  ? 'Finish seeding immediately — seedlings need 6 weeks to harden.' :
+                                                dToFirst <= 21 ? 'Wrap up overseeding and final fall fertilization.' :
+                                                'Plan final seeding, fertilization, and lime applications.';
+                                banner = { icon: '🍂', label: `First frost ~${zd.firstFrost.month}/${zd.firstFrost.day}`, days: dToFirst, advice, urgency };
+                            } else if (dToLast >= 0 && dToLast <= 30) {
+                                banner = { icon: '❄️', label: `Last frost ~${zd.lastFrost.month}/${zd.lastFrost.day}`, days: dToLast, advice: 'Hold warm-season fertilizing and new seeding until after last frost.', urgency: 'info' };
+                            } else if (dToLast >= -14 && dToLast < 0) {
+                                banner = { icon: '✅', label: 'Frost season ended', days: Math.abs(dToLast), advice: 'Lawn season open — time for pre-emergent and spring first fertilizer.', urgency: 'go', past: true };
+                            }
+                            if (!banner) return null;
+                            const colors = {
+                                urgent:  { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700', sub: 'text-orange-600' },
+                                warning: { bg: 'bg-amber-50',  border: 'border-amber-200',  text: 'text-amber-700',  sub: 'text-amber-600'  },
+                                go:      { bg: 'bg-green-50',  border: 'border-green-200',  text: 'text-green-700',  sub: 'text-green-600'  },
+                                info:    { bg: 'bg-blue-50',   border: 'border-blue-200',   text: 'text-blue-700',   sub: 'text-blue-500'   },
+                            }[banner.urgency];
+                            return (
+                                <div className={`${colors.bg} border ${colors.border} rounded-xl px-4 py-3 flex items-start gap-3`}>
+                                    <div className="text-xl flex-shrink-0 mt-0.5">{banner.icon}</div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className={`text-xs font-bold uppercase tracking-widest ${colors.text} mb-0.5`}>
+                                            {banner.label} {banner.past ? `(${banner.days}d ago)` : `— ${banner.days} day${banner.days !== 1 ? 's' : ''}`}
+                                        </div>
+                                        <div className={`text-xs ${colors.sub}`}>{banner.advice}</div>
+                                    </div>
+                                </div>
+                            );
+                        })()}
+                        {/* Schedules due card */}
+                        {schedules.length > 0 && (() => {
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            const getDaysUntil = (s) => {
+                                const ref = new Date(s.lastDone || s.createdAt);
+                                ref.setHours(0, 0, 0, 0);
+                                const due = new Date(ref);
+                                due.setDate(due.getDate() + s.frequencyDays);
+                                return Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+                            };
+                            const overdue     = schedules.filter(s => getDaysUntil(s) < 0);
+                            const dueTodayArr = schedules.filter(s => getDaysUntil(s) === 0);
+                            const urgentCount = overdue.length + dueTodayArr.length;
+                            const mostUrgent  = [...schedules].sort((a, b) => getDaysUntil(a) - getDaysUntil(b))[0];
+                            const d = getDaysUntil(mostUrgent);
+                            const isUrgent = d <= 0;
+                            // Precompute strings — no nested template literals in JSX
+                            const mainText = urgentCount > 0
+                                ? (urgentCount + ' task' + (urgentCount > 1 ? 's' : '') + ' due')
+                                : ('Next: ' + mostUrgent.name);
+                            const parts = [];
+                            if (overdue.length > 0)     parts.push(overdue.length + ' overdue');
+                            if (dueTodayArr.length > 0) parts.push(dueTodayArr.length + ' today');
+                            const subText = urgentCount > 0 ? parts.join(', ') : ('in ' + d + ' day' + (d !== 1 ? 's' : ''));
+                            const cardCls = 'w-full rounded-2xl shadow-sm border p-4 card-hover btn-press text-left flex items-center gap-3 ' + (isUrgent ? 'bg-orange-50 border-orange-200' : 'bg-white border-gray-100');
+                            const iconCls = 'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-xl ' + (isUrgent ? 'bg-orange-100' : 'bg-blue-50');
+                            const headCls = 'text-sm font-bold ' + (isUrgent ? 'text-orange-800' : 'text-gray-800');
+                            const subCls  = 'text-xs ' + (isUrgent ? 'text-orange-600' : 'text-gray-400');
+                            const chevCls = 'text-xs font-bold ' + (isUrgent ? 'text-orange-600' : 'text-[#367C2B]');
+                            return (
+                                <button onClick={() => setView('schedules')} className={cardCls}>
+                                    <div className={iconCls}>&#128467;</div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className={headCls}>{mainText}</div>
+                                        <div className={subCls}>{subText}</div>
+                                    </div>
+                                    <div className={chevCls}>View &#8594;</div>
+                                </button>
+                            );
+                        })()}
+                        {/* This Week's Priority */}
+                        {(() => {
+                            if (!lawnProfile || !lawnProfile.specificGrass || !lawnProfile.zone) return null;
+                            const programKey = GRASS_KEY_MAP[lawnProfile.specificGrass] + '_zone' + getParentZone(lawnProfile.zone);
+                            const program = typeof grassPrograms !== 'undefined' ? grassPrograms[programKey] : null;
+                            if (!program) return null;
+                            const curIdx = new Date().getMonth();
+                            const curMonth = MONTH_NAMES[curIdx];
+                            const isMatch = (mStr) => {
+                                if (mStr === curMonth) return true;
+                                if (mStr && mStr.includes('-')) {
+                                    const parts = mStr.split('-');
+                                    const s = MONTH_NAMES.indexOf(parts[0].trim()), e = MONTH_NAMES.indexOf(parts[1].trim());
+                                    return s >= 0 && e >= 0 && curIdx >= s && curIdx <= e;
+                                }
+                                return false;
+                            };
+                            const isGameplanTask = (t) => !/\bmow(ing)?\b|mow (weekly|at|every)|watering|irrigat|water (as needed|deeply|1|0\.|per week)/.test(t.toLowerCase());
+                            const currentEntry = program.schedule.find(e => isMatch(e.month));
+                            const gameplanTasks = currentEntry ? (currentEntry.tasks || []).filter(isGameplanTask) : [];
+                            const nextEntry = program.schedule.find(e => {
+                                const s = MONTH_NAMES.indexOf((e.month || '').split('-')[0].trim());
+                                return s === (curIdx + 1) % 12 || s === (curIdx + 2) % 12;
+                            });
+                            const upNext = nextEntry ? nextEntry.month : null;
+                            const taskIcons = { 'pre-emergent': '🛡️', 'fertili': '🌾', 'aerat': '🔧', 'overseed': '🌱', 'seed': '🌱', 'soil test': '🧪', 'lime': '🧪', 'dethatch': '✂️', 'scalp': '✂️', 'weed': '🌿', 'herbicide': '🌿', 'fungicide': '💊', 'chinch': '💊' };
+                            const getIcon = (task) => { const lower = task.toLowerCase(); for (const [k, v] of Object.entries(taskIcons)) { if (lower.includes(k)) return v; } return '📋'; };
+                            const scoredTasks = gameplanTasks.map(task => {
+                                const ws = getTaskWeatherStatus(task, weather, lawnProfile);
+                                const order = !ws ? 1 : ws.status === 'go' ? 0 : ws.status === 'caution' ? 1 : 2;
+                                return { task, ws, order };
+                            }).sort((a, b) => a.order - b.order);
+                            const weekLabel = (() => {
+                                const d = new Date().getDate();
+                                return d <= 7 ? 'Early' : d <= 14 ? 'Mid' : d <= 21 ? 'Mid–Late' : 'Late';
+                            })();
+                            const StatusBadge = ({ status }) => {
+                                if (!status) return null;
+                                if (status === 'go')      return <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 flex-shrink-0 whitespace-nowrap">Go</span>;
+                                if (status === 'caution') return <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 flex-shrink-0 whitespace-nowrap">Soon</span>;
+                                return <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-red-100 text-red-700 flex-shrink-0 whitespace-nowrap">Hold</span>;
+                            };
+                            return (
+                                <button onClick={() => setView('gameplan')} className="w-full bg-white rounded-2xl shadow-sm border border-[#367C2B]/20 p-4 card-hover btn-press text-left">
+                                    <div className="flex items-center justify-between mb-3">
+                                        <div className="flex items-center gap-2.5">
+                                            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style={{background:'var(--ys-green-100)'}}>📅</div>
+                                            <div>
+                                                <div className="text-sm font-bold text-gray-800">This Week's Priority</div>
+                                                <div className="text-xs text-gray-400">{weekLabel} {curMonth}{currentEntry?.importance ? ` · ${currentEntry.importance}` : ''}</div>
+                                            </div>
+                                        </div>
+                                        <span className="text-xs font-bold text-[#367C2B]">Full plan →</span>
+                                    </div>
+                                    {scoredTasks.length > 0 ? (
+                                        <div className="space-y-2 mt-1">
+                                            {scoredTasks.slice(0, 3).map(({ task, ws }, i) => (
+                                                <div key={i} className="flex items-center gap-2 bg-gray-50 rounded-lg px-2.5 py-2">
+                                                    <span className="flex-shrink-0 text-base">{getIcon(task)}</span>
+                                                    <span className="flex-1 text-xs text-gray-700 leading-snug font-medium">{task}</span>
+                                                    {ws && <StatusBadge status={ws.status} />}
+                                                </div>
+                                            ))}
+                                            {scoredTasks.length > 3 && <div className="text-xs text-[#367C2B] font-semibold px-1">+{scoredTasks.length - 3} more this month</div>}
+                                            {upNext && !weather && <div className="text-xs text-gray-400 mt-1 pt-1 border-t border-gray-100">Up next: {upNext}</div>}
+                                        </div>
+                                    ) : (
+                                        <div className="text-xs text-gray-500 mt-1">
+                                            {upNext ? `Quiet period — next tasks in ${upNext}` : 'No scheduled treatments this month'}
+                                        </div>
+                                    )}
+                                </button>
+                            );
+                        })()}
+                        {/* ── Section: Quick Actions ── */}
+                        <div className="flex items-center gap-2 pt-1">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Quick Actions</span>
+                            <div className="flex-1 h-px bg-gray-200"></div>
+                        </div>
+                        {/* Primary CTA */}
+                        <button onClick={() => { setView('add'); setSelectedActivityType(null); }} className="w-full text-white rounded-2xl py-4 flex items-center justify-center gap-3 btn-press transition" style={{background:'var(--ys-green-600)', boxShadow:'0 4px 20px rgba(54,124,43,0.32)'}}>
+                            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{background:'rgba(255,255,255,0.2)'}}>
+                                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4"/>
+                                </svg>
+                            </div>
+                            <span className="text-base font-extrabold tracking-wide" style={{fontFamily:'var(--ys-font-body)'}}>Log Activity</span>
+                        </button>
+                        {/* Recent activity strip */}
+                        {activities.length > 0 && (() => {
+                            const recent = [...activities].reverse().slice(0, 3);
+                            return (
+                                <div>
+                                    <div className="flex items-center justify-between mb-2">
+                                        <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">Recent Activity</div>
+                                        <button onClick={() => setView('history')} className="text-xs font-semibold text-[#367C2B]">View all →</button>
+                                    </div>
+                                    <div className="space-y-2">
+                                        {recent.map(activity => {
+                                            const colors = ACTIVITY_COLORS[activity.type] || ACTIVITY_COLORS.mowing;
+                                            const type = ACTIVITY_TYPES[activity.type] || { icon: '📋', name: activity.type };
+                                            const days = Math.floor((new Date() - new Date(activity.date)) / (1000*60*60*24));
+                                            const when = days === 0 ? 'Today' : days === 1 ? 'Yesterday' : `${days} days ago`;
+                                            return (
+                                                <div key={activity.id} className="bg-white rounded-xl shadow-sm px-3 py-2.5 flex items-center gap-3 card-hover overflow-hidden" style={{border: `1px solid ${colors.hex}28`, borderLeft: `4px solid ${colors.hex}`}}>
+                                                    <div className={`w-9 h-9 rounded-xl ${colors.bg} flex items-center justify-center text-base flex-shrink-0`}>{type.imgSrc ? <img src={type.imgSrc} className="w-5 h-5 object-contain" alt="" /> : type.icon}</div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="text-sm font-bold text-gray-800">{type.name}</div>
+                                                        <div className="text-xs text-gray-400">{when}</div>
+                                                    </div>
+                                                    <svg className="w-4 h-4 flex-shrink-0 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/></svg>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            );
+                        })()}
+                        {/* Data-loss warning — logged-out users with activities */}
+                        {!currentUser && activities.length > 0 && (
+                            <div className="rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3 flex items-start gap-3">
+                                <span className="text-lg flex-shrink-0 mt-0.5">⚠️</span>
+                                <div className="flex-1 min-w-0">
+                                    <div className="text-sm font-bold text-gray-800 mb-0.5">Your lawn data is only on this device</div>
+                                    <div className="text-xs text-gray-500">Create a free account to back up your {activities.length} {activities.length === 1 ? 'activity' : 'activities'} and access them anywhere.</div>
+                                </div>
+                                <button onClick={() => setView('account')} className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg text-white btn-press" style={{background:'var(--ys-green-600)'}}>
+                                    Back Up →
+                                </button>
+                            </div>
+                        )}
+                        {/* Monthly summary strip */}
+                        {(() => {
+                            const thisMonth = new Date().getMonth();
+                            const thisYear = new Date().getFullYear();
+                            const monthActivities = activities.filter(a => { const d = new Date(a.date); return d.getMonth() === thisMonth && d.getFullYear() === thisYear; });
+                            const monthCount = monthActivities.length;
+                            const lastMow = [...activities].reverse().find(a => a.type === 'mowing');
+                            const mowText = lastMow ? (() => { const d = Math.floor((new Date() - new Date(lastMow.date)) / (1000*60*60*24)); return d === 0 ? 'Mowed today' : d === 1 ? 'Mowed yesterday' : `Mowed ${d}d ago`; })() : null;
+                            const rainText = weather ? `${weather.rainfall}" rain` : null;
+                            const summaryParts = [monthCount > 0 ? `${monthCount} ${monthCount === 1 ? 'activity' : 'activities'}` : null, rainText, mowText].filter(Boolean);
+                            if (summaryParts.length === 0) return null;
+                            const monthName = new Date().toLocaleString('default', { month: 'long' });
+                            return (
+                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-4 py-3 flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-[#e8f5e9] flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-4 h-4 text-[#367C2B]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-0.5">This Month</div>
+                                        <div className="text-sm font-semibold text-gray-700 truncate">{summaryParts.join(' · ')}</div>
+                                    </div>
+                                    <button onClick={() => setView('dashboard')} className="text-xs font-bold text-[#367C2B] flex-shrink-0">{monthName} →</button>
+                                </div>
+                            );
+                        })()}
+                        {/* Account callout card — only shown to logged-out users */}
+                        {!currentUser && (
+                            <div className="rounded-2xl border p-4" style={{background:'var(--ys-green-50)', borderColor:'var(--ys-green-200)'}}>
+                                <div className="flex items-center gap-2 mb-1.5">
+                                    <span className="text-xl">🌿</span>
+                                    <span className="text-sm font-bold text-gray-800">Get your full lawn plan — free</span>
+                                </div>
+                                <p className="text-xs text-gray-500 mb-3">Create a free account to unlock your Full Year Program, Treatment Calculator, Smart Scheduler &amp; Stats.</p>
+                                <button onClick={() => setView('account')} className="w-full py-2.5 rounded-xl text-sm font-bold text-white btn-press" style={{background:'var(--ys-green-600)', boxShadow:'0 2px 10px rgba(54,124,43,0.25)'}}>
+                                    Create Free Account →
+                                </button>
+                                <div className="text-center mt-2">
+                                    <button onClick={() => setView('proSignup')} className="text-xs text-gray-400 btn-press" style={{background:'none', border:'none', cursor:'pointer'}}>
+                                        See what's included in Pro →
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                        </>)}
+                    </div>
+                )}
+                {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} />}</div>}
+                {view === 'history' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!currentUser && (<div className="mb-4 rounded-2xl border p-4 flex items-center gap-3" style={{background:'var(--ys-gold-100)', borderColor:'var(--ys-gold-300)'}}><span className="text-xl flex-shrink-0">📊</span><div className="flex-1 min-w-0"><div className="text-sm font-bold text-gray-800">Want advanced stats &amp; charts?</div><div className="text-xs text-gray-500">Create a free account to unlock monthly breakdowns, streaks &amp; trends.</div></div><button onClick={() => setView('account')} className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg text-white btn-press" style={{background:'var(--ys-green-600)'}}>Unlock →</button></div>)}<HistoryView activities={activities} onDelete={deleteActivity} /></div>}
+                {view === 'gallery' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><GalleryView currentUser={currentUser} onSignIn={() => setShowAuthModal(true)} /></div>}
+                {view === 'garage' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><MyGarage equipment={equipment} activities={activities} onAdd={addEquipment} onDelete={deleteEquipment} onUpdate={updateEquipment} onNavigate={setView} /></div>}
+                {view === 'profile' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><LawnProfile profileFormData={profileFormData} profileEditing={profileEditing} lawnProfile={lawnProfile} weather={weather} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} onSave={handleProfileSave} onEditToggle={setProfileEditing} onNavigate={setView} /></div>}
+                {view === 'gameplan' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Full Year Lawn Program" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <YearlyGameplan lawnProfile={lawnProfile} weather={weather} onNavigate={setView} />}</div>}
+                {view === 'schedules' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><SchedulesView schedules={schedules} onAdd={addSchedule} onDelete={deleteSchedule} onLog={logScheduledActivity} /></div>}
+                {view === 'dashboard' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Advanced Stats" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <Dashboard activities={activities} statsView={statsView} onStatsViewChange={setStatsView} weather={weather} lawnProfile={lawnProfile} onNavigate={setView} onDelete={deleteActivity} />}</div>}
+                {view === 'products' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Product Guide" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <ProductGuide />}</div>}
+                {view === 'sources' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><ResearchSourcesPage /></div>}
+                {view === 'account' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><AccountPage activities={activities} equipment={equipment} lawnProfile={lawnProfile} store={store} currentUser={currentUser} onSignOut={handleSignOut} onSignIn={() => setShowAuthModal(true)} firebaseConfigured={!!fb.configured} userName={userName} onUserNameChange={handleUserNameChange} onNavigate={setView} /></div>}
+                {view === 'contact' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><ContactPage currentUser={currentUser} firebaseConfigured={!!fb.configured} /></div>}
+                {view === 'tools' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><ToolsView onNavigate={setView} lawnProfile={lawnProfile} /></div>}
+                {view === 'grass-id' && <div><button onClick={() => setView('tools')} className="text-[#367C2B] mb-4 btn-press font-semibold">← Tools</button><GrassIdentifierView lawnProfile={lawnProfile} onSaveProfile={handleProfileSave} onNavigate={setView} /></div>}
+                {view === 'calculator' && <div><button onClick={() => setView('tools')} className="text-[#367C2B] mb-4 btn-press font-semibold">← Tools</button><TreatmentCalculator lawnProfile={lawnProfile} onNavigate={setView} proGated={PRO_GATE_ENABLED && !currentUser} onUnlock={() => setView('account')} /></div>}
+                {view === 'admin' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><AdminSubmissionsPage currentUser={currentUser} firebaseConfigured={!!fb.configured} /></div>}
+                {view === 'pricing' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><PricingView onSignIn={() => { setView(null); setShowAuthModal(true); }} onClose={() => setView(null)} /></div>}
+                {view === 'proSignup' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><ProSignupView currentUser={currentUser} onClose={() => setView(null)} onSignIn={() => { setView('account'); }} /></div>}
 
+                {/* ─── Feedback Footer ─────────────────────────────────── */}
+                <div className="mt-8 mb-4 rounded-xl border border-[#367C2B]/20 bg-[#367C2B]/5 px-4 py-3 flex items-center gap-3">
+                    <span className="text-xl flex-shrink-0">💬</span>
+                    <div className="flex-1 min-w-0">
+                        <div className="text-sm font-semibold text-gray-700">Found a bug or have feedback?</div>
+                        <div className="text-xs text-gray-400">Help us improve Yardstick during beta</div>
+                    </div>
+                    <a
+                        href="mailto:yardsticklawncareapp@gmail.com?subject=Yardstick%3A%20Feedback"
+                        className="flex-shrink-0 bg-[#367C2B] text-white text-xs font-bold px-3 py-2 rounded-lg btn-press transition"
+                        style={{textDecoration:'none'}}
+                    >
+                        Email Us
+                    </a>
+                </div>
+                </main>
+            </div>
+
+        </div>
+    );
+}
+
+export default App;
