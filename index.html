@@ -5589,10 +5589,23 @@ window.ResearchSourcesPage = () => (
         );
     };
 
+    // ─── Hash-based URL routing helpers ─────────────────────────────────────────
+    const VALID_VIEWS = ['add', 'history', 'gallery', 'garage', 'profile', 'gameplan',
+        'schedules', 'dashboard', 'products', 'sources', 'account', 'contact',
+        'tools', 'grass-id', 'calculator', 'admin', 'pricing', 'proSignup'];
+    function getViewFromHash() {
+        const hash = window.location.hash.replace(/^#\//, '');
+        return VALID_VIEWS.includes(hash) ? hash : null;
+    }
+
     // ─── Main App ───────────────────────────────────────────────────────────────
     function LawnCareTracker() {
         const [activities, setActivities] = useState([]);
-        const [view, setView] = useState(null);
+        const [view, setViewState] = useState(() => getViewFromHash());
+        const setView = React.useCallback((newView) => {
+            window.history.pushState({ view: newView }, '', newView ? `#/${newView}` : '#/');
+            setViewState(newView);
+        }, []);
         const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
         const [selectedActivityType, setSelectedActivityType] = useState(null);
         const [weather, setWeather] = useState(null);
@@ -5681,6 +5694,18 @@ window.ResearchSourcesPage = () => (
                 window.removeEventListener('firebase-ready', onFirebaseReady);
                 cleanupAuth();
             };
+        }, []);
+
+        // ── Sync view state with browser back/forward navigation ─────────────────
+        useEffect(() => {
+            // Ensure a baseline history entry exists so back-button returns to home
+            // rather than exiting the app on the very first navigation.
+            if (!window.location.hash || window.location.hash === '#/') {
+                window.history.replaceState({ view: null }, '', '#/');
+            }
+            const handlePop = () => setViewState(getViewFromHash());
+            window.addEventListener('popstate', handlePop);
+            return () => window.removeEventListener('popstate', handlePop);
         }, []);
 
         // ── GA4: fire page_view on every SPA view change ─────────────────────────
