@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#367C2B">
+    <meta name="description" content="Free lawn care app for DIY homeowners. University-backed recommendations personalized to your grass type and USDA zone. Free account, no ads, no upsells.">
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yardstick.diy">
+    <meta property="og:title" content="Yardstick — Research-Backed Lawn Care">
+    <meta property="og:description" content="Free lawn care app for DIY homeowners. Create a free account for personalized schedules by grass type &amp; zone, activity logging, and science-backed seasonal guidance.">
+    <meta property="og:image" content="https://yardstick.diy/yardstick-logo-light.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Yardstick — Research-Backed Lawn Care">
+    <meta name="twitter:description" content="Free lawn care app for DIY homeowners. Create a free account for personalized schedules by grass type &amp; zone, activity logging, and science-backed seasonal guidance.">
+    <meta name="twitter:image" content="https://yardstick.diy/yardstick-logo-light.svg">
+    <title>Yardstick - Research-Backed Lawn Care</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VYFPED6CKW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VYFPED6CKW', { send_page_view: false });
+      window.trackEvent = function(eventName, params) {
+          if (typeof gtag === 'function') { gtag('event', eventName, params || {}); }
+      };
+    </script>
+
+    <!-- Brand Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700;900&family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Tailwind CSS (CDN — works with Vite, no build config needed) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase (loaded as ES module, sets window.__FIREBASE__) -->
+    <script type="module">
+        const firebaseConfig = {
+            apiKey:            "AIzaSyBYkHARramuf6Xwu0BGfxKqukHfw_OgePw",
+            authDomain:        "lawn-tracker-71c43.firebaseapp.com",
+            projectId:         "lawn-tracker-71c43",
+            storageBucket:     "lawn-tracker-71c43.firebasestorage.app",
+            messagingSenderId: "24765427828",
+            appId:             "1:24765427828:web:d8e1229477658e4250e121"
+        };
+        const FIREBASE_CONFIGURED = !firebaseConfig.apiKey.startsWith('REPLACE');
+        if (FIREBASE_CONFIGURED) {
+            try {
+                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
+                const { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,
+                        createUserWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } =
+                    await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js');
+                const { getFirestore, doc, getDoc, setDoc, collection, getDocs, addDoc,
+                        deleteDoc, updateDoc, serverTimestamp, query, orderBy, where, limit } =
+                    await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+                const { getStorage, ref: storageRef, uploadBytes, getDownloadURL } =
+                    await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js');
+                const app = initializeApp(firebaseConfig);
+                window.__FIREBASE__ = {
+                    auth: getAuth(app), db: getFirestore(app), storage: getStorage(app),
+                    GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,
+                    createUserWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser,
+                    doc, getDoc, setDoc, collection, getDocs, addDoc,
+                    deleteDoc, updateDoc, serverTimestamp, query, orderBy, where, limit,
+                    storageRef, uploadBytes, getDownloadURL, configured: true
+                };
+            } catch(e) {
+                console.error('Firebase init failed:', e);
+                window.__FIREBASE__ = { configured: false };
+            }
+        } else {
+            window.__FIREBASE__ = { configured: false };
+        }
+        window.dispatchEvent(new Event('firebase-ready'));
+    </script>
+
+    <!-- Canvas image compression utility -->
+    <script>
+    window.compressImage = function(file, maxDim, quality) {
+        maxDim = maxDim || 1200; quality = quality || 0.82;
+        return new Promise(function(resolve, reject) {
+            var reader = new FileReader();
+            reader.onerror = reject;
+            reader.onload = function(e) {
+                var img = new Image();
+                img.onerror = reject;
+                img.onload = function() {
+                    var canvas = document.createElement('canvas');
+                    var w = img.width, h = img.height;
+                    if (w > maxDim || h > maxDim) {
+                        if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+                        else { w = Math.round(w * maxDim / h); h = maxDim; }
+                    }
+                    canvas.width = w; canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    canvas.toBlob(function(blob) {
+                        blob ? resolve(blob) : reject(new Error('Canvas toBlob failed'));
+                    }, 'image/jpeg', quality);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    };
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
