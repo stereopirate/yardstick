@@ -1237,4 +1237,4 @@ function LawnCareTracker() {
     );
 }
 
-export default App;
+export default LawnCareTracker;
