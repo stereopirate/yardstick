@@ -1230,6 +1230,8 @@ function LawnCareTracker() {
                         Email Us
                     </a>
                 </div>
+                {/* ── Grass footer strip ── */}
+                <div className="ys-grass-footer" aria-hidden="true" />
                 </main>
             </div>
 

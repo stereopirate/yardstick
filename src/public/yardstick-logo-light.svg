@@ -1,0 +1,22 @@
+<svg viewBox="0 0 340 72" xmlns="http://www.w3.org/2000/svg" aria-label="Yardstick" role="img">
+  <title>Yardstick</title>
+  <!-- Wordmark -->
+  <text
+    x="0" y="54"
+    font-family="Bitter, Georgia, serif"
+    font-weight="900"
+    font-size="58"
+    fill="#1E4D18"
+    letter-spacing="-0.5">Yardstick</text>
+  <!-- Ruler bar -->
+  <rect x="0" y="62" width="334" height="7" rx="1.5" fill="#F5C842"/>
+  <!-- Tick marks -->
+  <rect x="38"  y="62" width="2" height="7" fill="#1E1A14" opacity="0.2"/>
+  <rect x="76"  y="62" width="2" height="7" fill="#1E1A14" opacity="0.2"/>
+  <rect x="114" y="62" width="2" height="7" fill="#1E1A14" opacity="0.2"/>
+  <rect x="152" y="62" width="2" height="7" fill="#1E1A14" opacity="0.2"/>
+  <rect x="190" y="62" width="2" height="7" fill="#1E1A14" opacity="0.2"/>
+  <rect x="228" y="62" width="2" height="7" fill="#1E1A14" opacity="0.2"/>
+  <rect x="266" y="62" width="2" height="7" fill="#1E1A14" opacity="0.2"/>
+  <rect x="304" y="62" width="2" height="7" fill="#1E1A14" opacity="0.2"/>
+</svg>
