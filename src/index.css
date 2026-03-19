@@ -117,7 +117,7 @@ h1, h2, h3 { font-family: var(--ys-font-display); }
 /* ── Coach card hero ── */
 .ys-coach-card {
     background:
-        linear-gradient(145deg, rgba(30,77,24,0.91) 0%, rgba(45,102,39,0.87) 55%, rgba(54,124,43,0.84) 100%),
+        linear-gradient(145deg, rgba(30,77,24,0.76) 0%, rgba(45,102,39,0.72) 55%, rgba(54,124,43,0.68) 100%),
         url('/grass-hero.jpeg');
     background-size: cover, cover;
     background-position: center, center;
@@ -137,14 +137,12 @@ h1, h2, h3 { font-family: var(--ys-font-display); }
 
 /* ── Grass footer strip ── */
 .ys-grass-footer {
-    width: 100%;
-    height: 110px;
+    height: 140px;
     background-image: url('/grass-footer.jpeg');
     background-size: cover;
     background-position: top center;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 28%, black 60%);
     mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 28%, black 60%);
-    border-radius: 0 0 12px 12px;
     flex-shrink: 0;
     margin-top: 8px;
 }

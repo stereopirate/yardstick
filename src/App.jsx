@@ -1230,8 +1230,8 @@ function LawnCareTracker() {
                         Email Us
                     </a>
                 </div>
-                {/* ── Grass footer strip ── */}
-                <div className="ys-grass-footer" aria-hidden="true" />
+                {/* ── Grass footer strip — negative margins break out of main padding ── */}
+                <div className="ys-grass-footer -mx-2 -mb-6 md:-mx-4" aria-hidden="true" />
                 </main>
             </div>
 
