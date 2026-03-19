@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Brand CSS Custom Properties ── */
+:root {
+    --ys-green-900: #1C3318;
+    --ys-green-800: #1E4D18;
+    --ys-green-700: #2D6627;
+    --ys-green-600: #367C2B;
+    --ys-green-500: #4E9E40;
+    --ys-green-400: #6BBF5A;
+    --ys-green-200: #C4E8BC;
+    --ys-green-100: #EBF5E6;
+    --ys-green-50:  #F4FAF2;
+    --ys-yellow:      #F5C842;
+    --ys-yellow-dark: #E8BA2A;
+    --ys-gold-500:  #D4A843;
+    --ys-gold-400:  #D4A833;
+    --ys-gold-300:  #E2C46A;
+    --ys-gold-100:  #FDF3D8;
+    --ys-soil-800:  #1E1A14;
+    --ys-soil-600:  #6B6560;
+    --ys-soil-400:  #9C7248;
+    --ys-soil-200:  #D4B896;
+    --ys-cream:     #F7F3EC;
+    --ys-canvas:    #EDE8DE;
+    --ys-stone-light: #B8B2AC;
+    --ys-font-body:    'Cabin', system-ui, -apple-system, sans-serif;
+    --ys-font-display: 'Bitter', Georgia, serif;
+}
+body, button, input, select, textarea {
+    font-family: var(--ys-font-body);
+}
+body { background-color: var(--ys-canvas); }
+#root { min-height: 100vh; }
+@keyframes slideUpBounce {
+    0% { transform: translateY(100%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 4px 14px rgba(255, 222, 0, 0.4); }
+    50% { box-shadow: 0 4px 24px rgba(255, 222, 0, 0.7); }
+}
+@keyframes fadeSlideIn {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+    0% { transform: scale(0.95); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+.animate-fade-in { animation: fadeSlideIn 0.3s ease-out; }
+.animate-scale-in { animation: scaleIn 0.25s ease-out; }
+.card-hover { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.card-hover:active { transform: scale(0.98); }
+.btn-press { transition: transform 0.1s ease, opacity 0.1s ease; }
+.btn-press:active { transform: scale(0.95); opacity: 0.9; }
+.nav-item { transition: background-color 0.2s ease, color 0.2s ease; }
+.menu-slide { animation: fadeSlideIn 0.2s ease-out; }
+.cloud-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: linear-gradient(135deg, #e8f5e9, #f0fff4);
+    border: 1px solid #367C2B; border-radius: 20px;
+    padding: 2px 8px; font-size: 11px; font-weight: 700;
+    color: #367C2B; white-space: nowrap;
+}
+.local-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #f9f9f9; border: 1px solid #d1d5db;
+    border-radius: 20px; padding: 2px 8px; font-size: 11px; font-weight: 700;
+    color: #6b7280; white-space: nowrap;
+}
+.cite-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 700;
+    color: #367C2B; background: #e8f5e9; border: 1.5px solid #367C2B; cursor: pointer;
+    line-height: 1; vertical-align: middle; margin-left: 4px; flex-shrink: 0;
+    transition: background 0.15s ease, transform 0.1s ease;
+    position: relative; z-index: 2; -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation; user-select: none;
+    min-width: 22px; min-height: 22px; padding: 0;
+}
+.cite-btn::before {
+    content: ''; position: absolute; z-index: 2;
+    top: -10px; left: -10px; right: -10px; bottom: -10px;
+}
+.cite-btn:hover, .cite-btn:active { background: #367C2B; color: white; transform: scale(1.1); }
+.cite-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9998; }
+.cite-popup {
+    position: fixed; z-index: 9999; background: white; border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.18); border: 1px solid #e0e0e0;
+    padding: 12px 16px; max-width: 320px; min-width: 220px;
+    animation: fadeSlideIn 0.15s ease-out;
+}
+.cite-popup a { color: #367C2B; text-decoration: underline; font-weight: 600; }
+.auth-modal-bg {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.auth-modal {
+    background: white; border-radius: 20px; padding: 28px 24px;
+    width: 100%; max-width: 400px; animation: scaleIn 0.2s ease-out;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+input[type="email"], input[type="password"], input[type="text"], input[type="number"], input[type="date"], select, textarea {
+    -webkit-appearance: none; appearance: none;
+}
+
+/* ── Display font for headings ── */
+h1, h2, h3 { font-family: var(--ys-font-display); }
+
+/* ── Coach card hero ── */
+.ys-coach-card {
+    background: linear-gradient(145deg, var(--ys-green-800) 0%, var(--ys-green-700) 55%, var(--ys-green-600) 100%);
+    border-radius: 20px; color: white; position: relative; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(28,51,24,0.22);
+}
+.ys-coach-card::before {
+    content: ''; position: absolute; top: -50px; right: -30px;
+    width: 200px; height: 200px; background: rgba(255,255,255,0.05);
+    border-radius: 50%; pointer-events: none;
+}
+.ys-coach-card::after {
+    content: ''; position: absolute; bottom: -50px; left: -20px;
+    width: 140px; height: 140px; background: rgba(255,255,255,0.04);
+    border-radius: 50%; pointer-events: none;
+}
+
+/* ── Badge variants ── */
+.ys-badge-white {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(255,255,255,0.15); color: white;
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 3px 10px; font-size: 11px; font-weight: 700; white-space: nowrap;
+}
+.ys-badge-green {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--ys-green-100); color: var(--ys-green-700);
+    border: 1px solid var(--ys-green-200); border-radius: 20px;
+    padding: 3px 10px; font-size: 11px; font-weight: 700; white-space: nowrap;
+}
+
+/* ── Primary button — Bright Yellow CTA ── */
+.ys-btn-primary {
+    background: var(--ys-yellow); color: var(--ys-soil-800); font-family: var(--ys-font-body);
+    border: none; border-radius: 14px; font-weight: 700; cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    box-shadow: 0 3px 12px rgba(245,200,66,0.35);
+}
+.ys-btn-primary:active { background: var(--ys-yellow-dark); transform: scale(0.97); }
+
+/* ── Card base ── */
+.ys-card {
+    background: white; border-radius: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+/* ── Navigation: Sidebar ── */
+.ys-sidebar {
+    width: 224px; flex-shrink: 0; position: sticky; top: 56px;
+    height: calc(100vh - 56px); overflow-y: auto;
+    border-right: 1px solid rgba(0,0,0,0.06);
+    background: white; padding: 12px 8px 16px;
+    gap: 2px;
+}
+@media (min-width: 1024px) { .ys-sidebar { width: 256px; } }
+.ys-sidebar-item {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 9px 12px; border-radius: 10px;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--ys-font-body); font-size: 13px; font-weight: 600;
+    color: #4B5563; text-align: left;
+    transition: background 0.15s ease, color 0.15s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    min-height: 40px;
+}
+.ys-sidebar-item:hover { background: var(--ys-green-50); color: var(--ys-green-700); }
+.ys-sidebar-active { background: var(--ys-green-100) !important; color: var(--ys-green-700) !important; font-weight: 700; }
+.ys-sidebar-section-label {
+    padding: 8px 12px 2px; font-size: 10px; font-weight: 700;
+    color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em;
+    font-family: var(--ys-font-body);
+}
+.ys-fab:active { transform: scale(0.93); background: var(--ys-green-700) !important; }
+
+/* ── Desktop typography scaling ── */
+@media (min-width: 768px) {
+    html { font-size: 17px; }
+    .ys-sidebar-item { font-size: 14px; }
+    .ys-sidebar-section-label { font-size: 11px; }
+}
+@media (min-width: 1024px) {
+    html { font-size: 18px; }
+    .ys-sidebar-item { font-size: 15px; }
+    .ys-sidebar-section-label { font-size: 12px; }
+}
