@@ -1814,6 +1814,315 @@ window.ResearchSourcesPage = () => (
 
     const getParentZone = (zone) => zone ? zone.replace(/[ab]$/i, '') : zone;
 
+    // ─── Product Warning Rules ────────────────────────────────────────────────────
+    // Each entry defines conflict rules for a treatment category or product.
+    // Used by ActivityForm (log-time conflict check) and TreatmentCalculator (Before You Apply).
+    //
+    // Rule types:
+    //   no_seed_after   — seeding blocked for X days after this product is applied
+    //   no_seed_before  — this product is blocked for X days after seeding
+    //   mow_before      — mow at least X days before applying (note, not block)
+    //   no_mow_after    — don't mow for X hours after applying
+    //   rain_hold_after — don't apply if rain expected in X hours
+    //   rain_needed     — needs rain/irrigation within X hours after (granular activation)
+    //   heat_hold       — caution if high temp exceeds threshold
+    //   bee_safety      — apply in early morning or evening only (liquid insecticides)
+    //   lime_nitrogen   — don't apply same day as nitrogen fertilizer
+    const PRODUCT_WARNINGS = {
+        // ── Pre-Emergent ─────────────────────────────────────────────────────────
+        pre_emergent: {
+            categoryLabel: 'Pre-Emergent',
+            rules: [
+                {
+                    type: 'no_seed_after',
+                    days: 84,
+                    severity: 'danger',
+                    icon: '🌱',
+                    title: 'Seeding blocked for ~12 weeks',
+                    detail: 'Pre-emergent herbicides prevent ALL seed germination — including your grass seed. Do not overseed or sow any seed for at least 8–12 weeks after application. Plan your seeding window before applying.',
+                },
+                {
+                    type: 'mow_before',
+                    days: 2,
+                    severity: 'tip',
+                    icon: '✂️',
+                    title: 'Mow 1–2 days before applying',
+                    detail: 'A fresh cut lets pre-emergent reach the soil surface more effectively and reduces interference from leaf canopy.',
+                },
+                {
+                    type: 'rain_hold_after',
+                    hours: 24,
+                    severity: 'caution',
+                    icon: '🌧️',
+                    title: 'Avoid heavy rain in 24h',
+                    detail: 'Heavy rainfall (>0.75") immediately after application can move product off target before it binds to the soil layer. Light rain (0.1–0.5") is actually ideal — it activates granular product.',
+                },
+                {
+                    type: 'rain_needed',
+                    hours: 504, // 21 days
+                    severity: 'tip',
+                    icon: '💧',
+                    title: 'Water in within 21 days',
+                    detail: 'Granular pre-emergent must be watered in (rain or irrigation) to activate the barrier. If no rain is forecast, irrigate lightly (0.25–0.5") within a few days of application.',
+                },
+            ],
+        },
+        // ── Post-Emergent Herbicide ───────────────────────────────────────────────
+        post_emergent: {
+            categoryLabel: 'Post-Emergent Herbicide',
+            rules: [
+                {
+                    type: 'no_seed_after',
+                    days: 28,
+                    severity: 'danger',
+                    icon: '🌱',
+                    title: 'Wait 4 weeks before seeding',
+                    detail: 'Most broadleaf and grassy weed herbicides (2,4-D, Trimec, Quinclorac) require a 3–4 week interval before reseeding. Applying too soon kills or stunts new seedlings. Exception: Tenacity (mesotrione) is safe to use at seeding time.',
+                },
+                {
+                    type: 'no_seed_before',
+                    days: 28,
+                    severity: 'danger',
+                    icon: '🌱',
+                    title: 'Wait 4 weeks after seeding',
+                    detail: 'Do not apply most post-emergent herbicides to newly seeded areas until grass has been mowed at least 2–3 times (typically 6–8 weeks after germination). Young seedlings are highly susceptible to herbicide damage.',
+                },
+                {
+                    type: 'mow_before',
+                    days: 2,
+                    severity: 'tip',
+                    icon: '✂️',
+                    title: 'Mow 1–2 days before applying',
+                    detail: 'Mowing before a spray application improves canopy penetration and ensures product contacts weed foliage more uniformly. Avoid mowing immediately before — leave a little leaf area for uptake.',
+                },
+                {
+                    type: 'no_mow_after',
+                    hours: 48,
+                    severity: 'caution',
+                    icon: '🚫',
+                    title: 'Don\'t mow for 24–48 hours after',
+                    detail: 'Mowing removes the leaf surface that absorbed the product before it has translocated into the weed\'s root system. Wait 2 days for best results.',
+                },
+                {
+                    type: 'rain_hold_after',
+                    hours: 24,
+                    severity: 'danger',
+                    icon: '🌧️',
+                    title: 'Must be dry for 24 hours after',
+                    detail: 'Rain washes liquid herbicide off leaves before it is absorbed. Check the forecast — apply only when 24+ dry hours are expected.',
+                },
+                {
+                    type: 'heat_hold',
+                    tempF: 90,
+                    severity: 'caution',
+                    icon: '🌡️',
+                    title: 'Avoid applying above 85–90°F',
+                    detail: 'High temps increase volatility and the risk of off-target vapor drift to nearby plants. Some products (Quinclorac, dicamba) are especially volatile in heat. Apply in early morning when temps are lower.',
+                },
+            ],
+        },
+        // ── Fungicide ─────────────────────────────────────────────────────────────
+        fungicide: {
+            categoryLabel: 'Fungicide',
+            rules: [
+                {
+                    type: 'mow_before',
+                    days: 1,
+                    severity: 'tip',
+                    icon: '✂️',
+                    title: 'Mow 1 day before applying',
+                    detail: 'Mowing before fungicide application removes infected leaf tips and improves product penetration into the canopy where disease pressure is highest.',
+                },
+                {
+                    type: 'no_mow_after',
+                    hours: 24,
+                    severity: 'caution',
+                    icon: '🚫',
+                    title: 'Don\'t mow for 24 hours after',
+                    detail: 'Give liquid fungicide time to dry and be absorbed before mowing removes treated leaf surface.',
+                },
+                {
+                    type: 'rain_hold_after',
+                    hours: 4,
+                    severity: 'caution',
+                    icon: '🌧️',
+                    title: 'Needs 4 dry hours after application',
+                    detail: 'Liquid fungicides need time to dry and adhere to the leaf surface. If rain arrives within 4 hours, reapplication may be needed. Granular fungicides are more rain-tolerant.',
+                },
+                {
+                    type: 'rain_needed',
+                    hours: 24,
+                    severity: 'tip',
+                    icon: '💧',
+                    title: 'Water in granular fungicides within 24h',
+                    detail: 'Granular fungicide must be watered into the turf canopy to activate. Irrigate lightly (0.1–0.25") or apply before a light rain event.',
+                },
+            ],
+        },
+        // ── Insecticide ───────────────────────────────────────────────────────────
+        insecticide: {
+            categoryLabel: 'Insecticide',
+            rules: [
+                {
+                    type: 'rain_needed',
+                    hours: 24,
+                    severity: 'tip',
+                    icon: '💧',
+                    title: 'Water in grub control immediately',
+                    detail: 'Grub control products (imidacloprid, chlorantraniliprole) must be watered in deeply (0.5") immediately after application to move the product down to the root zone where grubs feed.',
+                },
+                {
+                    type: 'rain_hold_after',
+                    hours: 4,
+                    severity: 'caution',
+                    icon: '🌧️',
+                    title: 'Surface sprays need 4 dry hours',
+                    detail: 'Contact insecticides for surface pests (armyworms, chinch bugs, sod webworms) need time to dry before rain dilutes them. Grub controls are the opposite — they need water in.',
+                },
+                {
+                    type: 'bee_safety',
+                    severity: 'danger',
+                    icon: '🐝',
+                    title: 'Bee safety — apply at dawn or dusk',
+                    detail: 'Avoid applying liquid insecticides during mid-day when bees are actively foraging. Apply in early morning or evening. Do not spray open blooms. This protects pollinators and improves effectiveness.',
+                },
+                {
+                    type: 'heat_hold',
+                    tempF: 90,
+                    severity: 'caution',
+                    icon: '🌡️',
+                    title: 'Avoid applying above 90°F',
+                    detail: 'Liquid insecticides can volatilize and drift in extreme heat. Apply in the early morning on hot days.',
+                },
+            ],
+        },
+        // ── Soil Amendment (lime, iron, gypsum) ──────────────────────────────────
+        soil_amendment: {
+            categoryLabel: 'Soil Amendment',
+            rules: [
+                {
+                    type: 'lime_nitrogen',
+                    severity: 'caution',
+                    icon: '🧪',
+                    title: 'Don\'t apply lime same day as nitrogen',
+                    detail: 'Mixing lime with nitrogen fertilizer causes ammonia volatilization — you lose nitrogen to the air before it reaches the roots. Space applications at least 2 weeks apart.',
+                },
+                {
+                    type: 'rain_needed',
+                    hours: 48,
+                    severity: 'tip',
+                    icon: '💧',
+                    title: 'Water in after application',
+                    detail: 'Pelletized lime and gypsum should be watered in to begin dissolving and moving into the soil profile. A light irrigation or rain event within 48 hours is ideal.',
+                },
+                {
+                    type: 'no_mow_after',
+                    hours: 24,
+                    severity: 'tip',
+                    icon: '🚫',
+                    title: 'Avoid iron on hardscape — stains',
+                    detail: 'Liquid iron and chelated iron supplements will permanently stain concrete, pavers, and driveways. Keep product on the lawn only, and rinse any overspray immediately.',
+                },
+            ],
+        },
+    };
+
+    // ─── getProductConflicts — checks activity history for rule violations ────────
+    // Returns an array of { severity, icon, title, detail } objects to display.
+    // activityType: string key from ACTIVITY_TYPES
+    // productCategory: string key from TREATMENT_CATEGORIES (for treatment activities)
+    // activities: array of logged activity objects
+    const getProductConflicts = (activityType, productCategory, activities) => {
+        if (!activities || activities.length === 0) return [];
+        const conflicts = [];
+        const now = new Date();
+        const daysSince = (dateStr) => {
+            const d = new Date(dateStr);
+            return Math.floor((now - d) / (1000 * 60 * 60 * 24));
+        };
+
+        // ── Seeding → check for recent pre-emergent or post-emergent ─────────────
+        if (activityType === 'seeding') {
+            const recentPreEmergent = activities.find(a => {
+                if (a.type !== 'treatment') return false;
+                const cat = a.data && a.data.category;
+                return cat === 'pre_emergent' || cat === 'preemergent';
+            });
+            if (recentPreEmergent) {
+                const days = daysSince(recentPreEmergent.date);
+                const lockoutDays = 84; // 12 weeks
+                if (days < lockoutDays) {
+                    const remaining = lockoutDays - days;
+                    conflicts.push({
+                        severity: 'danger',
+                        icon: '🛡️',
+                        title: `Pre-emergent applied ${days} day${days !== 1 ? 's' : ''} ago — seeding blocked`,
+                        detail: `Pre-emergent herbicide prevents ALL seed germination, including your grass seed. You need to wait approximately ${remaining} more day${remaining !== 1 ? 's' : ''} (${lockoutDays} days total) before seeding. Seeding now will likely result in no germination.`,
+                    });
+                }
+            }
+
+            const recentPostEmergent = activities.find(a => {
+                if (a.type !== 'treatment') return false;
+                const cat = a.data && a.data.category;
+                const prod = (a.data && a.data.product) ? a.data.product.toLowerCase() : '';
+                // Tenacity (mesotrione) is safe at seeding — exclude it
+                if (prod.includes('tenacity') || prod.includes('mesotrione')) return false;
+                return cat === 'post_emergent';
+            });
+            if (recentPostEmergent) {
+                const days = daysSince(recentPostEmergent.date);
+                const lockoutDays = 28;
+                if (days < lockoutDays) {
+                    const remaining = lockoutDays - days;
+                    conflicts.push({
+                        severity: 'danger',
+                        icon: '🌿',
+                        title: `Post-emergent herbicide applied ${days} day${days !== 1 ? 's' : ''} ago`,
+                        detail: `Most post-emergent herbicides require a 3–4 week waiting period before seeding. Wait approximately ${remaining} more day${remaining !== 1 ? 's' : ''} to avoid killing or stunting new seedlings. (Exception: Tenacity/mesotrione is safe to use at seeding time.)`,
+                    });
+                }
+            }
+        }
+
+        // ── Pre-Emergent → warn about upcoming seeding window block ──────────────
+        if (activityType === 'treatment' && (productCategory === 'pre_emergent' || productCategory === 'preemergent')) {
+            // Check if there was recent seeding (within 8 weeks) — warn it may not have established yet
+            const recentSeeding = activities.find(a => {
+                if (a.type !== 'seeding') return false;
+                return daysSince(a.date) < 60;
+            });
+            if (recentSeeding) {
+                const days = daysSince(recentSeeding.date);
+                conflicts.push({
+                    severity: 'danger',
+                    icon: '🌱',
+                    title: `Seeding logged ${days} day${days !== 1 ? 's' : ''} ago — pre-emergent will kill new seedlings`,
+                    detail: `You seeded your lawn ${days} days ago. Applying pre-emergent now will prevent germination of any seeds that haven't sprouted yet, and may damage recently emerged seedlings. Wait until grass is fully established (mowed 3+ times) before applying pre-emergent.`,
+                });
+            }
+        }
+
+        // ── Post-Emergent → warn if seeded recently ──────────────────────────────
+        if (activityType === 'treatment' && productCategory === 'post_emergent') {
+            const recentSeeding = activities.find(a => {
+                if (a.type !== 'seeding') return false;
+                return daysSince(a.date) < 56; // 8 weeks
+            });
+            if (recentSeeding) {
+                const days = daysSince(recentSeeding.date);
+                conflicts.push({
+                    severity: 'danger',
+                    icon: '🌱',
+                    title: `Seeding logged ${days} day${days !== 1 ? 's' : ''} ago — herbicide may damage new grass`,
+                    detail: `Most post-emergent herbicides will damage or kill grass seedlings that are less than 6–8 weeks old (before 2–3 mowings). Wait until your new grass is fully established before applying herbicide.`,
+                });
+            }
+        }
+
+        return conflicts;
+    };
+
     // ─── Shared pure helpers (no React state) ──────────────────────────────────
     const WMO_CODES = {
         0: { label: 'Clear Sky', icon: '☀️' }, 1: { label: 'Mainly Clear', icon: '🌤️' },
@@ -2531,7 +2840,7 @@ window.ResearchSourcesPage = () => (
     };
 
     // ─── ActivityForm ────────────────────────────────────────────────────────────
-    const ActivityForm = ({ selectedActivityType, onSubmit, onCancel, currentUser }) => {
+    const ActivityForm = ({ selectedActivityType, onSubmit, onCancel, currentUser, activities }) => {
         const activityType = ACTIVITY_TYPES[selectedActivityType];
         const isPhotoLog = selectedActivityType === 'photo';
         const [localFormData, setLocalFormData] = useState({ date: new Date().toISOString().split('T')[0], notes: '', data: {} });
@@ -2696,6 +3005,35 @@ window.ResearchSourcesPage = () => (
                         <label className="block text-sm font-semibold mb-2">Notes (Optional)</label>
                         <textarea value={localFormData.notes} onChange={(e) => setLocalFormData({...localFormData, notes: e.target.value})} rows="3" className="w-full px-4 py-2 border rounded-lg" />
                     </div>
+
+                    {/* ── Product conflict warnings ── */}
+                    {(() => {
+                        const productCat = localFormData.data && localFormData.data.category;
+                        const conflicts = getProductConflicts(selectedActivityType, productCat, activities || []);
+                        if (conflicts.length === 0) return null;
+                        return (
+                            <div className="mb-4 space-y-2">
+                                {conflicts.map((c, i) => (
+                                    <div key={i} className={`p-3 rounded-xl border flex gap-3 animate-fade-in ${
+                                        c.severity === 'danger'
+                                            ? 'bg-red-50 border-red-300'
+                                            : 'bg-amber-50 border-amber-300'
+                                    }`}>
+                                        <span className="text-xl flex-shrink-0 mt-0.5">{c.icon}</span>
+                                        <div>
+                                            <div className={`text-sm font-bold mb-0.5 ${c.severity === 'danger' ? 'text-red-800' : 'text-amber-800'}`}>
+                                                {c.title}
+                                            </div>
+                                            <div className={`text-xs leading-relaxed ${c.severity === 'danger' ? 'text-red-700' : 'text-amber-700'}`}>
+                                                {c.detail}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        );
+                    })()}
+
                     {/* ── Photo Upload ── */}
                     {!isPhotoLog && renderPhotoSection(false)}
                     {/* PREMIUM_FEATURE: cost tracking — available to all users now; gated to premium subscribers in a future release */}
@@ -3253,6 +3591,17 @@ window.ResearchSourcesPage = () => (
                                     </div>
                                     <div className="text-sm text-gray-700 mt-0.5">{task}</div>
                                     {ws && ws.reason && <div className={`text-xs mt-0.5 ${ws.status === 'go' ? 'text-[#367C2B]' : ws.status === 'caution' ? 'text-amber-600' : 'text-red-600'}`}>{ws.reason}</div>}
+                                    {/* Seeding ↔ pre-emergent conflict note */}
+                                    {/overseed|reseed|\bsow\b|seeding/i.test(task) && (
+                                        <div className="mt-1.5 p-2 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-800 leading-snug">
+                                            <strong>⚠️ Check your log:</strong> If you applied pre-emergent in the past 8–12 weeks, skip seeding — pre-emergent prevents ALL germination including your grass seed.
+                                        </div>
+                                    )}
+                                    {/pre-emergent|pre emergent|crabgrass prev|prodiamine|dithiopyr/i.test(task) && (
+                                        <div className="mt-1.5 p-2 rounded-lg bg-red-50 border border-red-200 text-xs text-red-800 leading-snug">
+                                            <strong>🛡️ Seeding conflict:</strong> Applying pre-emergent will block ALL seed germination for 8–12 weeks. Do not overseed or sow any seed within this window.
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         );
@@ -5519,6 +5868,51 @@ window.ResearchSourcesPage = () => (
                         Select a product and enter your yard area to see how much you need.
                     </div>
                 )}
+
+                {/* ── Before You Apply ── shown whenever a product is selected */}
+                {selectedProduct && (() => {
+                    const catKey = category === 'preemergent' ? 'pre_emergent' : category;
+                    const warningDef = PRODUCT_WARNINGS[catKey];
+                    if (!warningDef || !warningDef.rules || warningDef.rules.length === 0) return null;
+                    return (
+                        <div className="mt-6 rounded-2xl border-2 overflow-hidden animate-fade-in"
+                            style={{borderColor:'var(--ys-straw, #D4A843)'}}>
+                            <div className="px-4 py-3 flex items-center gap-2"
+                                style={{background:'var(--ys-gold-100, #FEF3C7)'}}>
+                                <span className="text-lg">📋</span>
+                                <div>
+                                    <div className="text-sm font-bold text-amber-900">Before You Apply</div>
+                                    <div className="text-xs text-amber-700">{warningDef.categoryLabel} — timing, conflicts &amp; safety notes</div>
+                                </div>
+                            </div>
+                            <div className="divide-y divide-amber-100 bg-white">
+                                {warningDef.rules.map((rule, i) => (
+                                    <div key={i} className="px-4 py-3 flex gap-3 items-start">
+                                        <span className="text-base flex-shrink-0 mt-0.5">{rule.icon}</span>
+                                        <div className="flex-1 min-w-0">
+                                            <div className={`text-xs font-bold mb-0.5 ${
+                                                rule.severity === 'danger' ? 'text-red-700'
+                                                : rule.severity === 'caution' ? 'text-amber-700'
+                                                : 'text-gray-600'
+                                            }`}>{rule.title}</div>
+                                            <div className="text-xs text-gray-600 leading-relaxed">{rule.detail}</div>
+                                        </div>
+                                        <span className={`flex-shrink-0 text-xs font-bold px-1.5 py-0.5 rounded-full mt-0.5 ${
+                                            rule.severity === 'danger'
+                                                ? 'bg-red-100 text-red-700'
+                                                : rule.severity === 'caution'
+                                                ? 'bg-amber-100 text-amber-700'
+                                                : 'bg-gray-100 text-gray-500'
+                                        }`}>
+                                            {rule.severity === 'danger' ? '⚠ Critical' : rule.severity === 'caution' ? 'Caution' : 'Tip'}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    );
+                })()}
+
                 </React.Fragment>)}
             </div>
         );
@@ -6780,7 +7174,7 @@ window.ResearchSourcesPage = () => (
                             </>)}
                         </div>
                     )}
-                    {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} />}</div>}
+                    {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} activities={activities} />}</div>}
                     {view === 'history' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!currentUser && (<div className="mb-4 rounded-2xl border p-4 flex items-center gap-3" style={{background:'var(--ys-gold-100)', borderColor:'var(--ys-gold-300)'}}><span className="text-xl flex-shrink-0">📊</span><div className="flex-1 min-w-0"><div className="text-sm font-bold text-gray-800">Want advanced stats &amp; charts?</div><div className="text-xs text-gray-500">Create a free account to unlock monthly breakdowns, streaks &amp; trends.</div></div><button onClick={() => setView('account')} className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg text-white btn-press" style={{background:'var(--ys-green-600)'}}>Unlock →</button></div>)}<HistoryView activities={activities} onDelete={deleteActivity} /></div>}
                     {view === 'gallery' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><GalleryView currentUser={currentUser} onSignIn={() => setShowAuthModal(true)} /></div>}
                     {view === 'garage' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><MyGarage equipment={equipment} activities={activities} onAdd={addEquipment} onDelete={deleteEquipment} onUpdate={updateEquipment} onNavigate={setView} /></div>}
