@@ -90,6 +90,7 @@ function LawnCareTracker() {
     // \u2500\u2500 Onboarding \u2014 shown to logged-out users who haven't completed setup \u2500\u2500
     // Also treat as done if the profile already has zone + grass (returning users pre-flag)
     const [onboardingDone, setOnboardingDone] = useState(() => {
+        if (new URLSearchParams(window.location.search).get('preview') === '1') return true;
         if (localStorage.getItem('yardstick_onboarding_done') === '1') return true;
         try {
             const p = JSON.parse(localStorage.getItem('lawnProfile') || 'null');
