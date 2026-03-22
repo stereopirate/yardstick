@@ -3015,16 +3015,38 @@ window.ResearchSourcesPage = () => (
                                     </div>
                                 ) : <div className="p-4 bg-yellow-50 border rounded">Select a treatment type first</div>
                             ) : field.type === 'product-select' ? (() => {
-                                let products = PRODUCT_DATABASE[field.productType] || [];
+                                let products = field.productTypes
+                                    ? field.productTypes.reduce((acc, pt) => acc.concat(PRODUCT_DATABASE[pt] || []), [])
+                                    : (PRODUCT_DATABASE[field.productType] || []);
                                 if (field.filterBy && localFormData.data[field.filterBy]) {
                                     const filterVal = localFormData.data[field.filterBy];
                                     products = products.filter(p => p[field.filterProp] === filterVal || p.id.includes('-other'));
                                 }
+                                const getLabel = (p) => {
+                                    if (p.brand === 'Other') return p.name;
+                                    let label = `${p.brand} – ${p.name}`;
+                                    if (p.deck) label += ` (${p.deck})`;
+                                    if (p.npk) label += ` · ${p.npk}`;
+                                    if (p.variety) label += ` · ${p.variety}`;
+                                    return label;
+                                };
                                 return (
-                                    <select onChange={(e) => setLocalFormData({...localFormData, data: {...localFormData.data, [field.name]: e.target.value}})}
+                                    <select
+                                        value={localFormData.data[field.name] || ''}
+                                        onChange={(e) => {
+                                            const selectedName = e.target.value;
+                                            const sp = products.find(p => p.name === selectedName);
+                                            const updates = { [field.name]: selectedName };
+                                            if (field.autofill && sp) {
+                                                Object.entries(field.autofill).forEach(([formKey, productKey]) => {
+                                                    updates[formKey] = sp[productKey] || '';
+                                                });
+                                            }
+                                            setLocalFormData({...localFormData, data: {...localFormData.data, ...updates}});
+                                        }}
                                         className="w-full px-4 py-2 border rounded-lg">
                                         <option value="">Select...</option>
-                                        {products.map(p => <option key={p.id} value={p.name}>{p.brand} - {p.name} {p.deck ? `(${p.deck})` : ''}</option>)}
+                                        {products.map(p => <option key={p.id} value={p.name}>{getLabel(p)}</option>)}
                                     </select>
                                 );
                             })()
