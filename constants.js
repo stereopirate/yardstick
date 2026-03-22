@@ -164,7 +164,8 @@ var TREATMENT_PRODUCTS = {
         { id: 'pre2', name: 'Barricade 4FL', brand: 'Syngenta', activeIngredient: 'Prodiamine 41.7%', rate: '0.5 fl oz per 1,000 sq ft', rateValue: 0.5, rateUnit: 'fl oz', ratePer: 1000, timing: 'Early spring & fall', notes: 'Liquid concentrate' },
         { id: 'pre3', name: 'Dimension 2EW', brand: 'Dow', activeIngredient: 'Dithiopyr 23.3%', rate: '0.5 fl oz per 1,000 sq ft', rateValue: 0.5, rateUnit: 'fl oz', ratePer: 1000, timing: 'Pre & early post-emergent', notes: 'Works on young crabgrass' },
         { id: 'pre4', name: 'Scotts Halts', brand: 'Scotts', activeIngredient: 'Pendimethalin', rate: '2.9 lbs per 1,000 sq ft', rateValue: 2.9, rateUnit: 'lbs', ratePer: 1000, timing: 'Early spring', notes: 'Granular, easy application' },
-        { id: 'pre5', name: 'Other (specify)', brand: 'Various', activeIngredient: '', rate: 'See label', timing: '', notes: 'Custom product' }
+        { id: 'pre5', name: 'Award Dimension .125% Crabgrass Preventer (18-0-0)', brand: 'Award', activeIngredient: 'Dithiopyr 0.125%', rate: '4.6 lbs per 1,000 sq ft', rateValue: 4.6, rateUnit: 'lbs', ratePer: 1000, timing: 'Pre & early post-emergent', notes: 'Granular fert+pre-emergent combo (PCU slow-release N); 50 lb bag covers ~10,800 sq ft; EPA Reg. 62719-483-57131' },
+        { id: 'pre6', name: 'Other (specify)', brand: 'Various', activeIngredient: '', rate: 'See label', timing: '', notes: 'Custom product' }
     ],
     postemergent: [
         { id: 'post1', name: 'Tenacity', brand: 'Syngenta', activeIngredient: 'Mesotrione 40%', rate: '0.25 oz per 1,000 sq ft', rateValue: 0.25, rateUnit: 'oz', ratePer: 1000, target: 'Crabgrass, broadleaf weeds', notes: 'Safe for seeding',
