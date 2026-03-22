@@ -92,6 +92,7 @@ export var PRODUCT_DATABASE = {
         { id: 'zt25', name: 'Swisher ZTR2454BS', brand: 'Swisher', mowerCategory: 'Zero Turn', type: 'Residential ZTR', deck: '54"', features: '24 HP Briggs V-Twin, 11-Gauge Deck, Tight Turn Radius', maintenanceSchedule: { oilChange: 50, airFilter: 100, sparkPlug: 100 } },
     ],
     spreaders: [
+        { id: 'sp-other', name: 'Other (Specify)', brand: 'Other', type: 'Custom', capacity: '' },
         { id: 'sp1', name: 'Echo RB-60 Spreader', brand: 'Echo', type: 'Broadcast', capacity: '60 lbs', features: 'Edge Guard, Pneumatic Tires', maintenanceSchedule: { cleaning: 'after each use', tires: 'check pressure 15 psi', note: 'Maintenance-free gear case' } },
         { id: 'sp2', name: 'Scotts Elite Spreader', brand: 'Scotts', type: 'Broadcast', capacity: '20000 sq ft', features: 'EdgeGuard, Never Flat Tires', maintenanceSchedule: { cleaning: 'after each use', note: 'No lubrication required' } },
         { id: 'sp3', name: 'Earthway 2150', brand: 'Earthway', type: 'Broadcast', capacity: '50 lbs', features: 'Commercial Grade, EV-N-Spred', maintenanceSchedule: { cleaning: 'after each use', lubrication: 'seasonal' } },
@@ -130,6 +131,7 @@ export var PRODUCT_DATABASE = {
         { id: 't25', name: 'Oregon ST275', brand: 'Oregon', type: 'Battery', engineType: 'Electric', lineSize: '.080"', features: '40V Max, Straight Shaft, Bump Feed Head' }
     ],
     fertilizers: [
+        { id: 'f-other', name: 'Other (Specify)', brand: 'Other', npk: '', coverage: '', type: 'Custom' },
         { id: 'f1', name: 'Scotts Turf Builder Lawn Food', brand: 'Scotts', npk: '32-0-4', coverage: '15000 sq ft', type: 'Slow-Release Nitrogen' },
         { id: 'f2', name: 'Milorganite Organic Fertilizer', brand: 'Milorganite', npk: '6-4-0', coverage: '2500 sq ft', type: 'Organic, Slow-Release' },
         { id: 'f3', name: 'Jonathan Green Green-Up', brand: 'Jonathan Green', npk: '29-0-3', coverage: '15000 sq ft', type: 'Professional Grade' },
@@ -140,6 +142,7 @@ export var PRODUCT_DATABASE = {
         { id: 'f10', name: 'Sunday Smart Lawn Care', brand: 'Sunday', npk: '11-0-0', coverage: '5000 sq ft', type: 'Custom Blend, Organic' }
     ],
     seeds: [
+        { id: 's-other', name: 'Other (Specify)', brand: 'Other', type: 'Custom', coverage: '', variety: '' },
         { id: 's1', name: 'Scotts Turf Builder Grass Seed', brand: 'Scotts', type: 'Sun & Shade Mix', coverage: '2800 sq ft', variety: 'Tall Fescue Blend' },
         { id: 's2', name: 'Pennington Smart Seed', brand: 'Pennington', type: 'Dense Shade', coverage: '1200 sq ft', variety: 'Fine Fescue Mix' },
         { id: 's3', name: 'Jonathan Green Black Beauty', brand: 'Jonathan Green', type: 'Ultra Mix', coverage: '5600 sq ft', variety: 'Tall Fescue' },
@@ -222,10 +225,11 @@ export var ACTIVITY_TYPES = {
     fertilizer: {
         name: 'Fertilizing', icon: '🌾', imgSrc: 'icon-fertilizer.svg', color: 'bg-orange-500',
         fields: [
-            { name: 'product', label: 'Product', type: 'text', placeholder: 'e.g. Scotts Turf Builder' },
+            { name: 'product', label: 'Fertilizer Product', type: 'product-select', productType: 'fertilizers', autofill: { npk: 'npk' } },
             { name: 'npk', label: 'NPK Ratio', type: 'text', placeholder: 'e.g. 32-0-4' },
-            { name: 'rate', label: 'Application Rate', type: 'text', placeholder: 'e.g. 4 lbs per 1000 sq ft' },
-            { name: 'spreaderSetting', label: 'Spreader Setting', type: 'text', placeholder: 'e.g. 4' }
+            { name: 'spreaderUsed', label: 'Spreader', type: 'product-select', productType: 'spreaders' },
+            { name: 'spreaderSetting', label: 'Spreader Setting', type: 'text', placeholder: 'e.g. 4' },
+            { name: 'rate', label: 'Application Rate', type: 'text', placeholder: 'e.g. 4 lbs per 1000 sq ft' }
         ]
     },
     watering: {
@@ -239,7 +243,8 @@ export var ACTIVITY_TYPES = {
     seeding: {
         name: 'Seeding', icon: '🌿', imgSrc: 'icon-seeding.svg', color: 'bg-amber-600',
         fields: [
-            { name: 'seedType', label: 'Seed Type', type: 'text', placeholder: 'e.g. Tall Fescue' },
+            { name: 'seedProduct', label: 'Seed Product', type: 'product-select', productType: 'seeds', autofill: { seedType: 'variety' } },
+            { name: 'seedType', label: 'Grass Type / Variety', type: 'text', placeholder: 'e.g. Tall Fescue' },
             { name: 'seedRate', label: 'Seed Rate (lbs/1000 sq ft)', type: 'number', placeholder: '5' },
             { name: 'method', label: 'Method', type: 'select', options: ['Broadcast', 'Slit Seeding', 'Overseeding', 'Patch Repair'] },
             { name: 'area', label: 'Area (sq ft)', type: 'number', placeholder: '1000' }
@@ -264,18 +269,16 @@ export var ACTIVITY_TYPES = {
     treatment: {
         name: 'Treatment/Spray', icon: '🧴', imgSrc: 'icon-fertilizer.svg', color: 'bg-pink-500',
         fields: [
-            { name: 'category', label: 'Treatment Type', type: 'select', options: Object.keys(TREATMENT_CATEGORIES) },
-            { name: 'product', label: 'Product', type: 'text', placeholder: 'e.g. Prodiamine 65 WDG' },
-            { name: 'activeIngredient', label: 'Active Ingredient', type: 'text', placeholder: 'e.g. Prodiamine 65%' },
-            { name: 'rate', label: 'Application Rate', type: 'text', placeholder: 'e.g. 0.5 oz per 1,000 sq ft' },
-            { name: 'targetArea', label: 'Target (sq ft)', type: 'number', placeholder: '5000' }
+            { name: 'category', label: 'Treatment Type', type: 'treatment-category' },
+            { name: 'product', label: 'Product', type: 'treatment-product', required: true },
+            { name: 'targetArea', label: 'Target Area (sq ft)', type: 'number', placeholder: '5000' }
         ]
     },
     maintenance: {
         name: 'Maintenance', icon: '🔩', imgSrc: 'icon-maintenance.svg', color: 'bg-gray-500',
         fields: [
             { name: 'task', label: 'Task', type: 'select', options: ['Oil Change', 'Blade Sharpening', 'Air Filter', 'Spark Plug', 'Dethatch', 'Other'] },
-            { name: 'equipment', label: 'Equipment Serviced', type: 'text', placeholder: 'e.g. Honda HRX217' },
+            { name: 'equipment', label: 'Equipment Serviced', type: 'product-select', productTypes: ['mowers', 'trimmers'] },
             { name: 'notes', label: 'Service Notes', type: 'text', placeholder: 'Parts used, readings, etc.' }
         ]
     },
