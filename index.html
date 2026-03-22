@@ -2945,16 +2945,57 @@ window.ResearchSourcesPage = () => (
                             ) : field.type === 'treatment-product' ? (
                                 localFormData.data.category ? (
                                     <div>
-                                        <select onChange={(e) => setLocalFormData({...localFormData, data: {...localFormData.data, product: e.target.value}})}
+                                        <select
+                                            value={localFormData.data._productGuide || ''}
+                                            onChange={(e) => {
+                                                const selectedName = e.target.value;
+                                                const sp = (TREATMENT_PRODUCTS[localFormData.data.category] || []).find(p => p.name === selectedName);
+                                                const isOther = sp && sp.notes === 'Custom product';
+                                                setLocalFormData({...localFormData, data: {
+                                                    ...localFormData.data,
+                                                    _productGuide: selectedName,
+                                                    product: isOther ? '' : (selectedName || ''),
+                                                    activeIngredient: isOther ? '' : (sp ? sp.activeIngredient || '' : ''),
+                                                    rate: isOther ? '' : (sp ? sp.rate || '' : ''),
+                                                }});
+                                            }}
                                             className="w-full px-4 py-2 border rounded-lg" required={field.required}>
-                                            <option value="">Select...</option>
+                                            <option value="">Select a product…</option>
                                             {(TREATMENT_PRODUCTS[localFormData.data.category] || []).map(p => (
                                                 <option key={p.id} value={p.name}>{p.name}</option>
                                             ))}
                                         </select>
                                         {(() => {
-                                            const sp = (TREATMENT_PRODUCTS[localFormData.data.category] || []).find(p => p.name === localFormData.data.product);
-                                            if (!sp || sp.id.endsWith('5')) return null;
+                                            const sp = (TREATMENT_PRODUCTS[localFormData.data.category] || []).find(p => p.name === localFormData.data._productGuide);
+                                            if (!sp) return null;
+                                            if (sp.notes === 'Custom product') {
+                                                return (
+                                                    <div className="mt-3 space-y-3 p-3 bg-amber-50 border border-amber-200 rounded-lg animate-fade-in">
+                                                        <div className="text-xs font-bold text-amber-800 uppercase tracking-wide">Enter Product Details</div>
+                                                        <div>
+                                                            <label className="block text-xs font-semibold text-gray-600 mb-1">Product Name</label>
+                                                            <input type="text" placeholder="e.g. Prodiamine 65 WDG"
+                                                                value={localFormData.data.product || ''}
+                                                                onChange={e => setLocalFormData({...localFormData, data: {...localFormData.data, product: e.target.value}})}
+                                                                className="w-full px-3 py-2 border rounded-lg text-sm" />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-semibold text-gray-600 mb-1">Active Ingredient</label>
+                                                            <input type="text" placeholder="e.g. Prodiamine 65%"
+                                                                value={localFormData.data.activeIngredient || ''}
+                                                                onChange={e => setLocalFormData({...localFormData, data: {...localFormData.data, activeIngredient: e.target.value}})}
+                                                                className="w-full px-3 py-2 border rounded-lg text-sm" />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-semibold text-gray-600 mb-1">Application Rate</label>
+                                                            <input type="text" placeholder="e.g. 0.5 oz per 1,000 sq ft"
+                                                                value={localFormData.data.rate || ''}
+                                                                onChange={e => setLocalFormData({...localFormData, data: {...localFormData.data, rate: e.target.value}})}
+                                                                className="w-full px-3 py-2 border rounded-lg text-sm" />
+                                                        </div>
+                                                    </div>
+                                                );
+                                            }
                                             return (
                                                 <React.Fragment>
                                                     <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
@@ -2972,7 +3013,7 @@ window.ResearchSourcesPage = () => (
                                             );
                                         })()}
                                     </div>
-                                ) : <div className="p-4 bg-yellow-50 border rounded">Select category first</div>
+                                ) : <div className="p-4 bg-yellow-50 border rounded">Select a treatment type first</div>
                             ) : field.type === 'product-select' ? (() => {
                                 let products = PRODUCT_DATABASE[field.productType] || [];
                                 if (field.filterBy && localFormData.data[field.filterBy]) {

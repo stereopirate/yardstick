@@ -264,11 +264,9 @@ export var ACTIVITY_TYPES = {
     treatment: {
         name: 'Treatment/Spray', icon: '🧴', imgSrc: 'icon-fertilizer.svg', color: 'bg-pink-500',
         fields: [
-            { name: 'category', label: 'Treatment Type', type: 'select', options: Object.keys(TREATMENT_CATEGORIES) },
-            { name: 'product', label: 'Product', type: 'text', placeholder: 'e.g. Prodiamine 65 WDG' },
-            { name: 'activeIngredient', label: 'Active Ingredient', type: 'text', placeholder: 'e.g. Prodiamine 65%' },
-            { name: 'rate', label: 'Application Rate', type: 'text', placeholder: 'e.g. 0.5 oz per 1,000 sq ft' },
-            { name: 'targetArea', label: 'Target (sq ft)', type: 'number', placeholder: '5000' }
+            { name: 'category', label: 'Treatment Type', type: 'treatment-category' },
+            { name: 'product', label: 'Product', type: 'treatment-product', required: true },
+            { name: 'targetArea', label: 'Target Area (sq ft)', type: 'number', placeholder: '5000' }
         ]
     },
     maintenance: {
