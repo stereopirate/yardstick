@@ -177,6 +177,7 @@ window.compressImage = function(file, maxDim, quality) {
             --ys-gold-400:  #D4A833;
             --ys-gold-300:  #E2C46A;
             --ys-gold-100:  #FDF3D8;
+            --ys-clay:      #C05A2C;
             --ys-soil-800:  #1E1A14;
             --ys-soil-600:  #6B6560;
             --ys-soil-400:  #9C7248;
@@ -4797,10 +4798,10 @@ window.ResearchSourcesPage = () => (
         };
 
         const COOL = [
-            { key: 'tall-fescue',       name: 'Tall Fescue' },
-            { key: 'kentucky-bluegrass', name: 'Kentucky Bluegrass' },
-            { key: 'perennial-ryegrass', name: 'Perennial Ryegrass' },
-            { key: 'fine-fescue',        name: 'Fine Fescue' },
+            { key: 'tall-fescue',       name: 'Tall Fescue',          desc: 'Most common · drought tolerant' },
+            { key: 'kentucky-bluegrass', name: 'Kentucky Bluegrass',    desc: 'Premium · self-repairs' },
+            { key: 'perennial-ryegrass', name: 'Perennial Ryegrass',    desc: 'Fast germinating' },
+            { key: 'fine-fescue',        name: 'Fine Fescue',           desc: 'Shade specialist · low input' },
         ];
         const BLENDS = [
             { key: 'sun-shade-mix',     name: 'Sun & Shade Mix',   note: 'KBG + Rye + Fine Fescue' },
@@ -4808,12 +4809,12 @@ window.ResearchSourcesPage = () => (
             { key: 'tall-fescue-blend', name: 'Tall Fescue Blend', note: 'Tall Fescue + KBG' },
         ];
         const WARM = [
-            { key: 'bermuda',      name: 'Bermudagrass' },
-            { key: 'zoysia',       name: 'Zoysiagrass' },
-            { key: 'st-augustine', name: 'St. Augustinegrass' },
-            { key: 'centipede',    name: 'Centipedegrass' },
-            { key: 'bahia',        name: 'Bahiagrass' },
-            { key: 'buffalograss', name: 'Buffalograss' },
+            { key: 'bermuda',      name: 'Bermudagrass',      desc: 'Full sun · aggressive' },
+            { key: 'zoysia',       name: 'Zoysiagrass',        desc: 'Dense · good shade' },
+            { key: 'st-augustine', name: 'St. Augustinegrass', desc: 'Thick · shade tolerant' },
+            { key: 'centipede',    name: 'Centipedegrass',     desc: 'Low maintenance' },
+            { key: 'bahia',        name: 'Bahiagrass',          desc: 'Sandy soils · tough' },
+            { key: 'buffalograss', name: 'Buffalograss',        desc: 'Native · low water' },
         ];
 
         const features = [
@@ -4834,58 +4835,69 @@ window.ResearchSourcesPage = () => (
         // ── Step 1: Splash ──
         if (step === 'splash') return (
             <div className="rounded-2xl overflow-hidden animate-fade-in" style={{
-                background: 'white',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
-                border: '1px solid rgba(0,0,0,0.06)',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
             }}>
-                {/* Top accent bar */}
-                <div style={{height:'4px', background:'linear-gradient(90deg, var(--ys-green-700) 0%, var(--ys-green-500) 60%, var(--ys-yellow) 100%)'}} />
-
-                <div className="px-5 pt-5 pb-5">
-                    {/* Badge */}
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-4"
-                        style={{background:'var(--ys-green-100)', color:'var(--ys-green-700)', border:'1px solid var(--ys-green-200)'}}>
-                        🌿 Free &middot; No Account Required
+                {/* Dark green header */}
+                <div style={{
+                    background: 'var(--ys-green-800)',
+                    backgroundImage: 'radial-gradient(ellipse at 80% 0%, rgba(78,158,64,0.18), transparent 55%)',
+                    padding: '22px 20px 16px',
+                    position: 'relative',
+                    borderBottom: '4px solid var(--ys-yellow)',
+                }}>
+                    <div style={{
+                        position: 'absolute', bottom: 4, left: 0, right: 0, height: 4,
+                        background: 'repeating-linear-gradient(90deg,transparent,transparent 26px,rgba(30,26,20,0.22) 26px,rgba(30,26,20,0.22) 28px)',
+                    }} />
+                    <div className="text-xs font-bold uppercase mb-2"
+                        style={{letterSpacing:'0.06em', color:'rgba(255,255,255,0.52)', fontFamily:'var(--ys-font-body)'}}>
+                        Lawn care backed by science
                     </div>
-                    {/* Headline */}
-                    <h2 className="text-2xl font-bold leading-tight mb-2"
-                        style={{fontFamily:'var(--ys-font-display)', color:'var(--ys-soil-800)'}}>
-                        Enter your zip.<br/>Get your grass program.
+                    <h2 style={{fontFamily:'var(--ys-font-display)', fontWeight:900, fontSize:23, color:'white', lineHeight:1.15, marginBottom:8, letterSpacing:'-0.3px'}}>
+                        Your yard deserves a<br/><em style={{fontStyle:'italic', color:'var(--ys-yellow)'}}>real plan.</em>
                     </h2>
-                    <p className="text-sm text-gray-500 mb-5">
-                        Research-backed care plans from 25 university extension programs — personalized to your grass type, USDA zone, and local weather.
+                    <p style={{fontFamily:'var(--ys-font-body)', fontSize:13, color:'rgba(255,255,255,0.65)', lineHeight:1.55}}>
+                        Personalized to your grass type, zone, and local conditions — from 25 university extension programs.
                     </p>
-                    {/* Feature grid */}
-                    <div className="grid grid-cols-2 gap-2 mb-5">
-                        {features.map(f => (
-                            <div key={f.label} className="flex items-start gap-2.5 rounded-xl px-3 py-2.5"
-                                style={{background:'var(--ys-green-50)', border:'1px solid var(--ys-green-100)'}}>
-                                <span className="text-lg flex-shrink-0 mt-0.5">{f.icon}</span>
-                                <div>
-                                    <div className="text-xs font-bold leading-tight" style={{color:'var(--ys-soil-800)'}}>{f.label}</div>
-                                    <div className="text-xs leading-tight text-gray-500">{f.desc}</div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    {/* Zip input */}
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'var(--ys-green-700)'}}>
-                        Step 1 of 2 — Your zip code
-                    </div>
+                </div>
+
+                {/* Trust strip */}
+                <div style={{display:'grid', gridTemplateColumns:'repeat(3,1fr)', background:'var(--ys-cream)', borderBottom:'1px solid rgba(30,26,20,0.1)'}}>
+                    {[
+                        {num:'25', label:'University programs'},
+                        {num:'10', label:'Grass types covered'},
+                        {num:'Free', label:'Always free'},
+                    ].map((item, i) => (
+                        <div key={i} style={{
+                            padding:'11px 8px', textAlign:'center',
+                            borderRight: i < 2 ? '1px solid rgba(30,26,20,0.08)' : 'none',
+                        }}>
+                            <div style={{fontFamily:'var(--ys-font-display)', fontWeight:900, fontSize:20, color:'var(--ys-green-800)', lineHeight:1}}>{item.num}</div>
+                            <div style={{fontFamily:'var(--ys-font-body)', fontSize:10, fontWeight:600, color:'var(--ys-soil-600)', marginTop:2, lineHeight:1.3}}>{item.label}</div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Input body */}
+                <div className="px-5 pt-4 pb-4" style={{background:'var(--ys-cream)'}}>
+                    <label className="block text-xs font-bold uppercase mb-2"
+                        style={{letterSpacing:'0.06em', color:'var(--ys-soil-600)', fontFamily:'var(--ys-font-body)'}}>
+                        Your zip code
+                    </label>
                     <div className="flex gap-2 mb-1">
                         <input
                             type="text" inputMode="numeric" pattern="\d*" maxLength={5}
                             value={zipInput}
                             onChange={e => { setZipInput(e.target.value.replace(/\D/g,'')); setLocalZipError(''); }}
                             onKeyDown={e => { if (e.key === 'Enter') handleZipSubmit(); }}
-                            placeholder="Enter your zip code"
-                            className="flex-1 px-4 py-3 rounded-xl text-sm font-semibold outline-none"
-                            style={{background:'var(--ys-canvas)', color:'var(--ys-soil-800)', border:'2px solid var(--ys-green-200)', fontFamily:'var(--ys-font-body)'}}
+                            placeholder="e.g. 43201"
+                            className="flex-1 px-4 py-3 rounded-xl outline-none"
+                            style={{background:'white', color:'var(--ys-soil-800)', border:'1.5px solid var(--ys-green-200)', fontFamily:'var(--ys-font-body)', fontWeight:600, fontSize:14, boxShadow:'inset 0 1px 3px rgba(30,26,20,0.05)'}}
                         />
                         <button onClick={handleZipSubmit} disabled={zipLookupLoading}
-                            className="ys-btn-primary px-4 py-3 text-sm font-bold rounded-xl flex-shrink-0 btn-press"
-                            style={{minWidth:'96px', opacity:zipLookupLoading?0.7:1}}>
-                            {zipLookupLoading ? '…' : 'Get My Plan →'}
+                            className="flex-shrink-0 px-4 py-3 rounded-xl font-bold btn-press"
+                            style={{background:'var(--ys-yellow)', color:'var(--ys-soil-800)', border:'none', fontSize:13, fontFamily:'var(--ys-font-body)', whiteSpace:'nowrap', opacity:zipLookupLoading?0.7:1, boxShadow:'0 2px 8px rgba(245,200,66,0.3)'}}>
+                            {zipLookupLoading ? '…' : 'Start →'}
                         </button>
                     </div>
                     {(localZipError || zipLookupError) && (
@@ -4922,98 +4934,158 @@ window.ResearchSourcesPage = () => (
                             </div>
                         </div>
                     )}
+                    <div className="text-center mt-3 text-xs" style={{color:'var(--ys-stone-light)', fontFamily:'var(--ys-font-body)'}}>
+                        No ads. No product upsells. Just your lawn.
+                    </div>
                 </div>
 
-                {/* Sign-in section — prominent, contrasting footer */}
-                <div className="px-5 py-4 flex items-center justify-between gap-4"
-                    style={{background:'var(--ys-canvas)', borderTop:'1px solid rgba(0,0,0,0.06)'}}>
-                    <div>
-                        <div className="text-sm font-bold" style={{color:'var(--ys-soil-800)'}}>Already have an account?</div>
-                        <div className="text-xs text-gray-500">Sign in to restore your lawn data</div>
+                {/* Sign-in footer */}
+                <div className="px-5 py-3 flex items-center justify-between gap-4"
+                    style={{background:'var(--ys-canvas)', borderTop:'1px solid rgba(30,26,20,0.1)'}}>
+                    <div className="text-sm font-medium" style={{color:'var(--ys-soil-600)', fontFamily:'var(--ys-font-body)'}}>
+                        Already have an account?
                     </div>
                     <button onClick={onSignIn}
-                        className="flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-bold btn-press"
-                        style={{background:'var(--ys-green-800)', color:'white', border:'none', whiteSpace:'nowrap'}}>
-                        Log In →
+                        className="flex-shrink-0 px-4 py-1.5 rounded-lg text-xs font-bold btn-press"
+                        style={{background:'transparent', color:'var(--ys-green-800)', border:'1.5px solid var(--ys-green-800)', whiteSpace:'nowrap', fontFamily:'var(--ys-font-body)'}}>
+                        Sign In →
                     </button>
                 </div>
             </div>
         );
 
         // ── Step 2: Grass type ──
-        if (step === 'grass') return (
-            <div className="rounded-2xl overflow-hidden animate-fade-in ys-card">
-                <div className="px-5 pt-5 pb-4">
-                    <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                            style={{background:'var(--ys-green-100)'}}>🌱</div>
-                        <div>
-                            <div className="text-xs font-bold uppercase tracking-widest mb-0.5"
-                                style={{color:'var(--ys-green-600)'}}>
-                                Zone {lawnProfile && lawnProfile.zone ? lawnProfile.zone.toUpperCase() : '–'} &middot; Step 2 of 2
+        if (step === 'grass') {
+            const zone = lawnProfile && lawnProfile.zone ? lawnProfile.zone : '';
+            const zoneNum = parseFloat(zone) || 0;
+            const city = lawnProfile && lawnProfile.city ? lawnProfile.city : '';
+            const state = lawnProfile && lawnProfile.state ? lawnProfile.state : '';
+            const locationLabel = city && state ? `${city}, ${state}` : '';
+            const zoneContext = zoneNum <= 7
+                ? 'Cool-season grasses thrive here. Tall Fescue is the workhorse; Kentucky Bluegrass is premium.'
+                : zoneNum <= 9
+                ? 'Transition or warm zone. Bermudagrass and Zoysia are your best performers.'
+                : 'Warm-season territory. Bermuda, St. Augustine, and Zoysia dominate here.';
+            const coolHint = zoneNum > 0 && zoneNum <= 7 ? `Best for Zone ${zone.toUpperCase()}` : 'Zones 5–7';
+            return (
+            <div className="rounded-2xl overflow-hidden animate-fade-in" style={{boxShadow:'0 4px 24px rgba(0,0,0,0.12)'}}>
+                {/* Zone hero header */}
+                <div style={{
+                    background: 'var(--ys-green-800)',
+                    backgroundImage: 'radial-gradient(ellipse at 80% 0%, rgba(78,158,64,0.18), transparent 55%)',
+                    padding: '16px 20px 14px',
+                    position: 'relative',
+                    borderBottom: '4px solid var(--ys-yellow)',
+                }}>
+                    <div style={{
+                        position: 'absolute', bottom: 4, left: 0, right: 0, height: 4,
+                        background: 'repeating-linear-gradient(90deg,transparent,transparent 26px,rgba(30,26,20,0.22) 26px,rgba(30,26,20,0.22) 28px)',
+                    }} />
+                    <div style={{display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:12, position:'relative', zIndex:1}}>
+                        <div style={{flex:1, minWidth:0}}>
+                            <div className="text-xs font-bold uppercase mb-1"
+                                style={{letterSpacing:'0.06em', color:'rgba(255,255,255,0.52)', fontFamily:'var(--ys-font-body)'}}>
+                                Your USDA zone
                             </div>
-                            <h3 className="text-lg font-bold text-gray-800 leading-tight"
-                                style={{fontFamily:'var(--ys-font-display)'}}>
-                                What type of grass do you have?
+                            <h3 style={{fontFamily:'var(--ys-font-display)', fontWeight:900, fontSize:21, color:'white', lineHeight:1.1, marginBottom:4}}>
+                                Zone <em style={{fontStyle:'italic', color:'var(--ys-yellow)'}}>{zone ? zone.toUpperCase() : '–'}</em>
+                                {locationLabel ? ` — ${locationLabel}` : ''}
                             </h3>
+                            <div style={{fontFamily:'var(--ys-font-body)', fontSize:12, color:'rgba(255,255,255,0.65)', lineHeight:1.45}}>
+                                {zoneContext}
+                            </div>
                         </div>
+                        {zone && (
+                            <div style={{
+                                background:'rgba(245,200,66,0.18)', border:'1px solid rgba(245,200,66,0.35)',
+                                borderRadius:8, padding:'8px 11px', textAlign:'center', flexShrink:0,
+                            }}>
+                                <div style={{fontFamily:'var(--ys-font-display)', fontWeight:900, fontSize:22, color:'var(--ys-yellow)', lineHeight:1}}>
+                                    {zone.toUpperCase()}
+                                </div>
+                                <div style={{fontFamily:'var(--ys-font-body)', fontSize:10, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.06em', color:'rgba(255,255,255,0.48)', marginTop:2}}>
+                                    Zone
+                                </div>
+                            </div>
+                        )}
                     </div>
-                    <p className="text-xs text-gray-500 mb-4">
-                        Knowing your grass type unlocks a research-backed year-round care plan. Use the zone hints on each section, or expand the identifier below.
+                </div>
+
+                {/* Grass selection */}
+                <div className="px-5 pt-4 pb-4" style={{background:'var(--ys-cream)'}}>
+                    <h3 style={{fontFamily:'var(--ys-font-display)', fontWeight:700, fontSize:16, color:'var(--ys-green-800)', marginBottom:4}}>
+                        What's your grass type?
+                    </h3>
+                    <p className="text-xs mb-4" style={{color:'var(--ys-soil-600)', lineHeight:1.5, fontFamily:'var(--ys-font-body)'}}>
+                        Your zone narrows this down. Pick the closest match — you can refine it later in My Yard.
                     </p>
+
                     {/* Cool Season */}
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#3B82F6'}}>❄️ Cool Season — Zones 5–7 (Northern US)</div>
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-bold uppercase" style={{letterSpacing:'0.08em', color:'var(--ys-green-800)', fontFamily:'var(--ys-font-body)', whiteSpace:'nowrap'}}>❄️ Cool Season</span>
+                        <div style={{flex:1, height:1, background:'rgba(30,26,20,0.10)'}} />
+                        <span className="text-xs" style={{color:'var(--ys-stone-light)', fontFamily:'var(--ys-font-body)', whiteSpace:'nowrap'}}>{coolHint}</span>
+                    </div>
                     <div className="grid grid-cols-2 gap-2 mb-4">
                         {COOL.map(g => (
                             <button key={g.key} onClick={() => handleGrassSelect(g.key)}
-                                className="text-left px-3 py-2.5 rounded-xl border-2 text-sm font-semibold btn-press transition"
+                                className="text-left px-3 py-2.5 rounded-xl btn-press transition"
                                 style={{
-                                    borderColor: selectedGrass === g.key ? 'var(--ys-green-600)' : '#E5E7EB',
-                                    background:  selectedGrass === g.key ? 'var(--ys-green-50)' : 'white',
-                                    color:       selectedGrass === g.key ? 'var(--ys-green-700)' : '#374151',
+                                    border: selectedGrass === g.key ? '1.5px solid var(--ys-green-600)' : '1.5px solid rgba(30,26,20,0.14)',
+                                    background: selectedGrass === g.key ? 'var(--ys-green-50)' : 'white',
                                 }}>
-                                {g.name}
+                                <div className="font-bold" style={{fontSize:13, color: selectedGrass === g.key ? 'var(--ys-green-800)' : 'var(--ys-soil-800)', lineHeight:1.2}}>{g.name}</div>
+                                <div style={{fontSize:10, color: selectedGrass === g.key ? 'var(--ys-green-600)' : 'var(--ys-stone-light)', marginTop:2, fontFamily:'var(--ys-font-body)'}}>{g.desc}</div>
                             </button>
                         ))}
                     </div>
-                    {/* Cool Season Blends */}
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#8B5CF6'}}>🌿 Cool Season Blends — Popular Seed Mixes</div>
+
+                    {/* Blends */}
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-bold uppercase" style={{letterSpacing:'0.08em', color:'var(--ys-soil-600)', fontFamily:'var(--ys-font-body)', whiteSpace:'nowrap'}}>🌿 Blends</span>
+                        <div style={{flex:1, height:1, background:'rgba(30,26,20,0.10)'}} />
+                    </div>
                     <div className="grid grid-cols-2 gap-2 mb-4">
                         {BLENDS.map(g => (
                             <button key={g.key} onClick={() => handleGrassSelect(g.key)}
-                                className="text-left px-3 py-2.5 rounded-xl border-2 text-sm font-semibold btn-press transition"
+                                className="text-left px-3 py-2.5 rounded-xl btn-press transition"
                                 style={{
-                                    borderColor: selectedGrass === g.key ? 'var(--ys-green-600)' : '#E5E7EB',
-                                    background:  selectedGrass === g.key ? 'var(--ys-green-50)' : 'white',
-                                    color:       selectedGrass === g.key ? 'var(--ys-green-700)' : '#374151',
+                                    border: selectedGrass === g.key ? '1.5px solid var(--ys-green-600)' : '1.5px solid rgba(30,26,20,0.14)',
+                                    background: selectedGrass === g.key ? 'var(--ys-green-50)' : 'white',
                                 }}>
-                                <div>{g.name}</div>
-                                <div className="text-xs font-normal mt-0.5" style={{color: selectedGrass === g.key ? 'var(--ys-green-600)' : '#9CA3AF'}}>{g.note}</div>
+                                <div className="font-bold" style={{fontSize:13, color: selectedGrass === g.key ? 'var(--ys-green-800)' : 'var(--ys-soil-800)', lineHeight:1.2}}>{g.name}</div>
+                                <div style={{fontSize:10, color: selectedGrass === g.key ? 'var(--ys-green-600)' : 'var(--ys-stone-light)', marginTop:2, fontFamily:'var(--ys-font-body)'}}>{g.note}</div>
                             </button>
                         ))}
                     </div>
+
                     {/* Warm Season */}
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#F97316'}}>☀️ Warm Season — Zones 8–10 (Southern US)</div>
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-bold uppercase" style={{letterSpacing:'0.08em', color:'var(--ys-clay)', fontFamily:'var(--ys-font-body)', whiteSpace:'nowrap'}}>☀️ Warm Season</span>
+                        <div style={{flex:1, height:1, background:'rgba(30,26,20,0.10)'}} />
+                        <span className="text-xs" style={{color:'var(--ys-stone-light)', fontFamily:'var(--ys-font-body)', whiteSpace:'nowrap'}}>Zones 8–10</span>
+                    </div>
                     <div className="grid grid-cols-2 gap-2 mb-3">
                         {WARM.map(g => (
                             <button key={g.key} onClick={() => handleGrassSelect(g.key)}
-                                className="text-left px-3 py-2.5 rounded-xl border-2 text-sm font-semibold btn-press transition"
+                                className="text-left px-3 py-2.5 rounded-xl btn-press transition"
                                 style={{
-                                    borderColor: selectedGrass === g.key ? 'var(--ys-green-600)' : '#E5E7EB',
-                                    background:  selectedGrass === g.key ? 'var(--ys-green-50)' : 'white',
-                                    color:       selectedGrass === g.key ? 'var(--ys-green-700)' : '#374151',
+                                    border: selectedGrass === g.key ? '1.5px solid var(--ys-green-600)' : '1.5px solid rgba(30,26,20,0.14)',
+                                    background: selectedGrass === g.key ? 'var(--ys-green-50)' : 'white',
                                 }}>
-                                {g.name}
+                                <div className="font-bold" style={{fontSize:13, color: selectedGrass === g.key ? 'var(--ys-green-800)' : 'var(--ys-soil-800)', lineHeight:1.2}}>{g.name}</div>
+                                <div style={{fontSize:10, color: selectedGrass === g.key ? 'var(--ys-green-600)' : 'var(--ys-stone-light)', marginTop:2, fontFamily:'var(--ys-font-body)'}}>{g.desc}</div>
                             </button>
                         ))}
                     </div>
-                    {/* "Help me identify" accordion */}
-                    <div className="mb-3 rounded-xl border border-gray-200 overflow-hidden">
+
+                    {/* "Not sure" accordion */}
+                    <div className="mb-2 rounded-xl overflow-hidden" style={{border:'1px solid rgba(30,26,20,0.12)', background:'var(--ys-cream)'}}>
                         <button onClick={() => setIdOpen(o => !o)}
-                            className="w-full flex items-center justify-between px-3 py-2.5 bg-gray-50 btn-press"
-                            style={{border:'none'}}>
-                            <span className="text-xs font-semibold text-gray-500">🔍 Not sure? Help me identify my grass</span>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth={2.5} strokeLinecap="round"
+                            className="w-full flex items-center justify-between px-3 py-2.5 btn-press"
+                            style={{border:'none', background:'none', fontFamily:'var(--ys-font-body)', fontSize:12, fontWeight:600, color:'var(--ys-soil-600)', textAlign:'left'}}>
+                            <span>🔍 Not sure what you have?</span>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"
                                 style={{transform: idOpen ? 'rotate(180deg)' : 'none', transition:'transform 0.2s', flexShrink:0}}>
                                 <path d="M6 9l6 6 6-6"/>
                             </svg>
@@ -5046,12 +5118,14 @@ window.ResearchSourcesPage = () => (
                         )}
                     </div>
                     <button onClick={() => { onComplete && onComplete(); setStep('done'); }}
-                        className="w-full text-center text-xs text-gray-400 btn-press py-1">
-                        Skip for now — I'll set this in My Yard later
+                        className="w-full text-center btn-press py-2"
+                        style={{background:'none', border:'none', fontFamily:'var(--ys-font-body)', fontSize:12, fontWeight:600, color:'var(--ys-stone-light)'}}>
+                        Skip — I'll set this later in My Yard
                     </button>
                 </div>
             </div>
-        );
+            );
+        }
 
         // ── Step 3: Done — show real tasks preview then CTA ──
         const doneGrassInfo = selectedGrass && GRASS_INFO[selectedGrass] ? GRASS_INFO[selectedGrass] : null;
@@ -5092,66 +5166,134 @@ window.ResearchSourcesPage = () => (
             }
         }
 
+        // Derive an action-oriented headline from the top task
+        const topTask = previewTasks[0] || null;
+        const topIcon = topTask ? getTaskIcon(topTask) : null;
+        const headlineMap = {
+            '🛡️': 'Your pre-emergent window is open.',
+            '🌱': `${currentMonthName} is prime time for overseeding.`,
+            '🌾': 'Time to feed — your lawn is hungry.',
+            '🔧': 'Aeration season is here.',
+            '✂️': `Time to dethatch ${doneGrassInfo ? doneGrassInfo.name : 'your grass'}.`,
+            '🧪': 'A soil test will sharpen your whole program.',
+            '🌿': 'Weed pressure is building — act now.',
+            '💊': 'Disease risk is elevated this month.',
+        };
+        const briefHeadline = (topTask && headlineMap[topIcon]) || `Your ${currentMonthName} program is ready.`;
+        const grassName = doneGrassInfo ? doneGrassInfo.name : 'your grass';
+        const zone = lawnProfile && lawnProfile.zone ? lawnProfile.zone.toUpperCase() : '–';
+        const city = lawnProfile && lawnProfile.city ? lawnProfile.city : '';
+        const state = lawnProfile && lawnProfile.state ? lawnProfile.state : '';
+        const locationLabel = city && state ? `${city}, ${state}` : '';
+
         return (
-            <div className="rounded-2xl overflow-hidden animate-scale-in" style={{
-                background: 'white',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-                border: '1px solid rgba(0,0,0,0.06)',
-            }}>
-                {/* Green header */}
-                <div style={{background:'linear-gradient(135deg, var(--ys-green-800) 0%, var(--ys-green-700) 100%)'}}>
-                    <div className="px-5 pt-5 pb-4 text-center">
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"
-                            style={{background:'var(--ys-yellow)'}}>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ys-soil-800)" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <div className="rounded-2xl overflow-hidden animate-scale-in" style={{boxShadow:'0 4px 24px rgba(0,0,0,0.12)'}}>
+                {/* Coach brief header */}
+                <div style={{
+                    background: 'var(--ys-green-800)',
+                    backgroundImage: 'radial-gradient(ellipse at 80% 0%, rgba(78,158,64,0.18), transparent 55%)',
+                    padding: '18px 20px 14px',
+                    position: 'relative',
+                    borderBottom: '4px solid var(--ys-yellow)',
+                }}>
+                    <div style={{
+                        position: 'absolute', bottom: 4, left: 0, right: 0, height: 4,
+                        background: 'repeating-linear-gradient(90deg,transparent,transparent 26px,rgba(30,26,20,0.22) 26px,rgba(30,26,20,0.22) 28px)',
+                    }} />
+                    <div style={{position:'relative', zIndex:1}}>
+                        {/* Identity row */}
+                        <div className="flex items-center gap-2 flex-wrap mb-2.5">
+                            <span style={{fontFamily:'var(--ys-font-body)', fontSize:12, fontWeight:700, color:'var(--ys-yellow)'}}>{grassName}</span>
+                            <span style={{fontFamily:'var(--ys-font-body)', fontSize:12, color:'rgba(255,255,255,0.28)'}}>·</span>
+                            <span style={{fontFamily:'var(--ys-font-body)', fontSize:12, fontWeight:500, color:'rgba(255,255,255,0.62)'}}>
+                                Zone {zone}{locationLabel ? ` · ${locationLabel}` : ''}
+                            </span>
                         </div>
-                        <h3 className="text-lg font-bold text-white mb-1" style={{fontFamily:'var(--ys-font-display)'}}>
-                            Your plan is ready!
+                        <h3 style={{fontFamily:'var(--ys-font-display)', fontWeight:900, fontSize:19, color:'white', lineHeight:1.2, marginBottom:8, letterSpacing:'-0.2px'}}>
+                            {briefHeadline}
                         </h3>
-                        {doneGrassInfo && (
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold"
-                                style={{background:'rgba(255,255,255,0.15)', color:'white', border:'1px solid rgba(255,255,255,0.22)'}}>
-                                🌱 {doneGrassInfo.name} · Zone {lawnProfile && lawnProfile.zone ? lawnProfile.zone.toUpperCase() : '–'}
+                        {topTask && (
+                            <div className="flex items-center gap-2.5 rounded-lg px-3 py-2.5"
+                                style={{background:'rgba(255,255,255,0.09)', border:'1px solid rgba(255,255,255,0.16)'}}>
+                                <div className="flex items-center justify-center rounded-lg flex-shrink-0"
+                                    style={{width:34, height:34, background:'var(--ys-yellow)', fontSize:16}}>
+                                    {topIcon}
+                                </div>
+                                <div>
+                                    <div style={{fontFamily:'var(--ys-font-body)', fontSize:10, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.04em', color:'rgba(255,255,255,0.52)', marginBottom:2}}>
+                                        This month's priority
+                                    </div>
+                                    <div style={{fontFamily:'var(--ys-font-body)', fontSize:13, fontWeight:700, color:'white', lineHeight:1.25}}>
+                                        {topTask}
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>
                 </div>
 
-                {/* Task preview — this month */}
+                {/* Task preview */}
                 {previewTasks.length > 0 && (
-                    <div className="px-5 pt-4 pb-3">
-                        <div className="text-xs font-bold uppercase tracking-widest mb-2.5" style={{color:'var(--ys-green-600)'}}>
-                            📅 {currentMonthName} Tasks for Your Lawn
+                    <div className="px-5 pt-4 pb-3" style={{background:'var(--ys-cream)'}}>
+                        <div className="flex items-center justify-between mb-2.5">
+                            <span className="text-xs font-bold uppercase" style={{letterSpacing:'0.08em', color:'var(--ys-stone-light)', fontFamily:'var(--ys-font-body)'}}>
+                                Your {currentMonthName} program
+                            </span>
+                            <span className="text-xs" style={{color:'var(--ys-stone-light)', fontFamily:'var(--ys-font-body)'}}>
+                                {grassName} · Zone {zone}
+                            </span>
                         </div>
-                        <div className="space-y-2 mb-1">
+                        <div className="space-y-0">
                             {previewTasks.map((task, i) => (
-                                <div key={i} className="flex items-start gap-2.5 rounded-xl px-3 py-2.5"
-                                    style={{background:'var(--ys-green-50)', border:'1px solid var(--ys-green-100)'}}>
-                                    <span className="text-base flex-shrink-0 mt-0.5">{getTaskIcon(task)}</span>
-                                    <span className="text-xs text-gray-700 leading-snug">{task}</span>
+                                <div key={i} className="flex items-start gap-2.5 py-2"
+                                    style={{borderBottom: i < previewTasks.length - 1 ? '1px dashed rgba(30,26,20,0.10)' : 'none'}}>
+                                    <span style={{fontSize:14, flexShrink:0, marginTop:1, width:20, textAlign:'center'}}>{getTaskIcon(task)}</span>
+                                    <span style={{fontFamily:'var(--ys-font-body)', fontSize:12, color:'var(--ys-soil-800)', flex:1, lineHeight:1.4}}>{task}</span>
+                                    {i === 0 && (
+                                        <span style={{
+                                            display:'inline-flex', alignItems:'center', padding:'2px 6px', borderRadius:6,
+                                            fontFamily:'var(--ys-font-body)', fontSize:9, fontWeight:600,
+                                            border:'1.5px solid var(--ys-green-600)', color:'var(--ys-green-800)',
+                                            background:'rgba(54,124,43,0.07)', whiteSpace:'nowrap', flexShrink:0,
+                                        }}>✓ Go</span>
+                                    )}
+                                    {i === 1 && previewTasks.length >= 3 && (
+                                        <span style={{
+                                            display:'inline-flex', alignItems:'center', padding:'2px 6px', borderRadius:6,
+                                            fontFamily:'var(--ys-font-body)', fontSize:9, fontWeight:600,
+                                            border:'1.5px solid var(--ys-clay)', color:'var(--ys-clay)',
+                                            background:'rgba(192,90,44,0.07)', whiteSpace:'nowrap', flexShrink:0,
+                                        }}>✕ Hold</span>
+                                    )}
                                 </div>
                             ))}
-                        </div>
-                        <div className="text-xs text-gray-400 text-center pt-1">
-                            + a full 12-month program waiting in your dashboard
                         </div>
                     </div>
                 )}
 
-                {/* CTA section */}
-                <div className="px-5 pt-2 pb-5">
-                    <button onClick={onDismiss}
-                        className="w-full py-3.5 rounded-xl text-sm font-bold btn-press mb-2"
-                        style={{background:'var(--ys-green-700)', color:'white', border:'none'}}>
-                        Go to My Dashboard →
-                    </button>
+                {/* CTA section — corrected priority */}
+                <div className="px-5 pt-3 pb-5" style={{background:'var(--ys-cream)', borderTop:'1px solid rgba(30,26,20,0.08)'}}>
+                    <h4 style={{fontFamily:'var(--ys-font-display)', fontWeight:700, fontSize:15, color:'var(--ys-green-800)', marginBottom:4}}>
+                        Save this plan to your account
+                    </h4>
+                    <p className="text-xs mb-3.5" style={{color:'var(--ys-soil-600)', lineHeight:1.5, fontFamily:'var(--ys-font-body)'}}>
+                        Create a free account to keep your program and track your history across devices.
+                    </p>
+                    {/* Green = primary CTA */}
                     <button onClick={onSignIn}
-                        className="w-full py-2.5 rounded-xl text-sm font-semibold btn-press"
-                        style={{background:'var(--ys-yellow)', color:'var(--ys-soil-800)', border:'none'}}>
-                        Save My Plan — Create Free Account
+                        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold btn-press mb-2"
+                        style={{background:'var(--ys-green-600)', color:'white', border:'none', fontSize:14, fontFamily:'var(--ys-font-body)', boxShadow:'0 3px 12px rgba(54,124,43,0.28)'}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5}><path strokeLinecap="round" d="M12 4v16M4 12h16"/></svg>
+                        Create Free Account
                     </button>
-                    <div className="text-center mt-2 text-xs text-gray-400">
-                        Your plan is saved locally — create an account to sync across devices
+                    {/* Ghost = secondary */}
+                    <button onClick={onDismiss}
+                        className="w-full py-2.5 rounded-xl font-bold btn-press mb-2"
+                        style={{background:'transparent', color:'var(--ys-soil-600)', border:'1.5px solid rgba(30,26,20,0.18)', fontSize:13, fontFamily:'var(--ys-font-body)'}}>
+                        Take me to my dashboard →
+                    </button>
+                    <div className="text-center text-xs" style={{color:'var(--ys-stone-light)', fontFamily:'var(--ys-font-body)', lineHeight:1.4}}>
+                        Your plan is ready either way. An account backs it up and keeps your history.
                     </div>
                 </div>
             </div>
