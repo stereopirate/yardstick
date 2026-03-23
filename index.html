@@ -6225,7 +6225,7 @@ window.ResearchSourcesPage = () => (
         const [activities, setActivities] = useState([]);
         const [view, setViewState] = useState(() => getViewFromHash());
         const setView = React.useCallback((newView) => {
-            window.history.pushState({ view: newView }, '', newView ? `#/${newView}` : '#/');
+            window.history.pushState({ view: newView }, '', newView ? `#/${newView}` : window.location.pathname);
             setViewState(newView);
         }, []);
         const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -6322,11 +6322,6 @@ window.ResearchSourcesPage = () => (
 
         // ── Sync view state with browser back/forward navigation ─────────────────
         useEffect(() => {
-            // Ensure a baseline history entry exists so back-button returns to home
-            // rather than exiting the app on the very first navigation.
-            if (!window.location.hash || window.location.hash === '#/') {
-                window.history.replaceState({ view: null }, '', '#/');
-            }
             const handlePop = () => setViewState(getViewFromHash());
             window.addEventListener('popstate', handlePop);
             return () => window.removeEventListener('popstate', handlePop);
