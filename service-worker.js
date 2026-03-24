@@ -1,4 +1,4 @@
-const CACHE_NAME = ‘yardstick-v3’;
+const CACHE_NAME = ‘yardstick-v4’;
 const urlsToCache = [
 ‘/’,
 ‘/index.html’,
@@ -18,6 +18,7 @@ console.log(‘Opened cache’);
 return cache.addAll(urlsToCache);
 })
 );
+self.skipWaiting();
 });
 
 // Fetch from cache when offline
@@ -39,6 +40,8 @@ return fetch(event.request);
 self.addEventListener(‘activate’, event => {
 const cacheWhitelist = [CACHE_NAME];
 event.waitUntil(
+Promise.all([
+self.clients.claim(),
 caches.keys().then(cacheNames => {
 return Promise.all(
 cacheNames.map(cacheName => {
@@ -48,5 +51,6 @@ return caches.delete(cacheName);
 })
 );
 })
+])
 );
 });
