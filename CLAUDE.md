@@ -272,6 +272,14 @@ npx serve .
 
 ---
 
+## Deployment
+
+GitHub Pages is deployed via `.github/workflows/deploy.yml` on every push to `main`. The workflow is intentionally minimal — it checks out the repo and deploys the **root directory as-is**. There is no build step.
+
+**Never add `npm`, `node`, or build commands to this workflow.** The project has no `package.json` and no `dist/` folder. Adding a build step will cause silent deployment failures, leaving the live site on stale HTML. The workflow includes a sanity check (`test -f index.html`) that will fail fast if something is misconfigured.
+
+---
+
 ## Important Constraints
 
 - **Do not introduce a build step** (webpack, Vite, etc.) without explicit instruction — this is intentional
