@@ -24,6 +24,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify static site integrity
+        run: |
+          # This project has NO build step. If you are adding npm/node/build
+          # commands here, stop — read CLAUDE.md first.
+          test -f index.html     || { echo "ERROR: index.html missing"; exit 1; }
+          test -f service-worker.js || { echo "ERROR: service-worker.js missing"; exit 1; }
+          test -f manifest.json  || { echo "ERROR: manifest.json missing"; exit 1; }
+          echo "Static site looks good. Deploying root directory."
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
