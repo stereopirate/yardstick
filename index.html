@@ -6707,7 +6707,7 @@ window.ResearchSourcesPage = () => (
                             {/* Hamburger — mobile only, hidden at md, hidden for new users until onboarding done */}
                             <button
                                 className="md:hidden flex items-center justify-center w-11 h-11 rounded-xl btn-press"
-                                style={{background:'rgba(255,255,255,0.12)', border:'1px solid rgba(255,255,255,0.22)', ...((!currentUser && !onboardingDone) ? {display:'none'} : {})}}
+                                style={{background:'rgba(255,255,255,0.12)', border:'1px solid rgba(255,255,255,0.22)', ...((!currentUser && (!onboardingDone || splashJustDone)) ? {display:'none'} : {})}}
                                 onClick={() => setMobileMenuOpen(prev => !prev)}
                                 aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
                                 aria-expanded={mobileMenuOpen}
@@ -6720,7 +6720,7 @@ window.ResearchSourcesPage = () => (
                         </div>
                     </div>
                     {/* Mobile menu panel — inside header, hidden at md, hidden for new users */}
-                    {mobileMenuOpen && (currentUser || onboardingDone) && (
+                    {mobileMenuOpen && (currentUser || (onboardingDone && !splashJustDone)) && (
                         <div className="md:hidden border-t border-white/20 bg-white shadow-xl menu-slide" style={{maxHeight:'calc(100vh - 56px)', overflowY:'auto'}}>
                             <div className="max-w-5xl mx-auto px-2 py-2">
                                 {/* Prominent Log CTA */}
@@ -6825,7 +6825,7 @@ window.ResearchSourcesPage = () => (
                 </header>
 
                 {/* Backdrop overlay — closes mobile menu when tapping outside */}
-                {mobileMenuOpen && (currentUser || onboardingDone) && (
+                {mobileMenuOpen && (currentUser || (onboardingDone && !splashJustDone)) && (
                     <div
                         className="md:hidden fixed inset-0 bg-black/20"
                         style={{zIndex: 35}}
@@ -6845,7 +6845,7 @@ window.ResearchSourcesPage = () => (
                 <div className="max-w-5xl mx-auto flex">
 
                     {/* ─── Desktop Left Sidebar — hidden for new users until onboarding complete ─── */}
-                    <aside className="ys-sidebar hidden md:flex flex-col" style={(!currentUser && !onboardingDone) ? {display:'none'} : {}}>
+                    <aside className="ys-sidebar hidden md:flex flex-col" style={(!currentUser && (!onboardingDone || splashJustDone)) ? {display:'none'} : {}}>
                         {/* Log Activity CTA */}
                         <button
                             onClick={() => { setView('add'); setSelectedActivityType(null); }}
@@ -6971,7 +6971,7 @@ window.ResearchSourcesPage = () => (
                                 />
                             )}
                             {/* Dashboard — only shown after onboarding is complete or user is logged in */}
-                            {(currentUser || onboardingDone) && (<>
+                            {(currentUser || (onboardingDone && !splashJustDone)) && (<>
                             {/* Save plan banner — logged-out users who completed onboarding, dismissible */}
                             {!currentUser && onboardingDone && !saveBannerDismissed && (
                                 <div className="rounded-2xl border px-4 py-3 flex items-center gap-3" style={{background:'var(--ys-green-50)', borderColor:'var(--ys-green-200)'}}>
