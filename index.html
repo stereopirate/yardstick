@@ -2872,13 +2872,19 @@ window.ResearchSourcesPage = () => (
         const fb = window.__FIREBASE__ || {};
         const canUploadPhoto = fb.configured && !!currentUser;
 
-        // Auto-populate mowerUsed from My Garage if exactly one mower is saved
+        // Auto-populate equipment from My Garage if exactly one matching item is saved
         const { useEffect } = React;
         useEffect(() => {
-            if (selectedActivityType === 'mowing') {
-                const garageMowers = equipment.filter(e => e.type === 'mowers');
-                if (garageMowers.length === 1) {
-                    setLocalFormData(prev => ({ ...prev, data: { ...prev.data, mowerUsed: garageMowers[0].name } }));
+            const GARAGE_DEFAULTS = {
+                mowing:    { garageType: 'mowers',    field: 'mowerUsed' },
+                trimming:  { garageType: 'trimmers',  field: 'trimmerUsed' },
+                fertilizer:{ garageType: 'spreaders', field: 'spreaderUsed' },
+            };
+            const cfg = GARAGE_DEFAULTS[selectedActivityType];
+            if (cfg) {
+                const items = equipment.filter(e => e.type === cfg.garageType);
+                if (items.length === 1) {
+                    setLocalFormData(prev => ({ ...prev, data: { ...prev.data, [cfg.field]: items[0].name } }));
                 }
             }
         }, []);
@@ -3071,9 +3077,10 @@ window.ResearchSourcesPage = () => (
                                     if (p.variety) label += ` · ${p.variety}`;
                                     return label;
                                 };
-                                // For the mowerUsed field, surface any mowers already saved in My Garage
-                                const garageItems = field.name === 'mowerUsed'
-                                    ? equipment.filter(e => e.type === 'mowers')
+                                // Surface garage equipment at the top of equipment-selection dropdowns
+                                const FIELD_TO_GARAGE = { mowerUsed: 'mowers', trimmerUsed: 'trimmers', spreaderUsed: 'spreaders' };
+                                const garageItems = FIELD_TO_GARAGE[field.name]
+                                    ? equipment.filter(e => e.type === FIELD_TO_GARAGE[field.name])
                                     : [];
                                 return (
                                     <select
