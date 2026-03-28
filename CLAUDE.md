@@ -70,7 +70,7 @@ Lawn-care-tracker/
 ├── index.html              # Main app — all React components, state, and UI (~2,440 lines)
 ├── grass-programs.js       # Grass maintenance program schedules by type and zone (276 lines)
 ├── v4-new-components.js    # Dashboard and statistics components (441 lines, inserted at ~line 1669)
-├── service-worker.js       # PWA offline caching (53 lines)
+├── service-worker.js       # PWA offline caching (70 lines)
 ├── manifest.json           # PWA manifest (app name, icons, theme)
 ├── about.html              # Static informational page
 ├── logo.png                # App logo
@@ -283,7 +283,9 @@ npx serve .
 
 GitHub Pages is deployed via `.github/workflows/deploy.yml` on every push to `main`. The workflow is intentionally minimal — it checks out the repo and deploys the **root directory as-is**. There is no build step.
 
-**Never add `npm`, `node`, or build commands to this workflow.** The project has no `package.json` and no `dist/` folder. Adding a build step will cause silent deployment failures, leaving the live site on stale HTML. The workflow includes a sanity check (`test -f index.html`) that will fail fast if something is misconfigured.
+**Never add `npm`, `node`, or build commands to this workflow.** The deployed app has no build step — `index.html` is served directly from the repo root. Adding a build step will cause silent deployment failures, leaving the live site on stale HTML. The workflow includes a sanity check (`test -f index.html`) that will fail fast if something is misconfigured.
+
+> **Note:** A `package.json`, `vite.config.js`, and `src/` directory exist in the repo as a leftover from an unfinished Vite migration experiment. They are **not used** by the deploy workflow and should be ignored. Do not install or run them.
 
 ---
 
