@@ -613,60 +613,79 @@ window.ActivityDetails = ({ activity }) => {
 (function () {
     const { useState } = React;
     const ActivityDetails = window.ActivityDetails;
-    window.HistoryView = ({ activities, onDelete }) => {
+    window.HistoryView = ({ activities, onDelete, onEdit }) => {
         const sorted = [...activities].sort((a, b) => new Date(b.date) - new Date(a.date));
         const [expandedId, setExpandedId] = useState(null);
         return (
             <div className="animate-fade-in">
-                <h2 className="text-2xl font-bold mb-6">Activity History</h2>
+                <h2 className="text-2xl font-bold mb-6">Activity Log</h2>
                 {sorted.length === 0 ? (
-                    <div className="bg-white rounded-lg shadow-md p-8 text-center text-gray-500">No activities yet</div>
+                    <div className="bg-white rounded-lg shadow-md p-8 text-center text-gray-500">No activities yet — tap <strong>Log Activity</strong> to get started.</div>
                 ) : (
                     <div className="space-y-3">
                         {sorted.map(activity => {
                             const colors = ACTIVITY_COLORS[activity.type] || ACTIVITY_COLORS.mowing;
+                            const isExpanded = expandedId === activity.id;
                             return (
                                 <div
                                     key={activity.id}
-                                    className={`bg-white rounded-xl shadow-md p-4 cursor-pointer card-hover border-l-4 ${colors.border}`}
-                                    onClick={() => setExpandedId(expandedId === activity.id ? null : activity.id)}
+                                    className={`bg-white rounded-xl shadow-md border-l-4 ${colors.border}`}
                                 >
-                                    <div className="flex justify-between items-center">
-                                        <div className="flex gap-3 items-center">
-                                            <div className="text-3xl flex items-center">{ACTIVITY_TYPES[activity.type]?.imgSrc ? <img src={ACTIVITY_TYPES[activity.type].imgSrc} className="w-8 h-8 object-contain" alt="" /> : (ACTIVITY_TYPES[activity.type]?.icon || '📋')}</div>
-                                            <div>
-                                                <h3 className={`text-lg font-bold ${colors.text}`}>{ACTIVITY_TYPES[activity.type]?.name || activity.type}</h3>
+                                    {/* Header row — tap to expand */}
+                                    <div
+                                        className="flex justify-between items-center p-4 cursor-pointer card-hover rounded-xl"
+                                        onClick={() => setExpandedId(isExpanded ? null : activity.id)}
+                                    >
+                                        <div className="flex gap-3 items-center min-w-0">
+                                            <div className="text-3xl flex-shrink-0 flex items-center">{ACTIVITY_TYPES[activity.type]?.imgSrc ? <img src={ACTIVITY_TYPES[activity.type].imgSrc} className="w-8 h-8 object-contain" alt="" /> : (ACTIVITY_TYPES[activity.type]?.icon || '📋')}</div>
+                                            <div className="min-w-0">
+                                                <h3 className={`text-base font-bold ${colors.text} truncate`}>{ACTIVITY_TYPES[activity.type]?.name || activity.type}</h3>
                                                 <p className="text-sm text-gray-500 flex items-center gap-1.5">
-                                                    {new Date(activity.date).toLocaleDateString()}
-                                                    {activity.photoUrl && <span className="text-xs text-gray-400" title="Has photo">📷</span>}
+                                                    {new Date(activity.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                    {activity.cost > 0 && <span className="text-xs text-gray-400">${activity.cost.toFixed(2)}</span>}
+                                                    {activity.photoUrl && <span className="text-xs text-gray-400">📷</span>}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-3">
-                                            {activity.photoUrl && (
-                                                <img src={activity.photoUrl} alt="Activity photo"
-                                                    className="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-gray-100"
-                                                    style={{cursor:'pointer'}}
-                                                    onClick={e => { e.stopPropagation(); setExpandedId(expandedId === activity.id ? null : activity.id); }}
+                                        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                            {activity.photoUrl && !isExpanded && (
+                                                <img src={activity.photoUrl} alt=""
+                                                    className="w-9 h-9 rounded-lg object-cover border border-gray-100 flex-shrink-0"
                                                 />
                                             )}
-                                            <span className="text-gray-400 text-sm">{expandedId === activity.id ? '▲' : '▼'}</span>
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); onDelete(activity.id); }}
-                                                className="text-red-500 hover:text-red-700 btn-press text-sm"
-                                            >Delete</button>
+                                            <span className="text-gray-400 text-xs">{isExpanded ? '▲' : '▼'}</span>
                                         </div>
                                     </div>
-                                    {expandedId === activity.id && (
-                                        <div>
+
+                                    {/* Expanded detail + action buttons */}
+                                    {isExpanded && (
+                                        <div className="px-4 pb-4">
                                             {activity.photoUrl && (
-                                                <div className="mt-3 rounded-xl overflow-hidden" style={{maxHeight:'260px'}}>
+                                                <div className="mb-3 rounded-xl overflow-hidden" style={{maxHeight:'260px'}}>
                                                     <img src={activity.photoUrl} alt="Activity photo"
                                                         className="w-full object-cover rounded-xl"
                                                         style={{maxHeight:'260px'}} />
                                                 </div>
                                             )}
                                             <ActivityDetails activity={activity} />
+                                            {activity.notes && (
+                                                <p className="text-sm text-gray-600 mt-2 italic">"{activity.notes}"</p>
+                                            )}
+                                            <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
+                                                <button
+                                                    onClick={() => onEdit && onEdit(activity)}
+                                                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold btn-press"
+                                                    style={{background:'var(--ys-green-100)', color:'var(--ys-green-700, #2D6627)'}}
+                                                >
+                                                    ✏️ Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => onDelete(activity.id)}
+                                                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold btn-press bg-red-50 text-red-600"
+                                                >
+                                                    🗑 Delete
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
@@ -1549,6 +1568,18 @@ window.ResearchSourcesPage = () => (
             await deleteDoc(doc(db, 'users', currentUser.uid, 'activities', String(id)));
         }, [isCloud, currentUser]);
 
+        const updateActivity = useCallback(async (id, updates) => {
+            if (!isCloud) {
+                const stored = JSON.parse(localStorage.getItem('lawnCareActivities') || '[]');
+                localStorage.setItem('lawnCareActivities', JSON.stringify(
+                    stored.map(a => a.id === id ? { ...a, ...updates } : a)
+                ));
+                return;
+            }
+            const { db, doc, setDoc } = fb;
+            await setDoc(doc(db, 'users', currentUser.uid, 'activities', String(id)), updates, { merge: true });
+        }, [isCloud, currentUser]);
+
         // ── WRITE equipment ───────────────────────────────────────────────────
         const saveEquipment = useCallback(async (item) => {
             if (!isCloud) {
@@ -1596,7 +1627,7 @@ window.ResearchSourcesPage = () => (
             await setDoc(doc(db, 'users', currentUser.uid, 'profile', 'data'), profile);
         }, [isCloud, currentUser]);
 
-        return { loadAll, saveActivity, deleteActivity, saveEquipment, deleteEquipment, updateEquipment, saveProfile, isCloud };
+        return { loadAll, saveActivity, deleteActivity, updateActivity, saveEquipment, deleteEquipment, updateEquipment, saveProfile, isCloud };
     };
 
     // ─── Auth Modal ─────────────────────────────────────────────────────────────
@@ -2860,27 +2891,59 @@ window.ResearchSourcesPage = () => (
     };
 
     // ─── ActivityForm ────────────────────────────────────────────────────────────
-    const ActivityForm = ({ selectedActivityType, onSubmit, onCancel, currentUser, activities }) => {
+    const ActivityForm = ({ selectedActivityType, onSubmit, onCancel, currentUser, activities, equipment = [], initialData = null }) => {
         const activityType = ACTIVITY_TYPES[selectedActivityType];
         const isPhotoLog = selectedActivityType === 'photo';
-        const [localFormData, setLocalFormData] = useState({ date: new Date().toISOString().split('T')[0], notes: '', data: {} });
-        const [photoPreview, setPhotoPreview] = useState(null);
+        const isEdit = !!initialData;
+        const [localFormData, setLocalFormData] = useState(() => initialData ? {
+            date: initialData.date || new Date().toISOString().split('T')[0],
+            notes: initialData.notes || '',
+            cost: initialData.cost != null ? String(initialData.cost) : '',
+            data: { ...(initialData.data || {}) },
+            photoUrl: initialData.photoUrl || null,
+        } : {
+            date: new Date().toISOString().split('T')[0],
+            notes: '',
+            data: {}
+        });
+        const [photoPreview, setPhotoPreview] = useState(initialData?.photoUrl || null);
         const [shareToGallery, setShareToGallery] = useState(false);
         const [photoError, setPhotoError] = useState(null);
+        const [saving, setSaving] = useState(false);
+        const [saveError, setSaveError] = useState(null);
         const fb = window.__FIREBASE__ || {};
         const canUploadPhoto = fb.configured && !!currentUser;
+
+        // Auto-populate equipment from My Garage if exactly one matching item is saved (skip in edit mode)
+        const { useEffect } = React;
+        useEffect(() => {
+            if (isEdit) return;
+            const GARAGE_DEFAULTS = {
+                mowing:    { garageType: 'mowers',    field: 'mowerUsed' },
+                trimming:  { garageType: 'trimmers',  field: 'trimmerUsed' },
+                fertilizer:{ garageType: 'spreaders', field: 'spreaderUsed' },
+            };
+            const cfg = GARAGE_DEFAULTS[selectedActivityType];
+            if (cfg) {
+                const items = equipment.filter(e => e.type === cfg.garageType);
+                if (items.length === 1) {
+                    setLocalFormData(prev => ({ ...prev, data: { ...prev.data, [cfg.field]: items[0].name } }));
+                }
+            }
+        }, []);
 
         const handlePhotoChange = (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            setLocalFormData(prev => ({ ...prev, photoFile: file }));
+            // New file replaces any existing photo URL
+            setLocalFormData(prev => ({ ...prev, photoFile: file, photoUrl: null }));
             const url = URL.createObjectURL(file);
             setPhotoPreview(url);
         };
 
         const clearPhoto = () => {
-            setLocalFormData(prev => ({ ...prev, photoFile: null }));
-            if (photoPreview) URL.revokeObjectURL(photoPreview);
+            setLocalFormData(prev => ({ ...prev, photoFile: null, photoUrl: null }));
+            if (photoPreview && photoPreview.startsWith('blob:')) URL.revokeObjectURL(photoPreview);
             setPhotoPreview(null);
             setShareToGallery(false);
         };
@@ -2893,11 +2956,11 @@ window.ResearchSourcesPage = () => (
                         : <span className="text-xs font-normal text-gray-400">(Optional)</span>
                     }
                 </label>
-                {!canUploadPhoto ? (
+                {!canUploadPhoto && !photoPreview ? (
                     <div className="flex items-center gap-2 p-3 bg-gray-50 border border-dashed border-gray-200 rounded-xl">
                         <span className="text-gray-400 text-sm">Sign in to attach photos to activities</span>
                     </div>
-                ) : !localFormData.photoFile ? (
+                ) : !photoPreview ? (
                     <label className="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-200 rounded-xl cursor-pointer transition-colors hover:border-[#367C2B] bg-gray-50"
                         style={{minHeight: required ? '140px' : '96px'}}>
                         <span className="text-3xl mb-1">📸</span>
@@ -2929,16 +2992,25 @@ window.ResearchSourcesPage = () => (
         return (
             <div>
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                    <span className="text-4xl flex items-center">{activityType.imgSrc ? <img src={activityType.imgSrc} className="w-10 h-10 object-contain" alt="" /> : activityType.icon}</span>{activityType.name}
+                    <span className="text-4xl flex items-center">{activityType.imgSrc ? <img src={activityType.imgSrc} className="w-10 h-10 object-contain" alt="" /> : activityType.icon}</span>
+                    {isEdit ? 'Edit ' : ''}{activityType.name}
                 </h2>
-                <form onSubmit={(e) => {
+                <form onSubmit={async (e) => {
                     e.preventDefault();
                     if (isPhotoLog && !localFormData.photoFile) {
                         setPhotoError('Please add a photo before saving.');
                         return;
                     }
                     setPhotoError(null);
-                    onSubmit({ ...localFormData, shareToGallery });
+                    setSaveError(null);
+                    setSaving(true);
+                    try {
+                        await onSubmit({ ...localFormData, shareToGallery });
+                    } catch(err) {
+                        console.error('Activity save failed:', err);
+                        setSaveError('Save failed. Please check your connection and try again.');
+                        setSaving(false);
+                    }
                 }} className="bg-white rounded-lg shadow-lg p-6">
                     {isPhotoLog && renderPhotoSection(true)}
                     {photoError && <p className="text-red-600 text-sm mb-3 font-medium">{photoError}</p>}
@@ -3050,6 +3122,11 @@ window.ResearchSourcesPage = () => (
                                     if (p.variety) label += ` · ${p.variety}`;
                                     return label;
                                 };
+                                // Surface garage equipment at the top of equipment-selection dropdowns
+                                const FIELD_TO_GARAGE = { mowerUsed: 'mowers', trimmerUsed: 'trimmers', spreaderUsed: 'spreaders' };
+                                const garageItems = FIELD_TO_GARAGE[field.name]
+                                    ? equipment.filter(e => e.type === FIELD_TO_GARAGE[field.name])
+                                    : [];
                                 return (
                                     <select
                                         value={localFormData.data[field.name] || ''}
@@ -3066,7 +3143,20 @@ window.ResearchSourcesPage = () => (
                                         }}
                                         className="w-full px-4 py-2 border rounded-lg">
                                         <option value="">Select...</option>
-                                        {products.map(p => <option key={p.id} value={p.name}>{getLabel(p)}</option>)}
+                                        {garageItems.length > 0 ? (
+                                            <React.Fragment>
+                                                <optgroup label="My Garage">
+                                                    {garageItems.map(e => (
+                                                        <option key={`garage-${e.id}`} value={e.name}>{e.name}</option>
+                                                    ))}
+                                                </optgroup>
+                                                <optgroup label="Other Models">
+                                                    {products.map(p => <option key={p.id} value={p.name}>{getLabel(p)}</option>)}
+                                                </optgroup>
+                                            </React.Fragment>
+                                        ) : (
+                                            products.map(p => <option key={p.id} value={p.name}>{getLabel(p)}</option>)
+                                        )}
                                     </select>
                                 );
                             })()
@@ -3130,8 +3220,11 @@ window.ResearchSourcesPage = () => (
                                 className="w-full pl-7 pr-4 py-2 border rounded-lg" />
                         </div>
                     </div>
+                    {saveError && <p className="text-red-600 text-sm mb-3 font-medium">{saveError}</p>}
                     <div className="flex gap-4">
-                        <button type="submit" className="flex-1 px-6 py-3 bg-[#367C2B] text-white rounded-lg font-semibold">Save Activity</button>
+                        <button type="submit" disabled={saving} className="flex-1 px-6 py-3 bg-[#367C2B] text-white rounded-lg font-semibold disabled:opacity-60">
+                            {saving ? 'Saving…' : isEdit ? 'Save Changes' : 'Save Activity'}
+                        </button>
                         <button type="button" onClick={onCancel} className="px-6 py-3 bg-gray-200 rounded-lg">Cancel</button>
                     </div>
                 </form>
@@ -6244,6 +6337,7 @@ window.ResearchSourcesPage = () => (
         }, []);
         const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
         const [selectedActivityType, setSelectedActivityType] = useState(null);
+        const [editingActivity, setEditingActivity] = useState(null);
         const [weather, setWeather] = useState(null);
         const [weatherLoading, setWeatherLoading] = useState(true);
         const weatherFetchKeyRef = React.useRef(null);
@@ -6579,6 +6673,36 @@ window.ResearchSourcesPage = () => (
                 setActivities(prev => prev.filter(a => a.id !== id));
                 window.trackEvent('activity_deleted', {});
             }
+        };
+
+        const handleUpdateActivity = async (activityData) => {
+            let photoUrl = activityData.photoUrl || null; // keep existing if no new file
+
+            if (activityData.photoFile && currentUser && fb.configured) {
+                try {
+                    const compressed = await window.compressImage(activityData.photoFile);
+                    const { storage, storageRef, uploadBytes, getDownloadURL } = fb;
+                    const path = 'photos/' + currentUser.uid + '/' + Date.now() + '.jpg';
+                    const sRef = storageRef(storage, path);
+                    const snap = await uploadBytes(sRef, compressed);
+                    photoUrl = await getDownloadURL(snap.ref);
+                } catch(e) {
+                    console.error('Photo upload failed:', e);
+                }
+            }
+
+            const updates = {
+                date: activityData.date,
+                notes: activityData.notes,
+                cost: activityData.cost ? parseFloat(activityData.cost) : null,
+                data: activityData.data,
+                photoUrl: photoUrl || null,
+            };
+
+            await store.updateActivity(editingActivity.id, updates);
+            setActivities(prev => prev.map(a => a.id === editingActivity.id ? { ...a, ...updates } : a));
+            window.trackEvent('activity_edited', { activity_type: editingActivity.type });
+            setEditingActivity(null);
         };
 
         const addEquipment = async (equipmentData) => {
@@ -7545,8 +7669,31 @@ window.ResearchSourcesPage = () => (
                             </>)}
                         </div>
                     )}
-                    {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} activities={activities} />}</div>}
-                    {view === 'history' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!currentUser && (<div className="mb-4 rounded-2xl border p-4 flex items-center gap-3" style={{background:'var(--ys-gold-100)', borderColor:'var(--ys-gold-300)'}}><span className="text-xl flex-shrink-0">📊</span><div className="flex-1 min-w-0"><div className="text-sm font-bold text-gray-800">Want advanced stats &amp; charts?</div><div className="text-xs text-gray-500">Create a free account to unlock monthly breakdowns, streaks &amp; trends.</div></div><button onClick={() => setView('account')} className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg text-white btn-press" style={{background:'var(--ys-green-600)'}}>Unlock →</button></div>)}<HistoryView activities={activities} onDelete={deleteActivity} /></div>}
+                    {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} activities={activities} equipment={equipment} />}</div>}
+                    {view === 'history' && (
+                        <div>
+                            <button onClick={() => { setView(null); setEditingActivity(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>
+                            {editingActivity ? (
+                                <div>
+                                    <button onClick={() => setEditingActivity(null)} className="text-[#367C2B] mb-4 btn-press font-semibold text-sm">← Back to Log</button>
+                                    <ActivityForm
+                                        selectedActivityType={editingActivity.type}
+                                        initialData={editingActivity}
+                                        onSubmit={handleUpdateActivity}
+                                        onCancel={() => setEditingActivity(null)}
+                                        currentUser={currentUser}
+                                        activities={activities}
+                                        equipment={equipment}
+                                    />
+                                </div>
+                            ) : (
+                                <>
+                                    {!currentUser && (<div className="mb-4 rounded-2xl border p-4 flex items-center gap-3" style={{background:'var(--ys-gold-100)', borderColor:'var(--ys-gold-300)'}}><span className="text-xl flex-shrink-0">📊</span><div className="flex-1 min-w-0"><div className="text-sm font-bold text-gray-800">Want advanced stats &amp; charts?</div><div className="text-xs text-gray-500">Create a free account to unlock monthly breakdowns, streaks &amp; trends.</div></div><button onClick={() => setView('account')} className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg text-white btn-press" style={{background:'var(--ys-green-600)'}}>Unlock →</button></div>)}
+                                    <HistoryView activities={activities} onDelete={deleteActivity} onEdit={setEditingActivity} />
+                                </>
+                            )}
+                        </div>
+                    )}
                     {view === 'gallery' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><GalleryView currentUser={currentUser} onSignIn={() => setShowAuthModal(true)} /></div>}
                     {view === 'garage' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><MyGarage equipment={equipment} activities={activities} onAdd={addEquipment} onDelete={deleteEquipment} onUpdate={updateEquipment} onNavigate={setView} /></div>}
                     {view === 'profile' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><LawnProfile profileFormData={profileFormData} profileEditing={profileEditing} lawnProfile={lawnProfile} weather={weather} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} onSave={handleProfileSave} onEditToggle={setProfileEditing} onNavigate={setView} /></div>}
