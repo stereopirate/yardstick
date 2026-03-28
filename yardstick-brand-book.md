@@ -208,6 +208,7 @@ All colors are used at full opacity in their assigned roles. Tints (rgba) are us
 - Don’t use clay as a general accent — it’s reserved for danger states only
 - Don’t place white text on yellow buttons
 - Don’t mix card styles or use non-parchment card backgrounds
+- Don’t display the term "ET0" or "Evapotranspiration" in any user-facing UI — use "Water Needed", "Weekly Water Target", or a plain-English sentence instead. The internal variable `et0Past7` may keep its name in JS.
 
 -----
 
@@ -468,25 +469,58 @@ Add `.btn-sm` to any button type: `padding: 7px 14px; font-size: 0.78rem;`
 
 ### Coach Card Variant
 
-Used for the primary research-backed coaching message on the dashboard. Has a dark forest header.
+Used for the home screen hero — shows grass/zone eyebrow, a dynamic coach brief headline, and an embedded 3-metric strip (soil temp, 7-day rain, air temp).
 
 ```css
 .card-coach {
-  background: var(--cream);
+  background: var(--green-dark);   /* solid #1E4D18, no gradient */
+  border-bottom: 4px solid var(--yellow);
   border-radius: 5px;
   overflow: hidden;
-  box-shadow: inset 0 0 0 1px rgba(30,26,20,0.12), 0 3px 14px rgba(30,26,20,0.09);
+  box-shadow: 0 4px 20px rgba(28,51,24,0.22);
 }
-.card-coach-header {
-  background: var(--green-dark);
-  background-image: radial-gradient(ellipse at 90% 0%, rgba(78,158,64,0.2), transparent 60%);
-  padding: 14px 18px;
-  border-bottom: 2px solid rgba(245,200,66,0.4);
+
+/* Hero section (top padding area) */
+.card-coach-hero { padding: 16px 16px 0; }
+
+/* Eyebrow — grass type + zone */
+.card-coach-eyebrow {
+  font-family: var(--ff-body);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(245,200,66,0.85);   /* yellow, 85% opacity */
+  margin-bottom: 8px;
 }
-.card-coach-header .card-eyebrow { color: var(--yellow); }
-.card-coach-header .card-title   { color: var(--cream); font-size: 1rem; }
-.card-coach-body { padding: 14px 18px; }
+
+/* Headline — getCoachBrief() output */
+.card-coach-headline {
+  font-family: var(--ff-display);
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--cream);
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+
+/* Metrics strip — 3-column grid at bottom of card */
+.card-coach-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+.card-coach-metric {
+  padding: 10px 8px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.10);
+}
+.card-coach-metric:last-child { border-right: none; }
+.card-coach-metric-val  { font-family: var(--ff-display); font-weight: 900; font-size: 18px; color: var(--cream); }
+.card-coach-metric-lbl  { font-family: var(--ff-body); font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(247,243,236,0.45); margin-top: 2px; }
+.card-coach-metric-sub  { font-size: 9px; color: rgba(247,243,236,0.5); margin-top: 2px; }
 ```
+
+**Coach brief logic (`getCoachBrief`):** Generates the headline from (1) soil temp threshold context, (2) current month's program notes, (3) top task + soil context combo. Falls back to a grass name prompt if no weather data.
 
 ### Stat Card Variant
 
@@ -527,6 +561,92 @@ Used in the 3-up stat row on the dashboard.
 |Aeration   |Stone      |`#6B6560`|
 |Trimming   |Green Light|`#4E9E40`|
 |Maintenance|Dark Amber |`#7A5410`|
+
+### Section Divider
+
+Used to label home-screen sections. Replaces the old gray uppercase label + horizontal rule.
+
+```css
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0 10px;
+}
+.section-divider-label {
+  font-family: var(--ff-display);   /* Bitter */
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--green-dark);
+  white-space: nowrap;
+}
+.section-divider-rule {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, var(--ys-green-200), transparent);
+}
+```
+
+**Labels in use:** "Conditions" (weather section) · "This Week" (program tasks) · "Recent Activity" (quick log + strip)
+
+---
+
+### Urgency Badges (Task Rows)
+
+Each task row in "This Week's Priority" card gets an urgency dot + label based on its position in the task list.
+
+|Urgency    |Dot Color|Label text    |CSS color token          |
+|-----------|---------|--------------|-------------------------|
+|Do now (i=0) |Clay  |`⚡ Do now`   |`var(--clay)` `#C05A2C`  |
+|This month (i=1)|Green|`↑ This month`|`var(--green)` `#367C2B` |
+|Coming up (i=2)|Stone|`→ Coming up` |`var(--stone)` `#6B6560` |
+
+```css
+.urgency-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.urgency-label { font-family: var(--ff-body); font-size: 10px; letter-spacing: 0.3px; }
+```
+
+Task rows also include a **"why" copy line** — a one-sentence explanation sourced from soil temp context or program notes. Rendered in `var(--stone)` at 11px / line-height 1.4.
+
+---
+
+### Activity Chip Strip
+
+Horizontal scroll strip on the home screen showing the "+ Log" button chip and last 3 activity chips. Appears only when `activities.length > 0`.
+
+```css
+.chip-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 0 4px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chip-log-btn {
+  background: var(--yellow);
+  border: none;
+  border-radius: 5px;
+  padding: 8px 14px;
+  font-family: var(--ff-body);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--soil);
+  flex-shrink: 0;
+}
+
+.chip-activity {
+  background: var(--cream);
+  border: 1px solid rgba(30,77,24,0.10);
+  border-radius: 5px;
+  padding: 7px 10px;
+  flex-shrink: 0;
+  min-width: 76px;
+}
+.chip-activity-name { font-size: 11px; font-weight: 700; color: var(--green-dark); }
+.chip-activity-date { font-family: var(--ff-mono); font-size: 9px; color: var(--stone); margin-top: 1px; }
+```
 
 -----
 
@@ -845,6 +965,7 @@ Copy this `:root` block into any new stylesheet, component, or AI-generated code
 |v1.0   |2025|Initial locked system — Bitter/Cabin/Courier Prime, Parchment theme, Style F cards, filled alerts, outlined badges, SVG wordmark, yellow CTA                                                                                                              |
 |v2.0   |2026|Consolidated brand book — merged design system and brand book into single AI-ready reference. Added complete SVG code, full CSS component library, mobile-first checklist, activity log dot colors, progress bar variant. Updated domain to yardstick.diy.|
 |v2.1   |2026|Copy update — removed “no account required” / “no login” framing across all approved copy. Updated Long Description and Short Description to lead with free account creation. Added explicit DON’T rule against no-login language.                        |
+|v2.2   |2026|Option C dashboard redesign — Coach card rebuilt as structured brief (eyebrow + `getCoachBrief()` headline + 3-metric strip). Warm canvas/cream palette activated (body: `#EDE8DE`, cards: `#F7F3EC`). Section dividers redesigned (Bitter serif label + green gradient rule). Task rows gain urgency badges + “why” copy. Activity chip strip added (horizontal scroll). Button radius locked at 3px, card radius at 5px. ET0 banned from user-facing copy — replaced with plain English. New components documented: Section Divider, Urgency Badge, Activity Chip Strip.|
 
 -----
 

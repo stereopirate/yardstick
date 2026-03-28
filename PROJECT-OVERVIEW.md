@@ -415,7 +415,7 @@ Community photo feed from Firestore `gallery` collection. Grid layout with light
 Chronological list of all activities. Each row is tap-to-expand with `ActivityDetails`. Supports photo thumbnails and inline delete.
 
 **`Dashboard`** (active version is in `/components/Dashboard.js`)
-Summary stat cards (total, mows, feeds, hours), water budget panel (rainfall + irrigation vs. ET0 target from weather), activity breakdown horizontal bar chart, 6-month trend bar chart, 3 most recent activities.
+Summary stat cards (total, mows, feeds, hours) with pace sub-label, water budget panel (rainfall + irrigation vs. weekly water target — plain-English sentence, no ET0 jargon in UI), activity breakdown horizontal bar chart, 6-month trend bar chart, 3 most recent activities.
 
 **`MyGarage`** (active version is in `/components/MyGarage.js`)
 Equipment add form (type → sub-type → product dropdown from `PRODUCT_DATABASE`). Equipment list with maintenance schedule tracking — computes estimated mower hours from logged mowing activities.
@@ -558,7 +558,7 @@ https://api.open-meteo.com/v1/forecast
 }
 ```
 
-**Water budget (Dashboard):** `et0Past7` is compared against `loggedIrrigThisWeek + rainfall` to show users whether their lawn's water needs are met.
+**Water budget (Dashboard):** `et0Past7` (evapotranspiration, the internal variable) is compared against `loggedIrrigThisWeek + rainfall` to compute the deficit. The UI displays this in plain English ("Your lawn needs X" more water this week") — the term "ET0" is never shown to users. The label for the target is "Weekly Water Target" or "Water Needed".
 
 ---
 
@@ -672,11 +672,11 @@ To apply display font to a non-heading element: `style={{fontFamily:'var(--ys-fo
 
 | Class | Purpose |
 |---|---|
-| `.ys-btn-primary` | Yellow CTA button (`--ys-yellow` bg, `--ys-soil-800` text) |
-| `.ys-card` | White rounded card with subtle shadow |
-| `.ys-coach-card` | Dark-green gradient hero card (home screen) |
+| `.ys-btn-primary` | Yellow CTA button (`--ys-yellow` bg, `--ys-soil-800` text, `3px` radius) |
+| `.ys-card` | Cream rounded card (`--ys-cream` bg, `5px` radius) with subtle shadow |
+| `.ys-coach-card` | Forest green hero card with yellow bottom border, dynamic brief headline, and 3-metric strip |
 | `.ys-badge-white` | Semi-transparent white pill (on dark backgrounds) |
-| `.ys-badge-green` | Light-green pill (on white backgrounds) |
+| `.ys-badge-green` | Light-green pill (on cream/canvas backgrounds) |
 | `.ys-sidebar` | Desktop sticky left navigation sidebar |
 | `.ys-sidebar-item` | Individual sidebar nav button |
 | `.ys-sidebar-active` | Active sidebar item highlight |

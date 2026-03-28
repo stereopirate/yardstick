@@ -123,49 +123,58 @@ The popup uses `position: fixed` centered on screen (not a portal) to ensure rel
 
 | Role | Font | Weight | CSS Variable |
 |---|---|---|---|
-| Hero & all headings (h1, h2, h3) | **Fraunces** | 600–700 | `--ys-font-display` |
-| Body, buttons, nav, labels | **Quicksand** | 500–700 | `--ys-font-body` |
+| Hero & all headings (h1, h2, h3) | **Bitter** | 700, 900 | `--ys-font-display` |
+| Body, buttons, nav, labels | **Cabin** | 400–700 | `--ys-font-body` |
+| Data readouts, stat labels, timestamps | **Courier Prime** | 400, 700 | (inline `font-family` or `var(--ff-mono)`) |
 
 Loaded via Google Fonts:
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,600;0,700;0,900;1,700&family=Cabin:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 ```
 
 CSS variable declarations (in `:root`):
 ```css
---ys-font-body:    'Quicksand', system-ui, -apple-system, sans-serif;
---ys-font-display: 'Fraunces', Georgia, serif;
+--ys-font-body:    'Cabin', system-ui, -apple-system, sans-serif;
+--ys-font-display: 'Bitter', Georgia, serif;
 ```
 
-The global rule `h1, h2, h3 { font-family: var(--ys-font-display); }` applies the display font to all heading elements automatically. Apply `style={{fontFamily:'var(--ys-font-display)'}}` to any element that should use Fraunces but isn't a semantic heading (e.g., the header wordmark span).
+The global rule `h1, h2, h3 { font-family: var(--ys-font-display); }` applies the display font to all heading elements automatically. Apply `style={{fontFamily:'var(--ys-font-display)'}}` to any element that should use Bitter but isn't a semantic heading (e.g., coach card headlines, stat numbers).
 
-**Character:** Fraunces is warm, editorial, and softly organic — giving the brand authority without stiffness. Quicksand is rounded and highly legible at small sizes, ideal for mobile labels, buttons, and nav tabs.
+**Character:** Bitter is strong, editorial, and authoritative — giving the brand credibility as a research-backed tool. Cabin is clean, modern, and highly legible at small sizes, ideal for mobile labels, buttons, and nav copy. Courier Prime adds a field-notes, data-readout quality to stats and timestamps.
 
 ### Brand CSS Variables (`:root`)
 
 ```css
 /* Green scale */
 --ys-green-900: #1C3318
---ys-green-800: #234D20   ← header background
---ys-green-700: #2D6627   ← coach card gradient start
+--ys-green-800: #1E4D18   ← header background, coach card bg
+--ys-green-700: #2D6627
 --ys-green-600: #367C2B   ← primary CTAs, active states
---ys-green-500: #4A9E3C
+--ys-green-500: #4E9E40
 --ys-green-400: #6BBF5A
---ys-green-200: #C4E8BC
+--ys-green-200: #C4E8BC   ← section divider gradient
 --ys-green-100: #EBF5E6   ← icon backgrounds, badge fills
 --ys-green-50:  #F4FAF2   ← nav tab hover
 
+/* Yellow accent */
+--ys-yellow:      #F5C842  ← CTA buttons, coach card bottom border, active nav
+--ys-yellow-dark: #E8BA2A  ← yellow button :active state
+
 /* Gold accent */
---ys-gold-500: #C8960C
+--ys-gold-500: #D4A843
 --ys-gold-400: #D4A833
 --ys-gold-300: #E2C46A
 --ys-gold-100: #FDF3D8
 
 /* Soil / warm neutral */
---ys-soil-800: #3B2A1A
---ys-soil-600: #6B4C2A
+--ys-soil-800: #1E1A14    ← primary text, button text on yellow
+--ys-soil-600: #6B6560    ← secondary text, card body, urgency labels
 --ys-soil-400: #9C7248
 --ys-soil-200: #D4B896
+
+/* Surfaces */
+--ys-cream:  #F7F3EC   ← card surface
+--ys-canvas: #EDE8DE   ← app body / page background
 ```
 
 ### Phase 2 Utility CSS Classes
@@ -174,11 +183,11 @@ Defined in the `<style>` block in `index.html`:
 
 | Class | Purpose |
 |---|---|
-| `.ys-coach-card` | Dark-green gradient hero card (home screen greeting) |
-| `.ys-badge-white` | Semi-transparent white pill badge (used inside coach card) |
-| `.ys-badge-green` | Light green pill badge (used on white backgrounds) |
-| `.ys-btn-primary` | Green CTA button using `--ys-green-600` |
-| `.ys-card` | White rounded card with subtle shadow |
+| `.ys-coach-card` | Forest green hero card with yellow bottom border, metrics strip, and dynamic brief headline |
+| `.ys-badge-white` | Semi-transparent white pill badge (used inside coach card on dark bg) |
+| `.ys-badge-green` | Light green pill badge (used on cream/canvas backgrounds) |
+| `.ys-btn-primary` | Yellow CTA button (`--ys-yellow`), dark soil text, 3px radius |
+| `.ys-card` | Cream rounded card (`--ys-cream`), 5px radius, with subtle shadow |
 | `.ys-bottom-nav` | Fixed mobile bottom navigation bar |
 | `.ys-nav-tab` | Individual bottom nav tab |
 | `.ys-nav-active` | Active state for bottom nav tab |
