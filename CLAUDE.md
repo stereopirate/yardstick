@@ -225,10 +225,17 @@ All user data is persisted in **browser LocalStorage**. There is no backend, dat
 
 ## PWA / Service Worker
 
-- Cache name: `easy-green-v1`
+- Cache name: currently `yardstick-v5` (increment when deploying breaking changes)
 - Caches: `/`, `/index.html`, `/manifest.json`, and all CDN script URLs
-- Strategy: cache-first with network fallback
-- **When updating CDN versions**, bump `CACHE_NAME` in `service-worker.js` to invalidate old caches
+- **Fetch strategy**:
+  - **HTML pages** (`index.html`, `/`) → **network-first**: always fetches fresh from server, falls back to cache only when offline
+  - **All other assets** (CDN scripts, images, manifest) → **cache-first**: serves from cache for speed, falls back to network on miss
+- **When to bump `CACHE_NAME`** in `service-worker.js`:
+  - When updating CDN script URLs or versions
+  - When the new SW fetch strategy itself needs to be re-installed on existing clients
+  - No need to bump just for `index.html` changes — network-first handles those automatically now
+
+> **Why network-first for HTML?** The old cache-first strategy caused `index.html` to get permanently stuck in the service worker cache after every deploy. Users would see stale UI until the cache was manually busted. Network-first ensures the latest `index.html` is always loaded when online.
 
 ---
 
