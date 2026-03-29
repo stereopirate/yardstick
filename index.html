@@ -3264,6 +3264,273 @@ window.ResearchSourcesPage = () => (
         );
     };
 
+    // ─── TodayView ───────────────────────────────────────────────────────────────
+    const TodayView = ({ lawnProfile, weather, activities, schedules, onNavigate, onLogActivity }) => {
+        const { useState } = React;
+
+        // ── No profile state ──────────────────────────────────────────────────
+        if (!lawnProfile || !lawnProfile.specificGrass || !lawnProfile.zone) {
+            return (
+                <div className="animate-fade-in space-y-4">
+                    <div>
+                        <h2 className="text-2xl font-bold" style={{fontFamily:'var(--ys-font-display)'}}>This Week</h2>
+                        <p className="text-sm text-gray-500 mt-0.5">Your personalized weekly tasks</p>
+                    </div>
+                    <div className="rounded-2xl border border-dashed border-gray-200 p-8 text-center" style={{background:'var(--ys-cream)'}}>
+                        <div className="text-4xl mb-3">🌱</div>
+                        <div className="text-sm font-semibold text-gray-700 mb-1">Set up your lawn profile first</div>
+                        <div className="text-xs text-gray-400 mb-4 leading-snug">We need your grass type and zone to build your weekly plan.</div>
+                        <button onClick={() => onNavigate('profile')}
+                            className="px-5 py-2.5 rounded-xl text-sm font-bold text-white btn-press"
+                            style={{background:'var(--ys-green-600)'}}>
+                            Set Up My Lawn →
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // ── Build task list ───────────────────────────────────────────────────
+        const grassInfo = GRASS_INFO[lawnProfile.specificGrass] || {};
+        const grassName = grassInfo.name || lawnProfile.specificGrass;
+        const programKey = GRASS_KEY_MAP[lawnProfile.specificGrass] + '_zone' + getParentZone(lawnProfile.zone);
+        const program = typeof grassPrograms !== 'undefined' ? grassPrograms[programKey] : null;
+
+        const isGameplanTask = (t) =>
+            !/\bmow(ing)?\b|\bcut (height|grass)\b|mow (weekly|at|every)|watering|irrigat|water (as needed|deeply|1|0\.|per week)|\bdrip\b/.test(t.toLowerCase());
+
+        const getTaskIcon = (t) => {
+            const l = t.toLowerCase();
+            if (/pre-emergent|crabgrass/.test(l)) return '🛡️';
+            if (/overseed|reseed/.test(l)) return '🌱';
+            if (/fertili|nitrogen|winterizer/.test(l)) return '🌾';
+            if (/aerat/.test(l)) return '🔧';
+            if (/dethatch|scalp/.test(l)) return '✂️';
+            if (/soil test|lime/.test(l)) return '🧪';
+            if (/herbicide|weed/.test(l)) return '🌿';
+            if (/fungicide|disease/.test(l)) return '💊';
+            return '📋';
+        };
+
+        const getActivityTypeForTask = (task) => {
+            const l = task.toLowerCase();
+            if (/fertiliz|nitrogen|feed/.test(l)) return 'fertilizer';
+            if (/seed|overseed/.test(l)) return 'seeding';
+            if (/aerat/.test(l)) return 'aeration';
+            if (/treatment|herbicide|fungicide|insecticide|pre-emergent|post-emergent|weed|pest|disease/.test(l)) return 'treatment';
+            if (/mow|cut/.test(l)) return 'mowing';
+            if (/water|irrigat/.test(l)) return 'watering';
+            return 'maintenance';
+        };
+
+        // Get current month program tasks
+        const curIdx = new Date().getMonth();
+        const curMonth = MONTH_NAMES[curIdx];
+        let programTasks = [];
+        if (program && program.schedule) {
+            const entry = program.schedule.find(e => {
+                if (e.month === curMonth) return true;
+                if (e.month && e.month.includes('-')) {
+                    const parts = e.month.split('-');
+                    const s = MONTH_NAMES.indexOf(parts[0].trim()), end = MONTH_NAMES.indexOf(parts[1].trim());
+                    return s >= 0 && end >= 0 && curIdx >= s && curIdx <= end;
+                }
+                return false;
+            });
+            if (entry && entry.tasks) {
+                programTasks = entry.tasks.filter(isGameplanTask);
+            }
+        }
+
+        // Score and sort by weather status + urgency
+        const scoredTasks = programTasks.map(task => {
+            const ws = getTaskWeatherStatus(task, weather, lawnProfile);
+            const score = !ws ? 1 : ws.status === 'go' ? 0 : ws.status === 'caution' ? 1 : 2;
+            return { task, ws, score, icon: getTaskIcon(task), activityType: getActivityTypeForTask(task) };
+        }).sort((a, b) => a.score - b.score).slice(0, 3);
+
+        // Overdue schedules
+        const today = new Date(); today.setHours(0,0,0,0);
+        const overdueSchedules = schedules.filter(s => {
+            const ref = new Date(s.lastDone || s.createdAt); ref.setHours(0,0,0,0);
+            const due = new Date(ref); due.setDate(due.getDate() + s.frequencyDays);
+            return Math.ceil((due - today) / 86400000) <= 0;
+        }).slice(0, 2);
+
+        // Watering check
+        const weeklyNeed = weather && weather.et0Past7 > 0 ? weather.et0Past7 : 1.25;
+        const rainCovered = weather ? (weather.rainfall || 0) >= weeklyNeed * 0.8 : false;
+        const needsWater = weather && !rainCovered;
+
+        // Derive a plain-English reason for each task based on soil temp and weather
+        const getWhyText = (task, ws) => {
+            const l = task.toLowerCase();
+            const st = weather ? Math.round(weather.soilTemp) : null;
+            if (ws && ws.reason) return ws.reason;
+            if (/pre-emergent/i.test(task) && st) return `Soil is at ${st}°F — crabgrass germinates at 55°F.`;
+            if (/fertiliz/i.test(task) && st) return `Soil at ${st}°F supports active nutrient uptake.`;
+            if (/overseed|reseed/i.test(task) && st) return `Soil at ${st}°F is in the ideal germination range.`;
+            if (/aerat/i.test(task)) return 'Aeration improves nutrient uptake and reduces compaction.';
+            if (/dethatch|scalp/i.test(task)) return 'Removes dead material and opens up the canopy for growth.';
+            return null;
+        };
+
+        const hasContent = scoredTasks.length > 0 || overdueSchedules.length > 0 || needsWater;
+
+        return (
+            <div className="animate-fade-in space-y-3">
+                {/* Header */}
+                <div>
+                    <h2 className="text-2xl font-bold" style={{fontFamily:'var(--ys-font-display)'}}>This Week</h2>
+                    <div className="text-sm text-gray-400 mt-0.5">
+                        {grassName} · Zone {lawnProfile.zone.toUpperCase()}
+                        {weather && ` · Soil ${Math.round(weather.soilTemp)}°F`}
+                    </div>
+                </div>
+
+                {/* No content state */}
+                {!hasContent && (
+                    <div className="rounded-2xl border border-dashed border-gray-200 p-8 text-center" style={{background:'var(--ys-cream)'}}>
+                        <div className="text-4xl mb-3">✅</div>
+                        <div className="text-sm font-semibold text-gray-700 mb-1">You're in a quiet period</div>
+                        <div className="text-xs text-gray-400 leading-snug">No scheduled treatments this month. Keep up with regular mowing and watering.</div>
+                    </div>
+                )}
+
+                {/* Overdue schedules — highest priority */}
+                {overdueSchedules.length > 0 && (
+                    <div>
+                        <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'var(--ys-clay)', fontFamily:'var(--ys-font-body)'}}>
+                            ⚠️ Overdue
+                        </div>
+                        <div className="space-y-2">
+                            {overdueSchedules.map((sched, i) => {
+                                const daysOver = Math.abs(Math.ceil(
+                                    (new Date(new Date(sched.lastDone || sched.createdAt).setDate(
+                                        new Date(sched.lastDone || sched.createdAt).getDate() + sched.frequencyDays
+                                    )) - today) / 86400000
+                                ));
+                                return (
+                                    <div key={i} className="rounded-2xl border p-4 flex items-start gap-3"
+                                        style={{background:'#FEF2F2', borderColor:'#FECACA'}}>
+                                        <div className="text-xl flex-shrink-0 mt-0.5">⏰</div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="text-sm font-bold text-red-800">{sched.name}</div>
+                                            <div className="text-xs text-red-600 mt-0.5">{daysOver} day{daysOver !== 1 ? 's' : ''} overdue</div>
+                                        </div>
+                                        <button
+                                            onClick={() => onNavigate('schedules')}
+                                            className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg text-white btn-press"
+                                            style={{background:'var(--ys-clay)'}}>
+                                            Log It
+                                        </button>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
+                {/* Program tasks */}
+                {scoredTasks.length > 0 && (
+                    <div>
+                        <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'var(--ys-green-800)', fontFamily:'var(--ys-font-body)'}}>
+                            📅 {curMonth} Program
+                        </div>
+                        <div className="space-y-2">
+                            {scoredTasks.map(({ task, ws, icon, activityType }, i) => {
+                                const whyText = getWhyText(task, ws);
+                                const isHold = ws && ws.status === 'hold';
+                                const isGo = ws && ws.status === 'go';
+                                const statusColor = isHold ? '#EF4444' : isGo ? '#16A34A' : '#F59E0B';
+                                const statusLabel = isHold ? 'Hold' : isGo ? 'Go' : ws ? 'Soon' : null;
+                                return (
+                                    <div key={i} className="rounded-2xl border p-4"
+                                        style={{background:'var(--ys-cream)', borderColor: isHold ? '#FECACA' : 'rgba(30,77,24,0.12)'}}>
+                                        <div className="flex items-start gap-3">
+                                            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                                                style={{background: isHold ? '#FEF2F2' : 'var(--ys-green-100)'}}>
+                                                {icon}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 flex-wrap mb-1">
+                                                    <span className="text-sm font-bold text-gray-800">{task}</span>
+                                                    {statusLabel && (
+                                                        <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full text-white flex-shrink-0"
+                                                            style={{background: statusColor}}>
+                                                            {statusLabel}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                {whyText && (
+                                                    <div className="text-xs text-gray-500 leading-snug mb-2">{whyText}</div>
+                                                )}
+                                                {ws && ws.window && isHold && (
+                                                    <div className="text-xs font-semibold mb-2" style={{color:'var(--ys-green-600)'}}>
+                                                        → {ws.window}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        {!isHold && (
+                                            <button
+                                                onClick={() => onLogActivity(activityType)}
+                                                className="w-full mt-3 py-2.5 rounded-xl text-sm font-bold text-white btn-press"
+                                                style={{background:'var(--ys-green-600)'}}>
+                                                Log This →
+                                            </button>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
+                {/* Watering nudge */}
+                {needsWater && (
+                    <div>
+                        <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'#0369A1', fontFamily:'var(--ys-font-body)'}}>
+                            💧 Watering
+                        </div>
+                        <div className="rounded-2xl border p-4 flex items-start gap-3"
+                            style={{background:'#EFF6FF', borderColor:'#BFDBFE'}}>
+                            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 bg-blue-100">
+                                💧
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <div className="text-sm font-bold text-blue-900 mb-1">Irrigation may be needed</div>
+                                <div className="text-xs text-blue-700 leading-snug">
+                                    {`${(weather.rainfall || 0).toFixed(1)}" rain this week vs ${weeklyNeed.toFixed(1)}" needed. `}
+                                    {weather.rainNext48h > 0.25 ? `Rain forecast in 48h — hold for now.` : `Consider irrigating deeply in the morning.`}
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => onLogActivity('watering')}
+                                className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg btn-press"
+                                style={{background:'#2563EB', color:'white'}}>
+                                Log
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Footer link to full plan */}
+                <button
+                    onClick={() => onNavigate('gameplan')}
+                    className="w-full rounded-2xl border px-4 py-3 flex items-center gap-3 card-hover btn-press text-left"
+                    style={{background:'white', borderColor:'rgba(0,0,0,0.07)'}}>
+                    <span className="text-xl flex-shrink-0">📅</span>
+                    <div className="flex-1 min-w-0">
+                        <div className="text-sm font-bold text-gray-800">Full Lawn Care Program</div>
+                        <div className="text-xs text-gray-400">See all scheduled tasks for the season</div>
+                    </div>
+                    <span className="text-xs font-bold flex-shrink-0" style={{color:'var(--ys-green-600)'}}>View →</span>
+                </button>
+            </div>
+        );
+    };
+
     // ─── LawnProfile ─────────────────────────────────────────────────────────────
     const LawnProfile = ({ profileFormData, profileEditing, lawnProfile, weather, zipLookupLoading, zipLookupError, onZipLookup, onSave, onEditToggle, onNavigate }) => {
         const [localForm, setLocalForm] = useState({...profileFormData});
@@ -5629,7 +5896,10 @@ window.ResearchSourcesPage = () => (
 
     // ── Static close-up photos from Wikimedia Commons ──────────────────────
     // Special:FilePath is a stable canonical redirect; spaces → underscores matches MediaWiki norms.
-    const fp = (file, caption) => ({ url: `https://commons.wikimedia.org/wiki/Special:FilePath/${file.replace(/ /g, '_')}?width=640`, caption });
+    const fp = (file, caption) => ({
+            url: `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file.replace(/ /g, '_'))}?width=640`,
+            caption
+        });
     const photoMap = {
         'bermuda': [
             fp("Starr-070206-4111-Cynodon_dactylon-lawn_and_ant_bait_stick-Olowalu-Maui_(24585842010).jpg", "Bermudagrass lawn · Wikimedia Commons"),
@@ -6376,7 +6646,7 @@ window.ResearchSourcesPage = () => (
     // ─── Hash-based URL routing helpers ─────────────────────────────────────────
     const VALID_VIEWS = ['add', 'history', 'gallery', 'garage', 'profile', 'gameplan',
         'schedules', 'dashboard', 'products', 'sources', 'account', 'contact',
-        'tools', 'grass-id', 'calculator', 'admin', 'pricing', 'proSignup'];
+        'tools', 'grass-id', 'calculator', 'admin', 'pricing', 'proSignup', 'today'];
     function getViewFromHash() {
         const hash = window.location.hash.replace(/^#\//, '');
         return VALID_VIEWS.includes(hash) ? hash : null;
@@ -6938,6 +7208,7 @@ window.ResearchSourcesPage = () => (
                                 {/* Your Lawn group */}
                                 <div className="px-3 pt-3 pb-1 text-xs font-bold text-gray-400 uppercase tracking-widest">Your Lawn</div>
                                 {[
+                                    { key: 'today',     icon: '✅', label: 'This Week' },
                                     { key: 'dashboard', icon: '📊', label: 'Lawn Stats' },
                                     { key: 'profile',   icon: '🌱', label: 'My Yard' },
                                     { key: 'history',   icon: '📋', label: 'Activity Log' },
@@ -7061,6 +7332,7 @@ window.ResearchSourcesPage = () => (
                         {/* Your Lawn group */}
                         <div className="ys-sidebar-section-label mt-2">Your Lawn</div>
                         {[
+                            { key: 'today',     emoji: '✅', label: 'This Week' },
                             { key: 'dashboard', emoji: '📊', label: 'Lawn Stats' },
                             { key: 'profile',   emoji: '🌱', label: 'My Yard' },
                             { key: 'history',   emoji: '📋', label: 'Activity Log' },
@@ -7614,6 +7886,24 @@ window.ResearchSourcesPage = () => (
                                 </div>
                                 <span className="text-base font-extrabold tracking-wide" style={{fontFamily:'var(--ys-font-body)'}}>Log Activity</span>
                             </button>
+                            {/* This Week shortcut */}
+                            <button
+                                onClick={() => setView('today')}
+                                className="w-full rounded-2xl border px-4 py-3 flex items-center gap-3 card-hover btn-press text-left"
+                                style={{background:'var(--ys-cream)', borderColor:'rgba(30,77,24,0.15)'}}>
+                                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{background:'var(--ys-green-100)'}}>
+                                    ✅
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="text-sm font-bold text-gray-800">What should I do this week?</div>
+                                    <div className="text-xs text-gray-400">
+                                        {lawnProfile && lawnProfile.specificGrass
+                                            ? `${(GRASS_INFO[lawnProfile.specificGrass] || {}).name || lawnProfile.specificGrass} · Zone ${lawnProfile.zone?.toUpperCase() || ''}`
+                                            : 'Get your personalized weekly tasks'}
+                                    </div>
+                                </div>
+                                <span className="text-xs font-bold flex-shrink-0" style={{color:'var(--ys-green-600)'}}>Go →</span>
+                            </button>
                             {/* Recent activity strip — horizontal scroll */}
                             {activities.length === 0 && (
                                 <div className="rounded-xl border border-dashed border-gray-200 px-4 py-3 text-center" style={{background:'var(--ys-cream)'}}>
@@ -7744,6 +8034,7 @@ window.ResearchSourcesPage = () => (
                         </div>
                     )}
                     {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} activities={activities} equipment={equipment} />}</div>}
+                    {view === 'today' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><TodayView lawnProfile={lawnProfile} weather={weather} activities={activities} schedules={schedules} onNavigate={setView} onLogActivity={(type) => { setSelectedActivityType(type); setView('add'); }} /></div>}
                     {view === 'history' && (
                         <div>
                             <button onClick={() => { setView(null); setEditingActivity(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>
