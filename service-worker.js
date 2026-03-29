@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yardstick-v5';
+const CACHE_NAME = 'yardstick-v6';
 const urlsToCache = [
 '/',
 '/index.html',
