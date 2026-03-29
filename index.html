@@ -6422,6 +6422,7 @@ window.ResearchSourcesPage = () => (
         });
         const [splashJustDone, setSplashJustDone] = useState(false);
         const [saveBannerDismissed, setSaveBannerDismissed] = useState(() => localStorage.getItem('yardstick_save_banner_dismissed') === '1');
+        const [expandedTaskIdx, setExpandedTaskIdx] = useState(null);
 
         // ── Auth state ──────────────────────────────────────────────────────────
         const [currentUser, setCurrentUser] = useState(null);
@@ -7498,7 +7499,6 @@ window.ResearchSourcesPage = () => (
                                 const upNext = nextEntry ? nextEntry.month : null;
                                 const taskIcons = { 'pre-emergent': '🛡️', 'fertili': '🌾', 'aerat': '🔧', 'overseed': '🌱', 'seed': '🌱', 'soil test': '🧪', 'lime': '🧪', 'dethatch': '✂️', 'scalp': '✂️', 'weed': '🌿', 'herbicide': '🌿', 'fungicide': '💊', 'chinch': '💊' };
                                 const getIcon = (task) => { const lower = task.toLowerCase(); for (const [k, v] of Object.entries(taskIcons)) { if (lower.includes(k)) return v; } return '📋'; };
-                                const [expandedTaskIdx, setExpandedTaskIdx] = React.useState(null);
                                 const scoredTasks = gameplanTasks.map(task => {
                                     const ws = getTaskWeatherStatus(task, weather, lawnProfile);
                                     const order = !ws ? 1 : ws.status === 'go' ? 0 : ws.status === 'caution' ? 1 : 2;
