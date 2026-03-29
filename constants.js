@@ -173,7 +173,24 @@ var TREATMENT_PRODUCTS = {
         { id: 'pre4', name: 'Scotts Halts', brand: 'Scotts', activeIngredient: 'Pendimethalin', rate: '2.9 lbs per 1,000 sq ft', rateValue: 2.9, rateUnit: 'lbs', ratePer: 1000, timing: 'Early spring', notes: 'Granular, easy application' },
         { id: 'pre5', name: 'Award Dimension .125% Crabgrass Preventer (18-0-0)', brand: 'Award', activeIngredient: 'Dithiopyr 0.125%', rate: '4.6 lbs per 1,000 sq ft', rateValue: 4.6, rateUnit: 'lbs', ratePer: 1000, timing: 'Pre & early post-emergent', notes: 'Granular fert+pre-emergent combo (PCU slow-release N); 50 lb bag covers ~10,800 sq ft; EPA Reg. 62719-483-57131' },
         { id: 'andersons-barricade', name: 'Andersons Barricade® Pre-Emergent', brand: 'The Andersons', activeIngredient: 'Prodiamine 0.48%', rate: '1.5 lbs per 1,000 sq ft', rateValue: 1.5, rateUnit: 'lbs', ratePer: 1000, timing: 'Spring (soil <55°F) or Fall (soil >70°F)', notes: 'Prevents 30 grass and broadleaf weeds including crabgrass, poa annua, goosegrass, henbit. Uses patented DG Technology — granules dissolve rapidly when watered in. Safe for all turf types. Apply spring before soil reaches 55°F or fall before soil drops below 70°F. Not a weed killer — prevents germination only. Requires 0.2" water to activate. Do not seed for 60 days after application.', sizes: ['5,800 sq ft ($46.88)', '12,880 sq ft ($79.88)'], affiliateUrl: 'https://andersonslawn.com/products/barricade', affiliateSource: 'https://andersonslawn.com/products/barricade' },
-        { id: 'pre6', name: 'Other (specify)', brand: 'Various', activeIngredient: '', rate: 'See label', timing: '', notes: 'Custom product' }
+        { id: 'pre6', name: 'Other (specify)', brand: 'Various', activeIngredient: '', rate: 'See label', timing: '', notes: 'Custom product' },
+        {
+            id: 'pre-crabgrass-preventer',
+            name: 'Crabgrass Preventer (Pendimethalin)',
+            activeIngredient: 'Pendimethalin 0.86%',
+            rate: '2.5–3.8 lbs per 1,000 sq ft',
+            rateValue: 3.15,
+            rateMax: 3.8,
+            ratePer: 1000,
+            rateUnit: 'lbs',
+            timing: 'Apply before soil temps reach 55°F at 1" depth (early spring)',
+            notes: 'Do not overseed or seed within 3–4 months of application.',
+            grassWarning: {
+                types: ['centipede'],
+                message: 'Pendimethalin can injure centipedegrass — use with caution and follow label rates strictly.',
+            },
+            sources: ['Purdue Extension', 'NC State Extension', 'Penn State Extension'],
+        },
     ],
     postemergent: [
         { id: 'post1', name: 'Tenacity', brand: 'Syngenta', activeIngredient: 'Mesotrione 40%', rate: '0.25 oz per 1,000 sq ft', rateValue: 0.25, rateUnit: 'oz', ratePer: 1000, target: 'Crabgrass, broadleaf weeds', notes: 'Safe for seeding',
