@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import {
   getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,
-  createUserWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser
+  createUserWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser,
+  getAdditionalUserInfo
 } from 'firebase/auth';
 import {
   getFirestore, doc, getDoc, setDoc, collection, getDocs, addDoc,
@@ -35,7 +36,7 @@ export function initFirebase() {
       db: getFirestore(app),
       storage: getStorage(app),
       GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,
-      createUserWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser,
+      createUserWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser, getAdditionalUserInfo,
       doc, getDoc, setDoc, collection, getDocs, addDoc,
       deleteDoc, updateDoc, serverTimestamp, query, orderBy, where, limit,
       storageRef, uploadBytes, getDownloadURL,

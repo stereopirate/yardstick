@@ -1,20 +1,4 @@
-import { initializeApp } from "firebase/app";
-import { getMessaging, onBackgroundMessage } from "firebase/messaging/sw";
-
-const firebaseConfig = {
-  // Your config here
-};
-
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
-
-onBackgroundMessage(messaging, (payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: '/lawn-icon.png'
-  };
-
-  self.registration.showNotification(notificationTitle, notificationOptions);
-});
+// Firebase Cloud Messaging service worker — placeholder.
+// Push notifications are not yet configured for this project.
+// This file intentionally does nothing to avoid errors if the browser
+// attempts to fetch it as a service worker.

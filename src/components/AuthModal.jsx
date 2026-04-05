@@ -3,6 +3,24 @@ import React, { useState } from 'react';
 const BREVO_API_KEY = atob('eGtleXNpYi1hNDAwMjhlMWFjZWUxYjQ4NTY3YTRlMzM0Y2E5NTdhMGI3ZGU2OGQwZDU2MjM1MTIxNzEzNWVjMzFkNzUxYWFkLTUwNFVxZ1pUbjBNaUk5ODU=');
 const BREVO_LIST_ID = 3;
 
+const mapFirebaseError = (e) => {
+    switch (e.code) {
+        case 'auth/invalid-credential':
+        case 'auth/wrong-password':         return 'Incorrect email or password.';
+        case 'auth/user-not-found':         return 'No account found with that email.';
+        case 'auth/email-already-in-use':   return 'An account with this email already exists. Try signing in.';
+        case 'auth/weak-password':          return 'Password must be at least 6 characters.';
+        case 'auth/invalid-email':          return 'Please enter a valid email address.';
+        case 'auth/operation-not-allowed':  return 'Email sign-in is not available right now. Please try signing in with Google.';
+        case 'auth/network-request-failed': return 'Network error — check your connection and try again.';
+        case 'auth/too-many-requests':      return 'Too many attempts. Please wait a moment and try again.';
+        case 'auth/user-disabled':          return 'This account has been disabled. Please contact support.';
+        case 'auth/popup-blocked':          return 'Popup blocked by browser — please allow popups and try again.';
+        case 'auth/unauthorized-domain':    return 'Sign-in is not authorized on this domain. Please contact support.';
+        default:                            return e.message || 'Something went wrong. Please try again.';
+    }
+};
+
 const addToBrevoList = async (email, firstName) => {
     try {
         await fetch('https://api.brevo.com/v3/contacts', {
@@ -30,12 +48,13 @@ export default function AuthModal({ onClose, onSuccess }) {
     const fb = window.__FIREBASE__;
 
     const handleGoogle = async () => {
-        if (!fb.configured) return;
+        if (!fb.configured) { setError('Sign-in is unavailable right now. Please try again later.'); return; }
         setLoading(true); setError('');
         try {
             const provider = new fb.GoogleAuthProvider();
             const result = await fb.signInWithPopup(fb.auth, provider);
-            if (result.additionalUserInfo?.isNewUser) {
+            const info = fb.getAdditionalUserInfo ? fb.getAdditionalUserInfo(result) : null;
+            if (info?.isNewUser) {
                 window.trackEvent('sign_up', { method: 'google' });
                 const firstName = (result.user.displayName || '').split(' ')[0];
                 addToBrevoList(result.user.email, firstName);
@@ -44,13 +63,14 @@ export default function AuthModal({ onClose, onSuccess }) {
             }
             onSuccess(result.user);
         } catch(e) {
-            setError(e.message);
+            if (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') return;
+            setError(mapFirebaseError(e));
         } finally { setLoading(false); }
     };
 
     const handleEmail = async (e) => {
         e.preventDefault();
-        if (!fb.configured) return;
+        if (!fb.configured) { setError('Sign-in is unavailable right now. Please try again later.'); return; }
         setLoading(true); setError('');
         try {
             let result;
@@ -64,12 +84,7 @@ export default function AuthModal({ onClose, onSuccess }) {
             }
             onSuccess(result.user);
         } catch(e) {
-            const msg = e.code === 'auth/wrong-password'    ? 'Incorrect password.'
-                      : e.code === 'auth/user-not-found'    ? 'No account with that email.'
-                      : e.code === 'auth/email-already-in-use' ? 'Email already in use. Try signing in.'
-                      : e.code === 'auth/weak-password'     ? 'Password must be at least 6 characters.'
-                      : e.message;
-            setError(msg);
+            setError(mapFirebaseError(e));
         } finally { setLoading(false); }
     };
 
