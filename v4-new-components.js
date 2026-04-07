@@ -103,26 +103,26 @@ return (
 
         {/* Quick Stats Grid */}
         <div className="grid grid-cols-2 gap-3 mb-6">
-            <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100">
+            <div className="rounded-xl p-4 shadow-md border-2 border-gray-100" style={{background:'var(--ys-cream)'}}>
                 <div className="text-3xl font-bold text-[#367C2B]">{stats.total}</div>
                 <div className="text-sm text-gray-600 mt-1">Activities</div>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100">
+            <div className="rounded-xl p-4 shadow-md border-2 border-gray-100" style={{background:'var(--ys-cream)'}}>
                 <div className="text-3xl font-bold text-[#367C2B]">{stats.totalHours.toFixed(1)}</div>
                 <div className="text-sm text-gray-600 mt-1">Hours</div>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100">
+            <div className="rounded-xl p-4 shadow-md border-2 border-gray-100" style={{background:'var(--ys-cream)'}}>
                 <div className="text-3xl font-bold text-[#367C2B]">{stats.mowing}</div>
                 <div className="text-sm text-gray-600 mt-1">Mowings</div>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100">
+            <div className="rounded-xl p-4 shadow-md border-2 border-gray-100" style={{background:'var(--ys-cream)'}}>
                 <div className="text-3xl font-bold text-[#F97316]">{stats.fertilizer}</div>
                 <div className="text-sm text-gray-600 mt-1">Fertilizer Apps</div>
             </div>
         </div>
 
         {/* Activity Breakdown */}
-        <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100 mb-6">
+        <div className="rounded-xl p-4 shadow-md border-2 border-gray-100 mb-6" style={{background:'var(--ys-cream)'}}>
             <h3 className="text-lg font-bold text-gray-900 mb-4">Activity Breakdown</h3>
             <div className="space-y-3">
                 {[
@@ -156,7 +156,7 @@ return (
         </div>
 
         {/* Monthly Trend */}
-        <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100 mb-6">
+        <div className="rounded-xl p-4 shadow-md border-2 border-gray-100 mb-6" style={{background:'var(--ys-cream)'}}>
             <h3 className="text-lg font-bold text-gray-900 mb-4">Monthly Trend</h3>
             <div className="flex items-end justify-between h-40 gap-2">
                 {monthlyData.map((data, i) => {
@@ -182,7 +182,7 @@ return (
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100">
+        <div className="rounded-xl p-4 shadow-md border-2 border-gray-100" style={{background:'var(--ys-cream)'}}>
             <h3 className="text-lg font-bold text-gray-900 mb-4">🕒 Recent Activity</h3>
             {recent.length > 0 ? (
                 <div className="space-y-3">
@@ -253,7 +253,7 @@ return (
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Lawn Profile</h2>
 
         {/* Basic Information */}
-        <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100 mb-4">
+        <div className="rounded-xl p-4 shadow-md border-2 border-gray-100 mb-4" style={{background:'var(--ys-cream)'}}>
             <h3 className="text-lg font-bold text-gray-900 mb-4">📏 Basic Information</h3>
             
             <div className="space-y-4">
@@ -283,7 +283,7 @@ return (
         </div>
 
         {/* Grass Type */}
-        <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100 mb-4">
+        <div className="rounded-xl p-4 shadow-md border-2 border-gray-100 mb-4" style={{background:'var(--ys-cream)'}}>
             <h3 className="text-lg font-bold text-gray-900 mb-4">🌾 Grass Type</h3>
             
             <div className="space-y-4">
@@ -327,7 +327,7 @@ return (
         </div>
 
         {/* Soil & Conditions */}
-        <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100 mb-4">
+        <div className="rounded-xl p-4 shadow-md border-2 border-gray-100 mb-4" style={{background:'var(--ys-cream)'}}>
             <h3 className="text-lg font-bold text-gray-900 mb-4">🌍 Soil & Conditions</h3>
             
             <div className="space-y-4">
@@ -420,7 +420,7 @@ return (
         <h2 className="text-2xl font-bold text-gray-900 mb-6">⚙️ Settings</h2>
 
         {/* Data Management */}
-        <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100 mb-4">
+        <div className="rounded-xl p-4 shadow-md border-2 border-gray-100 mb-4" style={{background:'var(--ys-cream)'}}>
             <h3 className="text-lg font-bold text-gray-900 mb-4">💾 Data Management</h3>
             
             <button
@@ -439,7 +439,7 @@ return (
         </div>
 
         {/* About */}
-        <div className="bg-white rounded-xl p-4 shadow-md border-2 border-gray-100">
+        <div className="rounded-xl p-4 shadow-md border-2 border-gray-100" style={{background:'var(--ys-cream)'}}>
             <h3 className="text-lg font-bold text-gray-900 mb-4">ℹ️ About</h3>
             <div className="text-sm text-gray-600 space-y-2">
                 <p><strong>Yardstick</strong> - Research-Backed Lawn Care</p>

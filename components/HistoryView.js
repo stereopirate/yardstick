@@ -16,7 +16,7 @@
             <div className="animate-fade-in">
                 <h2 className="text-2xl font-bold mb-6">Activity History</h2>
                 {sorted.length === 0 ? (
-                    <div className="bg-white rounded-lg shadow-md p-8 text-center text-gray-500">No activities yet</div>
+                    <div className="rounded-lg shadow-md p-8 text-center text-gray-500" style={{background:'var(--ys-cream)'}}>No activities yet</div>
                 ) : (
                     <div className="space-y-3">
                         {sorted.map(activity => {
