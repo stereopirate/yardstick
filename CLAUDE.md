@@ -119,6 +119,8 @@ The popup uses `position: fixed` centered on screen (not a portal) to ensure rel
 - **Inline styles** used for dynamic values or precise overrides
 - **Custom CSS** at top of `index.html` `<style>` block for animations and cite-btn/cite-popup styles
 
+> **Critical — background colors:** Always use `style={{background:'var(--ys-cream)'}}` for card/content surfaces and `style={{background:'var(--ys-canvas)'}}` for page backgrounds. **Never** use Tailwind color utility classes like `bg-white` or `bg-gray-50` for these — Tailwind classes are compiled at runtime and have higher specificity than CSS variables, causing design tokens to be silently ignored. Tailwind is fine for layout (padding, flex, gap, rounded) but not for semantic brand colors.
+
 ### Typography
 
 | Role | Font | Weight | CSS Variable |
@@ -166,6 +168,10 @@ The global rule `h1, h2, h3 { font-family: var(--ys-font-display); }` applies th
 --ys-soil-600: #6B4C2A
 --ys-soil-400: #9C7248
 --ys-soil-200: #D4B896
+
+/* Surface backgrounds */
+--ys-cream:  #F7F3EC   ← card and content surfaces (use in style={{background}})
+--ys-canvas: #EDE8DE   ← app body / page background
 ```
 
 ### Phase 2 Utility CSS Classes
@@ -178,7 +184,7 @@ Defined in the `<style>` block in `index.html`:
 | `.ys-badge-white` | Semi-transparent white pill badge (used inside coach card) |
 | `.ys-badge-green` | Light green pill badge (used on white backgrounds) |
 | `.ys-btn-primary` | Green CTA button using `--ys-green-600` |
-| `.ys-card` | White rounded card with subtle shadow |
+| `.ys-card` | Cream/parchment rounded card with subtle shadow (`--ys-cream` bg, 5px radius) |
 | `.ys-bottom-nav` | Fixed mobile bottom navigation bar |
 | `.ys-nav-tab` | Individual bottom nav tab |
 | `.ys-nav-active` | Active state for bottom nav tab |
@@ -188,6 +194,8 @@ Defined in the `<style>` block in `index.html`:
 
 | Use | Value |
 |---|---|
+| App background (canvas) | `var(--ys-canvas)` = `#EDE8DE` |
+| Card / content surface (cream) | `var(--ys-cream)` = `#F7F3EC` |
 | Primary green | `#367C2B` |
 | Mowing activity | `#367C2B` |
 | Fertilizer activity | `#F97316` (orange) |
@@ -225,7 +233,7 @@ All user data is persisted in **browser LocalStorage**. There is no backend, dat
 
 ## PWA / Service Worker
 
-- Cache name: currently `yardstick-v5` (increment when deploying breaking changes)
+- Cache name: currently `yardstick-v6` (increment when deploying breaking changes)
 - Caches: `/`, `/index.html`, `/manifest.json`, and all CDN script URLs
 - **Fetch strategy**:
   - **HTML pages** (`index.html`, `/`) → **network-first**: always fetches fresh from server, falls back to cache only when offline

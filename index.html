@@ -636,7 +636,7 @@ window.ActivityDetails = ({ activity }) => {
                             return (
                                 <div
                                     key={activity.id}
-                                    className={`bg-white rounded-xl shadow-md border-l-4 ${colors.border}`}
+                                    className={`rounded-xl shadow-md border-l-4 ${colors.border}`} style={{background:'var(--ys-cream)'}}
                                 >
                                     {/* Header row — tap to expand */}
                                     <div
@@ -958,7 +958,7 @@ window.ActivityDetails = ({ activity }) => {
                     )}
                 </div>
                 {/* Tools shortcut */}
-                <button onClick={() => onNavigate('tools')} className="w-full bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-3 flex items-center gap-3 card-hover btn-press mt-4">
+                <button onClick={() => onNavigate('tools')} className="w-full rounded-2xl border border-gray-100 shadow-sm px-4 py-3 flex items-center gap-3 card-hover btn-press mt-4" style={{background:'var(--ys-cream)'}}>
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{background:'var(--ys-green-100)'}}>🛠️</div>
                     <div className="flex-1 min-w-0 text-left">
                         <div className="text-sm font-bold text-gray-800">Lawn Tools</div>
@@ -1008,7 +1008,7 @@ window.ActivityDetails = ({ activity }) => {
                     <h2 className="text-xl font-bold">🏠 My Garage</h2>
                     <button onClick={() => onNavigate('products')} className="px-3 py-1 text-xs font-semibold text-[#367C2B] border border-[#367C2B] rounded-lg hover:bg-[#367C2B]/10">📖 Product Guide</button>
                 </div>
-                <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+                <div className="rounded-lg shadow-md p-4 mb-4" style={{background:'var(--ys-cream)'}}>
                     <h3 className="font-bold mb-4">Add Equipment</h3>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
@@ -1054,7 +1054,7 @@ window.ActivityDetails = ({ activity }) => {
                         <button type="submit" disabled={!garageForm.selectedProduct || (garageForm.selectedProduct.includes('-other') && !garageForm.customName)} className="w-full px-4 py-2 bg-[#367C2B] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">Add to Garage</button>
                     </form>
                 </div>
-                <div className="bg-white rounded-lg shadow p-4">
+                <div className="rounded-lg shadow p-4" style={{background:'var(--ys-cream)'}}>
                     <h3 className="font-bold mb-4">Your Equipment ({equipment.length})</h3>
                     {equipment.length === 0 ? (
                         <p className="text-gray-500 text-center py-6">No equipment yet — add your first piece above!</p>
@@ -1174,7 +1174,7 @@ window.ActivityDetails = ({ activity }) => {
             const isExpanded = expandedId === product.id;
             const isCompared = !!compareList.find(p => p.id === product.id);
             return (
-                <div className={`bg-white rounded-xl shadow border-2 transition ${isCompared ? 'border-[#367C2B]' : 'border-gray-100'}`}>
+                <div className={`rounded-xl shadow border-2 transition ${isCompared ? 'border-[#367C2B]' : 'border-gray-100'}`} style={{background:'var(--ys-cream)'}}>
                     <div className="p-3 cursor-pointer" onClick={() => setExpandedId(isExpanded ? null : product.id)}>
                         <div className="flex items-start justify-between">
                             <div className="flex-1">
@@ -1246,7 +1246,7 @@ window.ActivityDetails = ({ activity }) => {
                         <button key={key} onClick={() => { setCategory(key); setMowerType(''); setBrandFilter(''); setCompareList([]); setExpandedId(null); }} className={`flex-shrink-0 py-2 px-3 rounded-md text-xs font-semibold transition ${category === key ? 'bg-[#367C2B] text-white shadow' : 'text-gray-600 hover:text-gray-900'}`}>{typeIcons[key]} {label}</button>
                     ))}
                 </div>
-                <div className="bg-white rounded-xl shadow p-3 mb-4">
+                <div className="rounded-xl shadow p-3 mb-4" style={{background:'var(--ys-cream)'}}>
                     <div className="flex items-center gap-2 flex-wrap">
                         {category === 'mowers' && (
                             <div className="flex gap-1">
@@ -1276,7 +1276,7 @@ window.ActivityDetails = ({ activity }) => {
                 <div className={`space-y-2 ${compareList.length > 0 ? 'pb-20' : ''}`}>
                     {filtered.map(product => <ProductCard key={product.id} product={product} />)}
                 </div>
-                {filtered.length === 0 && <div className="bg-white rounded-xl shadow p-8 text-center text-gray-500">No products match the current filters</div>}
+                {filtered.length === 0 && <div className="rounded-xl shadow p-8 text-center text-gray-500" style={{background:'var(--ys-cream)'}}>No products match the current filters</div>}
             </div>
         );
     };
@@ -1291,7 +1291,7 @@ window.ResearchSourcesPage = () => (
         <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-6">
             <p className="text-sm text-blue-900"><strong>Evidence-Based Recommendations:</strong> All lawn care guidance is based on peer-reviewed research from {RESEARCH_SOURCES.length} university extension programs.</p>
         </div>
-        <div className="bg-white rounded-xl p-4 shadow mb-4">
+        <div className="rounded-xl p-4 shadow mb-4" style={{background:'var(--ys-cream)'}}>
             <div className="grid grid-cols-2 gap-3">
                 <div className="text-center p-3 bg-gray-50 rounded"><div className="text-3xl font-bold text-[#367C2B]">{RESEARCH_SOURCES.length}</div><div className="text-sm text-gray-600">Universities</div></div>
                 <div className="text-center p-3 bg-gray-50 rounded"><div className="text-3xl font-bold text-[#367C2B]">{RESEARCH_SOURCES.reduce((sum, s) => sum + s.count, 0)}</div><div className="text-sm text-gray-600">Publications</div></div>
@@ -1299,7 +1299,7 @@ window.ResearchSourcesPage = () => (
         </div>
         <div className="space-y-4">
             {RESEARCH_SOURCES.map(source => (
-                <div key={source.id} className="bg-white rounded-xl p-4 shadow-md border-l-4 border-[#367C2B]">
+                <div key={source.id} className="rounded-xl p-4 shadow-md border-l-4 border-[#367C2B]" style={{background:'var(--ys-cream)'}}>
                     <h3 className="text-lg font-bold text-gray-900">{source.name}</h3>
                     <p className="text-sm text-gray-600">{source.count} publications referenced</p>
                     {source.topics && <div className="mt-2 p-2 bg-gray-50 rounded text-xs text-gray-700">{source.topics}</div>}
@@ -1370,7 +1370,7 @@ window.ResearchSourcesPage = () => (
         const nextDue    = nextDueDate(sched);
         const nextDueStr = nextDue.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         return (
-            <div className={'bg-white rounded-xl shadow-sm border-l-4 ' + (d <= 0 ? 'border-red-400' : color.border) + ' p-3 flex items-center gap-3'}>
+            <div className={'rounded-xl shadow-sm border-l-4 ' + (d <= 0 ? 'border-red-400' : color.border) + ' p-3 flex items-center gap-3'} style={{background:'var(--ys-cream)'}}>
                 <div className="text-xl flex-shrink-0">{meta.icon}</div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -1441,7 +1441,7 @@ window.ResearchSourcesPage = () => (
                 </div>
 
                 {showForm && (
-                    <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-4 mb-5">
+                    <div className="rounded-2xl shadow-md border border-gray-100 p-4 mb-5" style={{background:'var(--ys-cream)'}}>
                         <div className="space-y-3">
                             <div>
                                 <label className="block text-xs font-semibold text-gray-500 mb-1">Task name</label>
@@ -1496,7 +1496,7 @@ window.ResearchSourcesPage = () => (
                 )}
 
                 {schedules.length === 0 && !showForm && (
-                    <div className="bg-white rounded-2xl shadow-sm border border-dashed border-gray-200 p-8 text-center">
+                    <div className="rounded-2xl shadow-sm border border-dashed border-gray-200 p-8 text-center" style={{background:'var(--ys-cream)'}}>
                         <div className="text-4xl mb-3">&#128467;</div>
                         <div className="font-semibold text-gray-700 mb-1">No schedules yet</div>
                         <div className="text-sm text-gray-400 mb-4">Create recurring tasks to track when things are due — mowing, fertilizing, aerating, and more.</div>
@@ -2645,9 +2645,9 @@ window.ResearchSourcesPage = () => (
             <div className="bg-blue-50 rounded-xl p-4">
                 <div className="text-xs font-bold text-blue-700 uppercase mb-3">💧 Weekly Water Budget</div>
                 <div className="grid grid-cols-3 gap-2 text-center mb-3">
-                    <div className="bg-white rounded-lg p-2 shadow-sm"><div className="text-xs text-gray-500 mb-0.5">{usingET0 ? 'Water Needed' : 'Weekly need'}</div><div className="text-sm font-bold text-gray-800">{weeklyNeed}"</div></div>
-                    <div className="bg-white rounded-lg p-2 shadow-sm"><div className="text-xs text-gray-500 mb-0.5">Past 7d rain</div><div className="text-sm font-bold text-gray-800">{pastRain}"</div></div>
-                    <div className="bg-white rounded-lg p-2 shadow-sm"><div className="text-xs text-gray-500 mb-0.5">Forecast 48h</div><div className="text-sm font-bold text-gray-800">{forecastRain}"</div></div>
+                    <div className="rounded-lg p-2 shadow-sm" style={{background:'var(--ys-cream)'}}><div className="text-xs text-gray-500 mb-0.5">{usingET0 ? 'Water Needed' : 'Weekly need'}</div><div className="text-sm font-bold text-gray-800">{weeklyNeed}"</div></div>
+                    <div className="rounded-lg p-2 shadow-sm" style={{background:'var(--ys-cream)'}}><div className="text-xs text-gray-500 mb-0.5">Past 7d rain</div><div className="text-sm font-bold text-gray-800">{pastRain}"</div></div>
+                    <div className="rounded-lg p-2 shadow-sm" style={{background:'var(--ys-cream)'}}><div className="text-xs text-gray-500 mb-0.5">Forecast 48h</div><div className="text-sm font-bold text-gray-800">{forecastRain}"</div></div>
                 </div>
                 <div className={`text-xs font-semibold ${statusColor} flex items-center gap-1.5`}>
                     <span>{statusIcon}</span><span>{statusMsg}</span>
@@ -2661,7 +2661,7 @@ window.ResearchSourcesPage = () => (
         const [zipInput, setZipInput] = useState('');
         if (weatherLoading) {
             return (
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-3 animate-pulse">
+                <div className="rounded-2xl shadow-sm border border-gray-100 p-6 mb-3 animate-pulse" style={{background:'var(--ys-cream)'}}>
                     <div className="h-4 bg-gray-200 rounded w-1/3 mb-3"></div>
                     <div className="h-10 bg-gray-200 rounded w-1/2 mb-2"></div>
                     <div className="h-3 bg-gray-100 rounded w-1/4"></div>
@@ -2669,7 +2669,7 @@ window.ResearchSourcesPage = () => (
             );
         }
         if (!weather) return (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-3">
+            <div className="rounded-2xl shadow-sm border border-gray-100 p-5 mb-3" style={{background:'var(--ys-cream)'}}>
                 <div className="flex items-center gap-2 mb-3">
                     <div className="text-2xl">📍</div>
                     <div className="font-semibold text-gray-700 text-sm">Enter your zip code for local weather</div>
@@ -2731,8 +2731,8 @@ window.ResearchSourcesPage = () => (
 
         return (
             <div className="animate-fade-in">
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div className="bg-white border-b border-gray-100 px-4 pt-4 pb-3">
+                <div className="rounded-2xl shadow-sm border border-gray-100 overflow-hidden" style={{background:'var(--ys-cream)'}}>
+                    <div className="border-b border-gray-100 px-4 pt-4 pb-3" style={{background:'var(--ys-cream)'}}>
                         <div className="flex items-start justify-between">
                             <div>
                                 <div className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">{weather.location} · Live</div>
@@ -2751,22 +2751,22 @@ window.ResearchSourcesPage = () => (
                         </div>
                     </div>
                     <div className="grid grid-cols-4 gap-1.5 p-1.5 bg-gray-50">
-                        <div className="text-center py-2.5 px-1 bg-white rounded-xl shadow-sm">
+                        <div className="text-center py-2.5 px-1 rounded-xl shadow-sm" style={{background:'var(--ys-cream)'}}>
                             <svg className="w-3.5 h-3.5 mx-auto mb-1 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
                             <div className="text-[10px] text-gray-400 mb-0.5">Humidity</div>
                             <div className="text-sm font-bold text-gray-800">{weather.humidity}%</div>
                         </div>
-                        <div className="text-center py-2.5 px-1 bg-white rounded-xl shadow-sm">
+                        <div className="text-center py-2.5 px-1 rounded-xl shadow-sm" style={{background:'var(--ys-cream)'}}>
                             <svg className="w-3.5 h-3.5 mx-auto mb-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
                             <div className="text-[10px] text-gray-400 mb-0.5">Wind</div>
                             <div className="text-sm font-bold text-gray-800">{weather.windSpeed} mph</div>
                         </div>
-                        <div className="text-center py-2.5 px-1 bg-white rounded-xl shadow-sm">
+                        <div className="text-center py-2.5 px-1 rounded-xl shadow-sm" style={{background:'var(--ys-cream)'}}>
                             <svg className="w-3.5 h-3.5 mx-auto mb-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25M8 19v3m4-3v3m4-3v3"/></svg>
                             <div className="text-[10px] text-gray-400 mb-0.5">7-Day Rain</div>
                             <div className="text-sm font-bold text-gray-800">{weather.rainfall}"</div>
                         </div>
-                        <div className="text-center py-2.5 px-1 bg-white rounded-xl shadow-sm">
+                        <div className="text-center py-2.5 px-1 rounded-xl shadow-sm" style={{background:'var(--ys-cream)'}}>
                             {weather.precipProbability !== null ? (
                                 <>
                                     <svg className="w-3.5 h-3.5 mx-auto mb-1 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M23 12a11.05 11.05 0 0 0-22 0zm-5 7a3 3 0 0 1-6 0v-7"/></svg>
@@ -2851,7 +2851,7 @@ window.ResearchSourcesPage = () => (
 
     // ─── ProFeatureNotice ─────────────────────────────────────────────────────────
     const ProFeatureNotice = ({ onUnlock, onViewPricing, featureName }) => (
-        <div className="p-6 rounded-2xl border border-gray-200 bg-white text-center shadow-sm animate-fade-in">
+        <div className="p-6 rounded-2xl border border-gray-200 text-center shadow-sm animate-fade-in" style={{background:'var(--ys-cream)'}}>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold mb-3" style={{background:'var(--ys-gold-500)', color:'#fff'}}>PRO</div>
             <h3 className="font-bold text-gray-800 mb-1 text-lg" style={{fontFamily:'var(--ys-font-display)'}}>
                 {featureName || 'Pro Feature'}
@@ -2908,7 +2908,7 @@ window.ResearchSourcesPage = () => (
                         <input type="number" value={area} onChange={e => setArea(e.target.value)}
                             placeholder="e.g. 5000" className="w-full px-3 py-2 border rounded-lg text-sm" />
                         {result ? (
-                            <div className="mt-3 p-3 bg-white rounded-xl border text-center" style={{borderColor:'rgba(54,124,43,0.2)'}}>
+                            <div className="mt-3 p-3 rounded-xl border text-center" style={{borderColor:'rgba(54,124,43,0.2)', background:'var(--ys-cream)'}}>
                                 <div className="text-xs text-gray-400 mb-0.5">You need approximately</div>
                                 <div className="text-3xl font-extrabold" style={{fontFamily:'var(--ys-font-display)', color:'var(--ys-green-600)'}}>{resultText}</div>
                                 {product.rateMax && <div className="text-xs text-gray-400 mt-0.5">Based on the {product.rate} range</div>}
@@ -3043,7 +3043,7 @@ window.ResearchSourcesPage = () => (
                         setSaveError('Save failed. Please check your connection and try again.');
                         setSaving(false);
                     }
-                }} className="bg-white rounded-lg shadow-lg p-6">
+                }} className="rounded-lg shadow-lg p-6" style={{background:'var(--ys-cream)'}}>
                     {isPhotoLog && renderPhotoSection(true)}
                     {photoError && <p className="text-red-600 text-sm mb-3 font-medium">{photoError}</p>}
                     <div className="mb-4">
@@ -3518,8 +3518,8 @@ window.ResearchSourcesPage = () => (
                 {/* Footer link to full plan */}
                 <button
                     onClick={() => onNavigate('gameplan')}
-                    className="w-full rounded-2xl border px-4 py-3 flex items-center gap-3 card-hover btn-press text-left"
-                    style={{background:'white', borderColor:'rgba(0,0,0,0.07)'}}>
+                    className="w-full border px-4 py-3 flex items-center gap-3 card-hover btn-press text-left"
+                    style={{borderRadius:'5px', background:'var(--ys-cream)', borderColor:'rgba(0,0,0,0.07)'}}>
                     <span className="text-xl flex-shrink-0">📅</span>
                     <div className="flex-1 min-w-0">
                         <div className="text-sm font-bold text-gray-800">Full Lawn Care Program</div>
@@ -3579,7 +3579,7 @@ window.ResearchSourcesPage = () => (
             return (
                 <div>
                     <h2 className="text-2xl font-bold mb-6">Lawn Profile</h2>
-                    <div className="bg-white rounded-lg shadow p-4 space-y-4">
+                    <div className="rounded-lg shadow p-4 space-y-4" style={{background:'var(--ys-cream)'}}>
                         <div>
                             <label className="block text-sm font-medium mb-2">Lawn Size (sq ft)</label>
                             <input type="number" value={localForm.lawnSize} onChange={(e) => setLocalForm({...localForm, lawnSize: e.target.value})} placeholder="5000" className="w-full px-4 py-3 border-2 rounded-lg" />
@@ -3757,7 +3757,7 @@ window.ResearchSourcesPage = () => (
                     );
                 })()}
                 {grassInfo && (
-                    <div className="bg-white rounded-xl shadow-lg p-4">
+                    <div className="rounded-xl shadow-lg p-4" style={{background:'var(--ys-cream)'}}>
                         <h3 className="text-sm font-bold text-[#367C2B] uppercase mb-3">Quick Reference <CitationBadge sources={grassInfo.sources} label="Grass care specs" /></h3>
                         <div className="grid grid-cols-2 gap-3">
                             <div className="bg-gray-50 rounded-lg p-3 text-center"><div className="text-xs text-gray-500 mb-1">Mow Height</div><div className="text-sm font-bold text-gray-800">{grassInfo.mowHeight}</div><div className="text-xs text-gray-400 mt-1">Summer: {grassInfo.mowHeightSummer}</div></div>
@@ -3773,7 +3773,7 @@ window.ResearchSourcesPage = () => (
                 )}
                 {currentTasks && weather && <ForecastImpactCard tasks={currentTasks.tasks} weather={weather} lawnProfile={lawnProfile} />}
                 {currentTasks && (
-                    <div className="bg-white rounded-xl shadow-lg p-4">
+                    <div className="rounded-xl shadow-lg p-4" style={{background:'var(--ys-cream)'}}>
                         <h3 className="text-sm font-bold text-[#367C2B] uppercase mb-1">This Month's Tasks <CitationBadge sources={grassInfo ? grassInfo.sources : null} label="Monthly program" /></h3>
                         <div className="text-xs text-gray-500 mb-3">{currentTasks.month}{currentTasks.importance ? ` — ${currentTasks.importance}` : ''}</div>
                         <ul className="space-y-3">
@@ -3802,7 +3802,7 @@ window.ResearchSourcesPage = () => (
                     const isStale = testAge !== null && testAge >= 2;
                     const nutrientColors = { low: 'bg-red-100 text-red-700', medium: 'bg-amber-100 text-amber-700', high: 'bg-green-100 text-green-700' };
                     return (
-                        <div className="bg-white rounded-xl shadow-lg p-4">
+                        <div className="rounded-xl shadow-lg p-4" style={{background:'var(--ys-cream)'}}>
                             <div className="flex items-center justify-between mb-3">
                                 <h3 className="text-sm font-bold text-amber-700 uppercase flex items-center gap-1.5">
                                     🧪 Soil Test Data
@@ -3885,7 +3885,7 @@ window.ResearchSourcesPage = () => (
                         </div>
                     );
                 })()}
-                <div className="bg-white rounded-xl shadow-lg p-4">
+                <div className="rounded-xl shadow-lg p-4" style={{background:'var(--ys-cream)'}}>
                     <h3 className="text-sm font-bold text-[#367C2B] uppercase mb-2">Lawn Care Program</h3>
                     <p className="text-sm text-gray-600 mb-3">View your full personalized year-round care schedule with monthly tasks, treatments, and timing.</p>
                     <button onClick={() => onNavigate('gameplan')} className="w-full py-3 px-4 bg-[#367C2B] text-white rounded-xl font-bold text-sm hover:bg-[#2d6323] btn-press">
@@ -3893,13 +3893,13 @@ window.ResearchSourcesPage = () => (
                     </button>
                 </div>
                 {grassInfo && grassInfo.keyTips && (
-                    <div className="bg-white rounded-xl shadow-lg p-4">
+                    <div className="rounded-xl shadow-lg p-4" style={{background:'var(--ys-cream)'}}>
                         <h3 className="text-sm font-bold text-[#367C2B] uppercase mb-3">Key Tips <CitationBadge sources={grassInfo.sources} label="Care tips" /></h3>
                         <ul className="space-y-2">{grassInfo.keyTips.map((tip, i) => <li key={i} className="flex items-start gap-2 text-sm text-gray-700"><span className="text-[#367C2B] mt-0.5">💡</span><span>{tip}</span></li>)}</ul>
                     </div>
                 )}
                 {grassInfo && grassInfo.commonIssues && (
-                    <div className="bg-white rounded-xl shadow-lg p-4">
+                    <div className="rounded-xl shadow-lg p-4" style={{background:'var(--ys-cream)'}}>
                         <h3 className="text-sm font-bold text-orange-600 uppercase mb-3">Watch Out For <CitationBadge sources={grassInfo.sources} label="Common issues" /></h3>
                         <ul className="space-y-2">{grassInfo.commonIssues.map((issue, i) => <li key={i} className="flex items-start gap-2 text-sm text-gray-700"><span className="text-orange-500 mt-0.5">⚠️</span><span>{issue}</span></li>)}</ul>
                     </div>
@@ -3919,7 +3919,7 @@ window.ResearchSourcesPage = () => (
                     </div>
                 )}
                 {grassInfo && grassInfo.sources && grassInfo.sources.length > 0 && (
-                    <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+                    <div className="rounded-xl shadow-sm p-4 border border-gray-100" style={{background:'var(--ys-cream)'}}>
                         <div className="text-xs font-bold text-gray-500 uppercase mb-2">📚 Research Sources</div>
                         <div className="space-y-1">
                             {grassInfo.sources.map((s, i) => (
@@ -4180,7 +4180,7 @@ window.ResearchSourcesPage = () => (
                 )}
 
                 {program.sources && program.sources.length > 0 && (
-                    <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+                    <div className="rounded-xl shadow-sm p-4 border border-gray-100" style={{background:'var(--ys-cream)'}}>
                         <div className="text-xs font-bold text-gray-500 uppercase mb-2">📚 Research Sources</div>
                         <div className="space-y-1">
                             {program.sources.map((s, i) => (
@@ -4252,7 +4252,7 @@ window.ResearchSourcesPage = () => (
                         </div>
                     </div>
                 ) : (
-                    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-2.5">
+                    <div className="rounded-2xl border border-gray-100 shadow-sm p-5 space-y-2.5" style={{background:'var(--ys-cream)'}}>
                         <button
                             onClick={onSignIn}
                             className="w-full py-3 rounded-xl text-sm font-bold text-white btn-press"
@@ -4408,7 +4408,7 @@ window.ResearchSourcesPage = () => (
                 </div>
 
                 {/* ── 1. Account Status ───────────────────────────────────────── */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="rounded-2xl shadow-sm border border-gray-100 overflow-hidden" style={{background:'var(--ys-cream)'}}>
                     {store.isCloud && currentUser ? (
                         <div className="p-4">
                             <div className="flex items-center gap-3 p-3 rounded-xl mb-3" style={{background:'#e8f5e9'}}>
@@ -4460,7 +4460,7 @@ window.ResearchSourcesPage = () => (
                 </div>
 
                 {/* ── 2. Name & Personalization ───────────────────────────────── */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                <div className="rounded-2xl shadow-sm border border-gray-100 p-4" style={{background:'var(--ys-cream)'}}>
                     <div className="flex items-center justify-between mb-3">
                         <div>
                             <div className="font-bold text-gray-800 text-sm">Your Name</div>
@@ -4512,7 +4512,7 @@ window.ResearchSourcesPage = () => (
                             </div>
                         </div>
                     ) : (
-                        <div className="bg-white p-4">
+                        <div className="p-4" style={{background:'var(--ys-cream)'}}>
                             <div className="flex items-center justify-between mb-3">
                                 <div>
                                     <div className="font-bold text-gray-800 text-sm">Your Yard</div>
@@ -4534,7 +4534,7 @@ window.ResearchSourcesPage = () => (
                 </div>
 
                 {/* ── 4. Equipment Snapshot ───────────────────────────────────── */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                <div className="rounded-2xl shadow-sm border border-gray-100 p-4" style={{background:'var(--ys-cream)'}}>
                     <div className="flex items-center justify-between mb-3">
                         <div className="font-bold text-gray-800 text-sm">Your Garage</div>
                         <button onClick={() => onNavigate('garage')} className="text-xs font-bold px-3 py-1.5 rounded-lg btn-press" style={{color:'var(--ys-green-600)', background:'var(--ys-green-100)'}}>
@@ -4600,7 +4600,7 @@ window.ResearchSourcesPage = () => (
                 </div>
 
                 {/* ── 6. Data Management (collapsible) ───────────────────────── */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="rounded-2xl shadow-sm border border-gray-100 overflow-hidden" style={{background:'var(--ys-cream)'}}>
                     <button onClick={() => setDataOpen(o => !o)} className="w-full flex items-center justify-between px-4 py-3.5 text-left btn-press">
                         <div className="flex items-center gap-2">
                             <span className="text-base">💾</span>
@@ -4621,7 +4621,7 @@ window.ResearchSourcesPage = () => (
 
                 {/* ── 7. Delete Account ───────────────────────────────────────── */}
                 {(store.isCloud && currentUser) && (
-                    <div className="bg-white rounded-2xl shadow-sm border border-red-100 overflow-hidden">
+                    <div className="rounded-2xl shadow-sm border border-red-100 overflow-hidden" style={{background:'var(--ys-cream)'}}>
                         <button onClick={() => { setDeleteOpen(o => !o); setDeleteConfirmText(''); setDeleteStatus(null); setDeleteError(''); }}
                             className="w-full flex items-center justify-between px-4 py-3.5 text-left btn-press">
                             <div className="flex items-center gap-2">
@@ -4663,7 +4663,7 @@ window.ResearchSourcesPage = () => (
                 )}
 
                 {/* ── 9. Share Yardstick ──────────────────────────────────────── */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                <div className="rounded-2xl shadow-sm border border-gray-100 p-4" style={{background:'var(--ys-cream)'}}>
                     <div className="flex items-center justify-between">
                         <div>
                             <div className="font-bold text-gray-800 text-sm">Share Yardstick</div>
@@ -4680,7 +4680,7 @@ window.ResearchSourcesPage = () => (
                 </div>
 
                 {/* ── 10. About ───────────────────────────────────────────────── */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                <div className="rounded-2xl shadow-sm border border-gray-100 p-4" style={{background:'var(--ys-cream)'}}>
                     <h3 className="text-sm font-bold text-gray-700 mb-2">About</h3>
                     <div className="flex items-center gap-2 mb-1">
                         <p className="text-sm text-gray-600 font-semibold">Yardstick V1 Beta</p>
@@ -4857,7 +4857,7 @@ window.ResearchSourcesPage = () => (
                         const isUpdating = updating === s.id;
 
                         return (
-                            <div key={s.id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                            <div key={s.id} className="rounded-xl border border-gray-100 shadow-sm overflow-hidden" style={{background:'var(--ys-cream)'}}>
                                 {/* ── Card header ── */}
                                 <button
                                     className="w-full text-left p-4 flex items-start gap-3"
@@ -5022,7 +5022,7 @@ window.ResearchSourcesPage = () => (
             return (
                 <div className="animate-fade-in">
                     <h2 className="text-2xl font-bold text-gray-800 mb-4">Help &amp; Feedback</h2>
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 text-center">
+                    <div className="rounded-xl shadow-sm border border-gray-100 p-10 text-center" style={{background:'var(--ys-cream)'}}>
                         <div className="text-5xl mb-4">✅</div>
                         <h3 className="text-xl font-bold text-gray-800 mb-2">Thank you!</h3>
                         <p className="text-gray-500 text-sm max-w-xs mx-auto">
@@ -5073,7 +5073,7 @@ window.ResearchSourcesPage = () => (
                 <form onSubmit={handleSubmit} className="space-y-3">
 
                     {/* ── Type ── */}
-                    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                    <div className="rounded-xl border border-gray-100 shadow-sm p-4" style={{background:'var(--ys-cream)'}}>
                         <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Type</div>
                         <div className="grid grid-cols-2 gap-2">
                             {TYPES.map(t => (
@@ -5093,7 +5093,7 @@ window.ResearchSourcesPage = () => (
                     </div>
 
                     {/* ── Title ── */}
-                    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                    <div className="rounded-xl border border-gray-100 shadow-sm p-4" style={{background:'var(--ys-cream)'}}>
                         <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">
                             {type === 'bug' ? 'What went wrong?' : type === 'feature' ? "What's the idea?" : 'Title'}
                             <span className="text-red-400 ml-0.5">*</span>
@@ -5107,7 +5107,7 @@ window.ResearchSourcesPage = () => (
                     </div>
 
                     {/* ── Description ── */}
-                    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                    <div className="rounded-xl border border-gray-100 shadow-sm p-4" style={{background:'var(--ys-cream)'}}>
                         <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">
                             Details<span className="text-red-400 ml-0.5">*</span>
                         </label>
@@ -5121,7 +5121,7 @@ window.ResearchSourcesPage = () => (
 
                     {/* ── Steps to reproduce (bugs only) ── */}
                     {type === 'bug' && (
-                        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                        <div className="rounded-xl border border-gray-100 shadow-sm p-4" style={{background:'var(--ys-cream)'}}>
                             <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">
                                 Steps to Reproduce <span className="text-gray-300 font-normal normal-case">(optional)</span>
                             </label>
@@ -5136,7 +5136,7 @@ window.ResearchSourcesPage = () => (
 
 
                     {/* ── Contact email ── */}
-                    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                    <div className="rounded-xl border border-gray-100 shadow-sm p-4" style={{background:'var(--ys-cream)'}}>
                         <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">
                             Your Email <span className="text-gray-300 font-normal normal-case">(optional — for follow-up)</span>
                         </label>
@@ -6589,7 +6589,7 @@ window.ResearchSourcesPage = () => (
                     <p className="text-sm text-gray-500">All features are unlocked for beta testers. Pricing will be announced when we launch.</p>
                 </div>
                 {/* Free tier — always available */}
-                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+                <div className="rounded-2xl border border-gray-200 shadow-sm p-5" style={{background:'var(--ys-cream)'}}>
                     <div className="flex items-center gap-2 mb-1">
                         <div className="text-lg font-bold text-gray-800">Always Free</div>
                         <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{background:'var(--ys-green-100)', color:'var(--ys-green-700)'}}>No account needed</span>
@@ -7120,7 +7120,7 @@ window.ResearchSourcesPage = () => (
         }
 
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen" style={{background:'var(--ys-canvas)'}}>
                 {showAuthModal && (
                     <AuthModal
                         onClose={() => setShowAuthModal(false)}
@@ -7733,13 +7733,13 @@ window.ResearchSourcesPage = () => (
                                 if (overdue.length > 0)     parts.push(overdue.length + ' overdue');
                                 if (dueTodayArr.length > 0) parts.push(dueTodayArr.length + ' today');
                                 const subText = urgentCount > 0 ? parts.join(', ') : ('in ' + d + ' day' + (d !== 1 ? 's' : ''));
-                                const cardCls = 'w-full rounded-2xl shadow-sm border p-4 card-hover btn-press text-left flex items-center gap-3 ' + (isUrgent ? 'bg-orange-50 border-orange-200' : 'bg-white border-gray-100');
+                                const cardCls = 'w-full shadow-sm border p-4 card-hover btn-press text-left flex items-center gap-3 ' + (isUrgent ? 'bg-orange-50 border-orange-200' : 'border-gray-100');
                                 const iconCls = 'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-xl ' + (isUrgent ? 'bg-orange-100' : 'bg-blue-50');
                                 const headCls = 'text-sm font-bold ' + (isUrgent ? 'text-orange-800' : 'text-gray-800');
                                 const subCls  = 'text-xs ' + (isUrgent ? 'text-orange-600' : 'text-gray-400');
                                 const chevCls = 'text-xs font-bold ' + (isUrgent ? 'text-orange-600' : 'text-[#367C2B]');
                                 return (
-                                    <button onClick={() => setView('schedules')} className={cardCls}>
+                                    <button onClick={() => setView('schedules')} className={cardCls} style={{borderRadius:'5px', background: isUrgent ? '' : 'var(--ys-cream)'}}>
                                         <div className={iconCls}>&#128467;</div>
                                         <div className="flex-1 min-w-0">
                                             <div className={headCls}>{mainText}</div>
@@ -7792,7 +7792,7 @@ window.ResearchSourcesPage = () => (
                                     return <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-red-100 text-red-700 flex-shrink-0 whitespace-nowrap">Hold</span>;
                                 };
                                 return (
-                                    <button onClick={() => setView('gameplan')} className="w-full rounded-2xl shadow-sm border border-[#367C2B]/20 p-4 card-hover btn-press text-left" style={{background:'var(--ys-cream)'}}>
+                                    <button onClick={() => setView('gameplan')} className="w-full shadow-sm border border-[#367C2B]/20 p-4 card-hover btn-press text-left" style={{borderRadius:'5px', background:'var(--ys-cream)'}}>
                                         <div className="flex items-center justify-between mb-3">
                                             <div className="flex items-center gap-2.5">
                                                 <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style={{background:'var(--ys-green-100)'}}>📅</div>
@@ -7889,8 +7889,8 @@ window.ResearchSourcesPage = () => (
                             {/* This Week shortcut */}
                             <button
                                 onClick={() => setView('today')}
-                                className="w-full rounded-2xl border px-4 py-3 flex items-center gap-3 card-hover btn-press text-left"
-                                style={{background:'var(--ys-cream)', borderColor:'rgba(30,77,24,0.15)'}}>
+                                className="w-full border px-4 py-3 flex items-center gap-3 card-hover btn-press text-left"
+                                style={{borderRadius:'5px', background:'var(--ys-cream)', borderColor:'rgba(30,77,24,0.15)'}}>
                                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{background:'var(--ys-green-100)'}}>
                                     ✅
                                 </div>

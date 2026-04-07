@@ -772,6 +772,15 @@ Copy this `:root` block into any new stylesheet, component, or AI-generated code
   --bg:    #EDE8DE;    /* app body / page background */
   --white: #FFFFFF;    /* select inputs, swatch panels */
 
+  /*
+   * App implementation note: the live app (index.html) uses --ys-* prefixed
+   * aliases for these tokens: --ys-cream (#F7F3EC) and --ys-canvas (#EDE8DE).
+   * Always apply surfaces via inline style props — never Tailwind bg-* classes —
+   * because Tailwind runtime classes have higher specificity than :root variables.
+   *   ✓  style={{background:'var(--ys-cream)'}}
+   *   ✕  className="bg-white"
+   */
+
   /* ── Text ── */
   --soil:        #1E1A14;   /* primary text, button text on yellow */
   --stone:       #6B6560;   /* secondary text, card body */
@@ -812,12 +821,14 @@ Copy this `:root` block into any new stylesheet, component, or AI-generated code
 
 ### Cards & Alerts
 
-|✓ DO                                       |✕ DON’T                                     |
-|-------------------------------------------|--------------------------------------------|
-|Parchment inset shadow for all cards       |Mix card styles within a single view        |
-|rgba tinted backgrounds for all alerts     |Solid/inverted alert fills                  |
-|Always include a university source citation|Coach content without a university reference|
-|Clay progress bars for overdue maintenance |Green progress bars for overdue states      |
+|✓ DO                                                    |✕ DON’T                                          |
+|--------------------------------------------------------|-------------------------------------------------|
+|Parchment inset shadow for all cards                    |Mix card styles within a single view             |
+|`style={{background:’var(--ys-cream)’}}` for card bg    |`className="bg-white"` — Tailwind overrides tokens|
+|`style={{background:’var(--ys-canvas)’}}` for page bg   |`className="bg-gray-50"` — same reason            |
+|rgba tinted backgrounds for all alerts                  |Solid/inverted alert fills                       |
+|Always include a university source citation             |Coach content without a university reference     |
+|Clay progress bars for overdue maintenance              |Green progress bars for overdue states           |
 
 ### Buttons
 
@@ -845,6 +856,7 @@ Copy this `:root` block into any new stylesheet, component, or AI-generated code
 |v1.0   |2025|Initial locked system — Bitter/Cabin/Courier Prime, Parchment theme, Style F cards, filled alerts, outlined badges, SVG wordmark, yellow CTA                                                                                                              |
 |v2.0   |2026|Consolidated brand book — merged design system and brand book into single AI-ready reference. Added complete SVG code, full CSS component library, mobile-first checklist, activity log dot colors, progress bar variant. Updated domain to yardstick.diy.|
 |v2.1   |2026|Copy update — removed “no account required” / “no login” framing across all approved copy. Updated Long Description and Short Description to lead with free account creation. Added explicit DON’T rule against no-login language.                        |
+|v2.2   |2026|Surface color enforcement — documented that app implementation uses `--ys-cream` / `--ys-canvas` aliases for `--cream` / `--bg`. Added rule: always use `style={{background:’var(--ys-cream)’}}` inline props for card surfaces, never Tailwind `bg-white` (Tailwind runtime classes have higher CSS specificity than `:root` variables and silently override tokens). Updated Cards & Alerts Do/Don’t table. Removed all `bg-white` / `bg-gray-50` from 4 component files.|
 
 -----
 

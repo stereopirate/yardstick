@@ -81,15 +81,15 @@
 
                 {/* Summary cards */}
                 <div className="grid grid-cols-4 gap-2 mb-2">
-                    <div className="bg-white rounded-xl p-3 shadow-md text-center border-t-2 border-[#367C2B]"><div className="text-2xl font-bold text-[#367C2B]">{stats.total}</div><div className="text-xs text-gray-500">Total</div></div>
-                    <div className="bg-white rounded-xl p-3 shadow-md text-center border-t-2 border-[#367C2B]"><div className="text-2xl font-bold text-[#367C2B]">{stats.mowing}</div><div className="text-xs text-gray-500">Mows</div></div>
-                    <div className="bg-white rounded-xl p-3 shadow-md text-center border-t-2 border-[#F97316]"><div className="text-2xl font-bold text-[#F97316]">{stats.fertilizer}</div><div className="text-xs text-gray-500">Feeds</div></div>
-                    <div className="bg-white rounded-xl p-3 shadow-md text-center border-t-2 border-[#3B82F6]"><div className="text-2xl font-bold text-[#3B82F6]">{stats.totalHours.toFixed(1)}</div><div className="text-xs text-gray-500">Hours</div></div>
+                    <div className="rounded-xl p-3 shadow-md text-center border-t-2 border-[#367C2B]" style={{background:'var(--ys-cream)'}}><div className="text-2xl font-bold text-[#367C2B]">{stats.total}</div><div className="text-xs text-gray-500">Total</div></div>
+                    <div className="rounded-xl p-3 shadow-md text-center border-t-2 border-[#367C2B]" style={{background:'var(--ys-cream)'}}><div className="text-2xl font-bold text-[#367C2B]">{stats.mowing}</div><div className="text-xs text-gray-500">Mows</div></div>
+                    <div className="rounded-xl p-3 shadow-md text-center border-t-2 border-[#F97316]" style={{background:'var(--ys-cream)'}}><div className="text-2xl font-bold text-[#F97316]">{stats.fertilizer}</div><div className="text-xs text-gray-500">Feeds</div></div>
+                    <div className="rounded-xl p-3 shadow-md text-center border-t-2 border-[#3B82F6]" style={{background:'var(--ys-cream)'}}><div className="text-2xl font-bold text-[#3B82F6]">{stats.totalHours.toFixed(1)}</div><div className="text-xs text-gray-500">Hours</div></div>
                 </div>
 
                 {/* Season spend */}
                 {stats.totalSpend > 0 && (
-                    <div className="bg-white rounded-xl px-4 py-3 shadow-md mb-4 flex items-center justify-between border-l-4 border-emerald-500">
+                    <div className="rounded-xl px-4 py-3 shadow-md mb-4 flex items-center justify-between border-l-4 border-emerald-500" style={{background:'var(--ys-cream)'}}>
                         <div>
                             <div className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Season Spend</div>
                             <div className="text-xl font-extrabold text-gray-800">${stats.totalSpend.toFixed(2)}</div>
@@ -107,7 +107,7 @@
                 )}
 
                 {/* Activity breakdown */}
-                <div className="bg-white rounded-xl p-4 shadow-md mb-4">
+                <div className="rounded-xl p-4 shadow-md mb-4" style={{background:'var(--ys-cream)'}}>
                     <h3 className="text-lg font-bold mb-3">Activity Breakdown</h3>
                     <div className="space-y-2">
                         {breakdownItems.map(({ type, label, count }) => {
@@ -128,7 +128,7 @@
                 </div>
 
                 {/* Monthly trend */}
-                <div className="bg-white rounded-xl p-4 shadow-md mb-4">
+                <div className="rounded-xl p-4 shadow-md mb-4" style={{background:'var(--ys-cream)'}}>
                     <h3 className="text-lg font-bold mb-3">Monthly Trend</h3>
                     <div className="flex items-end justify-between gap-1" style={{ height: '100px' }}>
                         {monthlyData.map((data, i) => (
@@ -148,7 +148,7 @@
                 </div>
 
                 {/* Recent activity */}
-                <div className="bg-white rounded-xl p-4 shadow-md">
+                <div className="rounded-xl p-4 shadow-md" style={{background:'var(--ys-cream)'}}>
                     <h3 className="text-lg font-bold mb-3">🕒 Recent Activity</h3>
                     {recent.length > 0 ? recent.map(activity => {
                         const colors = ACTIVITY_COLORS[activity.type] || ACTIVITY_COLORS.mowing;
