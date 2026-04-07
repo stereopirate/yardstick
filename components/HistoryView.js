@@ -24,7 +24,7 @@
                             return (
                                 <div
                                     key={activity.id}
-                                    className={`bg-white rounded-xl shadow-md p-4 cursor-pointer card-hover border-l-4 ${colors.border}`}
+                                    className={`rounded-xl shadow-md p-4 cursor-pointer card-hover border-l-4 ${colors.border}`} style={{background:'var(--ys-cream)'}}
                                     onClick={() => setExpandedId(expandedId === activity.id ? null : activity.id)}
                                 >
                                     <div className="flex justify-between items-center">
