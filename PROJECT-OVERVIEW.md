@@ -673,7 +673,7 @@ To apply display font to a non-heading element: `style={{fontFamily:'var(--ys-fo
 | Class | Purpose |
 |---|---|
 | `.ys-btn-primary` | Yellow CTA button (`--ys-yellow` bg, `--ys-soil-800` text) |
-| `.ys-card` | White rounded card with subtle shadow |
+| `.ys-card` | Cream/parchment rounded card with subtle shadow (`--ys-cream` bg, 5px radius) |
 | `.ys-coach-card` | Dark-green gradient hero card (home screen) |
 | `.ys-badge-white` | Semi-transparent white pill (on dark backgrounds) |
 | `.ys-badge-green` | Light-green pill (on white backgrounds) |
@@ -692,6 +692,22 @@ To apply display font to a non-heading element: `style={{fontFamily:'var(--ys-fo
 | `.card-hover` | Scale effect on `:active` |
 | `.btn-press` | Scale + opacity on `:active` |
 | `.menu-slide` | Fade + slide animation (0.2s) |
+
+### Background Color Rule
+
+**Always use CSS variable inline styles for card and page backgrounds — never Tailwind color utility classes.**
+
+```jsx
+// ✓ CORRECT — CSS variable wins over Tailwind
+<div style={{background:'var(--ys-cream)'}}>card</div>
+<div style={{background:'var(--ys-canvas)'}}>page</div>
+
+// ✕ WRONG — bg-white and bg-gray-50 override design tokens at runtime
+<div className="bg-white">card</div>
+<div className="bg-gray-50">page</div>
+```
+
+Tailwind classes are compiled at runtime and have higher CSS specificity than `:root` variable declarations, so `bg-white` will always beat `var(--ys-cream)` unless an inline `style` prop is used. Use Tailwind freely for layout (padding, flex, gap, rounded, shadow) but not for semantic surface colors.
 
 ---
 
