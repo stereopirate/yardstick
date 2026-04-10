@@ -374,6 +374,40 @@ window.compressImage = function(file, maxDim, quality) {
     .ys-sec-label { font-family: var(--ys-font-display); font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ys-forest); white-space: nowrap; }
     .ys-sec-rule { flex: 1; height: 1px; background: linear-gradient(to right, var(--ys-green-600), transparent); opacity: .25; }
     .ys-sec-sub { font-family: var(--ys-font-body); font-size: 10.5px; color: #9ca3af; }
+    /* ── Phase 3: Coach hero ── */
+    .ys-home-coach { padding-bottom: 24px; }
+    .ys-coach-hero { background: var(--ys-forest); padding: 4px 20px 24px; position: relative; overflow: hidden; }
+    .ys-coach-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 55% 45% at 90% 15%, rgba(54,124,43,.5), transparent 65%); pointer-events: none; }
+    .ys-yard-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); border-radius: 20px; padding: 4px 11px; font-family: var(--ys-font-body); font-size: 11px; font-weight: 600; color: rgba(255,255,255,.8); margin-bottom: 12px; }
+    .ys-yard-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ys-yellow); flex-shrink: 0; }
+    .ys-coach-headline { font-family: var(--ys-font-display); font-size: 23px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 10px; position: relative; }
+    .ys-coach-why { font-family: var(--ys-font-body); font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,.75); margin-bottom: 14px; position: relative; }
+    .ys-coach-why strong { color: var(--ys-yellow); font-weight: 600; }
+    .ys-conditions-row { display: flex; gap: 7px; flex-wrap: wrap; }
+    .ys-cond-chip { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); border-radius: 20px; padding: 4px 10px; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 11px; color: rgba(255,255,255,.8); }
+    .ys-cdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    /* Status pill */
+    .ys-status-row { padding: 12px 14px 2px; }
+    .ys-status-pill { display: flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid rgba(54,124,43,.2); border-radius: 20px; padding: 8px 14px; font-family: var(--ys-font-body); font-size: 13px; font-weight: 600; color: var(--ys-forest); width: 100%; box-sizing: border-box; }
+    .ys-status-pill.warn { border-color: rgba(192,90,44,.25); color: var(--ys-clay); background: #fff9f7; }
+    .ys-status-pill.done { border-color: rgba(74,222,128,.3); color: #065f46; }
+    .ys-status-icon { font-size: 15px; flex-shrink: 0; }
+    .ys-status-text { flex: 1; }
+    .ys-status-sub { font-weight: 400; color: #6b7280; font-size: 12px; margin-left: 4px; }
+    /* Task list */
+    .ys-task-list { padding: 0 14px; display: flex; flex-direction: column; gap: 10px; }
+    /* Stats strip */
+    .ys-stats-strip { display: flex; gap: 8px; padding: 4px 14px 14px; overflow-x: auto; scrollbar-width: none; }
+    .ys-stats-strip::-webkit-scrollbar { display: none; }
+    .ys-stat { background: rgba(30,77,24,.07); border: 1px solid rgba(30,77,24,.1); border-radius: 8px; padding: 9px 13px; min-width: 72px; flex-shrink: 0; text-align: center; }
+    .ys-stat-v { font-family: 'Courier Prime', 'Courier New', monospace; font-size: 17px; font-weight: 700; color: var(--ys-forest); display: block; line-height: 1; margin-bottom: 3px; }
+    .ys-stat-l { font-family: var(--ys-font-body); font-size: 9.5px; color: #6b7280; text-transform: uppercase; letter-spacing: .06em; }
+    /* Quick log */
+    .ys-quick-log { padding: 0 14px 14px; display: flex; gap: 7px; }
+    .ys-ql-main { flex: 1; background: var(--ys-yellow); color: var(--ys-soil); border: none; border-radius: 3px; padding: 13px 10px; font-family: var(--ys-font-body); font-size: 13.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: background .1s; }
+    .ys-ql-main:hover { background: #e8b800; }
+    .ys-ql-sec { background: #fff; color: var(--ys-forest); border: 1.5px solid rgba(30,77,24,.18); border-radius: 3px; padding: 13px 14px; font-family: var(--ys-font-body); font-size: 13px; font-weight: 600; cursor: pointer; transition: background .1s; }
+    .ys-ql-sec:hover { background: var(--ys-canvas); }
     /* ── Phase 1: Bottom nav ── */
     .ys-bottom-nav { display: flex; background: #fff; border-top: 1px solid rgba(30,26,20,0.07); padding: 8px 0 max(20px, env(safe-area-inset-bottom)); position: sticky; bottom: 0; z-index: 100; box-shadow: 0 -4px 20px rgba(30,26,20,0.06); }
     .ys-nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 4px 0; background: none; border: none; cursor: pointer; position: relative; transition: opacity 0.1s; }
@@ -6754,6 +6788,196 @@ window.ResearchSourcesPage = () => (
     };
 
     // ─── Hash-based URL routing helpers ─────────────────────────────────────────
+    // ─── buildThisWeekTasks ──────────────────────────────────────────────────────
+    function buildThisWeekTasks({ lawnProfile, weather, activities, schedules, soilTempF }) {
+        const tasks = [];
+        const COOL_SEASON = ['tall-fescue','kentucky-bluegrass','fine-fescue','perennial-ryegrass'];
+        const isCoolSeason = COOL_SEASON.includes(lawnProfile && lawnProfile.specificGrass);
+        const lawnSizeSqFt = parseInt(lawnProfile && lawnProfile.lawnSize ? lawnProfile.lawnSize : '5000') || 5000;
+
+        // 1. Soil-temp-triggered task
+        if (soilTempF != null && soilTempF >= 55 && soilTempF < 65 && isCoolSeason) {
+            tasks.push({
+                id: 'soil-pre-emergent', type: 'soil-trigger', name: 'Apply Pre-Emergent',
+                why: 'Soil hit ' + soilTempF + '°F — crabgrass germination window is open. Every day you wait reduces effectiveness.',
+                urgency: 'urgent', badge: 'Do Now',
+                quantity: '~' + ((lawnSizeSqFt / 1000) * 1.5).toFixed(1) + ' lbs',
+                unit: 'for your yard', effort: '~30 min', costEst: '~$28',
+                howTo: [
+                    'Apply at 1.5 lb per 1,000 sq ft using a broadcast spreader.',
+                    'Water in lightly within 24 hours (½ inch).',
+                    'Do not mow for 48 hours before or after application.',
+                    'One application lasts 3–4 months for cool-season grasses.'
+                ],
+                product: { name: 'The Andersons Barricade', affiliateUrl: null },
+                done: false
+            });
+        }
+
+        // 2. Overdue schedules
+        (schedules || []).forEach(function(schedule) {
+            if (!schedule.lastDone) {
+                tasks.push({ id: 'schedule-' + schedule.id, type: 'schedule', name: schedule.name, why: 'This task has never been logged. Set a baseline by recording it now.', urgency: 'soon', badge: 'Overdue', done: false });
+            } else {
+                const daysSince = Math.floor((Date.now() - new Date(schedule.lastDone)) / 86400000);
+                if (daysSince >= (schedule.frequencyDays || 7)) {
+                    tasks.push({ id: 'schedule-' + schedule.id, type: 'schedule', name: schedule.name, why: daysSince + ' days since last logged — due every ' + (schedule.frequencyDays || 7) + ' days.', urgency: daysSince > (schedule.frequencyDays || 7) * 1.5 ? 'urgent' : 'soon', badge: daysSince > (schedule.frequencyDays || 7) * 1.5 ? 'Overdue' : 'Due', done: false });
+                }
+            }
+        });
+
+        // 3. Mow check
+        const mowActs = (activities || []).filter(function(a) { return a.type === 'mowing'; }).sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+        const lastMow = mowActs[0] || null;
+        const daysSinceMow = lastMow ? Math.floor((Date.now() - new Date(lastMow.date)) / 86400000) : null;
+        if (daysSinceMow == null || daysSinceMow >= 8) {
+            tasks.push({ id: 'mow-check', type: 'seasonal', name: 'Mow at Recommended Height', why: daysSinceMow ? 'Last mowed ' + daysSinceMow + ' days ago.' : 'No mowing logged yet. Set your first baseline.', urgency: 'soon', badge: 'This Week', effort: '~45 min', done: false });
+        }
+
+        return tasks.slice(0, 4);
+    }
+
+    // ─── StatusPill ──────────────────────────────────────────────────────────────
+    function StatusPill({ tasks }) {
+        const overdue = (tasks || []).filter(function(t) { return t.urgency === 'urgent' && !t.done; });
+        const done = (tasks || []).filter(function(t) { return t.done; }).length;
+        const total = (tasks || []).length;
+        let status, icon, cls;
+        if (overdue.length > 0) { status = overdue.length + ' task' + (overdue.length > 1 ? 's' : '') + ' overdue'; icon = '⚠️'; cls = 'warn'; }
+        else if (done === total && total > 0) { status = 'All done this week'; icon = '🌟'; cls = 'done'; }
+        else { status = "You're on track this week"; icon = '✅'; cls = 'good'; }
+        const sub = overdue.length > 0 ? " — let's catch up this weekend" : done > 0 ? ' · ' + done + ' of ' + total + ' done' : '';
+        return (
+            <div className="ys-status-row">
+                <div className={'ys-status-pill ' + cls}>
+                    <span className="ys-status-icon">{icon}</span>
+                    <span className="ys-status-text">{status}{sub && <span className="ys-status-sub">{sub}</span>}</span>
+                </div>
+            </div>
+        );
+    }
+
+    // ─── HomeCoachView ───────────────────────────────────────────────────────────
+    function HomeCoachView({ lawnProfile, weather, activities, schedules, setView, currentUser, onShowAuthModal }) {
+        const soilTempC = weather && weather.hourly && weather.hourly.soil_temperature_6cm ? weather.hourly.soil_temperature_6cm[0] : null;
+        const soilTempF = soilTempC != null ? Math.round(soilTempC * 9/5 + 32) : null;
+        const airTempRaw = weather && weather.current ? weather.current.temperature_2m : null;
+        const airTempF = airTempRaw != null ? Math.round(airTempRaw * 9/5 + 32) : null;
+        const grassName = GRASS_INFO && lawnProfile.specificGrass && GRASS_INFO[lawnProfile.specificGrass] ? GRASS_INFO[lawnProfile.specificGrass].name : lawnProfile.specificGrass;
+        const zone = lawnProfile.zone;
+        const COOL_SEASON = ['tall-fescue','kentucky-bluegrass','fine-fescue','perennial-ryegrass'];
+        const isCoolSeason = COOL_SEASON.includes(lawnProfile.specificGrass);
+
+        function getCoachMessage(soilTempF, isCoolSeason) {
+            if (soilTempF == null) return { headline: 'Checking your lawn conditions…', why: 'Loading soil temperature data for your area.', urgency: 'info' };
+            if (isCoolSeason) {
+                if (soilTempF < 50) return { headline: 'Your lawn is resting. Hold off on treatments.', why: 'Soil at ' + soilTempF + '°F — below the 50°F threshold for active cool-season growth. No fertilizing or seeding until temperatures rise.', urgency: 'info' };
+                if (soilTempF < 55) return { headline: 'Pre-emergent window is approaching.', why: 'Soil at ' + soilTempF + '°F and rising. Crabgrass germinates at 55°F — be ready to apply within the next 7–14 days.', urgency: 'soon' };
+                if (soilTempF < 65) return { headline: 'Apply pre-emergent this weekend.', why: 'Soil hit ' + soilTempF + '°F — the exact threshold where crabgrass germination begins. You have a 7–10 day window.', urgency: 'urgent' };
+                if (soilTempF < 80) return { headline: 'Prime window for weed control and light feeding.', why: 'Soil at ' + soilTempF + '°F — active growth period. Focus on post-emergent weed control and a slow-release nitrogen application if not done this season.', urgency: 'normal' };
+                return { headline: 'Heat stress management. Mow high, water deep.', why: 'Soil at ' + soilTempF + '°F — above the stress threshold for cool-season grasses. Raise mower to 4"+ and water deeply 2–3× per week.', urgency: 'warn' };
+            } else {
+                if (soilTempF < 60) return { headline: 'Your lawn is still dormant. No treatment yet.', why: 'Soil at ' + soilTempF + '°F — warm-season grasses need 65°F+ to break dormancy. Applying fertilizer now would be wasted.', urgency: 'info' };
+                if (soilTempF < 65) return { headline: 'Dormancy break is close. Get ready.', why: 'Soil at ' + soilTempF + '°F and approaching the 65°F green-up threshold for ' + grassName + '. Prepare spreader and plan first fertilization.', urgency: 'soon' };
+                if (soilTempF < 85) return { headline: 'Active growth. Time for first fertilization.', why: 'Soil at ' + soilTempF + '°F — ' + grassName + ' is actively growing. Apply a nitrogen-forward fertilizer to fuel green-up.', urgency: 'urgent' };
+                return { headline: 'Peak growing season. Keep up with mowing.', why: 'Soil at ' + soilTempF + '°F — prime conditions for ' + grassName + '. Mow at recommended height every 5–7 days.', urgency: 'normal' };
+            }
+        }
+
+        const coachMsg = getCoachMessage(soilTempF, isCoolSeason);
+        const thisWeekTasks = buildThisWeekTasks({ lawnProfile, weather, activities, schedules, soilTempF });
+        const mowActs = (activities || []).filter(function(a) { return a.type === 'mowing'; }).sort(function(a,b) { return new Date(b.date) - new Date(a.date); });
+        const lastMow = mowActs[0];
+        const daysSinceMow = lastMow ? Math.floor((Date.now() - new Date(lastMow.date)) / 86400000) : null;
+        const now = new Date();
+        const thisMonthActivities = (activities || []).filter(function(a) { const d = new Date(a.date); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); });
+        const weekRain = weather && weather.daily && weather.daily.precipitation_sum ? weather.daily.precipitation_sum.slice(0,7).reduce(function(acc, v) { return acc + (v || 0); }, 0).toFixed(1) : null;
+
+        return (
+            <div className="ys-home-coach">
+                <div className="ys-coach-hero">
+                    <div className="ys-ruler-motif"><div className="ys-ruler-bar" /></div>
+                    <div className="ys-yard-pill">
+                        <div className="ys-yard-pill-dot" />
+                        {grassName} · Zone {zone}
+                        {lawnProfile.lawnSize ? ' · ' + parseInt(lawnProfile.lawnSize).toLocaleString() + ' sq ft' : ''}
+                    </div>
+                    <h1 className="ys-coach-headline">{coachMsg.headline}</h1>
+                    <p className="ys-coach-why">{coachMsg.why}</p>
+                    <div className="ys-conditions-row">
+                        {soilTempF != null && <div className="ys-cond-chip"><div className="ys-cdot" style={{background: soilTempF >= 55 ? '#f59e0b' : '#60a5fa'}} />{soilTempF}°F soil</div>}
+                        {airTempF != null && <div className="ys-cond-chip"><div className="ys-cdot" style={{background:'#60a5fa'}} />{airTempF}°F air</div>}
+                    </div>
+                </div>
+
+                <StatusPill tasks={thisWeekTasks} />
+
+                <div className="ys-sec-div">
+                    <span className="ys-sec-label">This Week</span>
+                    <div className="ys-sec-rule" />
+                    <span className="ys-sec-sub">{thisWeekTasks.filter(function(t){return !t.done;}).length} tasks</span>
+                </div>
+
+                <div className="ys-task-list">
+                    {thisWeekTasks.map(function(task) {
+                        return typeof TaskCard !== 'undefined'
+                            ? <TaskCard key={task.id} task={task} lawnProfile={lawnProfile} setView={setView} onLog={() => setView('add')} />
+                            : <TaskCardSimple key={task.id} task={task} onLog={() => setView('add')} />;
+                    })}
+                </div>
+
+                <div className="ys-sec-div" style={{marginTop:'8px'}}>
+                    <span className="ys-sec-label">Your Yard</span>
+                    <div className="ys-sec-rule" />
+                </div>
+                <div className="ys-stats-strip">
+                    {daysSinceMow != null && <div className="ys-stat"><span className="ys-stat-v">{daysSinceMow}d</span><span className="ys-stat-l">Last Mow</span></div>}
+                    {weekRain != null && <div className="ys-stat"><span className="ys-stat-v">{weekRain}"</span><span className="ys-stat-l">Rain / 7d</span></div>}
+                    <div className="ys-stat"><span className="ys-stat-v">{thisMonthActivities.length}</span><span className="ys-stat-l">Logged / Mo</span></div>
+                    {lawnProfile.lawnSize && <div className="ys-stat"><span className="ys-stat-v">{parseInt(lawnProfile.lawnSize).toLocaleString()}</span><span className="ys-stat-l">Sq Ft</span></div>}
+                </div>
+
+                <div className="ys-quick-log">
+                    <button className="ys-ql-main" onClick={() => setView('add')}><span>＋</span> Log Activity</button>
+                    <button className="ys-ql-sec" onClick={() => setView('gameplan')}>📋 Gameplan</button>
+                </div>
+
+                <LearnPromoStrip setView={setView} showPersonalizePrompt={true} profileComplete={true} />
+
+                {!currentUser && (activities || []).length >= 1 && (
+                    <div className="rounded-2xl border px-4 py-3 flex items-center gap-3" style={{margin:'0 14px 14px', background:'var(--ys-green-50)', borderColor:'var(--ys-green-200)'}}>
+                        <span className="text-lg flex-shrink-0">☁️</span>
+                        <div className="flex-1 min-w-0">
+                            <div className="text-sm font-semibold text-gray-800">Save your lawn plan — free</div>
+                            <div className="text-xs text-gray-500">Create an account to sync across devices.</div>
+                        </div>
+                        <button onClick={onShowAuthModal} className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg text-white btn-press" style={{background:'var(--ys-green-600)'}}>Save →</button>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    // ─── TaskCardSimple (fallback before Phase 4 TaskCard) ───────────────────────
+    function TaskCardSimple({ task, onLog }) {
+        const accentColors = { urgent: 'var(--ys-clay)', soon: 'var(--ys-yellow)', normal: 'var(--ys-green-600)', info: '#3B82F6' };
+        return (
+            <div style={{background:'#fff', borderRadius:'12px', overflow:'hidden', boxShadow:'0 1px 4px rgba(30,26,20,.07)', opacity: task.done ? .6 : 1}}>
+                <div style={{height:'3.5px', background: task.done ? '#d1fae5' : (accentColors[task.urgency] || '#9ca3af')}} />
+                <div style={{padding:'13px 15px'}}>
+                    <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:'8px', marginBottom:'6px'}}>
+                        <div style={{fontFamily:'var(--ys-font-display)', fontSize:'15.5px', fontWeight:700, color:'var(--ys-soil)', lineHeight:1.2, flex:1}}>{task.name}</div>
+                        {!task.done && <span style={{fontFamily:'var(--ys-font-body)', fontSize:'9.5px', fontWeight:700, letterSpacing:'.07em', textTransform:'uppercase', borderRadius:'3px', padding:'3px 7px', flexShrink:0, border:'1px solid', background: task.urgency==='urgent' ? 'rgba(192,90,44,.08)' : 'rgba(245,200,66,.14)', color: task.urgency==='urgent' ? 'var(--ys-clay)' : '#8a5c00', borderColor: task.urgency==='urgent' ? 'rgba(192,90,44,.25)' : 'rgba(245,200,66,.4)'}}>{task.badge}</span>}
+                    </div>
+                    <p style={{fontFamily:'var(--ys-font-body)', fontSize:'13px', lineHeight:1.55, color:'#4b5563', marginBottom:'8px'}}>{task.why}</p>
+                    <div style={{display:'flex', justifyContent:'flex-end'}}>
+                        <button onClick={onLog} style={{fontFamily:'var(--ys-font-body)', fontSize:'12px', fontWeight:700, background:'var(--ys-yellow)', color:'var(--ys-soil)', border:'none', borderRadius:'3px', padding:'6px 13px', cursor:'pointer'}}>Log It</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     // ─── LearnPromoStrip ─────────────────────────────────────────────────────────
     function LearnPromoStrip({ setView, showPersonalizePrompt, profileComplete }) {
         const FEATURED_ARTICLES = [
@@ -7821,7 +8045,18 @@ window.ResearchSourcesPage = () => (
                                     }}
                                 />
                             )}
-                            {profileState !== 'empty' && profileState !== 'partial' && (<>
+                            {profileState === 'complete' && (
+                                <HomeCoachView
+                                    lawnProfile={lawnProfile}
+                                    weather={weather}
+                                    activities={activities}
+                                    schedules={schedules}
+                                    setView={setView}
+                                    currentUser={currentUser}
+                                    onShowAuthModal={() => setShowAuthModal(true)}
+                                />
+                            )}
+                            {profileState !== 'empty' && profileState !== 'partial' && profileState !== 'complete' && (<>
                             {/* Save plan banner — logged-out users who completed onboarding, dismissible */}
                             {!currentUser && onboardingDone && !saveBannerDismissed && (
                                 <div className="rounded-2xl border px-4 py-3 flex items-center gap-3" style={{background:'var(--ys-green-50)', borderColor:'var(--ys-green-200)'}}>
