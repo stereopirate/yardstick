@@ -374,6 +374,45 @@ window.compressImage = function(file, maxDim, quality) {
     .ys-sec-label { font-family: var(--ys-font-display); font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ys-forest); white-space: nowrap; }
     .ys-sec-rule { flex: 1; height: 1px; background: linear-gradient(to right, var(--ys-green-600), transparent); opacity: .25; }
     .ys-sec-sub { font-family: var(--ys-font-body); font-size: 10.5px; color: #9ca3af; }
+    /* ── Phase 4: TaskCard ── */
+    .ys-tc { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(30,26,20,.07), 0 0 0 1px rgba(30,26,20,.04); transition: transform .15s; }
+    .ys-tc:active { transform: scale(.985); }
+    .ys-tc.done { opacity: .6; }
+    .ys-tc-accent { height: 3.5px; }
+    .ys-tc-body { padding: 13px 15px; }
+    .ys-tc-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+    .ys-tc-name { font-family: var(--ys-font-display); font-size: 15.5px; font-weight: 700; color: var(--ys-soil); line-height: 1.2; flex: 1; }
+    .ys-badge { font-family: var(--ys-font-body); font-size: 9.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; border-radius: 3px; padding: 3px 7px; flex-shrink: 0; border: 1px solid; }
+    .b-clay   { background: rgba(192,90,44,.08); color: var(--ys-clay); border-color: rgba(192,90,44,.25); }
+    .b-yellow { background: rgba(245,200,66,.14); color: #8a5c00; border-color: rgba(245,200,66,.4); }
+    .b-green  { background: rgba(54,124,43,.09); color: var(--ys-forest); border-color: rgba(54,124,43,.22); }
+    .b-done   { background: rgba(75,85,99,.07); color: #9ca3af; border-color: rgba(75,85,99,.15); }
+    .ys-tc-why { font-family: var(--ys-font-body); font-size: 13px; line-height: 1.55; color: #4b5563; margin-bottom: 8px; }
+    .ys-tc-qty { display: flex; align-items: center; gap: 6px; background: var(--ys-canvas); border-radius: 3px; padding: 5px 10px; margin-bottom: 8px; }
+    .ys-tc-qty-icon { font-size: 13px; }
+    .ys-tc-qty-val { font-family: 'Courier Prime', 'Courier New', monospace; font-size: 12.5px; font-weight: 700; color: var(--ys-forest); }
+    .ys-tc-qty-label { font-family: var(--ys-font-body); font-size: 11px; color: #6b7280; }
+    .ys-tc-effort { font-family: var(--ys-font-body); font-size: 11px; color: #9ca3af; margin-bottom: 8px; }
+    .ys-tc-expand-btn { display: flex; align-items: center; gap: 5px; font-family: var(--ys-font-body); font-size: 12px; color: #9ca3af; background: none; border: none; padding: 0; cursor: pointer; margin-bottom: 6px; transition: color .15s; }
+    .ys-tc-expand-btn:hover { color: var(--ys-green-600); }
+    .ys-tc-arrow { font-size: 10px; transition: transform .2s; display: inline-block; }
+    .ys-tc-arrow.open { transform: rotate(90deg); }
+    .ys-tc-detail { background: var(--ys-canvas); border-radius: 3px; padding: 10px 12px; margin-bottom: 10px; font-family: var(--ys-font-body); font-size: 12.5px; line-height: 1.6; color: #4b5563; }
+    .ys-tc-detail ol { padding-left: 16px; margin-top: 4px; }
+    .ys-tc-detail li { margin-bottom: 3px; }
+    .ys-tc-product { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-top: 1px solid var(--ys-canvas); border-bottom: 1px solid var(--ys-canvas); margin-bottom: 10px; gap: 8px; }
+    .ys-tc-product-left { flex: 1; min-width: 0; }
+    .ys-tc-product-name { font-family: var(--ys-font-body); font-size: 12px; font-weight: 600; color: var(--ys-soil); }
+    .ys-tc-product-label { font-family: var(--ys-font-body); font-size: 10px; color: #9ca3af; margin-top: 1px; }
+    .ys-tc-product-link { font-family: var(--ys-font-body); font-size: 12px; font-weight: 700; color: var(--ys-forest); background: var(--ys-canvas); border: 1.5px solid rgba(30,77,24,.2); border-radius: 3px; padding: 5px 10px; text-decoration: none; flex-shrink: 0; cursor: pointer; transition: background .12s; }
+    .ys-tc-product-link:hover { background: rgba(54,124,43,.1); }
+    .ys-tc-footer { display: flex; justify-content: space-between; align-items: center; }
+    .ys-tc-btns { display: flex; gap: 6px; }
+    .ys-btn-log { font-family: var(--ys-font-body); font-size: 12px; font-weight: 700; background: var(--ys-yellow); color: var(--ys-soil); border: none; border-radius: 3px; padding: 6px 13px; cursor: pointer; transition: background .1s; }
+    .ys-btn-log:hover { background: #e8b800; }
+    .ys-btn-remind { font-family: var(--ys-font-body); font-size: 12px; font-weight: 600; background: none; color: var(--ys-forest); border: 1.5px solid rgba(30,77,24,.2); border-radius: 3px; padding: 6px 10px; cursor: pointer; transition: background .1s; }
+    .ys-btn-remind:hover { background: rgba(54,124,43,.07); }
+    .ys-check-ring { width: 20px; height: 20px; border-radius: 50%; background: #d1fae5; border: 2px solid #6ee7b7; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     /* ── Phase 3: Coach hero ── */
     .ys-home-coach { padding-bottom: 24px; }
     .ys-coach-hero { background: var(--ys-forest); padding: 4px 20px 24px; position: relative; overflow: hidden; }
@@ -6954,6 +6993,78 @@ window.ResearchSourcesPage = () => (
                         <button onClick={onShowAuthModal} className="flex-shrink-0 text-xs font-bold px-3 py-2 rounded-lg text-white btn-press" style={{background:'var(--ys-green-600)'}}>Save →</button>
                     </div>
                 )}
+            </div>
+        );
+    }
+
+    // ─── TaskCard ────────────────────────────────────────────────────────────────
+    function TaskCard({ task, lawnProfile, setView, onLog }) {
+        const [expanded, setExpanded] = React.useState(task.urgency === 'urgent');
+        const accentColors = { urgent: 'var(--ys-clay)', soon: 'var(--ys-yellow)', normal: 'var(--ys-green-600)', info: '#3B82F6' };
+        const badgeClass = { urgent: 'b-clay', soon: 'b-yellow', normal: 'b-green' };
+        return (
+            <div className={'ys-tc' + (task.done ? ' done' : '')}>
+                <div className="ys-tc-accent" style={{background: task.done ? '#d1fae5' : (accentColors[task.urgency] || '#9ca3af')}} />
+                <div className="ys-tc-body">
+                    <div className="ys-tc-header">
+                        <div className="ys-tc-name">{task.name}</div>
+                        {task.done
+                            ? <div className="ys-check-ring"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3 5.5L8 1" stroke="#059669" strokeWidth="1.8" strokeLinecap="round"/></svg></div>
+                            : <span className={'ys-badge ' + (badgeClass[task.urgency] || 'b-green')}>{task.badge}</span>
+                        }
+                    </div>
+                    <p className="ys-tc-why">{task.why}</p>
+                    {task.quantity && !task.done && (
+                        <div className="ys-tc-qty">
+                            <span className="ys-tc-qty-icon">⚖️</span>
+                            <span className="ys-tc-qty-val">{task.quantity}</span>
+                            <span className="ys-tc-qty-label">{task.unit || 'for your yard'}</span>
+                        </div>
+                    )}
+                    {(task.effort || task.costEst) && !task.done && (
+                        <div className="ys-tc-effort">
+                            {task.effort && ('⏱ ' + task.effort)}
+                            {task.effort && task.costEst && ' · '}
+                            {task.costEst && ('💰 ' + task.costEst + ' estimated')}
+                        </div>
+                    )}
+                    {task.howTo && !task.done && (
+                        <>
+                            <button className="ys-tc-expand-btn" onClick={() => setExpanded(!expanded)}>
+                                <span className={'ys-tc-arrow' + (expanded ? ' open' : '')}>▶</span>
+                                How to apply
+                            </button>
+                            {expanded && (
+                                <div className="ys-tc-detail">
+                                    <ol>{task.howTo.map(function(step, i) { return <li key={i}>{step}</li>; })}</ol>
+                                </div>
+                            )}
+                        </>
+                    )}
+                    {task.product && !task.done && (
+                        <div className="ys-tc-product">
+                            <div className="ys-tc-product-left">
+                                <div className="ys-tc-product-name">{task.product.name}</div>
+                                <div className="ys-tc-product-label">Recommended · helps keep Yardstick free</div>
+                            </div>
+                            {task.product.affiliateUrl && (
+                                <a className="ys-tc-product-link" href={task.product.affiliateUrl} target="_blank" rel="noopener noreferrer">Shop →</a>
+                            )}
+                        </div>
+                    )}
+                    {!task.done && (
+                        <div className="ys-tc-footer">
+                            <span />
+                            <div className="ys-tc-btns">
+                                <button className="ys-btn-remind">Remind me</button>
+                                <button className="ys-btn-log" onClick={onLog}>Log It</button>
+                            </div>
+                        </div>
+                    )}
+                    {task.done && task.doneDate && (
+                        <div style={{marginTop:'6px'}}><span className="ys-badge b-done">Done {task.doneDate}</span></div>
+                    )}
+                </div>
             </div>
         );
     }
