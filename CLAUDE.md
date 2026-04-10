@@ -1,19 +1,26 @@
-# CLAUDE.md — Lawn Care Tracker (Easy Green)
+# CLAUDE.md — Yardstick
 
 This file provides context, conventions, and development guidance for AI assistants working on this codebase.
+
+> **Quick reference:** See `PROJECT-OVERVIEW.md` for the full architecture reference and `yardstick-brand-book.md` for the complete design system. `WEBSITE-OVERVIEW.md` is a clean overview optimized for adding to a Claude project.
 
 ---
 
 ## Project Overview
 
-**Easy Green** is a research-backed lawn care tracking Progressive Web App (PWA). It is entirely client-side — no backend, no build step, no npm. The app runs directly in the browser using CDN-loaded dependencies.
+**Yardstick** is a free, research-backed lawn care tracking Progressive Web App (PWA). It is client-side first — no backend, no build step, no npm. The app runs directly in the browser using CDN-loaded dependencies, with optional Firebase for cloud sync.
 
-- **App name**: Easy Green – Your Lawn Care Made Simple
-- **Live URL**: `https://stereopirate.github.io/Lawn-care-tracker/`
-- **Primary file**: `index.html` (~2,440 lines, contains all React app logic)
-- **Theme color**: `#367C2B` (forest green)
-- **Target users**: DIY homeowners tracking their own lawn and landscape maintenance by grass type and USDA hardiness zone
+- **App name**: Yardstick
+- **Live URL**: `https://yardstick.diy`
+- **GitHub repo**: `stereopirate/yardstick`
+- **Primary file**: `index.html` (~9,181 lines, contains all React app logic)
+- **Theme color**: `#1E4D18` (forest dark green)
+- **Primary CTA color**: `#F5C842` (bright yellow)
+- **Target users**: DIY homeowners tracking lawn and landscape maintenance by grass type and USDA hardiness zone
 - **Hosting**: GitHub Pages (free tier) — the app must remain statically hostable with zero server costs
+- **Beta note**: `PRO_GATE_ENABLED` is a constant in `index.html` that gates certain features behind sign-in (not behind payment). All features are free for signed-in users.
+
+> **Legacy names — never use:** "Easy Green", "Lawn Care Tracker", "Lawn Coach", "GrassCoach" — these are all discontinued working names. Always use "Yardstick".
 
 ---
 
@@ -22,8 +29,9 @@ This file provides context, conventions, and development guidance for AI assista
 These rules come directly from the project owner and **must be followed in every session**:
 
 ### 1. Keep It Simple and Free
-- The app must remain hostable on **GitHub Pages for free** — no paid services, no backend, no databases, no server-side logic
-- Avoid adding complexity that would require a build step, server, or paid CDN beyond the existing free CDN dependencies
+- The app must remain hostable on **GitHub Pages for free** — no paid services, no databases, no server-side logic
+- Firebase is the one exception — it is already integrated and is optional (local-only mode works without it)
+- Avoid adding complexity that would require a build step, server, or paid CDN beyond existing free dependencies
 
 ### 2. Always Work from the Latest Files
 - Before making any changes, always read the **current state of the file** being modified — do not rely on memory or prior conversation turns
@@ -61,45 +69,86 @@ This project has **no package.json, no webpack, no TypeScript, no npm**. All dep
 <script src="https://cdn.tailwindcss.com"></script>
 ```
 
+Firebase is loaded as ES modules inside a `<script type="module">` block in `<head>`.
+
 React JSX is transpiled in-browser by Babel Standalone via `<script type="text/babel">`.
 
 ### File Structure
 
 ```
-Lawn-care-tracker/
-├── index.html              # Main app — all React components, state, and UI (~2,440 lines)
-├── grass-programs.js       # Grass maintenance program schedules by type and zone (276 lines)
-├── v4-new-components.js    # Dashboard and statistics components (441 lines, inserted at ~line 1669)
-├── service-worker.js       # PWA offline caching (53 lines)
-├── manifest.json           # PWA manifest (app name, icons, theme)
-├── about.html              # Static informational page
-├── logo.png                # App logo
-├── coach-icon.png          # Coach mascot (summer)
-├── coach-winter.png        # Coach mascot (winter variant)
-└── activity-*.png          # Activity type icons (mowing, fertilizer, trimming, watering, seeding, general)
+yardstick/
+├── index.html                  # Main app — ALL core logic (~9,181 lines)
+│                               # Contains React components inline as <script type="text/babel">
+│                               # blocks, plus Firebase init, CSS variables, and app shell
+├── constants.js                # Shared global data loaded before any JSX scripts
+│                               # PRODUCT_DATABASE, TREATMENT_PRODUCTS, GRASS_INFO,
+│                               # ACTIVITY_TYPES, ACTIVITY_COLORS, ZONE_INFO,
+│                               # RESEARCH_SOURCES, TREATMENT_CATEGORIES, WMO_CODES
+├── grass-programs.js           # grassPrograms — monthly care schedules by grass type & zone
+│                               # (~2,559 lines; university-sourced, do NOT change without citations)
+├── v4-new-components.js        # Legacy reference file — active Dashboard is now inline in index.html
+├── service-worker.js           # PWA offline caching (network-first for HTML, cache-first for assets)
+├── manifest.json               # PWA manifest — name "Yardstick", theme #1E4D18
+├── about.html                  # Static informational/marketing page
+│
+├── components/                 # Standalone component JS files (loaded via <script> tags after inline)
+│   ├── ActivityDetails.js      # Renders logged activity detail fields
+│   ├── Dashboard.js            # Stats, charts, breakdown (active version — loads last, wins)
+│   ├── HistoryView.js          # Chronological activity log
+│   ├── MyGarage.js             # Equipment manager — add/track/maintain
+│   ├── ProductGuide.js         # Curated product database browser
+│   ├── ResearchSourcesPage.js  # Lists all 19 university extension sources
+│   └── SchedulesView.js        # Recurring task scheduler with due-date tracking
+│
+├── learn/                      # Static SEO content pages (lawn care guides)
+├── marketing/                  # Marketing copy references (not served to users)
+│
+├── CLAUDE.md                   # This file — AI development guidance
+├── PROJECT-OVERVIEW.md         # Full architecture reference (canonical)
+├── WEBSITE-OVERVIEW.md         # Brand/product brief for Claude project context
+├── yardstick-brand-book.md     # Complete visual and brand design system
+│
+└── [image assets]              # logo.png, logo.svg, coach-icon.png, coach-winter.png,
+                                # activity-*.png, icon-*.png, yardstick-logo-*.svg
 ```
 
-### Key Data Structures (all defined in `index.html`)
+> **Important:** The primary, active code for most components lives **inline in `index.html`**. The `/components/` files are loaded after inline definitions and their `window.*` assignments overwrite the inline ones. When debugging or editing a component, check `index.html` first, then the `/components/` file.
 
-| Constant | Purpose |
-|---|---|
-| `PRODUCT_DATABASE` | 75+ mowers (walk-behind, riding, zero-turn), 10 spreaders, 10 trimmers, fertilizers, seeds |
-| `TREATMENT_PRODUCTS` | Pre/post-emergent, fungicide, insecticide, soil amendments (5 each) |
-| `GRASS_INFO` | Grass type metadata: mow height, water needs, soil pH, zone notes, sources |
-| `RESEARCH_SOURCES` | 19 university extension services used for citation badges |
-| `ACTIVITY_TYPES` | mowing, fertilizer, trimming, watering, seeding, aeration, maintenance |
+### Script Loading Order
 
-`grassPrograms` is defined in `grass-programs.js` and loaded before the main script tag.
+```
+1. CDN scripts (synchronous): React, ReactDOM, Babel, Tailwind
+2. <script type="module"> (async): Firebase ES modules → sets window.__FIREBASE__
+3. <script> (synchronous): window.compressImage() utility
+4. <script src="constants.js"> (synchronous): all global data constants
+5. <script src="grass-programs.js"> (synchronous): grassPrograms global
+6. <script type="text/babel"> blocks (inline): all React components
+7. <script src="components/*.js" type="text/babel">: re-assigns window.Dashboard etc.
+```
+
+### Key Data Structures
+
+| Constant | File | Purpose |
+|---|---|---|
+| `PRODUCT_DATABASE` | `constants.js` | 90+ mowers, spreaders, trimmers, fertilizers, seeds |
+| `TREATMENT_PRODUCTS` | `constants.js` | Pre/post-emergent, fungicide, insecticide, soil amendments |
+| `GRASS_INFO` | `constants.js` | Grass type metadata: mow height, water needs, soil pH, zone notes |
+| `RESEARCH_SOURCES` | `constants.js` | 19 university extension services for citation badges |
+| `ACTIVITY_TYPES` | `constants.js` | mowing, fertilizer, trimming, watering, seeding, aeration, maintenance, treatment |
+| `ACTIVITY_COLORS` | `constants.js` | Hex colors per activity type |
+| `ZONE_INFO` | `constants.js` | USDA zone metadata |
+| `WMO_CODES` | `constants.js` | Weather condition code descriptions |
+| `grassPrograms` | `grass-programs.js` | Monthly care schedules by grass type and zone |
 
 ---
 
 ## React Component Conventions
 
-- **All components are functional** with React hooks (`useState`, `useEffect`, `useRef`)
-- **No React Router** — navigation is purely state-driven (a `currentView` state variable)
-- **No Context or Redux** — state is managed locally and passed as props
-- Components are defined inline inside `index.html`'s `<script type="text/babel">` block
-- `v4-new-components.js` contains the `Dashboard` component (to be inserted at ~line 1669)
+- **All components are functional** with React hooks (`useState`, `useEffect`, `useRef`, `useCallback`, `useMemo`)
+- **No React Router** — navigation is a single `view` state variable (`null` = home)
+- **No Context, Redux, or Zustand** — state lives in `LawnCareTracker` and is passed as props
+- **No TypeScript** — plain JavaScript
+- Components are defined inline inside `index.html`'s `<script type="text/babel">` blocks
 
 ### Citation System
 
@@ -109,101 +158,90 @@ A key UI pattern is the `CitationBadge` component — a small circular `i` butto
 <CitationBadge sources={[{ name: 'Penn State Extension', url: '...', topic: 'Tall Fescue' }]} label="mow height" />
 ```
 
-The popup uses `position: fixed` centered on screen (not a portal) to ensure reliable mobile behavior. Do not replace this with tooltip/hover approaches — they are broken on mobile.
+The popup uses `position: fixed` centered on screen (not a portal) to ensure reliable mobile behavior. Do not replace this with tooltip/hover approaches — they do not work reliably on mobile.
+
+### `useDataStore` Hook
+
+Defined inline in `index.html`. Abstracts localStorage vs. Firestore. Used as `const store = useDataStore(currentUser)` in `LawnCareTracker`.
+
+```js
+store.loadAll()           // → { activities, equipment, profile }
+store.saveActivity(a)     // → saved activity
+store.deleteActivity(id)
+store.saveEquipment(item)
+store.deleteEquipment(id)
+store.updateEquipment(id, updates)
+store.saveProfile(profile)
+```
 
 ---
 
 ## Styling Conventions
 
-- **Tailwind CSS utility classes** for all layout and spacing (no custom CSS framework)
-- **Inline styles** used for dynamic values or precise overrides
-- **Custom CSS** at top of `index.html` `<style>` block for animations and cite-btn/cite-popup styles
+- **Tailwind CSS utility classes** for layout and spacing (padding, flex, gap, rounded)
+- **Inline styles** for dynamic values or precise overrides
+- **Custom CSS** in `<style>` block for animations and component-specific classes
 
-> **Critical — background colors:** Always use `style={{background:'var(--ys-cream)'}}` for card/content surfaces and `style={{background:'var(--ys-canvas)'}}` for page backgrounds. **Never** use Tailwind color utility classes like `bg-white` or `bg-gray-50` for these — Tailwind classes are compiled at runtime and have higher specificity than CSS variables, causing design tokens to be silently ignored. Tailwind is fine for layout (padding, flex, gap, rounded) but not for semantic brand colors.
+> **Critical — background colors:** Always use `style={{background:'var(--cream)'}}` for card/content surfaces and `style={{background:'var(--bg)'}}` for page backgrounds. **Never** use Tailwind color utilities like `bg-white` or `bg-gray-50` for brand colors — Tailwind JIT has higher specificity than CSS variables and will silently override design tokens.
 
 ### Typography
 
-| Role | Font | Weight | CSS Variable |
+| Role | Font | Weights | CSS Variable |
 |---|---|---|---|
-| Hero & all headings (h1, h2, h3) | **Fraunces** | 600–700 | `--ys-font-display` |
-| Body, buttons, nav, labels | **Quicksand** | 500–700 | `--ys-font-body` |
+| Display / headings | **Bitter** | 700, 900, 900 italic | `--ff-display` |
+| Body / UI / buttons | **Cabin** | 400, 500, 600, 700 | `--ff-body` |
+| Data / mono / stats | **Courier Prime** | 400, 700 | `--ff-mono` |
 
-Loaded via Google Fonts:
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,600;0,700;0,900;1,700&family=Cabin:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 ```
 
-CSS variable declarations (in `:root`):
 ```css
---ys-font-body:    'Quicksand', system-ui, -apple-system, sans-serif;
---ys-font-display: 'Fraunces', Georgia, serif;
+--ff-display: 'Bitter', Georgia, serif;
+--ff-body:    'Cabin', sans-serif;
+--ff-mono:    'Courier Prime', monospace;
 ```
-
-The global rule `h1, h2, h3 { font-family: var(--ys-font-display); }` applies the display font to all heading elements automatically. Apply `style={{fontFamily:'var(--ys-font-display)'}}` to any element that should use Fraunces but isn't a semantic heading (e.g., the header wordmark span).
-
-**Character:** Fraunces is warm, editorial, and softly organic — giving the brand authority without stiffness. Quicksand is rounded and highly legible at small sizes, ideal for mobile labels, buttons, and nav tabs.
 
 ### Brand CSS Variables (`:root`)
 
 ```css
-/* Green scale */
---ys-green-900: #1C3318
---ys-green-800: #234D20   ← header background
---ys-green-700: #2D6627   ← coach card gradient start
---ys-green-600: #367C2B   ← primary CTAs, active states
---ys-green-500: #4A9E3C
---ys-green-400: #6BBF5A
---ys-green-200: #C4E8BC
---ys-green-100: #EBF5E6   ← icon backgrounds, badge fills
---ys-green-50:  #F4FAF2   ← nav tab hover
+/* Primary colors */
+--green-dark:   #1E4D18   /* header bg, logo on light */
+--green:        #367C2B   /* success states, log dots */
+--green-light:  #4E9E40   /* hover/decorative only */
+--yellow:       #F5C842   /* primary CTA buttons, active nav */
+--straw:        #D4A843   /* fertilizer borders only */
+--clay:         #C05A2C   /* warnings, overdue, destructive */
 
-/* Gold accent */
---ys-gold-500: #C8960C
---ys-gold-400: #D4A833
---ys-gold-300: #E2C46A
---ys-gold-100: #FDF3D8
+/* Surfaces */
+--cream:        #F7F3EC   /* card surfaces */
+--bg:           #EDE8DE   /* page background */
+--white:        #FFFFFF   /* inputs, swatch panels */
 
-/* Soil / warm neutral */
---ys-soil-800: #3B2A1A
---ys-soil-600: #6B4C2A
---ys-soil-400: #9C7248
---ys-soil-200: #D4B896
-
-/* Surface backgrounds */
---ys-cream:  #F7F3EC   ← card and content surfaces (use in style={{background}})
---ys-canvas: #EDE8DE   ← app body / page background
+/* Text */
+--soil:         #1E1A14   /* primary text */
+--stone:        #6B6560   /* secondary text */
+--stone-light:  #B8B2AC   /* timestamps, disabled */
 ```
 
-### Phase 2 Utility CSS Classes
+### Color Rules
 
-Defined in the `<style>` block in `index.html`:
+- `#F5C842` yellow is **always** the primary CTA button color — not green
+- Always use **dark text** (`#1E1A14`) on yellow buttons, never white
+- Use clay (`#C05A2C`) only for warnings and destructive states
+- Card surfaces: `var(--cream)` | Page background: `var(--bg)`
 
-| Class | Purpose |
+### Activity Colors
+
+| Activity | Color |
 |---|---|
-| `.ys-coach-card` | Dark-green gradient hero card (home screen greeting) |
-| `.ys-badge-white` | Semi-transparent white pill badge (used inside coach card) |
-| `.ys-badge-green` | Light green pill badge (used on white backgrounds) |
-| `.ys-btn-primary` | Green CTA button using `--ys-green-600` |
-| `.ys-card` | Cream/parchment rounded card with subtle shadow (`--ys-cream` bg, 5px radius) |
-| `.ys-bottom-nav` | Fixed mobile bottom navigation bar |
-| `.ys-nav-tab` | Individual bottom nav tab |
-| `.ys-nav-active` | Active state for bottom nav tab |
-| `.ys-nav-log-btn` | Prominent green Log CTA in bottom nav |
-
-### Color Palette
-
-| Use | Value |
-|---|---|
-| App background (canvas) | `var(--ys-canvas)` = `#EDE8DE` |
-| Card / content surface (cream) | `var(--ys-cream)` = `#F7F3EC` |
-| Primary green | `#367C2B` |
-| Mowing activity | `#367C2B` |
-| Fertilizer activity | `#F97316` (orange) |
-| Trimming activity | `#10B981` (emerald) |
-| Watering activity | `#3B82F6` (blue) |
-| Seeding activity | `#92400E` (brown) |
-| Aeration activity | `#8B5CF6` (purple) |
-| Maintenance activity | `#6B7280` (gray) |
+| Mowing | `#367C2B` (green) |
+| Fertilizer | `#F97316` (orange) |
+| Trimming | `#10B981` (emerald) |
+| Watering | `#3B82F6` (blue) |
+| Seeding | `#92400E` (brown) |
+| Aeration | `#8B5CF6` (purple) |
+| Maintenance | `#6B7280` (gray) |
 
 ### Animation Classes
 
@@ -227,39 +265,82 @@ Defined in `<style>` block at top of `index.html`:
 
 ## Data Storage
 
-All user data is persisted in **browser LocalStorage**. There is no backend, database, or server-side storage of any kind. The app is fully offline-capable via the service worker after first load.
+### LocalStorage (always used)
+
+| Key | Contents |
+|---|---|
+| `lawnCareActivities` | `Activity[]` — all logged activities |
+| `lawnCareEquipment` | `Equipment[]` — user's garage items |
+| `lawnProfile` | `LawnProfile` — zone, grass, size, zip, lat/lon |
+| `lawnCareSchedules` | `Schedule[]` — recurring tasks (local only, no cloud sync) |
+| `yardstick_onboarding_done` | `'1'` — onboarding completed |
+| `yardstick_save_banner_dismissed` | `'1'` — save-data banner dismissed |
+| `yardstick_display_name` | string — user's display name |
+
+### Firebase (optional cloud sync)
+
+Firebase project: `lawn-tracker-71c43`
+
+| Service | Purpose |
+|---|---|
+| Firebase Auth | Google OAuth + email/password sign-in |
+| Firestore | Cloud storage for activities, equipment, profile |
+| Firebase Storage | Activity photos (`photos/{uid}/{timestamp}.jpg`) |
+| `gallery` collection | Community lawn photo feed |
+
+Firestore structure:
+```
+users/{uid}/activities/{docId}
+users/{uid}/equipment/{docId}
+users/{uid}/profile/data
+gallery/{docId}
+```
+
+**Init pattern:** Firebase loads async as ES modules → sets `window.__FIREBASE__` → dispatches `firebase-ready` event. The React app waits for this event before setting up auth state listener.
+
+**Local-only behavior:** Photos (`photoUrl`) are stripped from activity objects when saving to localStorage — they require Firebase Storage.
 
 ---
 
 ## PWA / Service Worker
 
-- Cache name: currently `yardstick-v6` (increment when deploying breaking changes)
-- Caches: `/`, `/index.html`, `/manifest.json`, and all CDN script URLs
+- Cache name: `yardstick-v6` (bump when updating CDN URLs or SW fetch strategy)
 - **Fetch strategy**:
-  - **HTML pages** (`index.html`, `/`) → **network-first**: always fetches fresh from server, falls back to cache only when offline
-  - **All other assets** (CDN scripts, images, manifest) → **cache-first**: serves from cache for speed, falls back to network on miss
-- **When to bump `CACHE_NAME`** in `service-worker.js`:
-  - When updating CDN script URLs or versions
-  - When the new SW fetch strategy itself needs to be re-installed on existing clients
-  - No need to bump just for `index.html` changes — network-first handles those automatically now
-
-> **Why network-first for HTML?** The old cache-first strategy caused `index.html` to get permanently stuck in the service worker cache after every deploy. Users would see stale UI until the cache was manually busted. Network-first ensures the latest `index.html` is always loaded when online.
+  - **HTML pages** (`index.html`, `/`) → **network-first**: always fetches fresh, falls back to cache when offline
+  - **All other assets** (CDN scripts, images) → **cache-first**: serves from cache, falls back to network on miss
+- No need to bump cache for `index.html` changes — network-first handles those automatically
 
 ---
 
 ## Views / Navigation
 
-The app uses a `currentView` state variable to switch between views — there is no URL routing:
+The app uses a `view` state variable (`null` = home). No URL routing.
 
 | View | Description |
 |---|---|
-| `home` | Coach mascot, activity calendar, quick-log buttons |
-| `dashboard` | Stats, monthly chart, activity breakdown (in `v4-new-components.js`) |
-| `program` | Full Year Program — grass-type-specific monthly maintenance schedule |
-| `addActivity` | Activity logging form with dynamic fields per activity type |
+| `null` (home) | Coach mascot card, "This Week" tasks, activity calendar |
+| `add` | Log Activity — dynamic form per activity type |
+| `today` | Today view |
 | `history` | Chronological activity log |
-| `equipment` | Equipment selector and maintenance tracker |
-| `products` | Product guide / comparison |
+| `gallery` | Community lawn photo feed |
+| `garage` | My Garage — equipment tracker and maintenance |
+| `profile` | Lawn Profile — zone, grass type, yard size, soil type |
+| `gameplan` | Year-Long Gameplan — monthly care schedule by grass/zone |
+| `schedules` | Recurring task scheduler |
+| `dashboard` | Stats, charts, activity breakdown |
+| `products` | Curated product guide |
+| `sources` | Research sources page |
+| `calculator` | Treatment/product application calculator |
+| `grass-id` | Grass identifier (photo-based) |
+| `learn` | Learn Library — filtered lawn care article hub |
+| `account` | Sign-in / account management |
+| `pricing` | Pricing/plan info |
+| `contact` | Contact form |
+| `more` | More menu |
+| `admin` | Admin submissions |
+| `proSignup` | Pro sign-up |
+
+**Bottom navigation:** 5-tab system — Home, Gameplan, Profile, More Menu, (Learn)
 
 ---
 
@@ -268,7 +349,7 @@ The app uses a `currentView` state variable to switch between views — there is
 Since there is no build step, development is direct file editing:
 
 1. **Read the current file** before making any edits — always reference the latest version
-2. Edit `index.html`, `grass-programs.js`, or `v4-new-components.js`
+2. Edit `index.html`, `constants.js`, `grass-programs.js`, or files in `components/`
 3. **Provide a preview** of the changed UI or describe what changed visually after every edit
 4. Wait for owner approval before treating the change as final
 5. Open `index.html` in a browser (or serve via any static file server) for local testing
@@ -279,9 +360,9 @@ Since there is no build step, development is direct file editing:
 
 ### Serving Locally
 
-Any static file server works. Examples:
 ```bash
 python3 -m http.server 8080
+# or
 npx serve .
 ```
 
@@ -289,37 +370,38 @@ npx serve .
 
 ## Deployment
 
-GitHub Pages is deployed via `.github/workflows/deploy.yml` on every push to `main`. The workflow is intentionally minimal — it checks out the repo and deploys the **root directory as-is**. There is no build step.
+GitHub Pages is deployed via `.github/workflows/deploy.yml` on every push to `main`. The workflow is intentionally minimal — it checks out the repo and deploys the root directory as-is. There is no build step.
 
-**Never add `npm`, `node`, or build commands to this workflow.** The project has no `package.json` and no `dist/` folder. Adding a build step will cause silent deployment failures, leaving the live site on stale HTML. The workflow includes a sanity check (`test -f index.html`) that will fail fast if something is misconfigured.
+**Never add `npm`, `node`, or build commands to this workflow.** The project has no `dist/` folder. The workflow includes a sanity check (`test -f index.html`) that will fail fast if misconfigured.
 
 ---
 
 ## Important Constraints
 
-- **Do not introduce a build step** (webpack, Vite, etc.) without explicit instruction — this is intentional
-- **Do not add npm** or a `package.json` — the CDN approach is intentional for zero-dependency deployment
-- **Do not use React Router** — view navigation is state-based
-- **Mobile-first**: Design for 375px phone screens first. Important info is always visible; secondary info goes in accordions or "show more" patterns. Citation tooltips must use the fixed-center popup approach, not hover-based tooltips
-- **Never remove content** without explicit owner approval — ask before deleting any feature, section, or data
-- **GitHub Pages only**: No backends, no paid APIs, no server-side logic — the app must remain a free static site
-- **All lawn care recommendations must cite sources** from `RESEARCH_SOURCES` — do not add uncited claims
-- **Grass program data** is authoritative and based on university extension research — do not alter schedules without sourced justification
+- **No build step** (webpack, Vite, etc.) — this is intentional
+- **No npm / package.json** — CDN approach is intentional for zero-dependency deployment
+- **No React Router** — view navigation is state-based
+- **Mobile-first**: Design for 375px phone screens first
+- **CSS variables for brand colors** — never Tailwind color utilities for semantic colors
+- **Never remove content** without explicit owner approval
+- **GitHub Pages only** — no backends, no paid APIs, no server-side logic
+- **All lawn care recommendations must cite sources** from `RESEARCH_SOURCES`
+- **Grass program data is authoritative** — do not alter schedules without sourced justification
 - **Suggest UX improvements** relevant to a DIY homeowner's workflow when opportunities arise
 
 ---
 
 ## Git Workflow
 
-Branch naming follows the pattern: `claude/<description>-<id>`
+Branch naming: `claude/<description>-<id>`
 
-Recent PRs show the pattern of one focused change per PR with a descriptive commit message. Commit messages use imperative present tense (e.g., "Fix citation tooltips on mobile", "Add citation system with source tooltips").
+Commit messages use imperative present tense (e.g., "Fix citation tooltips on mobile", "Add recurring schedules view").
 
 ---
 
 ## Research Sources
 
-All recommendations in the app cite one or more of 19 university extension services tracked in `RESEARCH_SOURCES`. When adding new lawn care content, source it from:
+All recommendations in the app cite one or more of 19 university extension services in `RESEARCH_SOURCES` (defined in `constants.js`). When adding new lawn care content, source it from:
 - Penn State Extension
 - University of Georgia Extension
 - Clemson Cooperative Extension
@@ -328,4 +410,4 @@ All recommendations in the app cite one or more of 19 university extension servi
 - Ohio State Extension
 - Purdue Extension
 - Virginia Cooperative Extension
-- (and others listed in `RESEARCH_SOURCES` in `index.html`)
+- (and others listed in `RESEARCH_SOURCES` in `constants.js`)
