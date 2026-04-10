@@ -384,6 +384,84 @@ window.compressImage = function(file, maxDim, quality) {
     .ys-nav-btn.active .ys-nav-icon { filter: saturate(1.2); }
     .ys-nav-btn-log .ys-nav-icon { font-size: 22px; font-weight: 700; }
     .ys-nav-alert-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ys-clay); position: absolute; top: 3px; right: calc(50% - 14px); }
+    /* ── Phase 2: Welcome hero (empty state) ── */
+    .ys-welcome-hero { background: var(--ys-forest); padding: 4px 20px 26px; position: relative; overflow: hidden; }
+    .ys-welcome-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 85% 15%, rgba(54,124,43,.5), transparent 65%); pointer-events: none; }
+    .ys-welcome-eyebrow { font-family: var(--ys-font-body); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 10px; position: relative; }
+    .ys-welcome-headline { font-family: var(--ys-font-display); font-size: 26px; font-weight: 800; color: #fff; line-height: 1.18; margin-bottom: 10px; position: relative; }
+    .ys-welcome-headline em { color: var(--ys-yellow); font-style: normal; }
+    .ys-welcome-body { font-family: var(--ys-font-body); font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,.68); margin-bottom: 20px; position: relative; }
+    .ys-welcome-body strong { color: rgba(255,255,255,.9); font-weight: 600; }
+    .ys-setup-card { background: var(--ys-yellow); border-radius: 12px; padding: 16px 18px; cursor: pointer; transition: transform .15s; position: relative; overflow: hidden; }
+    .ys-setup-card:active { transform: scale(.98); }
+    .ys-setup-card-label { font-family: var(--ys-font-body); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(30,26,20,.5); margin-bottom: 5px; }
+    .ys-setup-card-headline { font-family: var(--ys-font-display); font-size: 17px; font-weight: 800; color: var(--ys-soil); line-height: 1.2; margin-bottom: 12px; }
+    .ys-setup-steps { display: flex; gap: 6px; margin-bottom: 14px; }
+    .ys-setup-step { flex: 1; background: rgba(30,26,20,.08); border-radius: 3px; padding: 6px 8px; text-align: center; font-family: var(--ys-font-body); font-size: 10px; font-weight: 700; color: rgba(30,26,20,.65); display: flex; flex-direction: column; gap: 3px; align-items: center; }
+    .ys-setup-btn { width: 100%; background: var(--ys-forest); color: #fff; border: none; border-radius: 3px; padding: 13px; font-family: var(--ys-font-body); font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background .1s; }
+    .ys-setup-btn:hover { background: #163d10; }
+    .ys-setup-btn:active { transform: scale(.98); }
+    /* Partial hero */
+    .ys-home-partial .ys-welcome-hero { padding-bottom: 20px; }
+    .ys-zone-reveal-card { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+    .ys-zone-big { font-family: var(--ys-font-display); font-size: 32px; font-weight: 900; color: var(--ys-yellow); line-height: 1; }
+    .ys-zone-meta { flex: 1; }
+    .ys-zone-name { font-family: var(--ys-font-body); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 3px; }
+    .ys-zone-soil { display: flex; align-items: center; gap: 5px; font-family: var(--ys-font-body); font-size: 12px; color: rgba(255,255,255,.8); }
+    .ys-zone-soil-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ys-yellow); flex-shrink: 0; }
+    .ys-partial-grass-card { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); border-radius: 10px; padding: 14px 16px; }
+    .ys-partial-grass-label { font-family: var(--ys-font-body); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 5px; }
+    .ys-partial-grass-headline { font-family: var(--ys-font-display); font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .ys-partial-grass-row { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
+    .ys-partial-grass-chip { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); color: #fff; border-radius: 20px; padding: 7px 13px; font-family: var(--ys-font-body); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .12s; }
+    .ys-partial-grass-chip:hover { background: rgba(255,255,255,.25); }
+    .ys-partial-grass-more { background: none; border: none; color: rgba(255,255,255,.6); font-family: var(--ys-font-body); font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0; }
+    /* Unlock preview */
+    .ys-unlock-section { padding: 0 14px 8px; }
+    .ys-unlock-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(30,26,20,.07); margin-bottom: 10px; }
+    .ys-unlock-header { display: flex; align-items: center; gap: 8px; background: rgba(30,77,24,.05); border-bottom: 1px solid var(--ys-canvas); padding: 10px 14px; font-family: var(--ys-font-body); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ys-forest); }
+    .ys-unlock-blur-wrap { position: relative; padding: 12px 14px; }
+    .ys-unlock-ghost-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .ys-unlock-accent { width: 4px; height: 36px; border-radius: 2px; flex-shrink: 0; }
+    .ys-unlock-ghost-lines { flex: 1; }
+    .ys-ghost-line { height: 9px; background: var(--ys-canvas); border-radius: 4px; margin-bottom: 6px; }
+    .ys-unlock-blur-overlay { position: absolute; inset: 0; background: rgba(237,232,222,0.85); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; font-family: var(--ys-font-body); font-size: 12px; font-weight: 600; color: var(--ys-forest); border-radius: 0 0 12px 12px; }
+    /* Learn promo strip */
+    .ys-learn-promo { padding: 0 14px 20px; }
+    .ys-learn-featured-card { border-radius: 12px; overflow: hidden; cursor: pointer; padding: 18px 16px; margin-bottom: 12px; transition: transform .12s; }
+    .ys-learn-featured-card:active { transform: scale(.98); }
+    .ys-learn-featured-tag { font-family: var(--ys-font-body); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-bottom: 8px; }
+    .ys-learn-featured-headline { font-family: var(--ys-font-display); font-size: 17px; font-weight: 700; color: #fff; line-height: 1.25; margin-bottom: 8px; }
+    .ys-learn-featured-excerpt { font-family: var(--ys-font-body); font-size: 12.5px; color: rgba(255,255,255,.75); line-height: 1.5; margin-bottom: 12px; }
+    .ys-learn-featured-footer { display: flex; align-items: center; justify-content: space-between; }
+    .ys-learn-featured-meta { font-family: var(--ys-font-body); font-size: 11px; color: rgba(255,255,255,.6); }
+    .ys-learn-featured-btn { background: rgba(255,255,255,.2); color: #fff; border: 1px solid rgba(255,255,255,.35); border-radius: 3px; padding: 6px 13px; font-family: var(--ys-font-body); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .ys-article-strip { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; margin-bottom: 12px; }
+    .ys-article-strip::-webkit-scrollbar { display: none; }
+    .ys-art-mini { min-width: 140px; max-width: 160px; background: #fff; border-radius: 10px; overflow: hidden; cursor: pointer; flex-shrink: 0; box-shadow: 0 1px 4px rgba(30,26,20,.07); transition: transform .12s; }
+    .ys-art-mini:active { transform: scale(.97); }
+    .ys-art-mini-top { height: 56px; display: flex; align-items: flex-end; padding: 8px 10px; }
+    .ys-art-mini-cat { font-family: var(--ys-font-body); font-size: 9px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: rgba(255,255,255,.9); background: rgba(0,0,0,.2); border-radius: 2px; padding: 2px 6px; }
+    .ys-art-mini-body { padding: 8px 10px 10px; }
+    .ys-art-mini-title { font-family: var(--ys-font-body); font-size: 11.5px; font-weight: 600; color: var(--ys-soil); line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .ys-art-mini-time { font-family: var(--ys-font-body); font-size: 10px; color: #9ca3af; }
+    .ys-view-all-row { text-align: center; padding: 4px 0; }
+    .ys-view-all-btn { background: none; border: 1.5px solid rgba(30,77,24,.2); color: var(--ys-forest); border-radius: 3px; padding: 10px 20px; font-family: var(--ys-font-body); font-size: 13px; font-weight: 700; cursor: pointer; transition: background .1s; }
+    .ys-view-all-btn:hover { background: rgba(30,77,24,.06); }
+    /* Locked feature prompt */
+    .ys-locked-prompt { padding: 0; }
+    .ys-locked-hero { background: var(--ys-forest); padding: 4px 20px 24px; position: relative; overflow: hidden; }
+    .ys-locked-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 85% 15%, rgba(54,124,43,.5), transparent 65%); pointer-events: none; }
+    .ys-locked-eyebrow { font-family: var(--ys-font-body); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 8px; position: relative; }
+    .ys-locked-headline { font-family: var(--ys-font-display); font-size: 24px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 10px; position: relative; }
+    .ys-locked-body { font-family: var(--ys-font-body); font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,.68); margin-bottom: 16px; position: relative; }
+    .ys-locked-preview-wrap { position: relative; background: rgba(255,255,255,.08); border-radius: 10px; overflow: hidden; }
+    .ys-locked-preview-blur { padding: 14px; }
+    .ys-locked-preview-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .ys-locked-preview-icon { width: 36px; height: 36px; border-radius: 6px; flex-shrink: 0; opacity: .5; }
+    .ys-locked-overlay { position: absolute; inset: 0; background: rgba(30,77,24,0.75); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-family: var(--ys-font-body); font-size: 13px; font-weight: 600; color: rgba(255,255,255,.9); }
+    .ys-locked-actions { padding: 20px 16px; display: flex; flex-direction: column; gap: 10px; }
+    .ys-locked-browse-link { background: none; border: none; color: #9ca3af; font-family: var(--ys-font-body); font-size: 13px; cursor: pointer; text-decoration: underline; padding: 4px; }
     /* ── Phase 1: More view ── */
     .ys-more-view { padding: 0 0 24px; background: var(--ys-canvas); min-height: 100%; }
     .ys-more-yard-pill { display: flex; align-items: center; gap: 8px; background: var(--ys-forest); color: rgba(255,255,255,0.85); font-family: var(--ys-font-body); font-size: 13px; font-weight: 600; padding: 14px 18px; cursor: pointer; }
@@ -6676,6 +6754,197 @@ window.ResearchSourcesPage = () => (
     };
 
     // ─── Hash-based URL routing helpers ─────────────────────────────────────────
+    // ─── LearnPromoStrip ─────────────────────────────────────────────────────────
+    function LearnPromoStrip({ setView, showPersonalizePrompt, profileComplete }) {
+        const FEATURED_ARTICLES = [
+            { slug: 'pre-emergent-timing', title: 'Pre-Emergent Timing — Why Soil Temp Matters More Than the Calendar', category: 'Weed Control', categoryColor: '#C05A2C', readTime: '6 min', featured: true, excerpt: 'The single biggest spring lawn mistake. Most homeowners apply too late because they use the calendar instead of soil temperature.' },
+            { slug: 'one-third-rule', title: 'The ⅓ Rule: Why Mowing Height Changes Everything', category: 'Mowing', categoryColor: '#1E4D18', readTime: '4 min' },
+            { slug: 'spring-startup-checklist', title: 'Spring Lawn Startup Checklist', category: 'Seasonal', categoryColor: '#7C3AED', readTime: '5 min' },
+            { slug: 'npk-explained', title: 'How to Read a Fertilizer Label (NPK Explained)', category: 'Fertilizing', categoryColor: '#367C2B', readTime: '5 min' },
+            { slug: 'how-often-water', title: 'How Often Should You Water Your Lawn?', category: 'Watering', categoryColor: '#3B82F6', readTime: '4 min' },
+        ];
+        const featured = FEATURED_ARTICLES.find(a => a.featured);
+        const rest = FEATURED_ARTICLES.filter(a => !a.featured);
+        return (
+            <div className="ys-learn-promo">
+                <div className="ys-sec-div">
+                    <span className="ys-sec-label">Lawn Tips Library</span>
+                    <div className="ys-sec-rule" />
+                    <span className="ys-sec-sub" style={{color:'var(--ys-green-600)',fontStyle:'italic'}}>{profileComplete ? 'for your lawn' : 'free · no signup'}</span>
+                </div>
+                {featured && (
+                    <div className="ys-learn-featured-card" style={{background: featured.categoryColor}} onClick={() => window.open('/learn/' + featured.slug, '_blank')}>
+                        {showPersonalizePrompt && <div className="ys-learn-featured-tag">🌿 Most Popular</div>}
+                        <h3 className="ys-learn-featured-headline">{featured.title}</h3>
+                        {featured.excerpt && <p className="ys-learn-featured-excerpt">{featured.excerpt}</p>}
+                        <div className="ys-learn-featured-footer">
+                            <span className="ys-learn-featured-meta">{featured.readTime} read · {featured.category}</span>
+                            <button className="ys-learn-featured-btn">Read →</button>
+                        </div>
+                    </div>
+                )}
+                <div className="ys-article-strip">
+                    {rest.map(article => (
+                        <div key={article.slug} className="ys-art-mini" onClick={() => window.open('/learn/' + article.slug, '_blank')}>
+                            <div className="ys-art-mini-top" style={{background: article.categoryColor}}>
+                                <span className="ys-art-mini-cat">{article.category}</span>
+                            </div>
+                            <div className="ys-art-mini-body">
+                                <div className="ys-art-mini-title">{article.title}</div>
+                                <div className="ys-art-mini-time">{article.readTime} read</div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className="ys-view-all-row">
+                    <button className="ys-view-all-btn" onClick={() => setView('learn')}>Browse All Articles →</button>
+                </div>
+            </div>
+        );
+    }
+
+    // ─── HomeUnlockPreview ───────────────────────────────────────────────────────
+    function HomeUnlockPreview() {
+        return (
+            <div className="ys-unlock-section">
+                <div className="ys-sec-div">
+                    <span className="ys-sec-label">What Unlocks</span>
+                    <div className="ys-sec-rule" />
+                    <span className="ys-sec-sub">after grass type</span>
+                </div>
+                <div className="ys-unlock-card">
+                    <div className="ys-unlock-header"><span>📋</span><span>This Week's Tasks</span></div>
+                    <div className="ys-unlock-blur-wrap">
+                        <div className="ys-unlock-ghost-row">
+                            <div className="ys-unlock-accent" style={{background:'var(--ys-clay)'}} />
+                            <div className="ys-unlock-ghost-lines">
+                                <div className="ys-ghost-line" style={{width:'70%'}} />
+                                <div className="ys-ghost-line" style={{width:'50%'}} />
+                            </div>
+                        </div>
+                        <div className="ys-unlock-ghost-row">
+                            <div className="ys-unlock-accent" style={{background:'var(--ys-yellow)'}} />
+                            <div className="ys-unlock-ghost-lines">
+                                <div className="ys-ghost-line" style={{width:'60%'}} />
+                                <div className="ys-ghost-line" style={{width:'75%'}} />
+                            </div>
+                        </div>
+                        <div className="ys-unlock-blur-overlay">Add your grass type to unlock</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // ─── HomeEmptyState ──────────────────────────────────────────────────────────
+    function HomeEmptyState({ setView }) {
+        return (
+            <div className="ys-home-empty">
+                <div className="ys-welcome-hero">
+                    <div className="ys-ruler-motif"><div className="ys-ruler-bar" /></div>
+                    <div className="ys-welcome-eyebrow">Your Lawn Coach</div>
+                    <h1 className="ys-welcome-headline">Tell us about your yard.<br />We'll tell you <em>exactly</em> what to do.</h1>
+                    <p className="ys-welcome-body">Yardstick uses your grass type, USDA zone, and <strong>real soil temperature</strong> to tell you what to do each week — backed by university research, personalized to your yard.</p>
+                    <div className="ys-setup-card" onClick={() => setView('profile')}>
+                        <div className="ys-setup-card-label">Get started · 60 seconds</div>
+                        <div className="ys-setup-card-headline">Set up your yard profile to unlock your personalized coach.</div>
+                        <div className="ys-setup-steps">
+                            <div className="ys-setup-step"><span>📍</span>ZIP code</div>
+                            <div className="ys-setup-step"><span>🌾</span>Grass type</div>
+                            <div className="ys-setup-step"><span>📐</span>Yard size</div>
+                        </div>
+                        <button className="ys-setup-btn">Set Up My Yard <span>→</span></button>
+                    </div>
+                </div>
+                <LearnPromoStrip setView={setView} showPersonalizePrompt={false} profileComplete={false} />
+            </div>
+        );
+    }
+
+    // ─── HomePartialState ────────────────────────────────────────────────────────
+    function HomePartialState({ lawnProfile, setView, weather, onGrassSelect }) {
+        const soilTemp = weather && weather.hourly && weather.hourly.soil_temperature_6cm ? weather.hourly.soil_temperature_6cm[0] : null;
+        const soilTempF = soilTemp != null ? Math.round(soilTemp * 9/5 + 32) : null;
+        const zoneNum = parseInt(lawnProfile && lawnProfile.zone ? lawnProfile.zone : '7');
+        const suggestedGrasses = zoneNum <= 6
+            ? ['kentucky-bluegrass', 'tall-fescue', 'fine-fescue']
+            : zoneNum >= 8
+            ? ['bermuda', 'zoysia', 'st-augustine']
+            : ['tall-fescue', 'bermuda', 'zoysia'];
+        return (
+            <div className="ys-home-partial">
+                <div className="ys-welcome-hero">
+                    <div className="ys-ruler-motif"><div className="ys-ruler-bar" /></div>
+                    <div className="ys-welcome-eyebrow">Your Zone</div>
+                    <h1 className="ys-welcome-headline">Zone {lawnProfile.zone} confirmed.<br />One more step.</h1>
+                    {soilTempF && (
+                        <p className="ys-welcome-body">Your soil is already at <strong>{soilTempF}°F</strong> — something important may be happening for your grass right now. Add your grass type to find out what.</p>
+                    )}
+                    <div className="ys-zone-reveal-card">
+                        <div className="ys-zone-big">{lawnProfile.zone}</div>
+                        <div className="ys-zone-meta">
+                            <div className="ys-zone-name">USDA Hardiness Zone</div>
+                            {soilTempF && <div className="ys-zone-soil"><span className="ys-zone-soil-dot" />Soil temp {soilTempF}°F today</div>}
+                        </div>
+                    </div>
+                    <div className="ys-partial-grass-card">
+                        <div className="ys-partial-grass-label">Next step · 30 seconds</div>
+                        <div className="ys-partial-grass-headline">What type of grass do you have?</div>
+                        <div className="ys-partial-grass-row">
+                            {suggestedGrasses.map(key => {
+                                const info = GRASS_INFO && GRASS_INFO[key];
+                                return (
+                                    <button key={key} className="ys-partial-grass-chip" onClick={() => onGrassSelect(key)}>
+                                        <span>{info && info.icon ? info.icon : '🌿'}</span>
+                                        {info ? info.name : key}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        <button className="ys-partial-grass-more" onClick={() => setView('profile')}>See all grass types →</button>
+                    </div>
+                </div>
+                <HomeUnlockPreview />
+                <LearnPromoStrip setView={setView} showPersonalizePrompt={false} profileComplete={false} />
+            </div>
+        );
+    }
+
+    // ─── LockedFeaturePrompt ─────────────────────────────────────────────────────
+    function LockedFeaturePrompt({ featureName, icon, description, setView }) {
+        return (
+            <div className="ys-locked-prompt">
+                <div className="ys-locked-hero">
+                    <div className="ys-ruler-motif"><div className="ys-ruler-bar" /></div>
+                    <div className="ys-locked-eyebrow">{featureName}</div>
+                    <h2 className="ys-locked-headline">Your {featureName.toLowerCase()} is waiting.</h2>
+                    <p className="ys-locked-body">{description}</p>
+                    <div className="ys-locked-preview-wrap">
+                        <div className="ys-locked-preview-blur">
+                            {[1,2].map(i => (
+                                <div key={i} className="ys-locked-preview-row">
+                                    <div className="ys-locked-preview-icon" style={{background: i===1 ? 'var(--ys-green-600)' : 'var(--ys-clay)'}} />
+                                    <div style={{flex:1}}>
+                                        <div className="ys-ghost-line" style={{width:'60%'}} />
+                                        <div className="ys-ghost-line" style={{width:'80%'}} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="ys-locked-overlay">
+                            <span style={{fontSize:'22px'}}>🔒</span>
+                            <span>Set up your yard profile to unlock</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="ys-locked-actions">
+                    <button className="ys-setup-btn" onClick={() => setView('profile')}>Set Up My Yard →</button>
+                    <button className="ys-locked-browse-link" onClick={() => setView('learn')}>Browse lawn tips while you decide</button>
+                </div>
+            </div>
+        );
+    }
+
     // ─── MoreMenuView ────────────────────────────────────────────────────────────
     function MoreMenuView({ setView, currentUser, lawnProfile }) {
         const sections = [
@@ -6790,6 +7059,9 @@ window.ResearchSourcesPage = () => (
         const [splashJustDone, setSplashJustDone] = useState(false);
         const [saveBannerDismissed, setSaveBannerDismissed] = useState(() => localStorage.getItem('yardstick_save_banner_dismissed') === '1');
         const [expandedTaskIdx, setExpandedTaskIdx] = useState(null);
+
+        // ── Profile state (drives home screen routing) ──────────────────────────
+        const profileState = getProfileState(lawnProfile);
 
         // ── Auth state ──────────────────────────────────────────────────────────
         const [currentUser, setCurrentUser] = useState(null);
@@ -7532,6 +7804,24 @@ window.ResearchSourcesPage = () => (
                             )}
                             {/* Dashboard — only shown after onboarding is complete or user is logged in */}
                             {(currentUser || (onboardingDone && !splashJustDone)) && (<>
+                            {/* ── Profile-state home routing ── */}
+                            {profileState === 'empty' && (
+                                <HomeEmptyState setView={setView} weather={weather} />
+                            )}
+                            {profileState === 'partial' && (
+                                <HomePartialState
+                                    lawnProfile={lawnProfile}
+                                    setView={setView}
+                                    weather={weather}
+                                    onGrassSelect={(grass) => {
+                                        const updated = { ...lawnProfile, specificGrass: grass };
+                                        localStorage.setItem('lawnProfile', JSON.stringify(updated));
+                                        setLawnProfile(updated);
+                                        setProfileFormData(prev => ({ ...prev, specificGrass: grass }));
+                                    }}
+                                />
+                            )}
+                            {profileState !== 'empty' && profileState !== 'partial' && (<>
                             {/* Save plan banner — logged-out users who completed onboarding, dismissible */}
                             {!currentUser && onboardingDone && !saveBannerDismissed && (
                                 <div className="rounded-2xl border px-4 py-3 flex items-center gap-3" style={{background:'var(--ys-green-50)', borderColor:'var(--ys-green-200)'}}>
@@ -8123,6 +8413,8 @@ window.ResearchSourcesPage = () => (
                                 </div>
                             )}
                             </>)}
+                            {/* ── End profile-complete section ── */}
+                            </>)}
                         </div>
                     )}
                     {view === 'add' && <div><button onClick={() => { setView(null); setSelectedActivityType(null); }} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{!selectedActivityType && <ActivitySelector onSelectType={setSelectedActivityType} onCancel={() => setView(null)} currentUser={currentUser} />}{selectedActivityType && <ActivityForm selectedActivityType={selectedActivityType} onSubmit={addActivity} onCancel={() => { setSelectedActivityType(null); setView(null); }} currentUser={currentUser} activities={activities} equipment={equipment} />}</div>}
@@ -8154,7 +8446,7 @@ window.ResearchSourcesPage = () => (
                     {view === 'gallery' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><GalleryView currentUser={currentUser} onSignIn={() => setShowAuthModal(true)} /></div>}
                     {view === 'garage' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><MyGarage equipment={equipment} activities={activities} onAdd={addEquipment} onDelete={deleteEquipment} onUpdate={updateEquipment} onNavigate={setView} /></div>}
                     {view === 'profile' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><LawnProfile profileFormData={profileFormData} profileEditing={profileEditing} lawnProfile={lawnProfile} weather={weather} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} onSave={handleProfileSave} onEditToggle={setProfileEditing} onNavigate={setView} /></div>}
-                    {view === 'gameplan' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Full Year Lawn Program" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <YearlyGameplan lawnProfile={lawnProfile} weather={weather} onNavigate={setView} />}</div>}
+                    {view === 'gameplan' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{profileState !== 'complete' ? <LockedFeaturePrompt featureName="Year Gameplan" icon="📋" description="We need your grass type and zone to build your month-by-month program. Takes about 60 seconds." setView={setView} /> : PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Full Year Lawn Program" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <YearlyGameplan lawnProfile={lawnProfile} weather={weather} onNavigate={setView} />}</div>}
                     {view === 'schedules' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button><SchedulesView schedules={schedules} onAdd={addSchedule} onDelete={deleteSchedule} onLog={logScheduledActivity} /></div>}
                     {view === 'dashboard' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Advanced Stats" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <Dashboard activities={activities} statsView={statsView} onStatsViewChange={setStatsView} weather={weather} lawnProfile={lawnProfile} onNavigate={setView} onDelete={deleteActivity} />}</div>}
                     {view === 'products' && <div><button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold">← Back</button>{PRO_GATE_ENABLED && !currentUser ? <ProFeatureNotice featureName="Product Guide" onUnlock={() => setView('account')} onViewPricing={() => setView('proSignup')} /> : <ProductGuide />}</div>}
