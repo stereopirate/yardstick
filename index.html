@@ -374,6 +374,20 @@ window.compressImage = function(file, maxDim, quality) {
     .ys-sec-label { font-family: var(--ys-font-display); font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ys-forest); white-space: nowrap; }
     .ys-sec-rule { flex: 1; height: 1px; background: linear-gradient(to right, var(--ys-green-600), transparent); opacity: .25; }
     .ys-sec-sub { font-family: var(--ys-font-body); font-size: 10.5px; color: #9ca3af; }
+    /* ── Phase 5: Save prompt modal ── */
+    .ys-modal-overlay { position: fixed; inset: 0; background: rgba(20,16,10,.55); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; align-items: flex-end; z-index: 500; }
+    .ys-modal-sheet { background: #fff; border-radius: 20px 20px 0 0; padding: 0 0 max(32px, env(safe-area-inset-bottom)); width: 100%; max-width: 500px; margin: 0 auto; }
+    .ys-modal-handle { width: 36px; height: 4px; background: #e5e7eb; border-radius: 2px; margin: 12px auto 20px; }
+    .ys-modal-inner { padding: 0 24px; }
+    .ys-modal-icon { font-size: 36px; text-align: center; margin-bottom: 12px; }
+    .ys-modal-headline { font-family: var(--ys-font-display); font-size: 20px; font-weight: 700; color: var(--ys-soil); text-align: center; line-height: 1.25; margin-bottom: 8px; }
+    .ys-modal-sub { font-family: var(--ys-font-body); font-size: 13.5px; line-height: 1.55; color: #6b7280; text-align: center; margin-bottom: 18px; }
+    .ys-modal-benefits { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .ys-modal-benefit { display: flex; align-items: center; gap: 10px; font-family: var(--ys-font-body); font-size: 13px; color: var(--ys-soil); }
+    .ys-benefit-check { width: 20px; height: 20px; border-radius: 50%; background: #d1fae5; border: 2px solid #6ee7b7; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ys-btn-modal-primary { width: 100%; background: var(--ys-yellow); color: var(--ys-soil); border: none; border-radius: 3px; padding: 15px; font-family: var(--ys-font-body); font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: background .1s; }
+    .ys-btn-modal-primary:hover { background: #e8b800; }
+    .ys-btn-modal-skip { display: block; text-align: center; font-family: var(--ys-font-body); font-size: 12px; color: #9ca3af; background: none; border: none; width: 100%; cursor: pointer; padding: 4px; }
     /* ── Phase 4: TaskCard ── */
     .ys-tc { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(30,26,20,.07), 0 0 0 1px rgba(30,26,20,.04); transition: transform .15s; }
     .ys-tc:active { transform: scale(.985); }
@@ -6997,6 +7011,41 @@ window.ResearchSourcesPage = () => (
         );
     }
 
+    // ─── SavePromptModal ─────────────────────────────────────────────────────────
+    function SavePromptModal({ onSignIn, onDismiss }) {
+        const benefits = [
+            'Your grass, zone, and yard size saved — never re-enter',
+            'Full activity history synced across all your devices',
+            'Seasonal reminders from your coach when it matters',
+        ];
+        return (
+            <div className="ys-modal-overlay" onClick={onDismiss}>
+                <div className="ys-modal-sheet" onClick={function(e) { e.stopPropagation(); }}>
+                    <div className="ys-modal-handle" />
+                    <div className="ys-modal-inner">
+                        <div className="ys-modal-icon">🌱</div>
+                        <h2 className="ys-modal-headline">Want the coach to remember your yard forever?</h2>
+                        <p className="ys-modal-sub">Takes 10 seconds. Your lawn profile, history, and weekly plan — always there when you need it.</p>
+                        <div className="ys-modal-benefits">
+                            {benefits.map(function(b, i) {
+                                return (
+                                    <div key={i} className="ys-modal-benefit">
+                                        <div className="ys-benefit-check">
+                                            <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3 5.5L8 1" stroke="#059669" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                                        </div>
+                                        {b}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <button className="ys-btn-modal-primary" onClick={onSignIn}>Create free account</button>
+                        <button className="ys-btn-modal-skip" onClick={onDismiss}>Not yet — keep using locally</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     // ─── TaskCard ────────────────────────────────────────────────────────────────
     function TaskCard({ task, lawnProfile, setView, onLog }) {
         const [expanded, setExpanded] = React.useState(task.urgency === 'urgent');
@@ -7394,6 +7443,8 @@ window.ResearchSourcesPage = () => (
         const [splashJustDone, setSplashJustDone] = useState(false);
         const [saveBannerDismissed, setSaveBannerDismissed] = useState(() => localStorage.getItem('yardstick_save_banner_dismissed') === '1');
         const [expandedTaskIdx, setExpandedTaskIdx] = useState(null);
+        const [showSavePrompt, setShowSavePrompt] = useState(false);
+        const [savePromptDismissed, setSavePromptDismissed] = useState(() => localStorage.getItem('ys_save_prompt_dismissed') === '1');
 
         // ── Profile state (drives home screen routing) ──────────────────────────
         const profileState = getProfileState(lawnProfile);
@@ -7490,6 +7541,14 @@ window.ResearchSourcesPage = () => (
                 setDataLoading(false);
             });
         }, [authReady, currentUser]);
+
+        // ── Save prompt trigger ──────────────────────────────────────────────────
+        useEffect(() => {
+            if (!currentUser && !savePromptDismissed && activities.length >= 1 && profileState === 'complete') {
+                const timer = setTimeout(() => setShowSavePrompt(true), 1500);
+                return () => clearTimeout(timer);
+            }
+        }, [activities.length, currentUser, savePromptDismissed, profileState]);
 
         const handleSignOut = async () => {
             window.trackEvent('sign_out', {});
@@ -8836,6 +8895,18 @@ window.ResearchSourcesPage = () => (
                     <div className="ys-grass-footer" aria-hidden="true" />
                     </main>
                 </div>
+
+                {/* ── Save prompt modal ── */}
+                {showSavePrompt && !currentUser && (
+                    <SavePromptModal
+                        onSignIn={() => { setShowSavePrompt(false); setShowAuthModal(true); }}
+                        onDismiss={() => {
+                            setShowSavePrompt(false);
+                            setSavePromptDismissed(true);
+                            localStorage.setItem('ys_save_prompt_dismissed', '1');
+                        }}
+                    />
+                )}
 
                 {/* ── Bottom nav — mobile (hidden at md) ── */}
                 {(onboardingDone && !splashJustDone) && (
