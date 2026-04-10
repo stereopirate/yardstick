@@ -374,6 +374,11 @@ window.compressImage = function(file, maxDim, quality) {
     .ys-sec-label { font-family: var(--ys-font-display); font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ys-forest); white-space: nowrap; }
     .ys-sec-rule { flex: 1; height: 1px; background: linear-gradient(to right, var(--ys-green-600), transparent); opacity: .25; }
     .ys-sec-sub { font-family: var(--ys-font-body); font-size: 10.5px; color: #9ca3af; }
+    /* ── Phase 6: Onboarding progress ── */
+    .ys-ob-progress { display: flex; justify-content: center; gap: 6px; padding: 10px 0 0; }
+    .ys-ob-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(30,26,20,0.15); transition: background .2s; }
+    .ys-ob-dot.active { background: var(--ys-forest); }
+    .ys-ob-dot.done { background: var(--ys-green-400); }
     /* ── Phase 5: Save prompt modal ── */
     .ys-modal-overlay { position: fixed; inset: 0; background: rgba(20,16,10,.55); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; align-items: flex-end; z-index: 500; }
     .ys-modal-sheet { background: #fff; border-radius: 20px 20px 0 0; padding: 0 0 max(32px, env(safe-area-inset-bottom)); width: 100%; max-width: 500px; margin: 0 auto; }
@@ -5409,10 +5414,23 @@ window.ResearchSourcesPage = () => (
             onZipLookup(zip);
         };
 
+        const [lawnSizeKey, setLawnSizeKey] = useState(null); // 'small'|'medium'|'large'
+        const SIZE_SQFT = { small: '2500', medium: '5500', large: '12000' };
+
         const handleGrassSelect = async (grassKey) => {
             setSelectedGrass(grassKey);
             const existing = localStorage.getItem('lawnProfile');
             const merged = Object.assign({}, existing ? JSON.parse(existing) : {}, { specificGrass: grassKey });
+            await onSaveProfile(merged);
+            // Go to yard size step before done
+            setStep('size');
+        };
+
+        const handleSizeSelect = async (sizeKey) => {
+            setLawnSizeKey(sizeKey);
+            const sqft = SIZE_SQFT[sizeKey] || '';
+            const existing = localStorage.getItem('lawnProfile');
+            const merged = Object.assign({}, existing ? JSON.parse(existing) : {}, { lawnSize: sqft });
             await onSaveProfile(merged);
             onComplete && onComplete();
             setStep('done');
@@ -5452,6 +5470,17 @@ window.ResearchSourcesPage = () => (
             { icon: '📋', text: 'Full activity history — every mow, feed & treatment' },
             { icon: '🗓️', text: 'Seasonal care reminders for your grass type' },
         ];
+
+        // Progress dots helper
+        const STEP_ORDER = ['splash','grass','size','done'];
+        const stepIdx = STEP_ORDER.indexOf(step);
+        const ObProgress = () => (
+            <div className="ys-ob-progress">
+                {STEP_ORDER.filter(s => s !== 'done').map((s,i) => (
+                    <div key={s} className={'ys-ob-dot' + (i < stepIdx ? ' done' : i === stepIdx ? ' active' : '')} />
+                ))}
+            </div>
+        );
 
         // ── Step 1: Splash ──
         if (step === 'splash') return (
@@ -5738,13 +5767,52 @@ window.ResearchSourcesPage = () => (
                             </div>
                         )}
                     </div>
-                    <button onClick={() => { onComplete && onComplete(); setStep('done'); }}
+                    <button onClick={() => { setStep('size'); }}
                         className="w-full text-center btn-press py-2"
                         style={{background:'none', border:'none', fontFamily:'var(--ys-font-body)', fontSize:12, fontWeight:600, color:'var(--ys-stone-light)'}}>
                         Skip — I'll set this later in My Yard
                     </button>
                 </div>
             </div>
+            );
+        }
+
+        // ── Step 2.5: Yard size ──
+        if (step === 'size') {
+            const SIZE_OPTIONS = [
+                { key: 'small',  icon: '🏠', label: 'Small',  desc: 'Under 3,000 sq ft', sub: 'Townhouse or compact yard' },
+                { key: 'medium', icon: '🏡', label: 'Medium', desc: '3,000 – 8,000 sq ft', sub: 'Most suburban lots' },
+                { key: 'large',  icon: '🏘️', label: 'Large',  desc: 'Over 8,000 sq ft', sub: 'Acre lots and rural yards' },
+            ];
+            return (
+                <div className="rounded-2xl overflow-hidden animate-fade-in" style={{boxShadow:'0 4px 24px rgba(0,0,0,0.12)'}}>
+                    <div style={{background:'var(--ys-forest)', backgroundImage:'radial-gradient(ellipse at 80% 0%, rgba(78,158,64,0.18), transparent 55%)', padding:'18px 20px 14px', position:'relative', borderBottom:'4px solid var(--ys-yellow)'}}>
+                        <div style={{position:'absolute', bottom:4, left:0, right:0, height:4, background:'repeating-linear-gradient(90deg,transparent,transparent 26px,rgba(30,26,20,0.22) 26px,rgba(30,26,20,0.22) 28px)'}} />
+                        <div className="text-xs font-bold uppercase mb-1" style={{letterSpacing:'0.06em', color:'rgba(255,255,255,0.52)', fontFamily:'var(--ys-font-body)'}}>Last step</div>
+                        <h3 style={{fontFamily:'var(--ys-font-display)', fontWeight:900, fontSize:21, color:'white', lineHeight:1.1, marginBottom:6}}>How big is your yard?</h3>
+                        <p style={{fontFamily:'var(--ys-font-body)', fontSize:12, color:'rgba(255,255,255,0.65)', lineHeight:1.45}}>Used to calculate how much product you need. You can update this anytime in My Yard.</p>
+                    </div>
+                    <div className="px-5 pt-5 pb-5" style={{background:'var(--ys-cream)'}}>
+                        <div className="flex flex-col gap-3">
+                            {SIZE_OPTIONS.map(opt => (
+                                <button key={opt.key} onClick={() => handleSizeSelect(opt.key)}
+                                    className="flex items-center gap-3 px-4 py-3 rounded-xl btn-press text-left"
+                                    style={{background:'white', border:'1.5px solid rgba(30,26,20,0.14)', fontFamily:'var(--ys-font-body)'}}>
+                                    <span style={{fontSize:24}}>{opt.icon}</span>
+                                    <div style={{flex:1}}>
+                                        <div style={{fontWeight:700, fontSize:14, color:'var(--ys-soil)', marginBottom:2}}>{opt.label} — {opt.desc}</div>
+                                        <div style={{fontSize:11, color:'var(--ys-stone-light)'}}>{opt.sub}</div>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                        <button onClick={() => { onComplete && onComplete(); setStep('done'); }}
+                            className="w-full text-center btn-press py-3 mt-3"
+                            style={{background:'none', border:'none', fontFamily:'var(--ys-font-body)', fontSize:12, fontWeight:600, color:'var(--ys-stone-light)'}}>
+                            Skip this step
+                        </button>
+                    </div>
+                </div>
             );
         }
 
