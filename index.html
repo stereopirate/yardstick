@@ -374,6 +374,44 @@ window.compressImage = function(file, maxDim, quality) {
     .ys-sec-label { font-family: var(--ys-font-display); font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ys-forest); white-space: nowrap; }
     .ys-sec-rule { flex: 1; height: 1px; background: linear-gradient(to right, var(--ys-green-600), transparent); opacity: .25; }
     .ys-sec-sub { font-family: var(--ys-font-body); font-size: 10.5px; color: #9ca3af; }
+    /* ── Phase 7: Learn library ── */
+    .ys-learn-view { padding-bottom: 24px; background: var(--ys-canvas); min-height: 100%; }
+    .ys-learn-header { background: var(--ys-forest); padding: 6px 20px 22px; position: relative; overflow: hidden; }
+    .ys-learn-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 85% 15%, rgba(54,124,43,.5), transparent 65%); pointer-events: none; }
+    .ys-learn-eyebrow { font-family: var(--ys-font-body); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 6px; position: relative; }
+    .ys-learn-title { font-family: var(--ys-font-display); font-size: 28px; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 8px; position: relative; }
+    .ys-learn-title em { color: var(--ys-yellow); font-style: normal; }
+    .ys-learn-sub { font-family: var(--ys-font-body); font-size: 13px; color: rgba(255,255,255,.62); line-height: 1.55; position: relative; margin-bottom: 0; }
+    .ys-learn-pers-prompt { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 12px 14px; margin-top: 14px; position: relative; }
+    .ys-learn-pers-left { flex: 1; }
+    .ys-learn-pers-title { font-family: var(--ys-font-body); font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .ys-learn-pers-sub { font-family: var(--ys-font-body); font-size: 11px; color: rgba(255,255,255,.6); }
+    .ys-learn-pers-btn { font-family: var(--ys-font-body); font-size: 12px; font-weight: 700; background: var(--ys-yellow); color: var(--ys-soil); border: none; border-radius: 3px; padding: 8px 12px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+    .ys-learn-profile-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; position: relative; }
+    .ys-profile-chip { font-family: var(--ys-font-body); font-size: 11px; font-weight: 600; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.85); border-radius: 20px; padding: 4px 11px; }
+    .ys-profile-chip-edit { font-family: var(--ys-font-body); font-size: 11px; font-weight: 600; background: none; border: 1px solid rgba(255,255,255,.3); color: rgba(255,255,255,.7); border-radius: 20px; padding: 4px 11px; cursor: pointer; }
+    .ys-filter-row { display: flex; gap: 0; padding: 0 14px; margin: 12px 0 4px; overflow-x: auto; scrollbar-width: none; }
+    .ys-filter-row::-webkit-scrollbar { display: none; }
+    .ys-filter-tab { font-family: var(--ys-font-body); font-size: 12px; font-weight: 600; color: #9ca3af; background: none; border: none; border-bottom: 2px solid transparent; padding: 8px 14px; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: color .15s, border-color .15s; }
+    .ys-filter-tab.active { color: var(--ys-forest); border-bottom-color: var(--ys-yellow); }
+    .ys-learn-now-label { display: flex; align-items: center; justify-content: space-between; padding: 6px 14px; }
+    .ys-now-badge { font-family: var(--ys-font-body); font-size: 10px; font-weight: 700; background: rgba(192,90,44,.1); color: var(--ys-clay); border-radius: 20px; padding: 3px 8px; }
+    .ys-editorial-list { padding: 0 14px; display: flex; flex-direction: column; gap: 10px; }
+    .ys-editorial-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 6px rgba(30,26,20,.08), 0 0 0 1px rgba(30,26,20,.04); cursor: pointer; transition: transform .12s; }
+    .ys-editorial-card:active { transform: scale(.985); }
+    .ys-ec-top { height: 80px; display: flex; align-items: flex-end; padding: 12px 14px; position: relative; overflow: hidden; }
+    .ys-ec-cat-tag { font-family: var(--ys-font-body); font-size: 9.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: rgba(255,255,255,.9); background: rgba(0,0,0,.2); border-radius: 3px; padding: 3px 9px; position: relative; z-index: 1; }
+    .ys-ec-body { padding: 13px 15px 14px; }
+    .ys-ec-headline { font-family: var(--ys-font-display); font-size: 15px; font-weight: 700; color: var(--ys-soil); line-height: 1.25; margin-bottom: 6px; }
+    .ys-ec-excerpt { font-family: var(--ys-font-body); font-size: 12.5px; line-height: 1.55; color: #6b7280; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .ys-ec-footer { display: flex; align-items: center; justify-content: space-between; }
+    .ys-ec-time { font-family: 'Courier Prime', 'Courier New', monospace; font-size: 11px; color: #9ca3af; }
+    .ys-ec-read-btn { font-family: var(--ys-font-body); font-size: 12px; font-weight: 700; background: var(--ys-canvas); color: var(--ys-forest); border: 1.5px solid rgba(30,77,24,.2); border-radius: 3px; padding: 5px 12px; cursor: pointer; }
+    .ys-pers-cta-inline { margin: 12px 14px; background: var(--ys-yellow); border-radius: 12px; padding: 16px; cursor: pointer; }
+    .ys-pci-eyebrow { font-family: var(--ys-font-body); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(30,26,20,.5); margin-bottom: 5px; }
+    .ys-pci-headline { font-family: var(--ys-font-display); font-size: 17px; font-weight: 800; color: var(--ys-soil); line-height: 1.2; margin-bottom: 6px; }
+    .ys-pci-sub { font-family: var(--ys-font-body); font-size: 12px; color: rgba(30,26,20,.65); line-height: 1.5; margin-bottom: 12px; }
+    .ys-pci-btn { background: var(--ys-forest); color: #fff; border: none; border-radius: 3px; padding: 10px 16px; font-family: var(--ys-font-body); font-size: 13px; font-weight: 700; cursor: pointer; }
     /* ── Phase 6: Onboarding progress ── */
     .ys-ob-progress { display: flex; justify-content: center; gap: 6px; padding: 10px 0 0; }
     .ys-ob-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(30,26,20,0.15); transition: background .2s; }
@@ -7397,6 +7435,138 @@ window.ResearchSourcesPage = () => (
         );
     }
 
+    // ─── LearnLibraryView ────────────────────────────────────────────────────────
+    function LearnLibraryView({ lawnProfile, setView }) {
+        const profileState = getProfileState(lawnProfile);
+        const COOL_SEASON = ['tall-fescue','kentucky-bluegrass','fine-fescue','perennial-ryegrass'];
+        const isCoolSeason = lawnProfile && COOL_SEASON.includes(lawnProfile.specificGrass);
+
+        const [activeFilter, setActiveFilter] = React.useState(profileState === 'complete' ? 'my-lawn' : 'all');
+
+        const FILTERS = [
+            { key: 'all',          label: 'All' },
+            { key: 'my-lawn',      label: 'My Lawn ★', requiresProfile: true },
+            { key: 'seasonal',     label: 'Seasonal' },
+            { key: 'weed',         label: 'Weed Control' },
+            { key: 'mowing',       label: 'Mowing' },
+            { key: 'fertilizing',  label: 'Fertilizing' },
+            { key: 'watering',     label: 'Watering' },
+        ];
+
+        const ALL_ARTICLES = [
+            { slug: 'pre-emergent-timing', title: 'Pre-Emergent Timing — Why Soil Temp Matters More Than the Calendar', excerpt: 'The single biggest spring lawn mistake. Most homeowners apply too late because they use the calendar instead of soil temperature.', category: 'weed', categoryLabel: 'Weed Control', categoryColor: '#C05A2C', readTime: '6 min', grassTypes: [], featured: true, seasonal: true, coolSeason: true },
+            { slug: 'one-third-rule', title: 'The ⅓ Rule: Why Mowing Height Changes Everything', excerpt: 'Remove too much at once and you stress the plant, invite weeds, and thin your stand.', category: 'mowing', categoryLabel: 'Mowing', categoryColor: '#1E4D18', readTime: '4 min', grassTypes: [] },
+            { slug: 'spring-startup-checklist', title: 'Spring Lawn Startup Checklist', excerpt: 'Everything to do in the first 6 weeks of the season — in the right order.', category: 'seasonal', categoryLabel: 'Seasonal', categoryColor: '#7C3AED', readTime: '5 min', grassTypes: ['tall-fescue','kentucky-bluegrass','fine-fescue','perennial-ryegrass'], seasonal: true, coolSeason: true },
+            { slug: 'npk-explained', title: 'How to Read a Fertilizer Label (NPK Explained)', excerpt: "Those three numbers on every bag tell you exactly what you're buying.", category: 'fertilizing', categoryLabel: 'Fertilizing', categoryColor: '#367C2B', readTime: '5 min', grassTypes: [] },
+            { slug: 'how-often-water', title: 'How Often Should You Water Your Lawn?', excerpt: 'Daily watering trains shallow roots. Deep, infrequent watering builds drought resilience.', category: 'watering', categoryLabel: 'Watering', categoryColor: '#3B82F6', readTime: '4 min', grassTypes: [] },
+        ];
+
+        function filterArticles(articles) {
+            if (activeFilter === 'all') return articles;
+            if (activeFilter === 'my-lawn') {
+                if (profileState !== 'complete') return articles;
+                return articles.filter(function(a) { return a.grassTypes.length === 0 || a.grassTypes.includes(lawnProfile.specificGrass); });
+            }
+            return articles.filter(function(a) { return a.category === activeFilter; });
+        }
+
+        const filtered = filterArticles(ALL_ARTICLES);
+        const featuredArticle = filtered.find(function(a) { return a.featured; }) || filtered[0];
+        const restArticles = filtered.filter(function(a) { return a !== featuredArticle; });
+        const month = new Date().getMonth() + 1;
+        const isSpring = month >= 2 && month <= 5;
+        const isNowRelevant = featuredArticle && featuredArticle.seasonal && featuredArticle.coolSeason === isCoolSeason && isSpring;
+        const grassName = lawnProfile && lawnProfile.specificGrass && GRASS_INFO && GRASS_INFO[lawnProfile.specificGrass] ? GRASS_INFO[lawnProfile.specificGrass].name : null;
+
+        return (
+            <div className="ys-learn-view">
+                <div className="ys-learn-header">
+                    <div className="ys-ruler-motif" style={{position:'relative', zIndex:1}}><div className="ys-ruler-bar" /></div>
+                    <div className="ys-learn-eyebrow">Research-backed guides</div>
+                    <h1 className="ys-learn-title">Lawn Tips <em>Library.</em></h1>
+                    <p className="ys-learn-sub">Written plainly, backed by university extension research. No ads, no product pushing.</p>
+                    {profileState !== 'complete' && (
+                        <div className="ys-learn-pers-prompt">
+                            <div className="ys-learn-pers-left">
+                                <div className="ys-learn-pers-title">See articles for your lawn</div>
+                                <div className="ys-learn-pers-sub">Add your grass type and zone to filter what's relevant.</div>
+                            </div>
+                            <button className="ys-learn-pers-btn" onClick={() => setView('profile')}>Set up →</button>
+                        </div>
+                    )}
+                    {profileState === 'complete' && (
+                        <div className="ys-learn-profile-chips">
+                            {grassName && <div className="ys-profile-chip">🌾 {grassName}</div>}
+                            <div className="ys-profile-chip">📍 Zone {lawnProfile.zone}</div>
+                            <button className="ys-profile-chip-edit" onClick={() => setView('profile')}>Edit</button>
+                        </div>
+                    )}
+                </div>
+
+                <div className="ys-filter-row">
+                    {FILTERS.filter(function(f) { return !f.requiresProfile || profileState === 'complete'; }).map(function(f) {
+                        return <button key={f.key} className={'ys-filter-tab' + (activeFilter === f.key ? ' active' : '')} onClick={() => setActiveFilter(f.key)}>{f.label}</button>;
+                    })}
+                </div>
+
+                {isNowRelevant && (
+                    <div className="ys-learn-now-label">
+                        <span style={{fontFamily:'var(--ys-font-body)', fontSize:12, color:'var(--ys-forest)', fontWeight:600}}>Right for your yard now</span>
+                        <span className="ys-now-badge">🔥 This week</span>
+                    </div>
+                )}
+
+                {featuredArticle && (
+                    <div style={{margin:'8px 14px 10px'}}>
+                        <div className="ys-editorial-card" onClick={() => window.open('/learn/' + featuredArticle.slug, '_blank')}>
+                            <div className="ys-ec-top" style={{background: featuredArticle.categoryColor}}>
+                                <div className="ys-ec-cat-tag">{featuredArticle.categoryLabel}{isNowRelevant ? ' · Now' : ''}</div>
+                            </div>
+                            <div className="ys-ec-body">
+                                <h3 className="ys-ec-headline">{featuredArticle.title}</h3>
+                                {featuredArticle.excerpt && <p className="ys-ec-excerpt">{featuredArticle.excerpt}</p>}
+                                <div className="ys-ec-footer">
+                                    <span className="ys-ec-time">{featuredArticle.readTime} read</span>
+                                    <button className="ys-ec-read-btn">Read →</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {profileState !== 'complete' && (
+                    <div className="ys-pers-cta-inline" onClick={() => setView('profile')}>
+                        <div className="ys-pci-eyebrow">Personalize your library</div>
+                        <h3 className="ys-pci-headline">These articles could be filtered for your exact grass and zone.</h3>
+                        <p className="ys-pci-sub">Takes 60 seconds. We'll surface what's relevant and hide what isn't.</p>
+                        <button className="ys-pci-btn">Set Up My Yard →</button>
+                    </div>
+                )}
+
+                <div className="ys-editorial-list">
+                    {restArticles.map(function(article) {
+                        return (
+                            <div key={article.slug} className="ys-editorial-card" onClick={() => window.open('/learn/' + article.slug, '_blank')}>
+                                <div className="ys-ec-top" style={{height:'70px', background: article.categoryColor}}>
+                                    <div className="ys-ec-cat-tag">{article.categoryLabel}</div>
+                                </div>
+                                <div className="ys-ec-body">
+                                    <h3 className="ys-ec-headline">{article.title}</h3>
+                                    <p className="ys-ec-excerpt">{article.excerpt}</p>
+                                    <div className="ys-ec-footer">
+                                        <span className="ys-ec-time">{article.readTime} read</span>
+                                        <button className="ys-ec-read-btn">Read →</button>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div style={{height:'24px'}} />
+            </div>
+        );
+    }
+
     // ─── MoreMenuView ────────────────────────────────────────────────────────────
     function MoreMenuView({ setView, currentUser, lawnProfile }) {
         const sections = [
@@ -8936,10 +9106,7 @@ window.ResearchSourcesPage = () => (
                     {view === 'learn' && (
                         <div>
                             <button onClick={() => setView(null)} className="text-[#367C2B] mb-4 btn-press font-semibold" style={{padding:'12px 16px',display:'block'}}>← Back</button>
-                            {typeof LearnLibraryView !== 'undefined'
-                                ? <LearnLibraryView lawnProfile={lawnProfile} setView={setView} />
-                                : <div style={{padding:'32px 16px', textAlign:'center', color:'#6b7280', fontFamily:'var(--ys-font-body)'}}>Learn library coming soon.</div>
-                            }
+                            <LearnLibraryView lawnProfile={lawnProfile} setView={setView} />
                         </div>
                     )}
 
