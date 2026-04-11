@@ -1,9 +1,11 @@
 # Yardstick — Brand Book
 
-**Version 2.0 · 2026 · yardstick.diy**
-**Theme: Field & Soil · Parchment**
+**Version 3.0 · 2026 · yardstick.diy**
+**Theme: Field & Soil · Parchment · Visual Rebrand 2026**
 
 > The canonical visual and brand reference for Yardstick. Every design decision, color, font, component, and copy rule lives here. When creating any visual content — app UI, social graphics, marketing materials, or AI-generated assets — consult this document first.
+
+> **v3.0 summary:** Harvest Gold (#C88E22) replaces the old Sunday-adjacent #F5C842 yellow. Nunito replaces Cabin as the body/UI font. Courier Prime is removed entirely. The system is now two fonts: Bitter (display authority) + Nunito (warmth and usability). All greens shift slightly darker. The `--straw` variable is retired.
 
 -----
 
@@ -102,61 +104,62 @@ Use as the primary descriptor everywhere a one-liner is needed: app header, hero
 
 ## 3. Typography
 
-Three fonts. Three distinct roles. Never swap them, never add a fourth. The system is complete as-is.
+Two fonts. Two distinct roles. Bitter for authority, Nunito for warmth. Never add a third. Courier Prime has been removed from the system.
 
 ### Font Stack
 
-|Role           |Font         |Weights             |Use For                                                                    |
-|---------------|-------------|--------------------|---------------------------------------------------------------------------|
-|**Display**    |Bitter       |700, 900, 900 italic|Headlines, logo wordmark, coach card titles, section headers               |
-|**Body / UI**  |Cabin        |400, 500, 600, 700  |All UI copy, body text, buttons, labels, navigation                        |
-|**Data / Mono**|Courier Prime|400, 700            |Data readouts, stat labels, source citations, timestamps, zone/grass labels|
+|Role         |Font   |Weights                  |Use For                                                                 |
+|-------------|-------|-------------------------|------------------------------------------------------------------------|
+|**Display**  |Bitter |700, 900, 900 italic     |Headlines, logo wordmark, coach card titles, section headers            |
+|**Body / UI**|Nunito |400, 500, 600, 700, 800, 900|All UI copy, body text, buttons, labels, badges, data, navigation    |
+
+> **Removed:** Cabin (old body font) and Courier Prime (old mono/data font) are no longer part of the system. Any existing references to `--ff-mono` or Courier Prime should be migrated to `--ff-body` (Nunito).
 
 ### Google Fonts Import
 
 ```html
+<!-- Yardstick v3.0 — 2 fonts only -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,600;0,700;0,900;1,700&family=Cabin:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Removed: Cabin (old body font), Courier Prime (mono) -->
 ```
 
 ### CSS Variables
 
 ```css
---ff-display: 'Bitter', Georgia, serif;
---ff-body: 'Cabin', sans-serif;
---ff-mono: 'Courier Prime', monospace;
+--ff-display: ‘Bitter’, Georgia, serif;
+--ff-body:    ‘Nunito’, sans-serif;
+/* --ff-mono removed — use --ff-body (Nunito) for all data, labels, timestamps */
 ```
 
 ### Type Scale
 
-|Class             |Font         |Size                    |Weight|Use                     |
-|------------------|-------------|------------------------|------|------------------------|
-|`.type-display`   |Bitter       |clamp(2rem, 5vw, 3.5rem)|900   |Hero headlines          |
-|`.type-display-sm`|Bitter       |clamp(1.4rem, 3vw, 2rem)|700   |Section headers         |
-|`.type-display-it`|Bitter italic|inherited               |700   |Emphasis in headers     |
-|`.type-ui-heading`|Cabin        |1.05–1.2rem             |700   |Card titles, subsections|
-|`.type-body`      |Cabin        |0.86–0.92rem            |400   |Body copy               |
-|`.type-label`     |Cabin        |0.72–0.82rem            |600   |UI labels, badges       |
-|`.type-mono-data` |Courier Prime|0.82–0.86rem            |400   |Data readouts           |
-|`.type-mono-label`|Courier Prime|0.56–0.66rem            |400   |Eyebrows, timestamps    |
+|Class              |Font         |Size                    |Weight|Use                              |
+|-------------------|-------------|------------------------|------|---------------------------------|
+|`.type-display`    |Bitter       |clamp(2rem, 5vw, 3.5rem)|900   |Hero headlines                   |
+|`.type-display-sm` |Bitter       |clamp(1.4rem, 3vw, 2rem)|700   |Section headers                  |
+|`.type-display-it` |Bitter italic|inherited               |700   |Emphasis in headers              |
+|`.type-ui-heading` |Nunito       |1.05–1.2rem             |800   |Card titles, subsections         |
+|`.type-body`       |Nunito       |0.88–0.94rem            |500   |Body copy, descriptions          |
+|`.type-label`      |Nunito       |0.72–0.78rem            |700   |Badges, UI chips, zone/grass tags|
+|`.type-label-caps` |Nunito       |0.68–0.72rem            |800   |Stat labels, section eyebrows (uppercase + letter-spacing 0.1em)|
 
 ### Typography Rules
 
 **✓ DO:**
 
 - Use Bitter for all headers and the logo wordmark
-- Use Cabin for every button, label, and body paragraph
-- Use Courier Prime for data, stats, zones, and timestamps
-- Pair Courier Prime labels with `letter-spacing: 0.14em+` and `text-transform: uppercase`
+- Use Nunito for every button, label, badge, body paragraph, data readout, and eyebrow
+- Use Bitter italic for emphasis within headers
+- Use Nunito 800 + `letter-spacing: 0.1em` + `text-transform: uppercase` for stat labels and section eyebrows
 
 **✕ DON’T:**
 
-- Don’t use Bitter for body copy or UI labels
-- Don’t use Courier Prime for body paragraphs
-- Don’t add a fourth font — the system is complete
+- Don’t use Courier Prime — it has been removed from the system
+- Don’t use Cabin — it has been replaced by Nunito
+- Don’t use Bitter for body copy, buttons, or UI labels
+- Don’t add a third font — the system is complete at two
 - Don’t use system fonts (Arial, Helvetica) for any visible UI text
-- Don’t use Courier Prime in mixed-case for labels
 
 -----
 
@@ -166,16 +169,30 @@ Three fonts. Three distinct roles. Never swap them, never add a fourth. The syst
 
 All colors are used at full opacity in their assigned roles. Tints (rgba) are used for alert backgrounds and badge fills only. Every color has a locked role — do not reassign them.
 
-### Primary Colors
+### Primary Colors (Greens)
 
-|Name             |Hex      |CSS Variable   |Role                                                  |
-|-----------------|---------|---------------|------------------------------------------------------|
-|**Forest Dark**  |`#1E4D18`|`--green-dark` |App header bg, coach card header, logo fill on light  |
-|**Turf Green**   |`#367C2B`|`--green`      |Primary interactive, success states, log dots         |
-|**Spring**       |`#4E9E40`|`--green-light`|Hover accent, decorative gradients ONLY               |
-|**Bright Yellow**|`#F5C842`|`--yellow`     |CTA buttons, active nav, ruler underline, temp display|
-|**Warm Straw**   |`#D4A843`|`--straw`      |Fertilizer badge borders, tip alert borders ONLY      |
-|**Brick Clay**   |`#C05A2C`|`--clay`       |Warnings, overdue states, destructive actions ONLY    |
+|Name            |Hex      |CSS Variable   |Role                                               |Status  |
+|----------------|---------|---------------|---------------------------------------------------|--------|
+|**Deep Forest** |`#1D5C38`|`--green-dark` |App header bg, coach card header, logo fill on light|Updated|
+|**Turf Green**  |`#2E7A44`|`--green`      |Primary interactive, success states, log dots       |Updated|
+|**Spring**      |`#4E9E40`|`--green-light`|Hover accent, decorative gradients ONLY             |Kept   |
+
+### Gold Colors (replaces Yellow + Straw)
+
+|Name            |Hex      |CSS Variable  |Role                                                |Status  |
+|----------------|---------|--------------|-----------------------------------------------------|--------|
+|**Harvest Gold**|`#C88E22`|`--gold`      |CTA buttons, active nav, ruler underline             |New     |
+|**Gold Dark**   |`#A87018`|`--gold-dark` |Gold hover state                                     |New     |
+|**Gold Light**  |`#FDF4E0`|`--gold-light`|Badge fills, alert backgrounds, icon backgrounds     |New     |
+
+> **Removed:** `--yellow` (#F5C842) and `--straw` (#D4A843) are retired. The old yellow was too close to Sunday’s brand color (#FBBF24). Harvest Gold (#C88E22) is the new CTA and accent color.
+
+### Warning Colors
+
+|Name           |Hex      |CSS Variable  |Role                                           |
+|---------------|---------|--------------|-----------------------------------------------|
+|**Brick Clay** |`#C05A2C`|`--clay`      |Warnings, overdue states, destructive actions  |
+|**Clay Light** |`#FAE8E0`|`--clay-light`|Clay-tinted alert backgrounds                  |
 
 ### Surface Colors
 
@@ -187,26 +204,36 @@ All colors are used at full opacity in their assigned roles. Tints (rgba) are us
 
 ### Text Colors
 
-|Name           |Hex      |CSS Variable   |Role                                         |
-|---------------|---------|---------------|---------------------------------------------|
-|**Rich Soil**  |`#1E1A14`|`--soil`       |Primary text, button text on yellow          |
-|**Fieldstone** |`#6B6560`|`--stone`      |Secondary text, card body copy, alert body   |
+|Name           |Hex      |CSS Variable   |Role                                        |
+|---------------|---------|---------------|--------------------------------------------|
+|**Rich Soil**  |`#1E1A14`|`--soil`       |Primary text, button text on gold           |
+|**Fieldstone** |`#6B6560`|`--stone`      |Secondary text, card body copy, alert body  |
 |**Stone Light**|`#B8B2AC`|`--stone-light`|Timestamps, source citations, disabled states|
+
+### Why gold changed — Sunday comparison
+
+| Swatch          | Hex       | Status         |
+|-----------------|-----------|----------------|
+| Sunday Yellow   | `#FBBF24` | Competitor     |
+| Old Yardstick   | `#F5C842` | Retired — too close to Sunday |
+| Harvest Gold    | `#C88E22` | New Yardstick CTA |
 
 ### Color Rules
 
 **✓ DO:**
 
-- Use `#F5C842` (yellow) exclusively for primary CTA buttons
-- Always put dark `#1E1A14` text on yellow buttons — never white
+- Use `#C88E22` (Harvest Gold) exclusively for primary CTA buttons and active nav
+- Always put dark `#1E1A14` (Soil) text on gold buttons — never white
+- Use `#FDF4E0` (Gold Light) for badge fills, icon backgrounds, and alert tints
 - Use clay only for warnings and destructive/overdue states
-- Use rgba tinted backgrounds for all alert fills (never full opacity)
+- Use rgba tinted backgrounds for alert fills (never full opacity)
 
 **✕ DON’T:**
 
-- Don’t use straw (`#D4A843`) for any interactive element — insufficient contrast against cream
+- Don’t use old yellow `#F5C842` — it has been retired (too close to Sunday’s brand)
+- Don’t use straw `#D4A843` — it has been retired along with `--straw`
 - Don’t use clay as a general accent — it’s reserved for danger states only
-- Don’t place white text on yellow buttons
+- Don’t place white text on gold buttons
 - Don’t mix card styles or use non-parchment card backgrounds
 
 -----
@@ -225,10 +252,10 @@ The Yardstick logo is a pure SVG wordmark. It consists of:
 
 |Variant          |Text Fill|Ruler    |Background            |
 |-----------------|---------|---------|----------------------|
-|Light / Parchment|`#1E4D18`|`#F5C842`|`#F7F3EC` or `#EDE8DE`|
-|On Forest Green  |`#F7F3EC`|`#F5C842`|`#1E4D18`             |
-|On Soil / Footer |`#F7F3EC`|`#F5C842`|`#1E1A14`             |
-|On Turf Green    |`#F7F3EC`|`#F5C842`|`#367C2B`             |
+|Light / Parchment|`#1D5C38`|`#C88E22`|`#F7F3EC` or `#EDE8DE`|
+|On Forest Green  |`#F7F3EC`|`#C88E22`|`#1D5C38`             |
+|On Soil / Footer |`#F7F3EC`|`#C88E22`|`#1E1A14`             |
+|On Turf Green    |`#F7F3EC`|`#C88E22`|`#2E7A44`             |
 
 ### SVG Code — Wordmark (On Light / Parchment)
 
@@ -238,9 +265,9 @@ The Yardstick logo is a pure SVG wordmark. It consists of:
     font-family="Bitter, Georgia, serif"
     font-weight="900"
     font-size="44"
-    fill="#1E4D18"
+    fill="#1D5C38"
     letter-spacing="-0.5">Yardstick</text>
-  <rect x="0" y="45" width="272" height="5" rx="1" fill="#F5C842"/>
+  <rect x="0" y="45" width="272" height="5" rx="1" fill="#C88E22"/>
   <!-- Tick marks -->
   <rect x="30" y="45" width="1.5" height="5" fill="#1E1A14" opacity="0.2"/>
   <rect x="60" y="45" width="1.5" height="5" fill="#1E1A14" opacity="0.2"/>
@@ -255,14 +282,14 @@ The Yardstick logo is a pure SVG wordmark. It consists of:
 
 ### SVG Code — Wordmark (On Dark)
 
-Change only `fill="#F7F3EC"` on the text element. Ruler and tick marks stay the same.
+Change only `fill="#F7F3EC"` on the text element. Ruler (#C88E22) and tick marks stay the same.
 
 ### SVG Code — Badge / App Icon (YS)
 
 ```svg
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="Yardstick">
-  <circle cx="50" cy="50" r="48" fill="#1E4D18"/>
-  <circle cx="50" cy="50" r="44" fill="none" stroke="#F5C842" stroke-width="3.5"/>
+  <circle cx="50" cy="50" r="48" fill="#1D5C38"/>
+  <circle cx="50" cy="50" r="44" fill="none" stroke="#C88E22" stroke-width="3.5"/>
   <text x="50" y="64"
     font-family="Bitter, Georgia, serif"
     font-weight="900"
@@ -271,7 +298,7 @@ Change only `fill="#F7F3EC"` on the text element. Ruler and tick marks stay the 
     text-anchor="middle"
     letter-spacing="-1">YS</text>
   <!-- Ruler bar -->
-  <rect x="16" y="75" width="68" height="3.5" rx="1" fill="#F5C842"/>
+  <rect x="16" y="75" width="68" height="3.5" rx="1" fill="#C88E22"/>
   <rect x="28" y="75" width="1" height="3.5" fill="#1E1A14" opacity="0.3"/>
   <rect x="40" y="75" width="1" height="3.5" fill="#1E1A14" opacity="0.3"/>
   <rect x="52" y="75" width="1" height="3.5" fill="#1E1A14" opacity="0.3"/>
@@ -313,28 +340,28 @@ Change only `fill="#F7F3EC"` on the text element. Ruler and tick marks stay the 
 
 ## 6. Components — Buttons
 
-Four button types. Each has a locked role. Yellow is always primary. One primary button per section maximum.
+Four button types. Each has a locked role. Gold is always primary. One primary button per section maximum. All buttons use Nunito font.
 
-### Primary CTA — Bright Yellow
+### Primary CTA — Harvest Gold
 
 ```css
 .btn-primary {
-  background: #F5C842;
+  background: #C88E22;      /* --gold */
   color: #1E1A14;           /* dark text — always, never white */
-  font-family: var(--ff-body);
+  font-family: var(--ff-body);  /* Nunito */
   font-weight: 700;
   font-size: 0.86rem;
   padding: 10px 22px;
-  border-radius: 3px;
+  border-radius: 7px;
   border: none;
   letter-spacing: 0.01em;
   cursor: pointer;
   transition: all 0.18s;
 }
 .btn-primary:hover {
-  background: #E8BA2A;
+  background: #A87018;      /* --gold-dark */
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(245,200,66,0.35);
+  box-shadow: 0 4px 12px rgba(200,142,34,0.35);
 }
 ```
 
@@ -342,65 +369,65 @@ Four button types. Each has a locked role. Yellow is always primary. One primary
 
 ```css
 .btn-cta-floating {
-  background: #F5C842;
+  background: #C88E22;      /* --gold */
   color: #1E1A14;
-  font-family: var(--ff-body);
+  font-family: var(--ff-body);  /* Nunito */
   font-weight: 700;
   font-size: 0.86rem;
   padding: 13px;
-  border-radius: 3px;
+  border-radius: 7px;
   text-align: center;
   width: 100%;
-  box-shadow: 0 2px 8px rgba(245,200,66,0.3);
+  box-shadow: 0 2px 8px rgba(200,142,34,0.3);
 }
 ```
 
-### Secondary — Green (Confirms & Saves)
+### Secondary — Dark Green (Confirms & Saves)
 
 ```css
 .btn-green {
-  background: #367C2B;
+  background: #1D5C38;      /* --green-dark */
   color: #FFFFFF;
-  font-family: var(--ff-body);
+  font-family: var(--ff-body);  /* Nunito */
   font-weight: 700;
   font-size: 0.86rem;
   padding: 10px 22px;
-  border-radius: 3px;
+  border-radius: 7px;
   border: none;
 }
-.btn-green:hover { background: #1E4D18; }
+.btn-green:hover { background: #2E7A44; }  /* --green */
 ```
 
-### Ghost / Tertiary (Cancel, Export)
+### Outline / Tertiary (Cancel, Export)
 
 ```css
 .btn-ghost {
   background: transparent;
-  color: #6B6560;
-  font-family: var(--ff-body);
+  color: #1D5C38;           /* --green-dark */
+  font-family: var(--ff-body);  /* Nunito */
   font-weight: 700;
   font-size: 0.86rem;
   padding: 10px 22px;
-  border-radius: 3px;
-  border: 1.5px solid rgba(30,26,20,0.18);
+  border-radius: 7px;
+  border: 1.5px solid #1D5C38;
 }
-.btn-ghost:hover { border-color: #6B6560; color: #1E1A14; }
+.btn-ghost:hover { background: rgba(29,92,56,0.06); }
 ```
 
 ### Destructive / Warning (Delete, Reset, Overdue)
 
 ```css
 .btn-clay {
-  background: #C05A2C;
-  color: #FFFFFF;
-  font-family: var(--ff-body);
+  background: #FAE8E0;      /* --clay-light */
+  color: #C05A2C;           /* --clay */
+  font-family: var(--ff-body);  /* Nunito */
   font-weight: 700;
   font-size: 0.86rem;
   padding: 10px 22px;
-  border-radius: 3px;
-  border: none;
+  border-radius: 7px;
+  border: 1px solid rgba(192,90,44,0.33);
 }
-.btn-clay:hover { background: #A04A22; }
+.btn-clay:hover { background: rgba(192,90,44,0.18); }
 ```
 
 ### Small Variant
@@ -411,17 +438,18 @@ Add `.btn-sm` to any button type: `padding: 7px 14px; font-size: 0.78rem;`
 
 **✓ DO:**
 
-- Yellow (`btn-primary`) = the one main action per screen
-- Green (`btn-green`) = confirmations and saves
-- Ghost = always the least important action in a group
+- Gold (`btn-primary`) = the one main action per screen
+- Dark Green (`btn-green`) = confirmations and saves
+- Outline = always the least important action in a group
 - Clay = only destructive or overdue/warning states
+- Always use Soil text on gold buttons
 
 **✕ DON’T:**
 
-- Don’t use more than one primary (yellow) button per section
-- Don’t use ghost for primary or important actions
-- Don’t use straw (`#D4A843`) for any button
-- Don’t put white text on yellow buttons
+- Don’t use more than one primary (gold) button per section
+- Don’t use outline for primary or important actions
+- Don’t use old yellow `#F5C842` or straw `#D4A843` for any button
+- Don’t put white text on gold buttons
 - Don’t use clay for neutral or secondary actions
 
 -----
@@ -447,9 +475,9 @@ Add `.btn-sm` to any button type: `padding: 7px 14px; font-size: 0.78rem;`
 
 ```
 ┌─────────────────────────────────────┐  ← inset 1px border
-│  EYEBROW LABEL (Courier Prime, sm)  │
+│  EYEBROW LABEL (Nunito 800, caps)   │
 │  Card Title (Bitter 700)            │
-│  Body copy paragraph (Cabin 400)    │
+│  Body copy paragraph (Nunito 500)   │
 │─────────────────────────────────────│  ← 1px dashed divider
 │  Source label            Action →   │
 └─────────────────────────────────────┘
@@ -458,11 +486,11 @@ Add `.btn-sm` to any button type: `padding: 7px 14px; font-size: 0.78rem;`
 ### Card CSS Classes
 
 ```css
-.card-eyebrow  { font-family: var(--ff-mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone-light); margin-bottom: 4px; }
+.card-eyebrow  { font-family: var(--ff-body); font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone-light); margin-bottom: 4px; }
 .card-title    { font-family: var(--ff-display); font-size: 1.05rem; font-weight: 700; color: var(--green-dark); margin-bottom: 8px; }
-.card-body     { font-family: var(--ff-body); font-size: 0.83rem; color: var(--stone); line-height: 1.55; }
+.card-body     { font-family: var(--ff-body); font-size: 0.83rem; font-weight: 500; color: var(--stone); line-height: 1.55; }
 .card-footer   { margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(30,26,20,0.12); display: flex; justify-content: space-between; align-items: center; }
-.card-source   { font-family: var(--ff-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone-light); }
+.card-source   { font-family: var(--ff-body); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--stone-light); }
 .card-action   { font-family: var(--ff-body); font-size: 0.78rem; font-weight: 700; color: var(--green); }
 ```
 
@@ -481,9 +509,9 @@ Used for the primary research-backed coaching message on the dashboard. Has a da
   background: var(--green-dark);
   background-image: radial-gradient(ellipse at 90% 0%, rgba(78,158,64,0.2), transparent 60%);
   padding: 14px 18px;
-  border-bottom: 2px solid rgba(245,200,66,0.4);
+  border-bottom: 2px solid rgba(200,142,34,0.4);  /* --gold */
 }
-.card-coach-header .card-eyebrow { color: var(--yellow); }
+.card-coach-header .card-eyebrow { color: var(--gold); }
 .card-coach-header .card-title   { color: var(--cream); font-size: 1rem; }
 .card-coach-body { padding: 14px 18px; }
 ```
@@ -501,7 +529,7 @@ Used in the 3-up stat row on the dashboard.
   box-shadow: inset 0 0 0 1px rgba(30,26,20,0.12), 0 3px 14px rgba(30,26,20,0.09);
 }
 .card-stat-val { font-family: var(--ff-display); font-size: 2rem; font-weight: 700; color: var(--green-dark); }
-.card-stat-lbl { font-family: var(--ff-mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone-light); }
+.card-stat-lbl { font-family: var(--ff-body); font-size: 0.58rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone-light); }
 ```
 
 *Note: Overdue stat values use `color: var(--clay)` instead of `--green-dark`.*
@@ -513,7 +541,7 @@ Used in the 3-up stat row on the dashboard.
 .log-item:last-child { border-bottom: none; padding-bottom: 0; }
 .log-dot        { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .log-label      { font-family: var(--ff-body); font-size: 0.84rem; font-weight: 600; color: var(--soil); }
-.log-date       { font-family: var(--ff-mono); font-size: 0.62rem; color: var(--stone-light); }
+.log-date       { font-family: var(--ff-body); font-size: 0.62rem; font-weight: 500; color: var(--stone-light); }
 ```
 
 ### Log Dot Colors by Activity Type
@@ -545,35 +573,35 @@ Used in the 3-up stat row on the dashboard.
 }
 .alert-warn .alert-title { color: var(--clay); font-weight: 700; }
 .alert-warn .alert-text  { color: var(--soil); font-size: 0.8rem; }
-.alert-warn .alert-meta  { color: rgba(192,90,44,0.6); font-family: var(--ff-mono); font-size: 0.58rem; }
+.alert-warn .alert-meta  { color: rgba(192,90,44,0.6); font-family: var(--ff-body); font-size: 0.58rem; font-weight: 700; }
 ```
 
-### Tip / Info Alert (Straw) — Coaching Tips, Seasonal Windows
+### Tip / Info Alert (Gold) — Coaching Tips, Seasonal Windows
 
 ```css
 .alert-tip {
-  background: rgba(212,168,67,0.12);
-  border: 1px solid rgba(212,168,67,0.28);
+  background: var(--gold-light);            /* #FDF4E0 */
+  border: 1px solid rgba(200,142,34,0.28);  /* --gold */
   border-radius: 5px;
   padding: 14px 16px;
 }
-.alert-tip .alert-title { color: #7A5410; font-weight: 700; }
+.alert-tip .alert-title { color: var(--gold-dark); font-weight: 700; }  /* #A87018 */
 .alert-tip .alert-text  { color: var(--soil); font-size: 0.8rem; }
-.alert-tip .alert-meta  { color: rgba(122,84,16,0.55); font-family: var(--ff-mono); font-size: 0.58rem; }
+.alert-tip .alert-meta  { color: rgba(168,112,24,0.65); font-family: var(--ff-body); font-size: 0.58rem; font-weight: 700; }
 ```
 
 ### Success Alert (Green) — Logged, Saved, Reset
 
 ```css
 .alert-success {
-  background: rgba(54,124,43,0.10);
-  border: 1px solid rgba(54,124,43,0.22);
+  background: rgba(46,122,68,0.10);         /* --green */
+  border: 1px solid rgba(46,122,68,0.22);
   border-radius: 5px;
   padding: 14px 16px;
 }
 .alert-success .alert-title { color: var(--green-dark); font-weight: 700; }
 .alert-success .alert-text  { color: var(--soil); font-size: 0.8rem; }
-.alert-success .alert-meta  { color: rgba(54,124,43,0.55); font-family: var(--ff-mono); font-size: 0.58rem; }
+.alert-success .alert-meta  { color: rgba(46,122,68,0.65); font-family: var(--ff-body); font-size: 0.58rem; font-weight: 700; }
 ```
 
 ### Shared Alert Structure
@@ -582,8 +610,8 @@ Used in the 3-up stat row on the dashboard.
 .alert        { display: flex; align-items: flex-start; gap: 12px; }
 .alert-icon   { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
 .alert-content { flex: 1; }
-.alert-title  { display: block; margin-bottom: 2px; font-family: var(--ff-body); }
-.alert-text   { display: block; line-height: 1.5; font-family: var(--ff-body); }
+.alert-title  { display: block; margin-bottom: 2px; font-family: var(--ff-body); font-weight: 700; }
+.alert-text   { display: block; line-height: 1.5; font-family: var(--ff-body); font-weight: 500; }
 .alert-meta   { display: block; margin-top: 7px; letter-spacing: 0.08em; text-transform: uppercase; }
 ```
 
@@ -615,11 +643,11 @@ Progress fill width set dynamically: `style="width: {(hoursUsed / threshold) * 1
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 10px;
-  border-radius: 3px;
-  font-family: var(--ff-body);
-  font-size: 0.72rem;
-  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 5px;
+  font-family: var(--ff-body);  /* Nunito */
+  font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.03em;
   background: transparent;
 }
@@ -630,13 +658,21 @@ Progress fill width set dynamically: `style="width: {(hoursUsed / threshold) * 1
 ### Badge Variants by Activity Type
 
 ```css
-.badge-mow    { border: 1.5px solid #367C2B; color: #1E4D18; }  /* ✂ Mowing */
-.badge-fert   { border: 1.5px solid #D4A843; color: #7A5410; }  /* ⬡ Fertilizer */
+.badge-mow    { border: 1.5px solid #2E7A44; color: #1D5C38; }  /* ✂ Mowing */
+.badge-fert   { border: 1.5px solid #C88E22; color: #A87018; }  /* ⬡ Fertilizer — now gold */
 .badge-water  { border: 1.5px solid #3B82F6; color: #1D4ED8; }  /* Watering */
 .badge-seed   { border: 1.5px solid #C05A2C; color: #C05A2C; }  /* ◎ Seeding */
 .badge-aerate { border: 1.5px solid #6B6560; color: #6B6560; }  /* ⊕ Aeration */
-.badge-maint  { border: 1.5px solid #7A5410; color: #7A5410; }  /* Maintenance */
-.badge-trim   { border: 1.5px solid #4E9E40; color: #1E4D18; }  /* Trimming */
+.badge-maint  { border: 1.5px solid #6B6560; color: #6B6560; }  /* Maintenance */
+.badge-trim   { border: 1.5px solid #4E9E40; color: #1D5C38; }  /* Trimming */
+```
+
+### Zone / Data Badges
+
+```css
+/* Use gold-light bg for zone/grass data chips */
+.badge-zone  { background: var(--gold-light); border: 1px solid rgba(200,142,34,0.33); color: var(--stone); }
+.badge-grass { background: rgba(46,122,68,0.10); border: 1px solid rgba(46,122,68,0.27); color: var(--stone); }
 ```
 
 ### Badge Icons
@@ -746,28 +782,30 @@ Yardstick is a mobile-first application. All components are designed for 375px s
 Copy this `:root` block into any new stylesheet, component, or AI-generated code. All values are locked — do not modify without updating this document.
 
 ```css
-/* ── Yardstick Design Tokens · v2.0 ── */
-/* Domain: yardstick.diy */
+/* ── Yardstick Design Tokens · v3.0 ── */
+/* Domain: yardstick.diy · Visual Rebrand 2026 */
 
 :root {
-  /* ── Fonts ── */
-  --ff-display: 'Bitter', Georgia, serif;
-  --ff-body:    'Cabin', sans-serif;
-  --ff-mono:    'Courier Prime', monospace;
+  /* ── Fonts (updated: Courier Prime removed, Cabin replaced by Nunito) ── */
+  --ff-display: 'Bitter', Georgia, serif;   /* display headlines · logo · section titles */
+  --ff-body:    'Nunito', sans-serif;       /* body copy · buttons · labels · badges · data · everything else */
+  /* --ff-mono removed — Courier Prime is no longer part of the system */
 
   /* ── Greens ── */
-  --green:       #367C2B;   /* primary interactive, success states */
-  --green-dark:  #1E4D18;   /* headers, coach card bg, logo fill on light */
-  --green-light: #4E9E40;   /* hover accent / decorative gradient ONLY */
+  --green:       #2E7A44;   /* primary interactive, success states */
+  --green-dark:  #1D5C38;   /* hero bg · headers · logo fill · coach card bg */
+  --green-light: #4E9E40;   /* hover accent · decorative gradient ONLY */
 
-  /* ── Yellows / Ambers ── */
-  --yellow: #F5C842;   /* CTA buttons, active nav, ruler underline */
-  --straw:  #D4A843;   /* fert badge border & tip alert border ONLY */
+  /* ── Gold (replaces #F5C842 yellow — Sunday conflict) ── */
+  --gold:       #C88E22;   /* CTA buttons · active nav · ruler underline */
+  --gold-dark:  #A87018;   /* gold hover state */
+  --gold-light: #FDF4E0;   /* badge fill · alert bg · icon bg */
 
   /* ── Warning ── */
-  --clay: #C05A2C;     /* warnings, overdue states, destructive actions */
+  --clay:       #C05A2C;   /* warnings · overdue · destructive — unchanged */
+  --clay-light: #FAE8E0;   /* clay-tinted alert backgrounds */
 
-  /* ── Surfaces ── */
+  /* ── Surfaces (unchanged) ── */
   --cream: #F7F3EC;    /* card surface (Style F) */
   --bg:    #EDE8DE;    /* app body / page background */
   --white: #FFFFFF;    /* select inputs, swatch panels */
@@ -781,8 +819,8 @@ Copy this `:root` block into any new stylesheet, component, or AI-generated code
    *   ✕  className="bg-white"
    */
 
-  /* ── Text ── */
-  --soil:        #1E1A14;   /* primary text, button text on yellow */
+  /* ── Text (unchanged) ── */
+  --soil:        #1E1A14;   /* primary text, button text on gold */
   --stone:       #6B6560;   /* secondary text, card body */
   --stone-light: #B8B2AC;   /* timestamps, citations, disabled */
 }
@@ -794,21 +832,23 @@ Copy this `:root` block into any new stylesheet, component, or AI-generated code
 
 ### Typography
 
-|✓ DO                                             |✕ DON’T                                       |
-|-------------------------------------------------|----------------------------------------------|
-|Bitter for all display headlines and the logo    |Bitter for body copy or UI labels             |
-|Cabin for all buttons, body text, and UI labels  |Courier Prime for body paragraphs             |
-|Courier Prime for all data, stats, timestamps    |System fonts (Arial, Helvetica) for visible UI|
-|Courier Prime: uppercase + letter-spacing 0.14em+|Add a fourth font — the system is complete    |
+|✓ DO                                                     |✕ DON’T                                              |
+|---------------------------------------------------------|-----------------------------------------------------|
+|Bitter for all display headlines and the logo            |Bitter for body copy or UI labels                    |
+|Nunito for all buttons, body text, labels, and badges    |Courier Prime — removed from the system              |
+|Nunito for all data, stats, timestamps, and eyebrows     |Cabin — replaced by Nunito                           |
+|Nunito 800 + uppercase + letter-spacing 0.1em for eyebrows|Add a third font — the system is complete at two    |
+|Bitter italic for emphasis within display headlines      |System fonts (Arial, Helvetica) for any visible UI   |
 
 ### Color
 
-|✓ DO                                         |✕ DON’T                                      |
-|---------------------------------------------|---------------------------------------------|
-|`#F5C842` yellow exclusively for primary CTA |Straw (`#D4A843`) for any interactive element|
-|Dark (`#1E1A14`) text on all yellow buttons  |White text on yellow buttons                 |
-|Clay only for warnings and destructive states|Clay as a general accent color               |
-|rgba tinted backgrounds for all alert fills  |Solid fills for alert backgrounds            |
+|✓ DO                                              |✕ DON’T                                              |
+|--------------------------------------------------|-----------------------------------------------------|
+|`#C88E22` (Harvest Gold) for all primary CTAs     |Old yellow `#F5C842` — retired, too close to Sunday  |
+|Dark `#1E1A14` (Soil) text on all gold buttons    |Straw `#D4A843` — retired along with `--straw`       |
+|`#FDF4E0` (Gold Light) for badge fills / icon bgs |White text on gold buttons                           |
+|Clay only for warnings and destructive states     |Clay as a general accent color                       |
+|rgba tinted backgrounds for all alert fills       |Solid fills for alert backgrounds                    |
 
 ### Logo
 
@@ -832,11 +872,12 @@ Copy this `:root` block into any new stylesheet, component, or AI-generated code
 
 ### Buttons
 
-|✓ DO                                          |✕ DON’T                                 |
-|----------------------------------------------|----------------------------------------|
-|Yellow (`btn-primary`) for the one main action|More than one primary button per section|
-|Ghost for cancel / least important action     |Ghost for primary or important actions  |
-|Clay only for destructive/warning actions     |Clay for neutral or secondary actions   |
+|✓ DO                                           |✕ DON’T                                 |
+|-----------------------------------------------|----------------------------------------|
+|Gold (`btn-primary`) for the one main action   |More than one primary button per section|
+|Outline for cancel / least important action    |Outline for primary or important actions|
+|Clay only for destructive/warning actions      |Clay for neutral or secondary actions   |
+|Soil text on gold buttons                      |White text on gold buttons              |
 
 ### Copy & Voice
 
@@ -857,9 +898,10 @@ Copy this `:root` block into any new stylesheet, component, or AI-generated code
 |v2.0   |2026|Consolidated brand book — merged design system and brand book into single AI-ready reference. Added complete SVG code, full CSS component library, mobile-first checklist, activity log dot colors, progress bar variant. Updated domain to yardstick.diy.|
 |v2.1   |2026|Copy update — removed “no account required” / “no login” framing across all approved copy. Updated Long Description and Short Description to lead with free account creation. Added explicit DON’T rule against no-login language.                        |
 |v2.2   |2026|Surface color enforcement — documented that app implementation uses `--ys-cream` / `--ys-canvas` aliases for `--cream` / `--bg`. Added rule: always use `style={{background:’var(--ys-cream)’}}` inline props for card surfaces, never Tailwind `bg-white` (Tailwind runtime classes have higher CSS specificity than `:root` variables and silently override tokens). Updated Cards & Alerts Do/Don’t table. Removed all `bg-white` / `bg-gray-50` from 4 component files.|
+|v3.0   |2026|Visual Rebrand 2026 — **Font system:** Cabin removed, Nunito replaces it as the body/UI font. Courier Prime removed entirely. System now has two fonts only: Bitter (display) + Nunito (everything else). **Colors:** `--green-dark` updated to `#1D5C38`, `--green` updated to `#2E7A44`. `--yellow` (#F5C842) and `--straw` (#D4A843) retired — too close to Sunday’s brand palette. New gold system added: `--gold` (#C88E22, Harvest Gold), `--gold-dark` (#A87018), `--gold-light` (#FDF4E0). `--clay-light` (#FAE8E0) added. **Logo:** Ruler and badge ring updated to `#C88E22`. Wordmark green updated to `#1D5C38`. **Components:** All `--ff-mono` references migrated to `--ff-body`. Card eyebrows, stat labels, log dates, alert meta all use Nunito. Tip alert updated from straw to gold palette. Fertilizer badge updated from straw to gold. New zone/grass badge variants added.|
 
 -----
 
 *Add new entries to the changelog whenever design decisions are updated. Increment the version for significant changes (new component patterns, palette additions).*
 
-**Yardstick · yardstick.diy · Field & Soil · Parchment Theme**
+**Yardstick · yardstick.diy · Field & Soil · Parchment Theme · v3.0**

@@ -14,8 +14,8 @@ This file provides context, conventions, and development guidance for AI assista
 - **Live URL**: `https://yardstick.diy`
 - **GitHub repo**: `stereopirate/yardstick`
 - **Primary file**: `index.html` (~9,181 lines, contains all React app logic)
-- **Theme color**: `#1E4D18` (forest dark green)
-- **Primary CTA color**: `#F5C842` (bright yellow)
+- **Theme color**: `#1D5C38` (forest dark green)
+- **Primary CTA color**: `#C88E22` (Harvest Gold)
 - **Target users**: DIY homeowners tracking lawn and landscape maintenance by grass type and USDA hardiness zone
 - **Hosting**: GitHub Pages (free tier) — the app must remain statically hostable with zero server costs
 - **Beta note**: `PRO_GATE_ENABLED` is a constant in `index.html` that gates certain features behind sign-in (not behind payment). All features are free for signed-in users.
@@ -88,7 +88,7 @@ yardstick/
 │                               # (~2,559 lines; university-sourced, do NOT change without citations)
 ├── v4-new-components.js        # Legacy reference file — active Dashboard is now inline in index.html
 ├── service-worker.js           # PWA offline caching (network-first for HTML, cache-first for assets)
-├── manifest.json               # PWA manifest — name "Yardstick", theme #1E4D18
+├── manifest.json               # PWA manifest — name "Yardstick", theme #1D5C38
 ├── about.html                  # Static informational/marketing page
 │
 ├── components/                 # Standalone component JS files (loaded via <script> tags after inline)
@@ -186,32 +186,35 @@ store.saveProfile(profile)
 
 ### Typography
 
+> **v3.0 update:** Cabin and Courier Prime have been removed. The system is now two fonts only.
+
 | Role | Font | Weights | CSS Variable |
 |---|---|---|---|
 | Display / headings | **Bitter** | 700, 900, 900 italic | `--ff-display` |
-| Body / UI / buttons | **Cabin** | 400, 500, 600, 700 | `--ff-body` |
-| Data / mono / stats | **Courier Prime** | 400, 700 | `--ff-mono` |
+| Body / UI / buttons / data | **Nunito** | 400, 500, 600, 700, 800, 900 | `--ff-body` |
 
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,600;0,700;0,900;1,700&family=Cabin:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 ```
 
 ```css
 --ff-display: 'Bitter', Georgia, serif;
---ff-body:    'Cabin', sans-serif;
---ff-mono:    'Courier Prime', monospace;
+--ff-body:    'Nunito', sans-serif;
+/* --ff-mono removed — use --ff-body for all data/labels/timestamps */
 ```
 
 ### Brand CSS Variables (`:root`)
 
 ```css
 /* Primary colors */
---green-dark:   #1E4D18   /* header bg, logo on light */
---green:        #367C2B   /* success states, log dots */
+--green-dark:   #1D5C38   /* header bg, logo on light */
+--green:        #2E7A44   /* success states, log dots */
 --green-light:  #4E9E40   /* hover/decorative only */
---yellow:       #F5C842   /* primary CTA buttons, active nav */
---straw:        #D4A843   /* fertilizer borders only */
+--gold:         #C88E22   /* primary CTA buttons, active nav (replaces --yellow) */
+--gold-dark:    #A87018   /* gold hover state */
+--gold-light:   #FDF4E0   /* badge fills, alert backgrounds */
 --clay:         #C05A2C   /* warnings, overdue, destructive */
+--clay-light:   #FAE8E0   /* clay-tinted backgrounds */
 
 /* Surfaces */
 --cream:        #F7F3EC   /* card surfaces */
@@ -226,8 +229,9 @@ store.saveProfile(profile)
 
 ### Color Rules
 
-- `#F5C842` yellow is **always** the primary CTA button color — not green
-- Always use **dark text** (`#1E1A14`) on yellow buttons, never white
+- `#C88E22` (Harvest Gold / `--gold`) is **always** the primary CTA button color — not green
+- Always use **dark text** (`#1E1A14`) on gold buttons, never white
+- Old yellow `#F5C842` and `--straw` `#D4A843` are **retired** — do not use
 - Use clay (`#C05A2C`) only for warnings and destructive states
 - Card surfaces: `var(--cream)` | Page background: `var(--bg)`
 
@@ -235,7 +239,7 @@ store.saveProfile(profile)
 
 | Activity | Color |
 |---|---|
-| Mowing | `#367C2B` (green) |
+| Mowing | `#2E7A44` (green) |
 | Fertilizer | `#F97316` (orange) |
 | Trimming | `#10B981` (emerald) |
 | Watering | `#3B82F6` (blue) |
