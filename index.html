@@ -2137,6 +2137,27 @@ window.ResearchSourcesPage = () => (
 
     const getParentZone = (zone) => zone ? zone.replace(/[ab]$/i, '') : zone;
 
+    // ─── getProgramWithFallback ───────────────────────────────────────────────────
+    // Returns the grass program for the given grass + zone combo.
+    // If no exact match exists (e.g. Tall Fescue Zone 8, St. Augustine Zone 7),
+    // tries the nearest adjacent zone so the user always sees something useful.
+    // Returns { program, fallbackZone } — fallbackZone is non-null when using a fallback.
+    const getProgramWithFallback = (grassKey, zone) => {
+        const parentZone = getParentZone(zone);
+        const baseKey = grassKey && typeof GRASS_KEY_MAP !== 'undefined' ? GRASS_KEY_MAP[grassKey] : null;
+        if (!baseKey || typeof grassPrograms === 'undefined') return { program: null, fallbackZone: null };
+        const direct = grassPrograms[baseKey + '_zone' + parentZone];
+        if (direct) return { program: direct, fallbackZone: null };
+        // Try adjacent zones: one lower first (cooler), then one higher (warmer), then two away
+        const zNum = parseInt(parentZone, 10);
+        for (const adj of [zNum - 1, zNum + 1, zNum - 2, zNum + 2]) {
+            if (adj < 4 || adj > 9) continue;
+            const fb = grassPrograms[baseKey + '_zone' + adj];
+            if (fb) return { program: fb, fallbackZone: adj };
+        }
+        return { program: null, fallbackZone: null };
+    };
+
     // ─── Product Warning Rules ────────────────────────────────────────────────────
     // Each entry defines conflict rules for a treatment category or product.
     // Used by ActivityForm (log-time conflict check) and TreatmentCalculator (Before You Apply).
@@ -3533,8 +3554,7 @@ window.ResearchSourcesPage = () => (
         // ── Build task list ───────────────────────────────────────────────────
         const grassInfo = GRASS_INFO[lawnProfile.specificGrass] || {};
         const grassName = grassInfo.name || lawnProfile.specificGrass;
-        const programKey = GRASS_KEY_MAP[lawnProfile.specificGrass] + '_zone' + getParentZone(lawnProfile.zone);
-        const program = typeof grassPrograms !== 'undefined' ? grassPrograms[programKey] : null;
+        const { program, fallbackZone } = getProgramWithFallback(lawnProfile.specificGrass, lawnProfile.zone);
 
         const isGameplanTask = (t) =>
             !/\bmow(ing)?\b|\bcut (height|grass)\b|mow (weekly|at|every)|watering|irrigat|water (as needed|deeply|1|0\.|per week)|\bdrip\b/.test(t.toLowerCase());
@@ -3628,6 +3648,16 @@ window.ResearchSourcesPage = () => (
                     </div>
                 </div>
 
+                {/* Fallback zone notice */}
+                {fallbackZone && program && (
+                    <div className="rounded-xl px-3 py-2.5 flex items-start gap-2.5" style={{background:'rgba(245,200,66,0.12)', border:'1px solid rgba(245,200,66,0.3)', marginBottom:'8px'}}>
+                        <span className="text-sm flex-shrink-0 mt-0.5">ℹ️</span>
+                        <div>
+                            <div className="text-xs font-bold mb-0.5" style={{color:'var(--ys-soil-800)'}}>Showing Zone {fallbackZone} program as nearest match</div>
+                            <div className="text-xs leading-relaxed" style={{color:'var(--ys-soil-600)'}}>No program exists for this exact grass + zone combination yet. Tasks are based on the closest available zone — verify critical timing with your local extension office.</div>
+                        </div>
+                    </div>
+                )}
                 {/* No content state */}
                 {!hasContent && (
                     <div className="rounded-2xl border border-dashed border-gray-200 p-8 text-center" style={{background:'var(--ys-cream)'}}>
@@ -8557,25 +8587,19 @@ window.ResearchSourcesPage = () => (
                                   if (!grassKey || !zone) {
                                     return "Set up your lawn profile to get personalized recommendations.";
                                   }
-                                  const grassProgramKey = (typeof GRASS_KEY_MAP !== 'undefined' && GRASS_KEY_MAP[grassKey])
-                                    ? GRASS_KEY_MAP[grassKey] + '_zone' + getParentZone(zone)
-                                    : null;
-                                  const program = (grassProgramKey && typeof grassPrograms !== 'undefined')
-                                    ? (() => {
-                                        const prog = grassPrograms[grassProgramKey];
-                                        if (!prog) return null;
-                                        const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-                                        const curMonth = MONTHS[month];
-                                        return prog.schedule?.find(e => {
-                                          if (e.month === curMonth) return true;
+                                  const { program: _cbProg } = getProgramWithFallback(grassKey, zone);
+                                  const _cbMonths = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                                  const _cbCurMonth = _cbMonths[month];
+                                  const program = _cbProg
+                                    ? (_cbProg.schedule?.find(e => {
+                                          if (e.month === _cbCurMonth) return true;
                                           if (e.month && e.month.includes('-')) {
                                             const parts = e.month.split('-');
-                                            const s = MONTHS.indexOf(parts[0].trim()), end = MONTHS.indexOf(parts[1].trim());
+                                            const s = _cbMonths.indexOf(parts[0].trim()), end = _cbMonths.indexOf(parts[1].trim());
                                             return s >= 0 && end >= 0 && month >= s && month <= end;
                                           }
                                           return false;
-                                        }) || null;
-                                      })()
+                                        }) || null)
                                     : null;
                                   const topTask = program?.tasks?.[0] || null;
                                   const notes   = program?.notes || null;
@@ -8730,19 +8754,6 @@ window.ResearchSourcesPage = () => (
                               </div>
                             </div>
                                 ); })()}
-                            {/* ── Section: Weather & Conditions ── */}
-                            <div style={{display:'flex',alignItems:'center',gap:'10px',margin:'16px 0 10px'}}>
-                                <span style={{fontFamily:'var(--ys-font-display)',fontWeight:700,fontSize:'13px',color:'var(--ys-green-800)',whiteSpace:'nowrap'}}>
-                                    Conditions
-                                </span>
-                                <div style={{flex:1,height:'2px',background:'linear-gradient(to right, var(--ys-green-200), transparent)'}}></div>
-                            </div>
-                            {/* Weather card */}
-                            <WeatherSnapshot weather={weather} weatherLoading={weatherLoading} lawnProfile={lawnProfile} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} />
-                            {/* Season banner card */}
-                            <div className="rounded-2xl shadow-sm border border-gray-100 overflow-hidden" style={{background:'var(--ys-cream)'}}>
-                                <SeasonBanner weather={weather} />
-                            </div>
                             {/* ── Section: Your Plan ── */}
                             <div style={{display:'flex',alignItems:'center',gap:'10px',margin:'16px 0 10px'}}>
                                 <span style={{fontFamily:'var(--ys-font-display)',fontWeight:700,fontSize:'13px',color:'var(--ys-green-800)',whiteSpace:'nowrap'}}>
@@ -8837,8 +8848,7 @@ window.ResearchSourcesPage = () => (
                             {/* This Week's Priority */}
                             {(() => {
                                 if (!lawnProfile || !lawnProfile.specificGrass || !lawnProfile.zone) return null;
-                                const programKey = GRASS_KEY_MAP[lawnProfile.specificGrass] + '_zone' + getParentZone(lawnProfile.zone);
-                                const program = typeof grassPrograms !== 'undefined' ? grassPrograms[programKey] : null;
+                                const { program } = getProgramWithFallback(lawnProfile.specificGrass, lawnProfile.zone);
                                 if (!program) return null;
                                 const curIdx = new Date().getMonth();
                                 const curMonth = MONTH_NAMES[curIdx];
@@ -8955,6 +8965,19 @@ window.ResearchSourcesPage = () => (
                                     </button>
                                 );
                             })()}
+                            {/* ── Section: Weather & Conditions ── */}
+                            <div style={{display:'flex',alignItems:'center',gap:'10px',margin:'16px 0 10px'}}>
+                                <span style={{fontFamily:'var(--ys-font-display)',fontWeight:700,fontSize:'13px',color:'var(--ys-green-800)',whiteSpace:'nowrap'}}>
+                                    Conditions
+                                </span>
+                                <div style={{flex:1,height:'2px',background:'linear-gradient(to right, var(--ys-green-200), transparent)'}}></div>
+                            </div>
+                            {/* Weather card */}
+                            <WeatherSnapshot weather={weather} weatherLoading={weatherLoading} lawnProfile={lawnProfile} zipLookupLoading={zipLookupLoading} zipLookupError={zipLookupError} onZipLookup={lookupZoneByZip} />
+                            {/* Season banner card */}
+                            <div className="rounded-2xl shadow-sm border border-gray-100 overflow-hidden" style={{background:'var(--ys-cream)'}}>
+                                <SeasonBanner weather={weather} />
+                            </div>
                             {/* ── Section: Learn Nudge ── */}
                             {(() => {
                                 if (getProfileState(lawnProfile) !== 'complete') return null;
